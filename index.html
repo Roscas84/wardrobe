@@ -400,9 +400,9 @@ function renderInventario() {
     sec.innerHTML = `
       <div class="categoria-header" onclick="toggleCat(this)">
         <span>${cat.label} <span class="count">(${items.length})</span></span>
-        <span class="categoria-arrow ${isOpen?'open'}">›</span>
+        <span class="categoria-arrow ${isOpen?'open':''}">›</span>
       </div>
-      <div class="categoria-items ${isOpen?'open'}">
+      <div class="categoria-items ${isOpen?'open':''}">
         ${items.map(p=>prendaCardHTML(p)).join('')}
       </div>`;
     wrap.appendChild(sec);
@@ -412,8 +412,8 @@ function renderInventario() {
 function prendaCardHTML(p) {
   return `
   <div class="prenda-card" id="pc${p.id}">
-    ${p.foto ? `<img class="prenda-img" src="${p.foto}" alt="${p.nombre}" onclick="selAnclaMobile(${p.id})">` 
-             : `<div class="prenda-placeholder" style="background:${p.color}" onclick="selAnclaMobile(${p.id})">👕</div>`}
+    ${p.foto ? '<img class="prenda-img" src="'+p.foto+'" alt="'+p.nombre+'" onclick="selAnclaMobile('+p.id+')">' 
+             : '<div class="prenda-placeholder" style="background:'+p.color+'" onclick="selAnclaMobile('+p.id+')">👕</div>'}
     <div class="prenda-info" onclick="selAnclaMobile(${p.id})">
       <div class="prenda-nombre">${p.nombre}</div>
       <div class="prenda-meta"><span class="color-dot" style="background:${p.color}"></span>${p.tipo}</div>
@@ -571,7 +571,7 @@ function renderCatAncla() {
       <div class="categoria-items open">
         ${items.map(p=>`
           <div class="prenda-card${ancla&&ancla.id===p.id?' selected':''}" id="pa${p.id}" onclick="selAncla(${p.id})">
-            ${p.foto?`<img class="prenda-img" src="${p.foto}" alt="${p.nombre}">`:`<div class="prenda-placeholder" style="background:${p.color}">👕</div>`}
+            ${p.foto ? '<img class="prenda-img" src="'+p.foto+'" alt="'+p.nombre+'">' : '<div class="prenda-placeholder" style="background:'+p.color+'">👕</div>'}
             <div class="prenda-info">
               <div class="prenda-nombre">${p.nombre}</div>
               <div class="prenda-meta"><span class="color-dot" style="background:${p.color}"></span>${p.tipo}</div>
@@ -621,7 +621,7 @@ function chipAncla(id) {
   if(!ancla) return;
   document.getElementById(id).innerHTML = `
     <div class="ancla-chip">
-      ${ancla.foto ? `<img class="ancla-thumb" src="${ancla.foto">` : `<div class="ancla-thumb-color" style="background:${ancla.color}"></div>`}
+      ${ancla.foto ? '<img class="ancla-thumb" src="'+ancla.foto+'">' : '<div class="ancla-thumb-color" style="background:'+ancla.color+'"></div>'}
       <div class="ancla-info">
         <div class="nombre">${ancla.nombre}</div>
         <div class="meta">${ancla.tipo}${ancla.marca?' · '+ancla.marca:''}</div>
@@ -809,7 +809,7 @@ function renderOutfits(lista) {
       <div class="prendas-stack">
         ${o.capas.map(c=>`
           <div class="prenda-row">
-            ${c.p.foto ? `<img class="prenda-row-img" src="${c.p.foto}" alt="${c.p.nombre}">` : `<div class="prenda-row-color" style="background:${c.p.color}"></div>`}
+            ${c.p.foto ? '<img class="prenda-row-img" src="'+c.p.foto+'" alt="'+c.p.nombre+'">' : '<div class="prenda-row-color" style="background:'+c.p.color+'"></div>'}
             <div class="prenda-row-info">
               <div class="prenda-row-nombre">${c.p.nombre}</div>
               <div class="prenda-row-rol">${c.rol} · ${c.p.tipo}</div>
@@ -834,8 +834,19 @@ function showScreen(id) {
 }
 
 // ======== INIT ========
-renderInventario();
-renderCatAncla();
+if (inventario.length === 0) {
+  fetch("guardarropa.json")
+    .then(r => r.json())
+    .then(data => {
+      inventario = data;
+      guardarLocal();
+      renderInventario();
+      renderCatAncla();
+    });
+} else {
+  renderInventario();
+  renderCatAncla();
+}
 </script>
 </body>
 </html>
