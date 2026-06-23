@@ -141,7 +141,7 @@ header h1{font-size:17px;font-weight:700}
 <header><h1>👔 Mi Guardarropa</h1></header>
 
 <!-- INVENTARIO -->
-<div id="screen-inventario" class="screen active">
+<div id="screen-inventario" class="screen">
   <div class="top-bar">
     <h2 id="inv-count">0 prendas</h2>
     <button class="btn-add" onclick="abrirModal()">+ Agregar</button>
@@ -158,7 +158,7 @@ header h1{font-size:17px;font-weight:700}
 </div>
 
 <!-- CONSTRUCTOR -->
-<div id="screen-constructor" class="screen">
+<div id="screen-constructor" class="screen active">
 
   <!-- Paso 1: Ancla -->
   <div id="paso1-wrap">
@@ -279,11 +279,11 @@ header h1{font-size:17px;font-weight:700}
 
 <!-- NAV -->
 <nav class="bottom-nav">
-  <button class="bnav-btn active" id="nav-inv" onclick="showScreen('inventario')">
-    <span class="bnav-icon">👕</span>Inventario
-  </button>
-  <button class="bnav-btn" id="nav-con" onclick="showScreen('constructor')">
+  <button class="bnav-btn active" id="nav-con" onclick="showScreen('constructor')">
     <span class="bnav-icon">✨</span>Constructor
+  </button>
+  <button class="bnav-btn" id="nav-inv" onclick="showScreen('inventario')">
+    <span class="bnav-icon">👕</span>Inventario
   </button>
 </nav>
 
@@ -579,9 +579,9 @@ function renderCatAncla() {
     sec.innerHTML=`
       <div class="categoria-header" onclick="toggleCat(this)">
         <span>${cat.label} <span class="count">(${items.length})</span></span>
-        <span class="categoria-arrow open">›</span>
+        <span class="categoria-arrow">›</span>
       </div>
-      <div class="categoria-items open">
+      <div class="categoria-items">
         ${items.map(p=>`
           <div class="prenda-card${ancla&&ancla.id===p.id?' selected':''}" onclick="selAncla(${p.id})">
             ${p.foto?'<img class="prenda-img" src="'+p.foto+'">':`<div class="prenda-placeholder" style="background:${p.color}">👕</div>`}
@@ -748,7 +748,7 @@ function showScreen(id) {
   document.getElementById('screen-'+id).classList.add('active');
   document.getElementById(id==='inventario'?'nav-inv':'nav-con').classList.add('active');
   if(id==='constructor'&&!modoLibreActivo){ renderCatAncla(); irPaso(1); }
-  if(id==='inventario') renderInventario();
+  else if(id==='inventario') renderInventario();
   window.scrollTo(0,0);
 }
 
