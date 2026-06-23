@@ -106,15 +106,15 @@ header h1{font-size:17px;font-weight:700}
 .armonia-section-items.open{display:block}
 
 /* OUTFIT CARD */
-.outfit-card{background:#f8f8f8;border-radius:12px;overflow:hidden;margin-bottom:8px}
-.outfit-fotos{display:grid;grid-template-columns:1fr 1fr;gap:3px}
-.outfit-foto-item{aspect-ratio:1;overflow:hidden}
-.outfit-foto-item img{width:100%;height:100%;object-fit:cover}
+.outfit-card{background:#fff;border-radius:14px;overflow:hidden;margin-bottom:14px;box-shadow:0 2px 10px rgba(0,0,0,0.08);border:1px solid #ebebeb}
+.outfit-fotos{display:grid;grid-template-columns:1fr 1fr;gap:2px;background:#e8e8e8}
+.outfit-foto-item{aspect-ratio:3/4;overflow:hidden}
+.outfit-foto-item img{width:100%;height:100%;object-fit:cover;object-position:center top}
 .outfit-foto-color{width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-size:28px;background:#e8e8e8}
 .outfit-foto-item:first-child:last-child{grid-column:1/-1}
 .outfit-foto-item:nth-child(3):last-child{grid-column:1/-1}
-.outfit-paleta{display:flex;height:6px;gap:2px;margin:3px}
-.paleta-seg{flex:1;border-radius:1px}
+.outfit-paleta{display:flex;height:7px;gap:2px;margin:0}
+.paleta-seg{flex:1}
 
 .nivel-divider{font-size:10px;color:#aaa;text-transform:uppercase;letter-spacing:0.6px;font-weight:600;margin:8px 2px 4px}
 
@@ -131,13 +131,14 @@ header h1{font-size:17px;font-weight:700}
 .data-btns{display:flex;gap:8px;flex-wrap:wrap}
 .data-btn{flex:1;padding:10px;border:1px solid #e0e0e0;border-radius:10px;background:#fff;font-size:13px;cursor:pointer;text-align:center;font-weight:500}
 
-/* ARM COLORS (usados como dot) */
-
+/* ARM COLORS */
 .c-ana   {background:#1a7a1a}
 .c-comp  {background:#c44800}
 .c-split {background:#b87000}
 .c-tri   {background:#1a3acc}
 .c-tet   {background:#7700cc}
+.c-cua   {background:#cc0077}
+.c-abs   {background:#007755}
 </style>
 </head>
 <body>
@@ -306,11 +307,13 @@ const CATEGORIAS = [
 ];
 
 const ARMONIAS = [
-  { key:'analoga',        nombre:'Análoga',          dotClass:'c-ana',   color:'#1a7a1a', desc:'Colores vecinos en la rueda' },
-  { key:'complementaria', nombre:'Complementaria',   dotClass:'c-comp',  color:'#c44800', desc:'Colores opuestos · máximo contraste' },
-  { key:'split',          nombre:'Split Comp.',      dotClass:'c-split', color:'#b87000', desc:'Variación suave de la complementaria' },
-  { key:'triadica',       nombre:'Triádica',         dotClass:'c-tri',   color:'#1a3acc', desc:'Tres colores equidistantes (120°)' },
-  { key:'tetradica',      nombre:'Tetrádica',        dotClass:'c-tet',   color:'#7700cc', desc:'Cuatro colores en equilibrio (90°)' },
+  { key:'analoga',        nombre:'Análoga',           dotClass:'c-ana',  color:'#1a7a1a', desc:'Colores vecinos (±30°)' },
+  { key:'complementaria', nombre:'Complementaria',    dotClass:'c-comp', color:'#c44800', desc:'Colores opuestos · máximo contraste' },
+  { key:'split',          nombre:'Split Comp.',       dotClass:'c-split',color:'#b87000', desc:'Dos colores junto al complementario' },
+  { key:'triadica',       nombre:'Triádica',          dotClass:'c-tri',  color:'#1a3acc', desc:'Tres colores equidistantes (120°)' },
+  { key:'tetradica',      nombre:'Tetrádica',         dotClass:'c-tet',  color:'#7700cc', desc:'Rectángulo en la rueda (60°+180°+240°)' },
+  { key:'cuadrada',       nombre:'Cuadrada',          dotClass:'c-cua',  color:'#cc0077', desc:'Cuatro colores en cuadrado (90°)' },
+  { key:'abstracta',      nombre:'Abstracta',         dotClass:'c-abs',  color:'#007755', desc:'Doble split complementaria (30°+150°+210°)' },
 ];
 
 function getPosicion(tipo) {
@@ -359,7 +362,9 @@ function getHuesObjetivo(hAncla, arm) {
     case 'complementaria': return [(hAncla+180)%360];
     case 'split':          return [(hAncla+150)%360,(hAncla+210)%360];
     case 'triadica':       return [(hAncla+120)%360,(hAncla+240)%360];
-    case 'tetradica':      return [(hAncla+90)%360,(hAncla+180)%360,(hAncla+270)%360];
+    case 'tetradica':      return [(hAncla+60)%360,(hAncla+180)%360,(hAncla+240)%360];
+    case 'cuadrada':       return [(hAncla+90)%360,(hAncla+180)%360,(hAncla+270)%360];
+    case 'abstracta':      return [(hAncla+30)%360,(hAncla+150)%360,(hAncla+210)%360];
   }
 }
 
@@ -390,19 +395,18 @@ function generarParaArmonia(anclaRef, armKey) {
   const cal = pool('calzado');
   const acc = pool('accesorios');
 
-  const MAX_POR_GRUPO = 12;
   const outfits = [];
 
   function push(piezas, nivel) {
-    const sinCal = !piezas.some(p => getPosicion(p.tipo) === 'calzado');
-    const conjuntos = sinCal && cal.length ? cal.slice(0,2).map(c=>[...piezas,c]) : [piezas];
-
-    conjuntos.forEach(conjunto => {
-      outfits.push({nivel, piezas: conjunto});
-      if(acc.length) {
-        outfits.push({nivel, piezas: [...conjunto, acc[0]]});
-      }
-    });
+    // Añade un zapato compatible (rota entre los disponibles)
+    if (!piezas.some(p => getPosicion(p.tipo) === 'calzado') && cal.length) {
+      piezas = [...piezas, cal[outfits.length % cal.length]];
+    }
+    // Añade accesorio solo en 1 de cada 3 outfits para no duplicar
+    if (acc.length && outfits.length % 3 === 1 && !piezas.some(p => getPosicion(p.tipo) === 'accesorios')) {
+      piezas = [...piezas, acc[outfits.length % acc.length]];
+    }
+    outfits.push({nivel, piezas});
   }
 
   if(anclaPos === 'superior') {
@@ -437,7 +441,7 @@ function generarParaArmonia(anclaRef, armKey) {
     seen.add(k); return true;
   });
 
-  return dedup.slice(0, MAX_POR_GRUPO);
+  return dedup;
 }
 
 function generarTodosLosLooks(anclaRef) {
