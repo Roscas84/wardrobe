@@ -29,7 +29,6 @@ header h1{font-size:17px;font-weight:700}
 .top-bar{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px}
 .top-bar h2{font-size:15px;font-weight:600;color:#888}
 .btn-add{background:#007aff;color:#fff;border:none;border-radius:20px;padding:8px 18px;font-size:13px;cursor:pointer;font-weight:500}
-.btn-libre-constructor{width:100%;max-width:600px;margin:8px auto 0;display:block;padding:13px;background:#1a1a1a;color:#fff;border:none;border-radius:14px;font-size:14px;font-weight:600;cursor:pointer}
 
 /* CATEGORIAS */
 .categoria-section{margin-bottom:8px;background:#fff;border-radius:14px;overflow:hidden;border:1px solid #e0e0e0}
@@ -85,41 +84,46 @@ header h1{font-size:17px;font-weight:700}
 .ancla-info .meta{font-size:12px;color:#888;margin-top:2px}
 
 .fixed-btn-wrap{position:fixed;bottom:calc(60px + env(safe-area-inset-bottom));left:0;right:0;padding:10px 16px;background:linear-gradient(transparent,rgba(242,242,247,0.95) 40%);z-index:150}
-.fixed-btn{width:100%;max-width:600px;margin:0 auto;display:block;padding:15px;background:#007aff;color:#fff;border:none;border-radius:14px;font-size:16px;font-weight:700;cursor:pointer}
-.fixed-btn:active{background:#0062cc}
-.btn-atras{width:100%;padding:12px;background:#fff;border:1px solid #e0e0e0;border-radius:12px;font-size:15px;cursor:pointer;margin-top:8px;margin-bottom:70px}
+.fixed-btn-wrap{position:fixed;bottom:calc(60px + env(safe-area-inset-bottom));left:0;right:0;padding:8px 16px 4px;background:linear-gradient(transparent,rgba(242,242,247,0.97) 35%);z-index:150}
+.btn-negro{width:100%;max-width:600px;margin:0 auto 6px;display:block;padding:11px;background:#1a1a1a;color:#fff;border:none;border-radius:12px;font-size:14px;font-weight:600;cursor:pointer}
+.btn-negro:active{opacity:0.8}
+.btn-negro.secundario{background:#444;font-size:13px;padding:9px}
 
-/* RESULTADOS - sección por armonía */
-.resultados-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:6px}
+/* RESULTADOS */
+.resultados-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px}
 .res-total{font-size:13px;color:#888}
 
-.armonia-section{margin-bottom:24px}
-.armonia-section-header{display:flex;align-items:center;gap:8px;margin-bottom:10px;padding-bottom:8px;border-bottom:1px solid #e0e0e0}
-.armonia-dot{width:12px;height:12px;border-radius:50%;flex-shrink:0}
+/* Secciones de armonía — estilo categorías */
+.armonia-section{margin-bottom:8px;background:#fff;border-radius:14px;overflow:hidden;border:1px solid #e0e0e0}
+.armonia-section-header{display:flex;justify-content:space-between;align-items:center;padding:12px 14px;cursor:pointer}
+.armonia-section-left{display:flex;align-items:center;gap:8px}
+.armonia-dot{width:11px;height:11px;border-radius:50%;flex-shrink:0}
 .armonia-section-nombre{font-size:14px;font-weight:700}
-.armonia-section-count{font-size:12px;color:#888;font-weight:400}
+.armonia-section-count{font-size:12px;color:#888;font-weight:400;margin-left:4px}
+.armonia-section-arrow{font-size:12px;color:#888;transition:transform .2s}
+.armonia-section-arrow.open{transform:rotate(90deg)}
+.armonia-section-items{display:none;padding:0 8px 8px}
+.armonia-section-items.open{display:block}
 
-/* OUTFIT CARD — estilo app de ropa */
-.outfit-card{background:#fff;border-radius:16px;overflow:hidden;margin-bottom:10px;border:1px solid #e0e0e0}
-.outfit-fotos{display:flex;gap:2px;background:#f0f0f0}
-.outfit-foto-item{flex:1;aspect-ratio:1;overflow:hidden;position:relative}
+/* OUTFIT CARD */
+.outfit-card{background:#f8f8f8;border-radius:12px;overflow:hidden;margin-bottom:8px}
+.outfit-fotos{display:grid;grid-template-columns:1fr 1fr;gap:3px}
+.outfit-foto-item{aspect-ratio:1;overflow:hidden}
 .outfit-foto-item img{width:100%;height:100%;object-fit:cover}
-.outfit-foto-color{width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-size:22px}
-.outfit-footer{padding:10px 12px}
-.outfit-paleta{display:flex;height:6px;border-radius:3px;overflow:hidden;gap:2px;margin-bottom:6px}
-.paleta-seg{flex:1}
-.outfit-labels{display:flex;flex-wrap:wrap;gap:4px}
-.outfit-label{font-size:10px;background:#f2f2f7;border-radius:6px;padding:2px 7px;color:#555;font-weight:500}
-.outfit-label.ancla{background:#e8f0ff;color:#007aff}
+.outfit-foto-color{width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-size:28px;background:#e8e8e8}
+.outfit-foto-item:first-child:last-child{grid-column:1/-1}
+.outfit-foto-item:nth-child(3):last-child{grid-column:1/-1}
+.outfit-paleta{display:flex;height:6px;gap:2px;margin:3px}
+.paleta-seg{flex:1;border-radius:1px}
 
-.nivel-divider{font-size:11px;color:#aaa;text-transform:uppercase;letter-spacing:0.6px;font-weight:600;margin:4px 0 8px;padding-left:2px}
+.nivel-divider{font-size:10px;color:#aaa;text-transform:uppercase;letter-spacing:0.6px;font-weight:600;margin:8px 2px 4px}
 
 .no-outfits{text-align:center;padding:40px 20px;color:#888}
 .no-outfits p{font-size:14px;margin-top:8px}
-.sin-combinacion{font-size:12px;color:#aaa;font-style:italic;padding:8px 12px;background:#f9f9f9;border-radius:10px;margin-bottom:8px}
+.sin-combinacion{font-size:12px;color:#bbb;font-style:italic;padding:10px 14px}
 
 /* BADGE LIBRE */
-.badge-libre{display:inline-flex;align-items:center;gap:6px;padding:6px 14px;border-radius:20px;font-size:13px;font-weight:600;background:#1a1a1a;color:#fff;margin-bottom:14px}
+.badge-libre{display:inline-flex;align-items:center;gap:6px;padding:5px 12px;border-radius:20px;font-size:12px;font-weight:600;background:#1a1a1a;color:#fff;margin-bottom:10px}
 
 /* DATOS */
 .data-section{background:#fff;border-radius:14px;padding:14px;margin-bottom:12px;margin-top:8px}
@@ -165,10 +169,9 @@ header h1{font-size:17px;font-weight:700}
     <div class="paso-title">Prenda ancla</div>
     <div class="paso-sub">¿Qué prenda quieres usar hoy?</div>
     <div id="ancla-categorias"></div>
-    <div style="height:90px"></div>
+    <div style="height:70px"></div>
     <div class="fixed-btn-wrap">
-      <button class="fixed-btn" onclick="verLooks()">Ver todos los looks →</button>
-      <button class="btn-libre-constructor" onclick="activarModoLibre()">✦ Modo Libre — mezclar todo el guardarropa</button>
+      <button class="btn-negro secundario" onclick="activarModoLibre()">✦ Modo Libre</button>
     </div>
   </div>
 
@@ -596,10 +599,9 @@ function renderCatAncla() {
 }
 
 function selAncla(id) {
-  ancla=inventario.find(p=>p.id===id);
-  document.querySelectorAll('#ancla-categorias .prenda-card').forEach(c=>c.classList.remove('selected'));
-  // Re-render para marcar selected
-  renderCatAncla();
+  ancla = inventario.find(p=>p.id===id);
+  modoLibreActivo = false;
+  mostrarLooks();
 }
 
 function selAnclaMobile(id) {
@@ -622,12 +624,6 @@ function chipAnclaHTML(p) {
       <div class="meta">${p.tipo}${p.marca?' · '+p.marca:''}</div>
     </div>
   </div>`;
-}
-
-function verLooks() {
-  if(!ancla) { alert('Elige una prenda primero.'); return; }
-  modoLibreActivo = false;
-  mostrarLooks();
 }
 
 function activarModoLibre() {
@@ -689,47 +685,47 @@ function mostrarLooks() {
     const basicos  = g.outfits.filter(o=>o.nivel==='basico');
     const exterior = g.outfits.filter(o=>o.nivel==='exterior');
     const sinResultados = !g.outfits.length;
+    const countTxt = sinResultados ? 'Sin combinaciones' : g.outfits.length + ' looks';
     return `
     <div class="armonia-section">
-      <div class="armonia-section-header">
-        <span class="armonia-dot ${g.arm.dotClass}"></span>
-        <span class="armonia-section-nombre">${g.arm.nombre}</span>
-        <span class="armonia-section-count">${sinResultados ? g.arm.desc : g.outfits.length+' looks · '+g.arm.desc}</span>
+      <div class="armonia-section-header" onclick="toggleArmonia(this)">
+        <div class="armonia-section-left">
+          <span class="armonia-dot ${g.arm.dotClass}"></span>
+          <span class="armonia-section-nombre">${g.arm.nombre}</span>
+          <span class="armonia-section-count">${countTxt}</span>
+        </div>
+        <span class="armonia-section-arrow">›</span>
       </div>
-      ${sinResultados
-        ? '<div class="sin-combinacion">Sin combinaciones — no hay prendas con colores compatibles en el inventario</div>'
-        : (basicos.length  ? '<div class="nivel-divider">Sin capa exterior</div>'+basicos.map(o=>lookCardHTML(o,ancla)).join('') : '')
-        + (exterior.length ? '<div class="nivel-divider">Con capa exterior</div>'+exterior.map(o=>lookCardHTML(o,ancla)).join('') : '')}
+      <div class="armonia-section-items">
+        ${sinResultados
+          ? '<div class="sin-combinacion">No hay prendas con colores compatibles en el inventario</div>'
+          : (basicos.length  ? '<div class="nivel-divider">Sin capa exterior</div>'+basicos.map(o=>lookCardHTML(o)).join('') : '')
+          + (exterior.length ? '<div class="nivel-divider">Con capa exterior</div>'+exterior.map(o=>lookCardHTML(o)).join('') : '')}
+      </div>
     </div>`;
   }).join('');
 }
 
-function lookCardHTML(o, anclaRef) {
+function toggleArmonia(header) {
+  const arrow = header.querySelector('.armonia-section-arrow');
+  const items = header.nextElementSibling;
+  arrow.classList.toggle('open');
+  items.classList.toggle('open');
+}
+
+function lookCardHTML(o) {
   const piezas = o.piezas;
   const colores = [...new Set(piezas.map(p=>p.color))];
-  const rolLabel = { superior:'Superior', exterior:'Exterior', inferior:'Inferior', calzado:'Calzado', accesorios:'Accesorio' };
-
-  // Fotos: mostrar máx 4 prendas en grid horizontal
   const fotosHTML = piezas.slice(0,4).map(p => `
     <div class="outfit-foto-item">
       ${p.foto
-        ? '<img src="'+p.foto+'" alt="'+p.nombre+'">'
+        ? '<img src="'+p.foto+'" alt="">'
         : '<div class="outfit-foto-color" style="background:'+p.color+'">'+tipoIcon(p.tipo)+'</div>'}
     </div>`).join('');
-
-  // Etiquetas de prendas
-  const labelsHTML = piezas.map(p => {
-    const isAncla = anclaRef && p.id === anclaRef.id;
-    return `<span class="outfit-label${isAncla?' ancla':''}">${p.nombre}</span>`;
-  }).join('');
-
   return `
   <div class="outfit-card">
     <div class="outfit-fotos">${fotosHTML}</div>
-    <div class="outfit-footer">
-      <div class="outfit-paleta">${colores.map(c=>`<div class="paleta-seg" style="background:${c}"></div>`).join('')}</div>
-      <div class="outfit-labels">${labelsHTML}</div>
-    </div>
+    <div class="outfit-paleta">${colores.map(c=>`<div class="paleta-seg" style="background:${c}"></div>`).join('')}</div>
   </div>`;
 }
 
