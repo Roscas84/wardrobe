@@ -4,11 +4,16 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
 <title>Mi Guardarropa</title>
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#007aff">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="Guardarropa">
+<link rel="apple-touch-icon" href="icon-192.png">
 <style>
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
 body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:#f2f2f7;color:#1a1a1a;min-height:100vh;padding-bottom:80px}
 
-/* NAV BOTTOM */
 .bottom-nav{position:fixed;bottom:0;left:0;right:0;background:#fff;border-top:1px solid #e0e0e0;display:flex;z-index:200;padding-bottom:env(safe-area-inset-bottom)}
 .bnav-btn{flex:1;padding:10px 0;display:flex;flex-direction:column;align-items:center;gap:2px;border:none;background:transparent;cursor:pointer;font-size:10px;color:#888}
 .bnav-btn.active{color:#007aff}
@@ -24,6 +29,7 @@ header h1{font-size:17px;font-weight:700}
 .top-bar{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px}
 .top-bar h2{font-size:15px;font-weight:600;color:#888}
 .btn-add{background:#007aff;color:#fff;border:none;border-radius:20px;padding:8px 18px;font-size:13px;cursor:pointer;font-weight:500}
+.btn-libre-constructor{width:100%;max-width:600px;margin:8px auto 0;display:block;padding:13px;background:#1a1a1a;color:#fff;border:none;border-radius:14px;font-size:14px;font-weight:600;cursor:pointer}
 
 /* CATEGORIAS */
 .categoria-section{margin-bottom:8px;background:#fff;border-radius:14px;overflow:hidden;border:1px solid #e0e0e0}
@@ -64,83 +70,70 @@ header h1{font-size:17px;font-weight:700}
 .btn-cancel{flex:1;padding:13px;border:1px solid #e0e0e0;border-radius:12px;background:#fff;font-size:15px;cursor:pointer}
 .btn-save{flex:2;padding:13px;border:none;border-radius:12px;background:#007aff;color:#fff;font-size:15px;cursor:pointer;font-weight:600}
 
-/* COLOR PICKER */
 .color-row{display:flex;align-items:center;gap:10px}
 .color-swatch{width:44px;height:44px;border-radius:10px;border:1px solid #e0e0e0;cursor:pointer;flex-shrink:0}
 .hex-input{flex:1;padding:10px 12px;border:1px solid #e0e0e0;border-radius:10px;font-size:15px;font-family:monospace}
 
 /* CONSTRUCTOR */
-.paso-wrap{padding:0}
 .paso-title{font-size:20px;font-weight:700;margin-bottom:4px}
 .paso-sub{font-size:13px;color:#888;margin-bottom:18px}
 
-/* CAPAS */
-.capa-section{background:#fff;border-radius:14px;padding:14px;margin-bottom:12px}
-.capa-section label{font-size:13px;font-weight:600;display:block;margin-bottom:10px}
-.capas-row{display:flex;gap:8px}
-.capa-btn{width:52px;height:52px;border-radius:12px;border:1.5px solid #e0e0e0;background:#fff;font-size:20px;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;color:#1a1a1a}
-.capa-btn.sel{background:#007aff;color:#fff;border-color:#007aff}
-
-/* ANCLA CHIP */
 .ancla-chip{display:flex;align-items:center;gap:10px;background:#fff;border-radius:12px;padding:10px;margin-bottom:16px;border:1px solid #e0e0e0}
 .ancla-thumb{width:50px;height:50px;border-radius:8px;object-fit:cover;flex-shrink:0}
 .ancla-thumb-color{width:50px;height:50px;border-radius:8px;flex-shrink:0}
 .ancla-info .nombre{font-size:14px;font-weight:600}
 .ancla-info .meta{font-size:12px;color:#888;margin-top:2px}
 
-/* BTN FIJO */
 .fixed-btn-wrap{position:fixed;bottom:calc(60px + env(safe-area-inset-bottom));left:0;right:0;padding:10px 16px;background:linear-gradient(transparent,rgba(242,242,247,0.95) 40%);z-index:150}
 .fixed-btn{width:100%;max-width:600px;margin:0 auto;display:block;padding:15px;background:#007aff;color:#fff;border:none;border-radius:14px;font-size:16px;font-weight:700;cursor:pointer}
 .fixed-btn:active{background:#0062cc}
 .btn-atras{width:100%;padding:12px;background:#fff;border:1px solid #e0e0e0;border-radius:12px;font-size:15px;cursor:pointer;margin-top:8px;margin-bottom:70px}
 
-/* ACCESORIOS */
-.acc-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:80px}
-.acc-item{padding:12px 8px;border:1.5px solid #e0e0e0;border-radius:12px;text-align:center;cursor:pointer;background:#fff}
-.acc-item.sel{border-color:#007aff;background:#e8f0ff}
-.acc-icon{font-size:24px;margin-bottom:4px}
-.acc-label{font-size:12px;font-weight:500}
+/* RESULTADOS - sección por armonía */
+.resultados-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:6px}
+.res-total{font-size:13px;color:#888}
 
-/* OUTFITS */
-.filtros-scroll{display:flex;gap:8px;overflow-x:auto;padding-bottom:8px;margin-bottom:14px;-webkit-overflow-scrolling:touch}
-.filtros-scroll::-webkit-scrollbar{display:none}
-.fil-btn{padding:7px 16px;border:1.5px solid #e0e0e0;border-radius:20px;background:#fff;font-size:12px;cursor:pointer;white-space:nowrap;font-weight:500;flex-shrink:0}
-.fil-btn.active{background:#007aff;color:#fff;border-color:#007aff}
-.res-count{font-size:13px;color:#888;margin-bottom:12px}
+.armonia-section{margin-bottom:24px}
+.armonia-section-header{display:flex;align-items:center;gap:8px;margin-bottom:10px;padding-bottom:8px;border-bottom:1px solid #e0e0e0}
+.armonia-dot{width:12px;height:12px;border-radius:50%;flex-shrink:0}
+.armonia-section-nombre{font-size:14px;font-weight:700}
+.armonia-section-count{font-size:12px;color:#888;font-weight:400}
 
-.outfit-card{background:#fff;border-radius:16px;padding:14px;margin-bottom:12px;border:1px solid #e0e0e0}
-.outfit-num{font-size:11px;color:#888;font-weight:500;margin-bottom:4px;text-transform:uppercase;letter-spacing:0.5px}
-.outfit-armonia{display:inline-block;padding:4px 12px;border-radius:20px;font-size:12px;font-weight:600;margin-bottom:12px}
-.arm-mono{background:#f0f0f0;color:#444}
-.arm-ana{background:#e3f5e3;color:#1a7a1a}
-.arm-comp{background:#fff0e0;color:#c44800}
-.arm-split{background:#fff8e0;color:#b87000}
-.arm-tri{background:#e8eeff;color:#1a3acc}
-.arm-tet{background:#f5e8ff;color:#7700cc}
-.arm-neu{background:#f0f0f0;color:#555}
+/* OUTFIT CARD — estilo app de ropa */
+.outfit-card{background:#fff;border-radius:16px;overflow:hidden;margin-bottom:10px;border:1px solid #e0e0e0}
+.outfit-fotos{display:flex;gap:2px;background:#f0f0f0}
+.outfit-foto-item{flex:1;aspect-ratio:1;overflow:hidden;position:relative}
+.outfit-foto-item img{width:100%;height:100%;object-fit:cover}
+.outfit-foto-color{width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-size:22px}
+.outfit-footer{padding:10px 12px}
+.outfit-paleta{display:flex;height:6px;border-radius:3px;overflow:hidden;gap:2px;margin-bottom:6px}
+.paleta-seg{flex:1}
+.outfit-labels{display:flex;flex-wrap:wrap;gap:4px}
+.outfit-label{font-size:10px;background:#f2f2f7;border-radius:6px;padding:2px 7px;color:#555;font-weight:500}
+.outfit-label.ancla{background:#e8f0ff;color:#007aff}
 
-.paleta-strip{display:flex;height:8px;border-radius:4px;overflow:hidden;margin-bottom:12px;gap:2px}
-.paleta-seg{flex:1;border-radius:2px}
-
-.prendas-stack{display:flex;flex-direction:column;gap:6px;margin-bottom:10px}
-.prenda-row{display:flex;align-items:center;gap:10px;background:#f8f8f8;border-radius:10px;padding:8px}
-.prenda-row-img{width:42px;height:42px;border-radius:8px;object-fit:cover;flex-shrink:0}
-.prenda-row-color{width:42px;height:42px;border-radius:8px;flex-shrink:0}
-.prenda-row-info{flex:1;min-width:0}
-.prenda-row-nombre{font-size:12px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.prenda-row-rol{font-size:11px;color:#888}
-.outfit-razon{font-size:11px;color:#666;line-height:1.5;border-left:3px solid #e0e0e0;padding-left:8px;font-style:italic}
-.outfit-accs{font-size:11px;color:#888;margin-top:6px}
+.nivel-divider{font-size:11px;color:#aaa;text-transform:uppercase;letter-spacing:0.6px;font-weight:600;margin:4px 0 8px;padding-left:2px}
 
 .no-outfits{text-align:center;padding:40px 20px;color:#888}
 .no-outfits p{font-size:14px;margin-top:8px}
+.sin-combinacion{font-size:12px;color:#aaa;font-style:italic;padding:8px 12px;background:#f9f9f9;border-radius:10px;margin-bottom:8px}
 
-/* EXPORT/IMPORT */
-.data-section{background:#fff;border-radius:14px;padding:14px;margin-bottom:12px}
+/* BADGE LIBRE */
+.badge-libre{display:inline-flex;align-items:center;gap:6px;padding:6px 14px;border-radius:20px;font-size:13px;font-weight:600;background:#1a1a1a;color:#fff;margin-bottom:14px}
+
+/* DATOS */
+.data-section{background:#fff;border-radius:14px;padding:14px;margin-bottom:12px;margin-top:8px}
 .data-section h3{font-size:14px;font-weight:600;margin-bottom:10px}
 .data-btns{display:flex;gap:8px;flex-wrap:wrap}
 .data-btn{flex:1;padding:10px;border:1px solid #e0e0e0;border-radius:10px;background:#fff;font-size:13px;cursor:pointer;text-align:center;font-weight:500}
-.data-btn.danger{border-color:#ff3b30;color:#ff3b30}
+
+/* ARM COLORS (usados como dot) */
+
+.c-ana   {background:#1a7a1a}
+.c-comp  {background:#c44800}
+.c-split {background:#b87000}
+.c-tri   {background:#1a3acc}
+.c-tet   {background:#7700cc}
 </style>
 </head>
 <body>
@@ -154,8 +147,7 @@ header h1{font-size:17px;font-weight:700}
     <button class="btn-add" onclick="abrirModal()">+ Agregar</button>
   </div>
   <div id="categorias-wrap"></div>
-
-  <div class="data-section" style="margin-top:8px">
+  <div class="data-section">
     <h3>Datos</h3>
     <div class="data-btns">
       <button class="data-btn" onclick="exportarInventario()">⬆️ Exportar</button>
@@ -167,59 +159,35 @@ header h1{font-size:17px;font-weight:700}
 
 <!-- CONSTRUCTOR -->
 <div id="screen-constructor" class="screen">
+
+  <!-- Paso 1: Ancla -->
   <div id="paso1-wrap">
     <div class="paso-title">Prenda ancla</div>
     <div class="paso-sub">¿Qué prenda quieres usar hoy?</div>
     <div id="ancla-categorias"></div>
-    <div style="height:70px"></div>
+    <div style="height:90px"></div>
     <div class="fixed-btn-wrap">
-      <button class="fixed-btn" onclick="irPaso2()">Continuar →</button>
+      <button class="fixed-btn" onclick="verLooks()">Ver todos los looks →</button>
+      <button class="btn-libre-constructor" onclick="activarModoLibre()">✦ Modo Libre — mezclar todo el guardarropa</button>
     </div>
   </div>
 
+  <!-- Paso 2: Looks -->
   <div id="paso2-wrap" style="display:none">
-    <div class="paso-title">Capas</div>
-    <div class="paso-sub">¿Cuántas capas en el outfit?</div>
-    <div id="ancla-chip-2"></div>
-    <div class="capa-section">
-      <label>Capas ARRIBA de la prenda ancla</label>
-      <div class="capas-row" id="cr-arriba"></div>
+    <div class="resultados-header">
+      <div>
+        <div id="ancla-chip-res"></div>
+        <div class="res-total" id="res-total"></div>
+      </div>
+      <button onclick="irPaso(1)" style="padding:6px 14px;border:1px solid #e0e0e0;border-radius:20px;background:#fff;font-size:12px;cursor:pointer;font-weight:500;flex-shrink:0">← Nueva</button>
     </div>
-    <div class="capa-section">
-      <label>Capas ABAJO de la prenda ancla</label>
-      <div class="capas-row" id="cr-abajo"></div>
-    </div>
-    <div style="height:70px"></div>
-    <div class="fixed-btn-wrap">
-      <button class="fixed-btn" onclick="irPaso3()">Ver combinaciones →</button>
-    </div>
-    <button class="btn-atras" onclick="irPaso(1)">← Atrás</button>
-  </div>
-
-  <div id="paso3-wrap" style="display:none">
-    <div class="paso-title">Accesorios</div>
-    <div class="paso-sub">¿Qué accesorios llevas? (opcional)</div>
-    <div class="acc-grid" id="acc-grid"></div>
-    <div class="fixed-btn-wrap">
-      <button class="fixed-btn" onclick="mostrarOutfits()">Ver outfits →</button>
-    </div>
-    <button class="btn-atras" onclick="irPaso(2)">← Atrás</button>
-  </div>
-
-  <div id="paso4-wrap" style="display:none">
-    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px">
-      <div class="paso-title" style="margin:0">Outfits</div>
-      <button onclick="irPaso(1)" style="padding:6px 14px;border:1px solid #e0e0e0;border-radius:20px;background:#fff;font-size:12px;cursor:pointer;font-weight:500">Nuevo</button>
-    </div>
-    <div id="ancla-chip-4"></div>
-    <div class="filtros-scroll" id="filtros-res"></div>
-    <div class="res-count" id="res-count"></div>
-    <div id="lista-outfits"></div>
+    <div id="lista-looks"></div>
     <div style="height:20px"></div>
   </div>
+
 </div>
 
-<!-- MODAL AGREGAR/EDITAR -->
+<!-- MODAL -->
 <div class="modal-overlay" id="modal-prenda">
   <div class="modal">
     <div class="modal-handle"></div>
@@ -232,7 +200,7 @@ header h1{font-size:17px;font-weight:700}
     <input type="file" id="input-foto" accept="image/*" capture="environment" style="display:none" onchange="cargarFoto(this)">
     <div class="field">
       <label>Nombre</label>
-      <input type="text" id="inp-nombre" placeholder="Ej: Jean largo azul claro">
+      <input type="text" id="inp-nombre" placeholder="Ej: Jean azul claro">
     </div>
     <div class="field">
       <label>Tipo</label>
@@ -241,6 +209,7 @@ header h1{font-size:17px;font-weight:700}
         <optgroup label="— Superior —">
           <option value="Camiseta">Camiseta</option>
           <option value="Camisa">Camisa</option>
+          <option value="Hoodie">Hoodie</option>
           <option value="Polo">Polo</option>
           <option value="Sudadera">Sudadera</option>
           <option value="Suéter">Suéter</option>
@@ -253,32 +222,44 @@ header h1{font-size:17px;font-weight:700}
           <option value="Chaqueta">Chaqueta</option>
         </optgroup>
         <optgroup label="— Inferior —">
+          <option value="Jean">Jean</option>
           <option value="Jean largo">Jean largo</option>
           <option value="Jean tres cuartos">Jean tres cuartos</option>
           <option value="Pantalón">Pantalón</option>
+          <option value="Overalls">Overalls</option>
           <option value="Short">Short</option>
           <option value="Jogger">Jogger</option>
         </optgroup>
         <optgroup label="— Calzado —">
           <option value="Sneakers">Sneakers</option>
           <option value="Converse">Converse</option>
+          <option value="Botas">Botas</option>
           <option value="Bota">Bota</option>
           <option value="Zapato">Zapato</option>
+          <option value="Sandalias">Sandalias</option>
           <option value="Sandalia">Sandalia</option>
           <option value="Mocasín">Mocasín</option>
+        </optgroup>
+        <optgroup label="— Accesorios —">
+          <option value="Gorra">Gorra</option>
+          <option value="Bolso">Bolso</option>
+          <option value="Lentes">Lentes</option>
+          <option value="Cinturón">Cinturón</option>
+          <option value="Bufanda">Bufanda</option>
+          <option value="Reloj">Reloj</option>
         </optgroup>
       </select>
     </div>
     <div class="field">
       <label>Color principal</label>
       <div class="color-row">
-        <input type="color" id="inp-color" value="#000000" class="color-swatch" oninput="syncColor('picker')">
-        <input type="text" id="inp-hex" value="#000000" class="hex-input" placeholder="#000000" oninput="syncColor('hex')" maxlength="7">
+        <input type="color" class="color-swatch" id="inp-color" value="#000000" oninput="syncColor('picker')">
+        <input type="text" class="hex-input" id="inp-hex" placeholder="#000000" maxlength="7" oninput="syncColor('hex')">
       </div>
     </div>
     <div class="field">
-      <label>Marca (opcional)</label>
-      <input type="text" id="inp-marca" placeholder="Ej: Zara, Ralph Lauren">
+      <label>Marca</label>
+      <input type="text" id="inp-marca" placeholder="Ej: Zara, Nike...">
     </div>
     <div class="field">
       <label>Formalidad</label>
@@ -302,40 +283,38 @@ header h1{font-size:17px;font-weight:700}
     <span class="bnav-icon">👕</span>Inventario
   </button>
   <button class="bnav-btn" id="nav-con" onclick="showScreen('constructor')">
-    <span class="bnav-icon">✨</span>Outfit
+    <span class="bnav-icon">✨</span>Constructor
   </button>
 </nav>
 
 <script>
 // ======== ESTADO ========
 let inventario = JSON.parse(localStorage.getItem('wrd_inv') || '[]');
-let ancla = null, capasArriba = 0, capasAbajo = 0, accsSeleccionados = [];
-let outfitsCache = [];
+let ancla = null;
+let modoLibreActivo = false;
 let editandoId = null;
 
 const CATEGORIAS = [
-  { key: 'superior', label: '👕 Superior', tipos: ['Camiseta','Camisa','Polo','Sudadera','Suéter','Tank top'] },
-  { key: 'exterior', label: '🧥 Exterior', tipos: ['Blazer','Chamarra','Abrigo','Chaqueta'] },
-  { key: 'inferior', label: '👖 Inferior', tipos: ['Jean largo','Jean tres cuartos','Pantalón','Short','Jogger'] },
-  { key: 'calzado', label: '👟 Calzado', tipos: ['Sneakers','Converse','Bota','Zapato','Sandalia','Mocasín'] },
+  { key:'superior',   label:'👕 Superior',   tipos:['Camiseta','Camisa','Hoodie','Polo','Sudadera','Suéter','Tank top'] },
+  { key:'exterior',   label:'🧥 Exterior',   tipos:['Blazer','Chamarra','Abrigo','Chaqueta'] },
+  { key:'inferior',   label:'👖 Inferior',   tipos:['Jean','Jean largo','Jean tres cuartos','Pantalón','Overalls','Short','Jogger'] },
+  { key:'calzado',    label:'👟 Calzado',    tipos:['Sneakers','Converse','Botas','Bota','Zapato','Sandalias','Sandalia','Mocasín'] },
+  { key:'accesorios', label:'🎩 Accesorios', tipos:['Gorra','Bolso','Lentes','Cinturón','Bufanda','Reloj'] },
 ];
 
-const ACCS = [
-  {id:'cinturon',icon:'🔗',label:'Cinturón'},
-  {id:'reloj',icon:'⌚',label:'Reloj'},
-  {id:'gorra',icon:'🧢',label:'Gorra'},
-  {id:'lentes',icon:'🕶️',label:'Lentes'},
-  {id:'bufanda',icon:'🧣',label:'Bufanda'},
-  {id:'cadena',icon:'📿',label:'Cadena'},
-  {id:'anillo',icon:'💍',label:'Anillo'},
-  {id:'bolsa',icon:'👜',label:'Bolsa'},
-  {id:'mochila',icon:'🎒',label:'Mochila'},
+const ARMONIAS = [
+  { key:'analoga',        nombre:'Análoga',          dotClass:'c-ana',   color:'#1a7a1a', desc:'Colores vecinos en la rueda' },
+  { key:'complementaria', nombre:'Complementaria',   dotClass:'c-comp',  color:'#c44800', desc:'Colores opuestos · máximo contraste' },
+  { key:'split',          nombre:'Split Comp.',      dotClass:'c-split', color:'#b87000', desc:'Variación suave de la complementaria' },
+  { key:'triadica',       nombre:'Triádica',         dotClass:'c-tri',   color:'#1a3acc', desc:'Tres colores equidistantes (120°)' },
+  { key:'tetradica',      nombre:'Tetrádica',        dotClass:'c-tet',   color:'#7700cc', desc:'Cuatro colores en equilibrio (90°)' },
 ];
 
 function getPosicion(tipo) {
-  if(['Jean largo','Jean tres cuartos','Pantalón','Short','Jogger'].includes(tipo)) return 'inferior';
+  if(['Jean','Jean largo','Jean tres cuartos','Pantalón','Overalls','Short','Jogger'].includes(tipo)) return 'inferior';
   if(['Blazer','Chamarra','Abrigo','Chaqueta'].includes(tipo)) return 'exterior';
-  if(['Sneakers','Converse','Bota','Zapato','Sandalia','Mocasín'].includes(tipo)) return 'calzado';
+  if(['Sneakers','Converse','Botas','Bota','Zapato','Sandalias','Sandalia','Mocasín'].includes(tipo)) return 'calzado';
+  if(['Gorra','Bolso','Lentes','Cinturón','Bufanda','Reloj'].includes(tipo)) return 'accesorios';
   return 'superior';
 }
 
@@ -348,8 +327,7 @@ function hexToHsl(hex) {
   let r=parseInt(hex.slice(0,2),16)/255, g=parseInt(hex.slice(2,4),16)/255, b=parseInt(hex.slice(4,6),16)/255;
   let max=Math.max(r,g,b), min=Math.min(r,g,b), h=0, s=0, l=(max+min)/2;
   if(max!==min){
-    let d=max-min;
-    s=l>0.5?d/(2-max-min):d/(max+min);
+    let d=max-min; s=l>0.5?d/(2-max-min):d/(max+min);
     switch(max){case r:h=(g-b)/d+(g<b?6:0);break;case g:h=(b-r)/d+2;break;case b:h=(r-g)/d+4;break;}
     h/=6;
   }
@@ -357,34 +335,110 @@ function hexToHsl(hex) {
 }
 
 function esNeutro(hex) {
-  const hsl = hexToHsl(hex);
-  return hsl.s < 12 || hsl.l > 88 || hsl.l < 8;
+  const {h, s, l} = hexToHsl(hex);
+  if(s < 15)  return true; // Negro, blanco, grises
+  if(l > 85)  return true; // Blanco / crema
+  if(l < 10)  return true; // Negro profundo
+  // Navy (azul oscuro — neutro de moda)
+  if(hueDist(h, 220) < 25 && l < 35) return true;
+  // Beige / camel / arena
+  if(h >= 25 && h <= 55 && s >= 12 && s <= 45 && l >= 50 && l <= 82) return true;
+  // Khaki / verde olivo neutro
+  if(h >= 50 && h <= 80 && s >= 10 && s <= 40 && l >= 30 && l <= 60) return true;
+  return false;
 }
 
-function hueDist(h1, h2) {
-  let d = Math.abs(h1-h2);
-  return Math.min(d, 360-d);
-}
+function hueDist(h1,h2) { const d=Math.abs(h1-h2); return Math.min(d,360-d); }
 
-// Calcula los HUEs objetivo para cada armonía dado el HUE ancla
-function getHuesObjetivo(hAncla, armonia) {
-  switch(armonia) {
-    case 'monocromatica': return [hAncla]; // mismo matiz, diferente luminosidad
-    case 'analoga': return [(hAncla+30)%360, (hAncla+330)%360];
+function getHuesObjetivo(hAncla, arm) {
+  switch(arm) {
+    case 'analoga':        return [(hAncla+30)%360,(hAncla+330)%360];
     case 'complementaria': return [(hAncla+180)%360];
-    case 'split': return [(hAncla+150)%360, (hAncla+210)%360];
-    case 'triadica': return [(hAncla+120)%360, (hAncla+240)%360];
-    case 'tetradica': return [(hAncla+90)%360, (hAncla+180)%360, (hAncla+270)%360];
+    case 'split':          return [(hAncla+150)%360,(hAncla+210)%360];
+    case 'triadica':       return [(hAncla+120)%360,(hAncla+240)%360];
+    case 'tetradica':      return [(hAncla+90)%360,(hAncla+180)%360,(hAncla+270)%360];
   }
 }
 
-const TOLERANCIA = 28; // grados en la rueda de color
+const TOLERANCIA = 28;
 
-function prendaCompatible(prendaHex, huesObjetivo, anclaHex) {
-  if(prendaHex === anclaHex) return false;
-  if(esNeutro(prendaHex)) return true; // neutros siempre compatibles
-  const ph = hexToHsl(prendaHex);
-  return huesObjetivo.some(hObj => hueDist(ph.h, hObj) <= TOLERANCIA);
+function esCompatible(pHex, huesObj, anclaHex) {
+  if(pHex === anclaHex) return false;
+  if(esNeutro(pHex)) return true;
+  const {h} = hexToHsl(pHex);
+  return huesObj.some(hObj => hueDist(h, hObj) <= TOLERANCIA);
+}
+
+// ======== GENERADOR ========
+function generarParaArmonia(anclaRef, armKey) {
+  const huesObj = getHuesObjetivo(hexToHsl(anclaRef.color).h, armKey);
+  const otras = inventario.filter(p => p.id !== anclaRef.id);
+
+  function pool(pos) {
+    const all = otras.filter(p => getPosicion(p.tipo) === pos);
+    const c = all.filter(p => esCompatible(p.color, huesObj, anclaRef.color));
+    return c.length ? c : all;
+  }
+
+  const anclaPos = getPosicion(anclaRef.tipo);
+  const sup = pool('superior');
+  const ext = pool('exterior');
+  const inf = pool('inferior');
+  const cal = pool('calzado');
+  const acc = pool('accesorios');
+
+  const MAX_POR_GRUPO = 12;
+  const outfits = [];
+
+  function push(piezas, nivel) {
+    const sinCal = !piezas.some(p => getPosicion(p.tipo) === 'calzado');
+    const conjuntos = sinCal && cal.length ? cal.slice(0,2).map(c=>[...piezas,c]) : [piezas];
+
+    conjuntos.forEach(conjunto => {
+      outfits.push({nivel, piezas: conjunto});
+      if(acc.length) {
+        outfits.push({nivel, piezas: [...conjunto, acc[0]]});
+      }
+    });
+  }
+
+  if(anclaPos === 'superior') {
+    inf.forEach(i => {
+      push([anclaRef, i], 'basico');
+      ext.forEach(e => push([e, anclaRef, i], 'exterior'));
+    });
+  } else if(anclaPos === 'exterior') {
+    sup.forEach(s => inf.forEach(i => push([anclaRef, s, i], 'exterior')));
+  } else if(anclaPos === 'inferior') {
+    sup.forEach(s => {
+      push([s, anclaRef], 'basico');
+      ext.forEach(e => push([e, s, anclaRef], 'exterior'));
+    });
+  } else if(anclaPos === 'calzado') {
+    sup.forEach(s => inf.forEach(i => {
+      push([s, i, anclaRef], 'basico');
+      ext.forEach(e => push([e, s, i, anclaRef], 'exterior'));
+    }));
+  } else if(anclaPos === 'accesorios') {
+    sup.forEach(s => inf.forEach(i => {
+      push([s, i, anclaRef], 'basico');
+      ext.forEach(e => push([e, s, i, anclaRef], 'exterior'));
+    }));
+  }
+
+  // Deduplicar dentro de la armonía
+  const seen = new Set();
+  const dedup = outfits.filter(o => {
+    const k = o.piezas.map(p=>p.id).sort().join('-');
+    if(seen.has(k)) return false;
+    seen.add(k); return true;
+  });
+
+  return dedup.slice(0, MAX_POR_GRUPO);
+}
+
+function generarTodosLosLooks(anclaRef) {
+  return ARMONIAS.map(arm => ({ arm, outfits: generarParaArmonia(anclaRef, arm.key) }));
 }
 
 // ======== INVENTARIO ========
@@ -394,15 +448,15 @@ function renderInventario() {
   wrap.innerHTML = '';
   CATEGORIAS.forEach(cat => {
     const items = inventario.filter(p => getPosicion(p.tipo) === cat.key);
+    if(!items.length) return;
     const sec = document.createElement('div');
     sec.className = 'categoria-section';
-    const isOpen = items.length > 0;
     sec.innerHTML = `
       <div class="categoria-header" onclick="toggleCat(this)">
         <span>${cat.label} <span class="count">(${items.length})</span></span>
-        <span class="categoria-arrow ${isOpen?'open':''}">›</span>
+        <span class="categoria-arrow open">›</span>
       </div>
-      <div class="categoria-items ${isOpen?'open':''}">
+      <div class="categoria-items open">
         ${items.map(p=>prendaCardHTML(p)).join('')}
       </div>`;
     wrap.appendChild(sec);
@@ -412,7 +466,7 @@ function renderInventario() {
 function prendaCardHTML(p) {
   return `
   <div class="prenda-card" id="pc${p.id}">
-    ${p.foto ? '<img class="prenda-img" src="'+p.foto+'" alt="'+p.nombre+'" onclick="selAnclaMobile('+p.id+')">' 
+    ${p.foto ? '<img class="prenda-img" src="'+p.foto+'" onclick="selAnclaMobile('+p.id+')">'
              : '<div class="prenda-placeholder" style="background:'+p.color+'" onclick="selAnclaMobile('+p.id+')">👕</div>'}
     <div class="prenda-info" onclick="selAnclaMobile(${p.id})">
       <div class="prenda-nombre">${p.nombre}</div>
@@ -425,11 +479,9 @@ function prendaCardHTML(p) {
   </div>`;
 }
 
-function toggleCat(header) {
-  const arrow = header.querySelector('.categoria-arrow');
-  const items = header.nextElementSibling;
-  arrow.classList.toggle('open');
-  items.classList.toggle('open');
+function toggleCat(h) {
+  h.querySelector('.categoria-arrow').classList.toggle('open');
+  h.nextElementSibling.classList.toggle('open');
 }
 
 // ======== MODAL ========
@@ -441,137 +493,98 @@ function abrirModal() {
 }
 
 function editarPrenda(id) {
-  const p = inventario.find(x => x.id === id);
-  if(!p) return;
+  const p = inventario.find(x=>x.id===id); if(!p) return;
   editandoId = id;
   document.getElementById('modal-titulo').textContent = 'Editar prenda';
   document.getElementById('inp-nombre').value = p.nombre;
   document.getElementById('inp-tipo').value = p.tipo;
   document.getElementById('inp-color').value = p.color;
   document.getElementById('inp-hex').value = p.color;
-  document.getElementById('inp-marca').value = p.marca || '';
+  document.getElementById('inp-marca').value = p.marca||'';
   document.getElementById('inp-formalidad').value = p.formalidad;
-  if(p.foto) {
-    const img = document.getElementById('preview-foto');
-    img.src = p.foto; img.style.display='block';
-    document.querySelector('#foto-area .fa-icon, #foto-area div').style.display='none';
-  }
+  if(p.foto){ const img=document.getElementById('preview-foto'); img.src=p.foto; img.style.display='block'; }
   document.getElementById('modal-prenda').classList.add('open');
 }
 
 function eliminarPrenda(id) {
   if(!confirm('¿Eliminar esta prenda?')) return;
-  inventario = inventario.filter(p => p.id !== id);
-  guardarLocal();
-  renderInventario();
+  inventario = inventario.filter(p=>p.id!==id);
+  guardarLocal(); renderInventario(); renderCatAncla();
 }
 
 function cerrarModal() { document.getElementById('modal-prenda').classList.remove('open'); }
 
 function limpiarModal() {
-  document.getElementById('inp-nombre').value = '';
-  document.getElementById('inp-tipo').value = '';
-  document.getElementById('inp-color').value = '#000000';
-  document.getElementById('inp-hex').value = '#000000';
-  document.getElementById('inp-marca').value = '';
-  document.getElementById('inp-formalidad').value = 'casual';
-  document.getElementById('preview-foto').style.display = 'none';
-  document.getElementById('preview-foto').src = '';
+  ['inp-nombre','inp-marca'].forEach(id=>document.getElementById(id).value='');
+  document.getElementById('inp-tipo').value='';
+  document.getElementById('inp-color').value='#000000';
+  document.getElementById('inp-hex').value='#000000';
+  document.getElementById('inp-formalidad').value='casual';
+  const img=document.getElementById('preview-foto'); img.style.display='none'; img.src='';
 }
 
 function syncColor(origen) {
-  if(origen === 'picker') {
-    const v = document.getElementById('inp-color').value;
-    document.getElementById('inp-hex').value = v;
-  } else {
-    let v = document.getElementById('inp-hex').value;
-    if(/^#[0-9A-Fa-f]{6}$/.test(v)) document.getElementById('inp-color').value = v;
-  }
+  if(origen==='picker') document.getElementById('inp-hex').value=document.getElementById('inp-color').value;
+  else { const v=document.getElementById('inp-hex').value; if(/^#[0-9A-Fa-f]{6}$/.test(v)) document.getElementById('inp-color').value=v; }
 }
 
 function cargarFoto(input) {
-  const file = input.files[0];
-  if(!file) return;
-  const reader = new FileReader();
-  reader.onload = e => {
-    const img = document.getElementById('preview-foto');
-    img.src = e.target.result;
-    img.style.display = 'block';
-  };
-  reader.readAsDataURL(file);
+  if(!input.files[0]) return;
+  const r=new FileReader();
+  r.onload=e=>{ const img=document.getElementById('preview-foto'); img.src=e.target.result; img.style.display='block'; };
+  r.readAsDataURL(input.files[0]);
 }
 
 function guardarPrenda() {
-  const nombre = document.getElementById('inp-nombre').value.trim();
-  const tipo = document.getElementById('inp-tipo').value;
-  const color = document.getElementById('inp-color').value;
-  const marca = document.getElementById('inp-marca').value.trim();
-  const formalidad = document.getElementById('inp-formalidad').value;
-  const fotoEl = document.getElementById('preview-foto');
-  const foto = fotoEl.src && fotoEl.style.display!=='none' ? fotoEl.src : null;
-
-  if(!nombre || !tipo) { alert('Escribe el nombre y selecciona el tipo.'); return; }
-
+  const nombre=document.getElementById('inp-nombre').value.trim();
+  const tipo=document.getElementById('inp-tipo').value;
+  const color=document.getElementById('inp-color').value;
+  const marca=document.getElementById('inp-marca').value.trim();
+  const formalidad=document.getElementById('inp-formalidad').value;
+  const fotoEl=document.getElementById('preview-foto');
+  const foto=fotoEl.src&&fotoEl.style.display!=='none'?fotoEl.src:null;
+  if(!nombre||!tipo){ alert('Escribe el nombre y selecciona el tipo.'); return; }
+  const pos=getPosicion(tipo);
   if(editandoId) {
-    const idx = inventario.findIndex(p => p.id === editandoId);
-    if(idx>=0) inventario[idx] = {...inventario[idx], nombre, tipo, color, marca, formalidad, foto, pos:getPosicion(tipo)};
+    const idx=inventario.findIndex(p=>p.id===editandoId);
+    if(idx>=0) inventario[idx]={...inventario[idx],nombre,tipo,color,marca,formalidad,foto,pos};
   } else {
-    inventario.push({ id: Date.now(), nombre, tipo, color, marca, formalidad, foto, pos: getPosicion(tipo) });
+    inventario.push({id:Date.now(),nombre,tipo,color,marca,formalidad,foto,pos});
   }
-  guardarLocal();
-  renderInventario();
-  renderCatAncla();
-  cerrarModal();
+  guardarLocal(); renderInventario(); renderCatAncla(); cerrarModal();
 }
 
 // ======== EXPORT / IMPORT ========
 function exportarInventario() {
-  const data = inventario.map(p => ({...p, foto: p.foto ? '[foto]' : null}));
-  const blob = new Blob([JSON.stringify(inventario)], {type:'application/json'});
-  const a = document.createElement('a');
-  a.href = URL.createObjectURL(blob);
-  a.download = 'guardarropa.json';
-  a.click();
+  const a=document.createElement('a');
+  a.href=URL.createObjectURL(new Blob([JSON.stringify(inventario)],{type:'application/json'}));
+  a.download='guardarropa.json'; a.click();
 }
 
 function importarInventario(input) {
-  const file = input.files[0];
-  if(!file) return;
-  const reader = new FileReader();
-  reader.onload = e => {
-    try {
-      const data = JSON.parse(e.target.result);
-      if(Array.isArray(data)) {
-        inventario = data;
-        guardarLocal();
-        renderInventario();
-        renderCatAncla();
-        alert('Importado: ' + data.length + ' prendas');
-      }
-    } catch(err) { alert('Error al importar. Verifica el archivo.'); }
-  };
-  reader.readAsText(file);
+  const r=new FileReader();
+  r.onload=e=>{ try{
+    const data=JSON.parse(e.target.result);
+    if(Array.isArray(data)){ inventario=data; guardarLocal(); renderInventario(); renderCatAncla(); alert('Importado: '+data.length+' prendas'); }
+  }catch(err){ alert('Error al importar.'); }};
+  r.readAsText(input.files[0]);
 }
 
 // ======== CONSTRUCTOR ========
 function renderCatAncla() {
-  const wrap = document.getElementById('ancla-categorias');
-  wrap.innerHTML = '';
-  CATEGORIAS.forEach(cat => {
-    const items = inventario.filter(p => getPosicion(p.tipo) === cat.key);
-    if(!items.length) return;
-    const sec = document.createElement('div');
-    sec.className = 'categoria-section';
-    const isOpen = true;
-    sec.innerHTML = `
+  const wrap=document.getElementById('ancla-categorias'); wrap.innerHTML='';
+  CATEGORIAS.forEach(cat=>{
+    const items=inventario.filter(p=>getPosicion(p.tipo)===cat.key); if(!items.length) return;
+    const sec=document.createElement('div'); sec.className='categoria-section';
+    sec.innerHTML=`
       <div class="categoria-header" onclick="toggleCat(this)">
         <span>${cat.label} <span class="count">(${items.length})</span></span>
         <span class="categoria-arrow open">›</span>
       </div>
       <div class="categoria-items open">
         ${items.map(p=>`
-          <div class="prenda-card${ancla&&ancla.id===p.id?' selected':''}" id="pa${p.id}" onclick="selAncla(${p.id})">
-            ${p.foto ? '<img class="prenda-img" src="'+p.foto+'" alt="'+p.nombre+'">' : '<div class="prenda-placeholder" style="background:'+p.color+'">👕</div>'}
+          <div class="prenda-card${ancla&&ancla.id===p.id?' selected':''}" onclick="selAncla(${p.id})">
+            ${p.foto?'<img class="prenda-img" src="'+p.foto+'">':`<div class="prenda-placeholder" style="background:${p.color}">👕</div>`}
             <div class="prenda-info">
               <div class="prenda-nombre">${p.nombre}</div>
               <div class="prenda-meta"><span class="color-dot" style="background:${p.color}"></span>${p.tipo}</div>
@@ -583,243 +596,149 @@ function renderCatAncla() {
 }
 
 function selAncla(id) {
-  ancla = inventario.find(p => p.id === id);
+  ancla=inventario.find(p=>p.id===id);
   document.querySelectorAll('#ancla-categorias .prenda-card').forEach(c=>c.classList.remove('selected'));
-  const el = document.getElementById('pa'+id);
-  if(el) el.classList.add('selected');
+  // Re-render para marcar selected
+  renderCatAncla();
 }
 
 function selAnclaMobile(id) {
-  ancla = inventario.find(p => p.id === id);
+  ancla=inventario.find(p=>p.id===id);
   showScreen('constructor');
-  setTimeout(() => {
-    renderCatAncla();
-    const el = document.getElementById('pa'+id);
-    if(el) { el.classList.add('selected'); el.scrollIntoView({behavior:'smooth',block:'center'}); }
-  }, 50);
+  setTimeout(()=>{ renderCatAncla(); },50);
 }
 
 function irPaso(n) {
-  ['paso1-wrap','paso2-wrap','paso3-wrap','paso4-wrap'].forEach(id=>document.getElementById(id).style.display='none');
+  ['paso1-wrap','paso2-wrap'].forEach(id=>document.getElementById(id).style.display='none');
   document.getElementById('paso'+n+'-wrap').style.display='block';
   window.scrollTo(0,0);
 }
 
-function renderCapas(containerId, tipo) {
-  const cur = tipo==='arriba' ? capasArriba : capasAbajo;
-  document.getElementById(containerId).innerHTML = [0,1,2,3].map(n=>`
-    <button class="capa-btn${cur===n?' sel':''}" onclick="setCapas('${tipo}',${n})">${n}</button>`).join('');
+function chipAnclaHTML(p) {
+  return `<div class="ancla-chip">
+    ${p.foto?'<img class="ancla-thumb" src="'+p.foto+'">':`<div class="ancla-thumb-color" style="background:${p.color}"></div>`}
+    <div class="ancla-info">
+      <div class="nombre">${p.nombre}</div>
+      <div class="meta">${p.tipo}${p.marca?' · '+p.marca:''}</div>
+    </div>
+  </div>`;
 }
 
-function setCapas(tipo, n) {
-  if(tipo==='arriba') capasArriba=n; else capasAbajo=n;
-  renderCapas('cr-arriba','arriba');
-  renderCapas('cr-abajo','abajo');
-}
-
-function chipAncla(id) {
-  if(!ancla) return;
-  document.getElementById(id).innerHTML = `
-    <div class="ancla-chip">
-      ${ancla.foto ? '<img class="ancla-thumb" src="'+ancla.foto+'">' : '<div class="ancla-thumb-color" style="background:'+ancla.color+'"></div>'}
-      <div class="ancla-info">
-        <div class="nombre">${ancla.nombre}</div>
-        <div class="meta">${ancla.tipo}${ancla.marca?' · '+ancla.marca:''}</div>
-      </div>
-    </div>`;
-}
-
-function irPaso2() {
+function verLooks() {
   if(!ancla) { alert('Elige una prenda primero.'); return; }
+  modoLibreActivo = false;
+  mostrarLooks();
+}
+
+function activarModoLibre() {
+  modoLibreActivo = true;
+  ancla = null;
+  showScreen('constructor');
+  mostrarLooks();
+}
+
+function mostrarLooks() {
   irPaso(2);
-  chipAncla('ancla-chip-2');
-  renderCapas('cr-arriba','arriba');
-  renderCapas('cr-abajo','abajo');
-}
 
-function irPaso3() {
-  irPaso(3);
-  document.getElementById('acc-grid').innerHTML = ACCS.map(a=>`
-    <div class="acc-item${accsSeleccionados.includes(a.id)?' sel':''}" id="ac-${a.id}" onclick="toggleAcc('${a.id}')">
-      <div class="acc-icon">${a.icon}</div>
-      <div class="acc-label">${a.label}</div>
-    </div>`).join('');
-}
+  // Chip ancla o badge libre
+  const chipEl = document.getElementById('ancla-chip-res');
+  if(modoLibreActivo) {
+    chipEl.innerHTML = '<span class="badge-libre">✦ Modo Libre — todo el guardarropa</span>';
+  } else {
+    chipEl.innerHTML = chipAnclaHTML(ancla);
+  }
 
-function toggleAcc(id) {
-  accsSeleccionados = accsSeleccionados.includes(id) ? accsSeleccionados.filter(x=>x!==id) : [...accsSeleccionados, id];
-  document.getElementById('ac-'+id).classList.toggle('sel');
-}
+  let grupos;
 
-// ======== MOTOR CROMÁTICO ========
-function mostrarOutfits() {
-  irPaso(4);
-  chipAncla('ancla-chip-4');
-  outfitsCache = generarTodosLosOutfits();
-  renderFiltros(outfitsCache);
-  renderOutfits(outfitsCache);
-}
+  if(modoLibreActivo) {
+    // Genera desde todos los superiores como ancla para máxima variedad
+    const anclas = inventario.filter(p => ['superior','exterior','inferior'].includes(getPosicion(p.tipo)));
+    const combinados = {};
+    ARMONIAS.forEach(arm => combinados[arm.key] = { arm, outfitsSet: new Set(), outfits: [] });
 
-const ARMONIAS = [
-  { key:'monocromatica', nombre:'Monocromática', badge:'arm-mono',
-    razon:'Mismo matiz en diferentes luminosidades. Look cohesionado y sofisticado.' },
-  { key:'analoga', nombre:'Análoga', badge:'arm-ana',
-    razon:'Colores vecinos en la rueda de color. Natural y muy armónico.' },
-  { key:'complementaria', nombre:'Complementaria', badge:'arm-comp',
-    razon:'Colores opuestos en la rueda. Máximo contraste, look muy llamativo.' },
-  { key:'split', nombre:'Comp. Dividida', badge:'arm-split',
-    razon:'Variación suave de la complementaria. Dinámico sin ser agresivo.' },
-  { key:'triadica', nombre:'Triádica', badge:'arm-tri',
-    razon:'Tres colores equidistantes en la rueda. Vibrante y balanceado.' },
-  { key:'tetradica', nombre:'Tetrádica', badge:'arm-tet',
-    razon:'Cuatro colores en equilibrio. Combinación rica y compleja.' },
-];
-
-function generarTodosLosOutfits() {
-  if(!ancla) return [];
-  const posAncla = getPosicion(ancla.tipo);
-  const hslAncla = hexToHsl(ancla.color);
-  const esNeutroAncla = esNeutro(ancla.color);
-  const otras = inventario.filter(p => p.id !== ancla.id);
-  let todos = [];
-
-  ARMONIAS.forEach(arm => {
-    const huesObj = getHuesObjetivo(hslAncla.h, arm.key);
-    // Filtrar prendas compatibles con esta armonía
-    const compat = otras.filter(p => prendaCompatible(p.color, huesObj, ancla.color));
-    const sup = compat.filter(p => getPosicion(p.tipo)==='superior');
-    const ext = compat.filter(p => getPosicion(p.tipo)==='exterior');
-    const inf = compat.filter(p => getPosicion(p.tipo)==='inferior');
-    // También incluir neutros de cualquier posición
-    const supAll = otras.filter(p => getPosicion(p.tipo)==='superior' && (prendaCompatible(p.color,huesObj,ancla.color)||esNeutro(p.color)));
-    const extAll = otras.filter(p => getPosicion(p.tipo)==='exterior' && (prendaCompatible(p.color,huesObj,ancla.color)||esNeutro(p.color)));
-    const infAll = otras.filter(p => getPosicion(p.tipo)==='inferior' && (prendaCompatible(p.color,huesObj,ancla.color)||esNeutro(p.color)));
-
-    if(posAncla === 'superior') {
-      // ancla superior: necesita al menos un inferior
-      const poolInf = infAll.length ? infAll : otras.filter(p=>getPosicion(p.tipo)==='inferior');
-      poolInf.forEach(inf_p => {
-        if(capasArriba === 0) {
-          // sin capa exterior
-          todos.push({ arm, capas:[{p:ancla,rol:'Superior (ancla)'},{p:inf_p,rol:'Inferior'}] });
-        } else {
-          // con capa exterior
-          const poolExt = extAll.length ? extAll : otras.filter(p=>getPosicion(p.tipo)==='exterior');
-          if(poolExt.length) {
-            poolExt.forEach(ext_p => {
-              todos.push({ arm, capas:[{p:ext_p,rol:'Exterior'},{p:ancla,rol:'Superior (ancla)'},{p:inf_p,rol:'Inferior'}] });
-            });
-          } else {
-            todos.push({ arm, capas:[{p:ancla,rol:'Superior (ancla)'},{p:inf_p,rol:'Inferior'}] });
-          }
-        }
-      });
-    }
-
-    if(posAncla === 'exterior') {
-      // ancla es exterior: necesita superior abajo + inferior
-      const poolSup = supAll.length ? supAll : otras.filter(p=>getPosicion(p.tipo)==='superior');
-      const poolInf2 = infAll.length ? infAll : otras.filter(p=>getPosicion(p.tipo)==='inferior');
-      poolSup.forEach(sup_p => {
-        poolInf2.forEach(inf_p => {
-          todos.push({ arm, capas:[{p:ancla,rol:'Exterior (ancla)'},{p:sup_p,rol:'Superior'},{p:inf_p,rol:'Inferior'}] });
-        });
-      });
-    }
-
-    if(posAncla === 'inferior') {
-      // ancla es inferior: necesita superior arriba
-      const poolSup2 = supAll.length ? supAll : otras.filter(p=>getPosicion(p.tipo)==='superior');
-      poolSup2.forEach(sup_p => {
-        if(capasArriba <= 1) {
-          todos.push({ arm, capas:[{p:sup_p,rol:'Superior'},{p:ancla,rol:'Inferior (ancla)'}] });
-        } else {
-          const poolExt2 = extAll.length ? extAll : otras.filter(p=>getPosicion(p.tipo)==='exterior');
-          if(poolExt2.length) {
-            poolExt2.forEach(ext_p => {
-              todos.push({ arm, capas:[{p:ext_p,rol:'Exterior'},{p:sup_p,rol:'Superior'},{p:ancla,rol:'Inferior (ancla)'}] });
-            });
-          } else {
-            todos.push({ arm, capas:[{p:sup_p,rol:'Superior'},{p:ancla,rol:'Inferior (ancla)'}] });
-          }
-        }
-      });
-    }
-
-    if(posAncla === 'calzado') {
-      const poolSup3 = supAll.length ? supAll : otras.filter(p=>getPosicion(p.tipo)==='superior');
-      const poolInf3 = infAll.length ? infAll : otras.filter(p=>getPosicion(p.tipo)==='inferior');
-      poolSup3.forEach(sup_p => {
-        poolInf3.forEach(inf_p => {
-          if(capasArriba >= 2) {
-            const poolExt3 = extAll.length ? extAll : otras.filter(p=>getPosicion(p.tipo)==='exterior');
-            poolExt3.forEach(ext_p => {
-              todos.push({ arm, capas:[{p:ext_p,rol:'Exterior'},{p:sup_p,rol:'Superior'},{p:inf_p,rol:'Inferior'},{p:ancla,rol:'Calzado (ancla)'}] });
-            });
-          } else {
-            todos.push({ arm, capas:[{p:sup_p,rol:'Superior'},{p:inf_p,rol:'Inferior'},{p:ancla,rol:'Calzado (ancla)'}] });
+    anclas.forEach(ref => {
+      ARMONIAS.forEach(arm => {
+        const res = generarParaArmonia(ref, arm.key);
+        res.forEach(o => {
+          const k = o.piezas.map(p=>p.id).sort().join('-');
+          if(!combinados[arm.key].outfitsSet.has(k)) {
+            combinados[arm.key].outfitsSet.add(k);
+            combinados[arm.key].outfits.push(o);
           }
         });
       });
-    }
-  });
+    });
 
-  // Deduplicar
-  const vistos = new Set();
-  todos = todos.filter(o => {
-    const key = o.capas.map(c=>c.p.id).sort().join('-');
-    if(vistos.has(key)) return false;
-    vistos.add(key);
-    return true;
-  });
+    grupos = ARMONIAS
+      .map(arm => ({ arm, outfits: combinados[arm.key].outfits.sort(()=>Math.random()-0.5).slice(0,15) }))
+      .filter(g => g.outfits.length);
+  } else {
+    grupos = generarTodosLosLooks(ancla);
+  }
 
-  return todos;
-}
+  const total = grupos.reduce((s,g)=>s+g.outfits.length, 0);
+  const conResultados = grupos.filter(g=>g.outfits.length).length;
+  document.getElementById('res-total').textContent = total + ' looks · ' + conResultados + ' de ' + grupos.length + ' combinaciones con resultados';
 
-function renderFiltros(outfits) {
-  const armsPresentes = [...new Set(outfits.map(o=>o.arm.key))];
-  let html = `<button class="fil-btn active" onclick="filtrar('todas',this)">Todas</button>`;
-  ARMONIAS.filter(a=>armsPresentes.includes(a.key)).forEach(a=>{
-    html += `<button class="fil-btn" onclick="filtrar('${a.key}',this)">${a.nombre}</button>`;
-  });
-  document.getElementById('filtros-res').innerHTML = html;
-}
-
-function filtrar(tipo, btn) {
-  document.querySelectorAll('.fil-btn').forEach(b=>b.classList.remove('active'));
-  btn.classList.add('active');
-  const lista = tipo==='todas' ? outfitsCache : outfitsCache.filter(o=>o.arm.key===tipo);
-  renderOutfits(lista);
-}
-
-function renderOutfits(lista) {
-  document.getElementById('res-count').textContent = lista.length + ' combinaciones';
-  if(!lista.length) {
-    document.getElementById('lista-outfits').innerHTML = `<div class="no-outfits"><div style="font-size:40px">🔍</div><p>No hay combinaciones.<br>Agrega más prendas al inventario.</p></div>`;
+  if(!total) {
+    document.getElementById('lista-looks').innerHTML = `<div class="no-outfits"><div style="font-size:40px">🔍</div><p>No hay combinaciones.<br>Agrega más prendas al inventario.</p></div>`;
     return;
   }
-  const accsTexto = accsSeleccionados.length ? 'Accesorios: '+accsSeleccionados.map(id=>ACCS.find(a=>a.id===id)?.label||id).join(', ') : '';
-  document.getElementById('lista-outfits').innerHTML = lista.slice(0,30).map((o,i)=>{
-    const colores = [...new Set(o.capas.map(c=>c.p.color))];
+
+  document.getElementById('lista-looks').innerHTML = grupos.map(g => {
+    const basicos  = g.outfits.filter(o=>o.nivel==='basico');
+    const exterior = g.outfits.filter(o=>o.nivel==='exterior');
+    const sinResultados = !g.outfits.length;
     return `
-    <div class="outfit-card">
-      <div class="outfit-num">Outfit ${i+1}</div>
-      <span class="outfit-armonia ${o.arm.badge}">${o.arm.nombre}</span>
-      <div class="paleta-strip">${colores.map(c=>`<div class="paleta-seg" style="background:${c}"></div>`).join('')}</div>
-      <div class="prendas-stack">
-        ${o.capas.map(c=>`
-          <div class="prenda-row">
-            ${c.p.foto ? '<img class="prenda-row-img" src="'+c.p.foto+'" alt="'+c.p.nombre+'">' : '<div class="prenda-row-color" style="background:'+c.p.color+'"></div>'}
-            <div class="prenda-row-info">
-              <div class="prenda-row-nombre">${c.p.nombre}</div>
-              <div class="prenda-row-rol">${c.rol} · ${c.p.tipo}</div>
-            </div>
-          </div>`).join('')}
+    <div class="armonia-section">
+      <div class="armonia-section-header">
+        <span class="armonia-dot ${g.arm.dotClass}"></span>
+        <span class="armonia-section-nombre">${g.arm.nombre}</span>
+        <span class="armonia-section-count">${sinResultados ? g.arm.desc : g.outfits.length+' looks · '+g.arm.desc}</span>
       </div>
-      ${accsTexto?`<div class="outfit-accs">🎒 ${accsTexto}</div>`:''}
-      <div class="outfit-razon">${o.arm.razon}</div>
+      ${sinResultados
+        ? '<div class="sin-combinacion">Sin combinaciones — no hay prendas con colores compatibles en el inventario</div>'
+        : (basicos.length  ? '<div class="nivel-divider">Sin capa exterior</div>'+basicos.map(o=>lookCardHTML(o,ancla)).join('') : '')
+        + (exterior.length ? '<div class="nivel-divider">Con capa exterior</div>'+exterior.map(o=>lookCardHTML(o,ancla)).join('') : '')}
     </div>`;
   }).join('');
+}
+
+function lookCardHTML(o, anclaRef) {
+  const piezas = o.piezas;
+  const colores = [...new Set(piezas.map(p=>p.color))];
+  const rolLabel = { superior:'Superior', exterior:'Exterior', inferior:'Inferior', calzado:'Calzado', accesorios:'Accesorio' };
+
+  // Fotos: mostrar máx 4 prendas en grid horizontal
+  const fotosHTML = piezas.slice(0,4).map(p => `
+    <div class="outfit-foto-item">
+      ${p.foto
+        ? '<img src="'+p.foto+'" alt="'+p.nombre+'">'
+        : '<div class="outfit-foto-color" style="background:'+p.color+'">'+tipoIcon(p.tipo)+'</div>'}
+    </div>`).join('');
+
+  // Etiquetas de prendas
+  const labelsHTML = piezas.map(p => {
+    const isAncla = anclaRef && p.id === anclaRef.id;
+    return `<span class="outfit-label${isAncla?' ancla':''}">${p.nombre}</span>`;
+  }).join('');
+
+  return `
+  <div class="outfit-card">
+    <div class="outfit-fotos">${fotosHTML}</div>
+    <div class="outfit-footer">
+      <div class="outfit-paleta">${colores.map(c=>`<div class="paleta-seg" style="background:${c}"></div>`).join('')}</div>
+      <div class="outfit-labels">${labelsHTML}</div>
+    </div>
+  </div>`;
+}
+
+function tipoIcon(tipo) {
+  const pos = getPosicion(tipo);
+  if(pos==='superior'||pos==='exterior') return '👕';
+  if(pos==='inferior') return '👖';
+  if(pos==='calzado') return '👟';
+  return '🎩';
 }
 
 // ======== NAVEGACIÓN ========
@@ -827,25 +746,24 @@ function showScreen(id) {
   document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
   document.querySelectorAll('.bnav-btn').forEach(b=>b.classList.remove('active'));
   document.getElementById('screen-'+id).classList.add('active');
-  document.getElementById('nav-'+id.substring(0,3)).classList.add('active');
-  if(id==='constructor') { renderCatAncla(); irPaso(1); }
+  document.getElementById(id==='inventario'?'nav-inv':'nav-con').classList.add('active');
+  if(id==='constructor'&&!modoLibreActivo){ renderCatAncla(); irPaso(1); }
   if(id==='inventario') renderInventario();
   window.scrollTo(0,0);
 }
 
+// ======== SERVICE WORKER ========
+if('serviceWorker' in navigator) {
+  navigator.serviceWorker.register('/wardrobe/sw.js').catch(()=>{});
+}
+
 // ======== INIT ========
-if (inventario.length === 0) {
-  fetch("guardarropa.json")
-    .then(r => r.json())
-    .then(data => {
-      inventario = data;
-      guardarLocal();
-      renderInventario();
-      renderCatAncla();
-    });
+if(inventario.length===0){
+  fetch("guardarropa.json").then(r=>r.json()).then(data=>{
+    inventario=data; guardarLocal(); renderInventario(); renderCatAncla();
+  });
 } else {
-  renderInventario();
-  renderCatAncla();
+  renderInventario(); renderCatAncla();
 }
 </script>
 </body>
