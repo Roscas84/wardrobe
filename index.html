@@ -574,17 +574,15 @@ function importarInventario(input) {
 // ======== CONSTRUCTOR ========
 function renderCatAncla() {
   const wrap=document.getElementById('ancla-categorias'); wrap.innerHTML='';
-  let primeraAbierta=false;
   CATEGORIAS.forEach(cat=>{
     const items=inventario.filter(p=>getPosicion(p.tipo)===cat.key); if(!items.length) return;
-    const abrir=!primeraAbierta; primeraAbierta=true;
     const sec=document.createElement('div'); sec.className='categoria-section';
     sec.innerHTML=`
       <div class="categoria-header" onclick="toggleCat(this)">
         <span>${cat.label} <span class="count">(${items.length})</span></span>
-        <span class="categoria-arrow${abrir?' open':''}">›</span>
+        <span class="categoria-arrow">›</span>
       </div>
-      <div class="categoria-items${abrir?' open':''}">
+      <div class="categoria-items">
         ${items.map(p=>`
           <div class="prenda-card${ancla&&ancla.id===p.id?' selected':''}" onclick="selAncla(${p.id})">
             ${p.foto?'<img class="prenda-img" src="'+p.foto+'">':`<div class="prenda-placeholder" style="background:${p.color}">👕</div>`}
