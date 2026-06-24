@@ -12,105 +12,93 @@
 <link rel="apple-touch-icon" href="icon-192.png">
 <style>
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
-body{font-family:-apple-system,BlinkMacSystemFont,'Helvetica Neue',sans-serif;background:#f5f0eb;color:#1a1a1a;min-height:100vh;padding-bottom:80px}
+body{font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;background:#f5f0eb;color:#1a1a1a;min-height:100vh;padding-bottom:80px}
 
 /* SPLASH */
-#splash{position:fixed;inset:0;background:#f5f0eb;display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:999;transition:opacity 0.9s ease}
+#splash{position:fixed;inset:0;background:#000;display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:999;transition:opacity 0.9s ease}
 #splash.out{opacity:0;pointer-events:none}
-.splash-sub{font-size:10px;letter-spacing:5px;text-transform:uppercase;color:#1a1a1a;margin-top:18px;font-weight:300}
+.splash-mg{font-size:48px;font-weight:100;letter-spacing:8px;color:#fff;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif}
+.splash-line{width:60px;height:0.5px;background:#fff;margin:14px auto}
+.splash-sub{font-size:10px;letter-spacing:4px;text-transform:uppercase;color:#888;font-weight:300}
 
 /* HEADER */
 header{background:#fff;border-bottom:1px solid #e0dbd5;padding:14px 16px;position:sticky;top:0;z-index:100}
-.header-logo{font-size:12px;font-weight:700;letter-spacing:4px;text-transform:uppercase;text-align:center}
+.header-logo{font-size:18px;font-weight:300;letter-spacing:1px;text-transform:uppercase;text-align:center;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif}
 
 /* NAV */
 .bottom-nav{position:fixed;bottom:0;left:0;right:0;background:#000;display:flex;z-index:200;padding-bottom:env(safe-area-inset-bottom)}
-.bnav-btn{flex:1;padding:13px 0 10px;display:flex;flex-direction:column;align-items:center;gap:4px;border:none;background:transparent;cursor:pointer;font-size:10px;color:#555;letter-spacing:2px;text-transform:uppercase;font-weight:500}
+.bnav-btn{flex:1;padding:12px 0 9px;display:flex;flex-direction:column;align-items:center;gap:3px;border:none;background:transparent;cursor:pointer;font-size:10px;color:#555;letter-spacing:0.5px;text-transform:uppercase;font-weight:300;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif}
 .bnav-btn.active{color:#fff}
-.bnav-icon{font-size:20px;line-height:1}
+.bnav-icon{font-size:18px;line-height:1}
 
 /* SCREENS */
 .screen{display:none;max-width:600px;margin:0 auto}
 .screen.active{display:block}
 
 /* INICIO */
-.slideshow{position:relative;width:100%;aspect-ratio:3/4;overflow:hidden;background:#1a1a1a}
-.slide{position:absolute;inset:0;opacity:0;transition:opacity 0.25s ease;pointer-events:none}
+.slideshow{position:relative;width:100%;aspect-ratio:3/4;overflow:hidden;background:#000}
+.slide{position:absolute;inset:0;opacity:0;transition:opacity 0.2s ease;pointer-events:none}
 .slide.active{opacity:1;pointer-events:auto}
 .slide img{width:100%;height:100%;object-fit:cover;object-position:center top;display:block}
-.slide-dots{display:flex;justify-content:center;gap:6px;padding:10px 0;background:#fff}
-.slide-dot{width:5px;height:5px;border-radius:50%;background:#ccc;transition:background .3s;cursor:pointer}
-.slide-dot.active{background:#000}
 .editorial-strip{display:flex;flex-direction:column;gap:0}
 .editorial-strip img{width:100%;aspect-ratio:3/4;object-fit:cover;object-position:center top;display:block}
 
-/* CLOSET */
-.color-filter-bar{padding:10px 12px;background:#000;border-bottom:1px solid #222;display:flex;align-items:center;gap:8px;overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none}
-.color-filter-bar::-webkit-scrollbar{display:none}
-.filter-label{font-size:9px;letter-spacing:2px;text-transform:uppercase;color:#666;flex-shrink:0}
-.swatch-all{width:24px;height:24px;border-radius:50%;background:conic-gradient(red,yellow,lime,cyan,blue,magenta,red);border:2px solid transparent;cursor:pointer;flex-shrink:0}
-.swatch-all.on{border-color:#fff}
-.swatch-c{width:24px;height:24px;border-radius:50%;border:2px solid transparent;cursor:pointer;flex-shrink:0}
-.swatch-c.on{border-color:#fff;box-shadow:0 0 0 1px #fff}
-.closet-cat{margin-bottom:1px}
-.closet-cat-hdr{display:flex;justify-content:space-between;align-items:center;padding:16px 18px;background:#000;cursor:pointer}
-.closet-cat-name{font-size:12px;letter-spacing:2.5px;text-transform:uppercase;font-weight:500;color:#fff}
-.closet-cat-right{display:flex;align-items:center;gap:8px}
-.closet-cat-count{font-size:11px;color:#555}
-.closet-cat-arrow{font-size:14px;color:#555;transition:transform .2s}
-.closet-cat-arrow.open{transform:rotate(90deg)}
-.closet-cat-items{display:none;background:#e0dbd5}
-.closet-cat-items.open{display:grid;grid-template-columns:1fr 1fr;gap:2px;padding:2px}
+/* CLOSET & OUTFIT — pantalla negra estilo Zara */
+.dark-screen{background:#000;min-height:calc(100vh - 57px - 62px)}
+.dark-back{display:flex;align-items:center;gap:10px;padding:16px 20px;border-bottom:1px solid #111;cursor:pointer}
+.dark-back-arrow{font-size:18px;color:#fff;font-weight:100}
+.dark-back-label{font-size:11px;letter-spacing:1.5px;text-transform:uppercase;color:#888;font-weight:300}
+
+.cat-link{display:flex;justify-content:space-between;align-items:center;padding:16px 20px;border-bottom:1px solid #111;cursor:pointer;text-decoration:none}
+.cat-link-text{font-size:14px;font-weight:300;letter-spacing:0.5px;color:#fff;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;text-transform:uppercase}
+.cat-link-count{font-size:11px;color:#444;font-weight:300}
+.cat-link-dim{color:#555}
+.cat-link:active .cat-link-text{color:#888}
+
+.color-link{display:flex;justify-content:space-between;align-items:center;padding:18px 20px;cursor:pointer;border-top:1px solid #111;margin-top:8px}
+.color-link-text{font-size:12px;font-weight:300;letter-spacing:1.5px;color:#555;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;text-transform:uppercase}
+
+/* Items sub-screen */
+.items-header{background:#000;padding:14px 20px;display:flex;align-items:center;gap:12px;border-bottom:1px solid #111;position:sticky;top:57px;z-index:80}
+.items-header-title{font-size:12px;letter-spacing:2px;text-transform:uppercase;color:#fff;font-weight:300}
+.items-grid{display:grid;grid-template-columns:1fr 1fr;gap:2px;background:#e0dbd5;padding:2px}
 .c-card{background:#fff;overflow:hidden;cursor:pointer}
 .c-card:active{opacity:.85}
 .c-card-img{width:100%;aspect-ratio:3/5;object-fit:cover;background:#f0ebe5;display:block}
 .c-card-ph{width:100%;aspect-ratio:3/5;background:#f0ebe5;display:flex;align-items:center;justify-content:center;font-size:30px}
 .c-card-info{padding:8px 10px 10px}
-.c-card-nombre{font-size:12px;font-weight:500;line-height:1.3;margin-bottom:2px}
+.c-card-nombre{font-size:12px;font-weight:400;line-height:1.3;margin-bottom:2px}
 .c-card-marca{font-size:10px;color:#888;letter-spacing:.5px;text-transform:uppercase;margin-bottom:5px}
 .c-card-color-row{display:flex;align-items:center;gap:5px}
 .c-dot{width:10px;height:10px;border-radius:50%;border:1px solid rgba(0,0,0,.1);flex-shrink:0}
 .c-hex{font-size:9px;color:#aaa;font-family:monospace}
 
-/* OUTFIT */
-.outfit-intro{padding:20px 16px 8px}
-.outfit-intro-title{font-size:10px;letter-spacing:3px;text-transform:uppercase;font-weight:600;margin-bottom:4px}
-.outfit-intro-sub{font-size:13px;color:#888}
-.anc-cat{margin-bottom:2px}
-.anc-cat-hdr{display:flex;justify-content:space-between;align-items:center;padding:13px 16px;background:#fff;cursor:pointer;border-bottom:1px solid #f0ebe5}
-.anc-cat-name{font-size:10px;letter-spacing:2.5px;text-transform:uppercase;font-weight:600}
-.anc-cat-right{display:flex;align-items:center;gap:8px}
-.anc-cat-count{font-size:11px;color:#aaa}
-.anc-cat-arrow{font-size:12px;color:#aaa;transition:transform .2s}
-.anc-cat-arrow.open{transform:rotate(90deg)}
-.anc-cat-items{display:none;background:#e0dbd5}
-.anc-cat-items.open{display:grid;grid-template-columns:1fr 1fr;gap:2px;padding:2px}
-.anc-card{background:#fff;overflow:hidden;cursor:pointer;border:2px solid transparent}
-.anc-card.selected{border-color:#000}
-.anc-card:active{opacity:.8}
-.anc-card-img{width:100%;aspect-ratio:3/5;object-fit:cover;background:#f0ebe5;display:block}
-.anc-card-ph{width:100%;aspect-ratio:3/5;background:#f0ebe5;display:flex;align-items:center;justify-content:center;font-size:30px}
-.anc-card-info{padding:7px 10px 9px}
-.anc-card-nombre{font-size:11px;font-weight:500;line-height:1.3}
-.anc-card-meta{font-size:10px;color:#888;display:flex;align-items:center;gap:4px;margin-top:2px}
-.anc-dot{width:9px;height:9px;border-radius:50%;border:1px solid rgba(0,0,0,.1);flex-shrink:0}
-.ml-wrap{position:fixed;bottom:calc(62px + env(safe-area-inset-bottom));left:0;right:0;padding:8px 16px;background:linear-gradient(transparent,rgba(245,240,235,.97) 35%);z-index:150}
-.btn-ml{width:100%;max-width:600px;margin:0 auto;display:block;padding:13px;background:#000;color:#fff;border:none;font-size:10px;font-weight:700;letter-spacing:3px;text-transform:uppercase;cursor:pointer}
-.res-hdr{padding:10px 16px;background:#fff;border-bottom:1px solid #e0dbd5;display:flex;align-items:center;gap:10px;position:sticky;top:57px;z-index:90}
-.res-ancla-thumb{width:50px;height:68px;object-fit:contain;background:#f0ebe5;flex-shrink:0;display:block}
+/* Color search sub-screen */
+.color-grid{display:flex;flex-wrap:wrap;gap:10px;padding:20px}
+.color-bubble{width:44px;height:44px;border-radius:50%;cursor:pointer;border:2px solid transparent;flex-shrink:0}
+.color-bubble.on{border-color:#fff;box-shadow:0 0 0 1px #fff}
+.color-bubble-all{width:44px;height:44px;border-radius:50%;background:conic-gradient(red,yellow,lime,cyan,blue,magenta,red);cursor:pointer;border:2px solid transparent;flex-shrink:0}
+.color-bubble-all.on{border-color:#fff}
+.color-section-title{font-size:10px;letter-spacing:2px;text-transform:uppercase;color:#555;padding:14px 20px 6px;font-weight:300}
+
+/* OUTFIT paso 2 */
+.res-hdr{padding:10px 16px;background:#000;border-bottom:1px solid #111;display:flex;align-items:center;gap:10px;position:sticky;top:57px;z-index:90}
+.res-ancla-thumb{width:50px;height:68px;object-fit:contain;background:#111;flex-shrink:0;display:block}
 .res-ancla-color{width:50px;height:68px;flex-shrink:0}
-.btn-cambiar{padding:10px 16px;border:1px solid #000;background:#fff;font-size:9px;letter-spacing:2px;text-transform:uppercase;cursor:pointer;font-weight:600;flex-shrink:0;white-space:nowrap}
-.res-count{font-size:10px;color:#888;padding:8px 16px 2px;letter-spacing:.5px}
-.arm-sec{margin-bottom:2px;background:#fff;border-bottom:1px solid #f0ebe5}
-.arm-sec-hdr{display:flex;justify-content:space-between;align-items:center;padding:13px 16px;cursor:pointer}
+.btn-cambiar{padding:10px 16px;border:1px solid #444;background:transparent;color:#fff;font-size:9px;letter-spacing:2px;text-transform:uppercase;cursor:pointer;font-weight:300;flex-shrink:0;white-space:nowrap;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif}
+.res-count{font-size:10px;color:#555;padding:10px 16px 4px;letter-spacing:.5px;background:#000}
+
+.arm-sec{margin-bottom:1px;background:#000;border-bottom:1px solid #111}
+.arm-sec-hdr{display:flex;justify-content:space-between;align-items:center;padding:14px 16px;cursor:pointer}
 .arm-sec-left{display:flex;align-items:center;gap:8px}
 .arm-dot{width:10px;height:10px;border-radius:50%;flex-shrink:0}
-.arm-nombre{font-size:10px;letter-spacing:2px;text-transform:uppercase;font-weight:600}
-.arm-count{font-size:10px;color:#888;margin-left:4px}
-.arm-arrow{font-size:12px;color:#888;transition:transform .2s}
+.arm-nombre{font-size:10px;letter-spacing:2px;text-transform:uppercase;font-weight:300;color:#fff}
+.arm-count{font-size:10px;color:#444;margin-left:4px}
+.arm-arrow{font-size:14px;color:#444;transition:transform .2s}
 .arm-arrow.open{transform:rotate(90deg)}
 .arm-items{display:none;padding:2px;background:#e0dbd5}
 .arm-items.open{display:block}
+
 .outfit-card{background:#fff;margin-bottom:2px}
 .outfit-col{display:flex;flex-direction:column;gap:1px;background:rgba(0,0,0,.05)}
 .of-item{overflow:hidden;width:100%;background:#f7f5f2}
@@ -120,42 +108,46 @@ header{background:#fff;border-bottom:1px solid #e0dbd5;padding:14px 16px;positio
 .of-calzado,.of-accesorios{height:150px}
 .outfit-paleta{display:flex;height:14px}
 .paleta-seg{flex:1}
-.nivel-div{font-size:9px;color:#aaa;text-transform:uppercase;letter-spacing:2px;font-weight:600;margin:6px 16px 4px}
-.no-outfits{text-align:center;padding:40px 20px;color:#888}
-.no-outfits p{font-size:14px;margin-top:8px}
+.nivel-div{font-size:9px;color:#555;text-transform:uppercase;letter-spacing:2px;font-weight:300;margin:6px 16px 4px;background:#000;padding:6px 0 2px}
+.no-outfits{text-align:center;padding:40px 20px;color:#555;background:#000;min-height:200px}
+.no-outfits p{font-size:14px;margin-top:8px;color:#555}
+
+/* Outfit paso 1 modo libre */
+.ml-wrap{position:fixed;bottom:calc(62px + env(safe-area-inset-bottom));left:0;right:0;padding:8px 16px;background:linear-gradient(transparent,rgba(0,0,0,.97) 35%);z-index:150}
+.btn-ml{width:100%;max-width:600px;margin:0 auto;display:block;padding:13px;background:#fff;color:#000;border:none;font-size:10px;font-weight:400;letter-spacing:3px;text-transform:uppercase;cursor:pointer;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif}
 
 /* CARGAR */
 .cargar-block{background:#fff;margin-bottom:2px}
-.cargar-block-title{font-size:10px;letter-spacing:3px;text-transform:uppercase;font-weight:600;padding:18px 16px 12px}
+.cargar-block-title{font-size:10px;letter-spacing:2px;text-transform:uppercase;font-weight:400;padding:18px 16px 12px}
 .search-wrap{display:flex;align-items:center;padding:0 16px 12px;gap:8px}
-.search-inp{flex:1;padding:10px 12px;border:1px solid #e0dbd5;font-size:14px;background:#f8f5f2;outline:none}
+.search-inp{flex:1;padding:10px 12px;border:1px solid #e0dbd5;font-size:14px;background:#f8f5f2;outline:none;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif}
 .search-results{padding:0 16px 16px}
 .s-item{display:flex;align-items:center;gap:10px;padding:10px 0;border-bottom:1px solid #f0ebe5}
 .s-item-img{width:34px;height:46px;object-fit:contain;background:#f0ebe5;flex-shrink:0}
 .s-item-info{flex:1}
-.s-item-nombre{font-size:13px;font-weight:500}
+.s-item-nombre{font-size:13px;font-weight:400}
 .s-item-meta{font-size:10px;color:#888;letter-spacing:.5px;margin-top:1px}
 .s-item-btns{display:flex;gap:4px;flex-shrink:0}
 .btn-edit-s{padding:6px 10px;border:1px solid #e0dbd5;background:#fff;font-size:9px;letter-spacing:1px;text-transform:uppercase;cursor:pointer}
 .btn-del-s{padding:6px 10px;background:#000;color:#fff;border:none;font-size:9px;letter-spacing:1px;text-transform:uppercase;cursor:pointer}
 
 /* MODAL */
-.modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:300;align-items:flex-end;justify-content:center}
+.modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.7);z-index:300;align-items:flex-end;justify-content:center}
 .modal-overlay.open{display:flex}
 .modal{background:#fff;padding:20px 16px;width:100%;max-width:500px;max-height:92vh;overflow-y:auto}
 .modal-handle{width:36px;height:3px;background:#e0dbd5;margin:0 auto 16px}
-.modal h3{font-size:10px;letter-spacing:3px;text-transform:uppercase;font-weight:700;margin-bottom:16px}
+.modal h3{font-size:10px;letter-spacing:2px;text-transform:uppercase;font-weight:400;margin-bottom:16px}
 .field{margin-bottom:14px}
-.field label{display:block;font-size:9px;color:#888;margin-bottom:5px;font-weight:500;text-transform:uppercase;letter-spacing:1px}
-.field input,.field select{width:100%;padding:10px 12px;border:1px solid #e0dbd5;font-size:15px;background:#fff;-webkit-appearance:none;outline:none}
+.field label{display:block;font-size:9px;color:#888;margin-bottom:5px;font-weight:400;text-transform:uppercase;letter-spacing:1px}
+.field input,.field select{width:100%;padding:10px 12px;border:1px solid #e0dbd5;font-size:15px;background:#fff;-webkit-appearance:none;outline:none;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif}
 .foto-area{border:1px solid #e0dbd5;padding:20px;text-align:center;cursor:pointer;margin-bottom:14px;min-height:100px;display:flex;flex-direction:column;align-items:center;justify-content:center;background:#f8f5f2}
 .foto-area img{width:100%;max-height:200px;object-fit:contain}
 .foto-area p{font-size:10px;color:#888;margin-top:6px;letter-spacing:1px;text-transform:uppercase}
 .modal-btns{display:flex;gap:2px;margin-top:8px;padding-bottom:env(safe-area-inset-bottom)}
-.btn-cancel{flex:1;padding:14px;border:1px solid #e0dbd5;background:#fff;font-size:11px;cursor:pointer;letter-spacing:1px;text-transform:uppercase}
-.btn-save{flex:2;padding:14px;border:none;background:#000;color:#fff;font-size:11px;cursor:pointer;font-weight:600;letter-spacing:1px;text-transform:uppercase}
+.btn-cancel{flex:1;padding:14px;border:1px solid #e0dbd5;background:#fff;font-size:11px;cursor:pointer;letter-spacing:1px;text-transform:uppercase;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif}
+.btn-save{flex:2;padding:14px;border:none;background:#000;color:#fff;font-size:11px;cursor:pointer;font-weight:400;letter-spacing:1px;text-transform:uppercase;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif}
 .color-row{display:flex;align-items:center;gap:10px}
-.color-swatch{width:44px;height:44px;border:1px solid #e0dbd5;cursor:pointer;flex-shrink:0}
+.color-swatch-inp{width:44px;height:44px;border:1px solid #e0dbd5;cursor:pointer;flex-shrink:0}
 .hex-input{flex:1;padding:10px 12px;border:1px solid #e0dbd5;font-size:15px;font-family:monospace;outline:none}
 .c-ana{background:#1a7a1a}.c-comp{background:#c44800}.c-split{background:#b87000}
 .c-tri{background:#1a3acc}.c-tet{background:#7700cc}.c-cua{background:#cc0077}.c-abs{background:#007755}
@@ -165,17 +157,14 @@ header{background:#fff;border-bottom:1px solid #e0dbd5;padding:14px 16px;positio
 
 <!-- SPLASH -->
 <div id="splash">
-  <svg width="90" height="90" viewBox="0 0 90 90" xmlns="http://www.w3.org/2000/svg">
-    <rect width="90" height="90" fill="#f5f0eb"/>
-    <text x="45" y="56" text-anchor="middle" font-family="-apple-system,Helvetica Neue,sans-serif" font-size="38" font-weight="100" letter-spacing="2" fill="#1a1a1a">MG</text>
-    <line x1="12" y1="66" x2="78" y2="66" stroke="#1a1a1a" stroke-width="0.5"/>
-  </svg>
+  <div class="splash-mg">MG</div>
+  <div class="splash-line"></div>
   <div class="splash-sub">Mi Guardarropa</div>
 </div>
 
 <header><div class="header-logo">Mi Guardarropa</div></header>
 
-<!-- INICIO -->
+<!-- ══ INICIO ══ -->
 <div id="screen-inicio" class="screen active">
   <div class="slideshow" id="slideshow">
     <div class="slide active"><img src="slides/slide1.jpg" loading="eager" alt=""></div>
@@ -184,10 +173,6 @@ header{background:#fff;border-bottom:1px solid #e0dbd5;padding:14px 16px;positio
     <div class="slide"><img src="slides/slide7.jpg" loading="lazy" alt=""></div>
     <div class="slide"><img src="slides/slide9.jpg" loading="lazy" alt=""></div>
   </div>
-  <div class="slide-dots" id="slide-dots">
-    <div class="slide-dot active"></div><div class="slide-dot"></div>
-    <div class="slide-dot"></div><div class="slide-dot"></div><div class="slide-dot"></div>
-  </div>
   <div class="editorial-strip">
     <img src="slides/slide2.jpg" loading="lazy" alt="">
     <img src="slides/slide4.jpg" loading="lazy" alt="">
@@ -195,32 +180,67 @@ header{background:#fff;border-bottom:1px solid #e0dbd5;padding:14px 16px;positio
     <img src="slides/slide8.jpg" loading="lazy" alt="">
     <img src="slides/slide10.jpg" loading="lazy" alt="">
   </div>
-  <div style="height:12px"></div>
+  <div style="height:12px;background:#f5f0eb"></div>
 </div>
 
-<!-- CLOSET -->
+<!-- ══ CLOSET ══ -->
 <div id="screen-closet" class="screen">
-  <div class="color-filter-bar">
-    <span class="filter-label">Color</span>
-    <div class="swatch-all on" id="swatch-all" onclick="filtrarColor(null)"></div>
-    <div id="color-swatches" style="display:flex;gap:8px;align-items:center"></div>
+  <!-- Vista principal: lista de categorías -->
+  <div id="closet-main" class="dark-screen">
+    <div id="closet-cat-links"></div>
+    <div class="color-link" onclick="verColorCloset()">
+      <span class="color-link-text">Búsqueda por color</span>
+      <span style="color:#444;font-size:12px">›</span>
+    </div>
   </div>
-  <div id="closet-categorias"></div>
+  <!-- Vista de items por categoría -->
+  <div id="closet-items-wrap" style="display:none">
+    <div class="items-header" style="background:#000;cursor:pointer" onclick="volverClosetMain()">
+      <span class="dark-back-arrow">‹</span>
+      <span id="closet-items-title" class="items-header-title"></span>
+    </div>
+    <div id="closet-items-grid" class="items-grid"></div>
+  </div>
+  <!-- Vista de búsqueda por color -->
+  <div id="closet-color-wrap" style="display:none" class="dark-screen">
+    <div class="items-header" style="background:#000;cursor:pointer" onclick="volverClosetMain()">
+      <span class="dark-back-arrow">‹</span>
+      <span class="items-header-title">Búsqueda por color</span>
+    </div>
+    <div id="color-bubbles" class="color-grid"></div>
+    <div id="closet-color-items" style="display:none">
+      <div class="color-section-title" id="color-items-label"></div>
+      <div id="closet-color-grid" class="items-grid"></div>
+    </div>
+  </div>
 </div>
 
-<!-- OUTFIT -->
+<!-- ══ OUTFIT ══ -->
 <div id="screen-outfit" class="screen">
+  <!-- Paso 1: selección de ancla -->
   <div id="paso1-wrap">
-    <div class="outfit-intro">
-      <div class="outfit-intro-title">Prenda ancla</div>
-      <div class="outfit-intro-sub">¿Qué quieres ponerte hoy?</div>
+    <!-- Vista principal: categorías -->
+    <div id="outfit-main" class="dark-screen">
+      <div id="outfit-cat-links"></div>
+      <div style="height:72px"></div>
+      <div class="ml-wrap">
+        <button class="btn-ml" onclick="activarModoLibre()">✦ Modo Libre</button>
+      </div>
     </div>
-    <div id="ancla-categorias"></div>
-    <div style="height:72px"></div>
-    <div class="ml-wrap">
-      <button class="btn-ml" onclick="activarModoLibre()">✦ Modo Libre</button>
+    <!-- Vista de items por categoría (para seleccionar ancla) -->
+    <div id="outfit-items-wrap" style="display:none">
+      <div class="items-header" style="background:#000;cursor:pointer" onclick="volverOutfitMain()">
+        <span class="dark-back-arrow">‹</span>
+        <span id="outfit-items-title" class="items-header-title"></span>
+      </div>
+      <div id="outfit-items-grid" class="items-grid"></div>
+      <div style="height:72px"></div>
+      <div class="ml-wrap">
+        <button class="btn-ml" onclick="activarModoLibre()">✦ Modo Libre</button>
+      </div>
     </div>
   </div>
+  <!-- Paso 2: resultados -->
   <div id="paso2-wrap" style="display:none">
     <div class="res-hdr">
       <div id="ancla-chip-res" style="display:flex;align-items:center;flex:1"></div>
@@ -228,16 +248,16 @@ header{background:#fff;border-bottom:1px solid #e0dbd5;padding:14px 16px;positio
     </div>
     <div class="res-count" id="res-total"></div>
     <div id="lista-looks"></div>
-    <div style="height:20px"></div>
+    <div style="height:20px;background:#000"></div>
   </div>
 </div>
 
-<!-- CARGAR -->
+<!-- ══ CARGAR ══ -->
 <div id="screen-cargar" class="screen">
   <div class="cargar-block">
     <div class="cargar-block-title">Nueva Prenda</div>
     <div style="padding:0 16px 16px">
-      <button onclick="abrirModal()" style="width:100%;padding:14px;background:#000;color:#fff;border:none;font-size:10px;font-weight:700;letter-spacing:3px;text-transform:uppercase;cursor:pointer">+ Agregar Prenda</button>
+      <button onclick="abrirModal()" style="width:100%;padding:14px;background:#000;color:#fff;border:none;font-size:10px;font-weight:400;letter-spacing:3px;text-transform:uppercase;cursor:pointer;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif">+ Agregar Prenda</button>
     </div>
   </div>
   <div class="cargar-block" style="margin-top:2px">
@@ -297,7 +317,7 @@ header{background:#fff;border-bottom:1px solid #e0dbd5;padding:14px 16px;positio
     <div class="field">
       <label>Color principal</label>
       <div class="color-row">
-        <input type="color" class="color-swatch" id="inp-color" value="#000000" oninput="syncColor('picker')">
+        <input type="color" class="color-swatch-inp" id="inp-color" value="#000000" oninput="syncColor('picker')">
         <input type="text" class="hex-input" id="inp-hex" placeholder="#000000" maxlength="7" oninput="syncColor('hex')">
       </div>
     </div>
@@ -337,13 +357,28 @@ let inventario = JSON.parse(localStorage.getItem('wrd_inv') || '[]');
 let ancla = null, modoLibreActivo = false, editandoId = null, colorFiltro = null;
 const RMBG_KEY = 'Misp39S3s5vPZsMBwYcnA8s1';
 
+// Categorías funcionales (para el generador)
 const CATEGORIAS = [
-  {key:'superior',   label:'Superior',   closetLabel:'Playeras & Camisas',  tipos:['Camiseta','Camisa','Hoodie','Polo','Sudadera','Suéter','Tank top']},
-  {key:'exterior',   label:'Exterior',   closetLabel:'Chamarras & Abrigos', tipos:['Blazer','Chamarra','Abrigo','Chaqueta']},
-  {key:'inferior',   label:'Inferior',   closetLabel:'Pantalones & Jeans',  tipos:['Jean','Jean largo','Jean tres cuartos','Pantalón','Overalls','Short','Jogger']},
-  {key:'calzado',    label:'Calzado',    closetLabel:'Zapatos',             tipos:['Sneakers','Converse','Botas','Bota','Zapato','Sandalias','Sandalia','Mocasín']},
-  {key:'accesorios', label:'Accesorios', closetLabel:'Accesorios',          tipos:['Gorra','Bolso','Lentes','Cinturón','Bufanda','Reloj']},
+  {key:'superior',   label:'Superior',   tipos:['Camiseta','Camisa','Hoodie','Polo','Sudadera','Suéter','Tank top']},
+  {key:'exterior',   label:'Exterior',   tipos:['Blazer','Chamarra','Abrigo','Chaqueta']},
+  {key:'inferior',   label:'Inferior',   tipos:['Jean','Jean largo','Jean tres cuartos','Pantalón','Overalls','Short','Jogger']},
+  {key:'calzado',    label:'Calzado',    tipos:['Sneakers','Converse','Botas','Bota','Zapato','Sandalias','Sandalia','Mocasín']},
+  {key:'accesorios', label:'Accesorios', tipos:['Gorra','Bolso','Lentes','Cinturón','Bufanda','Reloj']},
 ];
+
+// Categorías estilo Zara (para Closet y Outfit)
+const ZARA_CATS = [
+  {id:'playeras',   label:'Playeras',            tipos:['Camiseta','Polo','Tank top']},
+  {id:'camisas',    label:'Camisas',             tipos:['Camisa']},
+  {id:'jackets',    label:'Jackets',             tipos:['Blazer','Chamarra','Chaqueta','Abrigo']},
+  {id:'shorts',     label:'Shorts',              tipos:['Short']},
+  {id:'pantalones', label:'Pantalones',          tipos:['Pantalón','Jean largo','Jean tres cuartos','Jogger','Overalls']},
+  {id:'jeans',      label:'Jeans',               tipos:['Jean']},
+  {id:'sueteres',   label:'Suéteres & Cardigans',tipos:['Suéter','Hoodie','Sudadera']},
+  {id:'zapatos',    label:'Zapatos',             tipos:['Sneakers','Converse','Botas','Bota','Zapato','Sandalias','Sandalia','Mocasín']},
+  {id:'accesorios', label:'Accesorios',          tipos:['Gorra','Bolso','Lentes','Cinturón','Bufanda','Reloj']},
+];
+
 const ARMONIAS = [
   {key:'analoga',        nombre:'Análoga',       dotClass:'c-ana',  color:'#1a7a1a'},
   {key:'complementaria', nombre:'Complementaria',dotClass:'c-comp', color:'#c44800'},
@@ -367,8 +402,7 @@ function guardarLocal(){localStorage.setItem('wrd_inv',JSON.stringify(inventario
 
 // COLOR ENGINE
 function hexToHsl(hex){
-  hex=hex.replace('#','');
-  if(hex.length===3)hex=hex.split('').map(c=>c+c).join('');
+  hex=hex.replace('#','');if(hex.length===3)hex=hex.split('').map(c=>c+c).join('');
   let r=parseInt(hex.slice(0,2),16)/255,g=parseInt(hex.slice(2,4),16)/255,b=parseInt(hex.slice(4,6),16)/255;
   let max=Math.max(r,g,b),min=Math.min(r,g,b),h=0,s=0,l=(max+min)/2;
   if(max!==min){let d=max-min;s=l>0.5?d/(2-max-min):d/(max+min);switch(max){case r:h=(g-b)/d+(g<b?6:0);break;case g:h=(b-r)/d+2;break;case b:h=(r-g)/d+4;break;}h/=6;}
@@ -398,8 +432,7 @@ const TOLERANCIA=28;
 function esCompatible(pHex,huesObj,anclaHex){
   if(pHex===anclaHex)return false;
   if(esNeutro(pHex))return true;
-  const{h}=hexToHsl(pHex);
-  return huesObj.some(hObj=>hueDist(h,hObj)<=TOLERANCIA);
+  const{h}=hexToHsl(pHex);return huesObj.some(hObj=>hueDist(h,hObj)<=TOLERANCIA);
 }
 
 // GENERADOR
@@ -425,35 +458,59 @@ function generarParaArmonia(anclaRef,armKey){
 }
 function generarTodosLosLooks(anclaRef){return ARMONIAS.map(arm=>({arm,outfits:generarParaArmonia(anclaRef,arm.key)}));}
 
-// CLOSET
-function filtrarColor(color){
-  colorFiltro=color;
-  document.querySelectorAll('.swatch-c,.swatch-all').forEach(el=>el.classList.remove('on'));
-  if(color===null)document.getElementById('swatch-all').classList.add('on');
-  else document.querySelector(`.swatch-c[data-c="${color}"]`)?.classList.add('on');
-  renderCloset();
-}
-function renderCloset(){
-  const colors=[...new Set(inventario.map(p=>p.color))];
-  document.getElementById('color-swatches').innerHTML=colors.map(c=>
-    `<div class="swatch-c${colorFiltro===c?' on':''}" data-c="${c}" style="background:${c}" onclick="filtrarColor('${c}')"></div>`
-  ).join('');
-  const items=colorFiltro?inventario.filter(p=>p.color===colorFiltro):inventario;
-  const wrap=document.getElementById('closet-categorias');wrap.innerHTML='';
-  CATEGORIAS.forEach(cat=>{
-    const catItems=items.filter(p=>getPosicion(p.tipo)===cat.key);if(!catItems.length)return;
-    const sec=document.createElement('div');sec.className='closet-cat';
-    sec.innerHTML=`
-      <div class="closet-cat-hdr" onclick="toggleSec(this,'closet-cat-arrow','closet-cat-items')">
-        <span class="closet-cat-name">${cat.closetLabel}</span>
-        <span class="closet-cat-right"><span class="closet-cat-count">${catItems.length}</span><span class="closet-cat-arrow">›</span></span>
-      </div>
-      <div class="closet-cat-items">${catItems.map(p=>closetCardHTML(p)).join('')}</div>`;
-    wrap.appendChild(sec);
+// ── CLOSET ──
+function renderClosetMain(){
+  const wrap=document.getElementById('closet-cat-links');wrap.innerHTML='';
+  ZARA_CATS.forEach(cat=>{
+    const items=inventario.filter(p=>cat.tipos.includes(p.tipo));
+    if(!items.length)return;
+    const div=document.createElement('div');div.className='cat-link';
+    div.onclick=()=>verCatCloset(cat);
+    div.innerHTML=`<span class="cat-link-text">${cat.label}</span><span class="cat-link-count">${items.length}</span>`;
+    wrap.appendChild(div);
   });
 }
+function verCatCloset(cat){
+  const items=inventario.filter(p=>cat.tipos.includes(p.tipo));
+  document.getElementById('closet-items-title').textContent=cat.label;
+  document.getElementById('closet-items-grid').innerHTML=items.map(p=>closetCardHTML(p)).join('');
+  document.getElementById('closet-main').style.display='none';
+  document.getElementById('closet-items-wrap').style.display='block';
+  document.getElementById('closet-color-wrap').style.display='none';
+  window.scrollTo(0,0);
+}
+function verColorCloset(){
+  const colors=[...new Set(inventario.map(p=>p.color))];
+  const wrap=document.getElementById('color-bubbles');
+  wrap.innerHTML=`<div class="color-bubble-all" onclick="filtrarColorBubble(null)"></div>`
+    +colors.map(c=>`<div class="color-bubble" style="background:${c}" data-c="${c}" onclick="filtrarColorBubble('${c}')"></div>`).join('');
+  document.getElementById('closet-color-items').style.display='none';
+  document.getElementById('closet-main').style.display='none';
+  document.getElementById('closet-items-wrap').style.display='none';
+  document.getElementById('closet-color-wrap').style.display='block';
+  window.scrollTo(0,0);
+}
+function filtrarColorBubble(color){
+  document.querySelectorAll('.color-bubble,.color-bubble-all').forEach(el=>el.classList.remove('on'));
+  if(color){
+    document.querySelector(`.color-bubble[data-c="${color}"]`)?.classList.add('on');
+    const items=inventario.filter(p=>p.color===color);
+    document.getElementById('closet-color-items').style.display='block';
+    document.getElementById('color-items-label').textContent=items.length+' prendas';
+    document.getElementById('closet-color-grid').innerHTML=items.map(p=>closetCardHTML(p)).join('');
+  }else{
+    document.querySelector('.color-bubble-all')?.classList.add('on');
+    document.getElementById('closet-color-items').style.display='none';
+  }
+}
+function volverClosetMain(){
+  document.getElementById('closet-main').style.display='block';
+  document.getElementById('closet-items-wrap').style.display='none';
+  document.getElementById('closet-color-wrap').style.display='none';
+  window.scrollTo(0,0);
+}
 function closetCardHTML(p){
-  return `<div class="c-card">
+  return`<div class="c-card">
     ${p.foto?`<img class="c-card-img" src="${p.foto}" alt="">`:`<div class="c-card-ph" style="background:${p.color}">👕</div>`}
     <div class="c-card-info">
       <div class="c-card-nombre">${p.nombre}</div>
@@ -461,6 +518,40 @@ function closetCardHTML(p){
       <div class="c-card-color-row"><div class="c-dot" style="background:${p.color}"></div><div class="c-hex">${p.color}</div></div>
     </div>
   </div>`;
+}
+
+// ── OUTFIT ──
+function renderOutfitMain(){
+  const wrap=document.getElementById('outfit-cat-links');wrap.innerHTML='';
+  ZARA_CATS.forEach(cat=>{
+    const items=inventario.filter(p=>cat.tipos.includes(p.tipo));
+    if(!items.length)return;
+    const div=document.createElement('div');div.className='cat-link';
+    div.onclick=()=>verCatOutfit(cat);
+    div.innerHTML=`<span class="cat-link-text">${cat.label}</span><span class="cat-link-count">${items.length}</span>`;
+    wrap.appendChild(div);
+  });
+}
+function verCatOutfit(cat){
+  const items=inventario.filter(p=>cat.tipos.includes(p.tipo));
+  document.getElementById('outfit-items-title').textContent=cat.label;
+  document.getElementById('outfit-items-grid').innerHTML=items.map(p=>`
+    <div class="c-card" onclick="selAncla(${p.id})">
+      ${p.foto?`<img class="c-card-img" src="${p.foto}" alt="">`:`<div class="c-card-ph" style="background:${p.color}">👕</div>`}
+      <div class="c-card-info">
+        <div class="c-card-nombre">${p.nombre}</div>
+        ${p.marca?`<div class="c-card-marca">${p.marca}</div>`:''}
+        <div class="c-card-color-row"><div class="c-dot" style="background:${p.color}"></div><div class="c-hex">${p.color}</div></div>
+      </div>
+    </div>`).join('');
+  document.getElementById('outfit-main').style.display='none';
+  document.getElementById('outfit-items-wrap').style.display='block';
+  window.scrollTo(0,0);
+}
+function volverOutfitMain(){
+  document.getElementById('outfit-main').style.display='block';
+  document.getElementById('outfit-items-wrap').style.display='none';
+  window.scrollTo(0,0);
 }
 
 // CARGAR
@@ -497,16 +588,14 @@ function editarPrenda(id){
 function eliminarPrenda(id){
   if(!confirm('¿Eliminar esta prenda?'))return;
   inventario=inventario.filter(p=>p.id!==id);
-  guardarLocal();renderCloset();renderCatAncla();
+  guardarLocal();renderClosetMain();renderOutfitMain();
   buscarPrenda(document.getElementById('search-input')?.value||'');
 }
 function cerrarModal(){document.getElementById('modal-prenda').classList.remove('open');}
 function limpiarModal(){
   ['inp-nombre','inp-marca'].forEach(id=>document.getElementById(id).value='');
-  document.getElementById('inp-tipo').value='';
-  document.getElementById('inp-color').value='#000000';
-  document.getElementById('inp-hex').value='#000000';
-  document.getElementById('inp-formalidad').value='casual';
+  document.getElementById('inp-tipo').value='';document.getElementById('inp-color').value='#000000';
+  document.getElementById('inp-hex').value='#000000';document.getElementById('inp-formalidad').value='casual';
   const img=document.getElementById('preview-foto');img.style.display='none';img.src='';
   document.getElementById('foto-status').textContent='Toca para agregar foto';
 }
@@ -527,28 +616,21 @@ async function removerFondo(dataUrl){
 }
 function extraerColor(imgEl){
   try{
-    const c=document.createElement('canvas');c.width=c.height=60;
-    const ctx=c.getContext('2d');ctx.drawImage(imgEl,0,0,60,60);
-    const d=ctx.getImageData(0,0,60,60).data;
-    let r=0,g=0,b=0,n=0;
+    const c=document.createElement('canvas');c.width=c.height=60;const ctx=c.getContext('2d');ctx.drawImage(imgEl,0,0,60,60);
+    const d=ctx.getImageData(0,0,60,60).data;let r=0,g=0,b=0,n=0;
     for(let i=0;i<d.length;i+=4){if(d[i+3]<128)continue;r+=d[i];g+=d[i+1];b+=d[i+2];n++;}
-    if(!n)return null;
-    return'#'+[r,g,b].map(v=>Math.round(v/n).toString(16).padStart(2,'0')).join('');
+    if(!n)return null;return'#'+[r,g,b].map(v=>Math.round(v/n).toString(16).padStart(2,'0')).join('');
   }catch(e){return null;}
 }
 function cargarFoto(input){
   if(!input.files[0])return;
   const reader=new FileReader();
   reader.onload=async e=>{
-    const img=document.getElementById('preview-foto');
-    const status=document.getElementById('foto-status');
-    img.src=e.target.result;img.style.display='block';
-    status.textContent='⏳ Quitando fondo...';
+    const img=document.getElementById('preview-foto');const status=document.getElementById('foto-status');
+    img.src=e.target.result;img.style.display='block';status.textContent='⏳ Quitando fondo...';
     try{
-      const sinFondo=await removerFondo(e.target.result);
-      img.src=sinFondo;
-      await new Promise(res=>{img.onload=res;img.onerror=res;});
-      status.textContent='✓ Fondo eliminado';
+      const sinFondo=await removerFondo(e.target.result);img.src=sinFondo;
+      await new Promise(res=>{img.onload=res;img.onerror=res;});status.textContent='✓ Fondo eliminado';
     }catch(err){status.textContent='Toca para cambiar foto';}
     const color=extraerColor(img);
     if(color){document.getElementById('inp-color').value=color;document.getElementById('inp-hex').value=color;}
@@ -570,7 +652,7 @@ function guardarPrenda(){
   }else{
     inventario.push({id:Date.now(),nombre,tipo,color,marca,formalidad,foto,pos:getPosicion(tipo)});
   }
-  guardarLocal();renderCloset();renderCatAncla();cerrarModal();
+  guardarLocal();renderClosetMain();renderOutfitMain();cerrarModal();
 }
 
 // EXPORT / IMPORT
@@ -581,70 +663,45 @@ function exportarInventario(){
 }
 function importarInventario(input){
   const r=new FileReader();
-  r.onload=e=>{try{const data=JSON.parse(e.target.result);if(Array.isArray(data)){inventario=data;guardarLocal();renderCloset();renderCatAncla();alert('Importado: '+data.length+' prendas');}}catch(err){alert('Error al importar.');}};
+  r.onload=e=>{try{const data=JSON.parse(e.target.result);if(Array.isArray(data)){inventario=data;guardarLocal();renderClosetMain();renderOutfitMain();alert('Importado: '+data.length+' prendas');}}catch(err){alert('Error al importar.');}};
   r.readAsText(input.files[0]);
 }
 
-// OUTFIT CONSTRUCTOR
-function renderCatAncla(){
-  const wrap=document.getElementById('ancla-categorias');wrap.innerHTML='';
-  CATEGORIAS.forEach(cat=>{
-    const items=inventario.filter(p=>getPosicion(p.tipo)===cat.key);if(!items.length)return;
-    const sec=document.createElement('div');sec.className='anc-cat';
-    sec.innerHTML=`
-      <div class="anc-cat-hdr" onclick="toggleSec(this,'anc-cat-arrow','anc-cat-items')">
-        <span class="anc-cat-name">${cat.label}</span>
-        <span class="anc-cat-right"><span class="anc-cat-count">${items.length}</span><span class="anc-cat-arrow">›</span></span>
-      </div>
-      <div class="anc-cat-items">
-        ${items.map(p=>`<div class="anc-card${ancla&&ancla.id===p.id?' selected':''}" onclick="selAncla(${p.id})">
-          ${p.foto?`<img class="anc-card-img" src="${p.foto}" alt="">`:`<div class="anc-card-ph" style="background:${p.color}">👕</div>`}
-          <div class="anc-card-info">
-            <div class="anc-card-nombre">${p.nombre}</div>
-            <div class="anc-card-meta"><span class="anc-dot" style="background:${p.color}"></span>${p.tipo}</div>
-          </div>
-        </div>`).join('')}
-      </div>`;
-    wrap.appendChild(sec);
-  });
+// SELECCIÓN Y OUTFIT
+function selAncla(id){
+  ancla=inventario.find(p=>p.id===id);modoLibreActivo=false;
+  mostrarLooks();
 }
-
-function toggleSec(hdr,arrowClass,itemsClass){
-  hdr.querySelector('.'+arrowClass).classList.toggle('open');
-  hdr.nextElementSibling.classList.toggle('open');
-}
-function selAncla(id){ancla=inventario.find(p=>p.id===id);modoLibreActivo=false;mostrarLooks();}
 function irPaso(n){
   ['paso1-wrap','paso2-wrap'].forEach(id=>document.getElementById(id).style.display='none');
   document.getElementById('paso'+n+'-wrap').style.display='block';
   window.scrollTo(0,0);
-  if(n===1)renderCatAncla();
-}
-function chipAnclaHTML(p){
-  return p.foto
-    ?`<img class="res-ancla-thumb" src="${p.foto}" alt="">`
-    :`<div class="res-ancla-color" style="background:${p.color}"></div>`;
+  if(n===1){renderOutfitMain();volverOutfitMain();}
 }
 function activarModoLibre(){modoLibreActivo=true;ancla=null;showScreen('outfit');mostrarLooks();}
 function mostrarLooks(){
-  irPaso(2);
+  document.getElementById('paso1-wrap').style.display='none';
+  document.getElementById('paso2-wrap').style.display='block';
+  window.scrollTo(0,0);
   const chipEl=document.getElementById('ancla-chip-res');
   if(modoLibreActivo){
-    chipEl.innerHTML=`<div style="font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;padding:0 4px">✦ Modo Libre</div>`;
+    chipEl.innerHTML=`<div style="font-size:10px;font-weight:300;letter-spacing:2px;text-transform:uppercase;padding:0 4px;color:#fff">✦ Modo Libre</div>`;
   }else{
-    chipEl.innerHTML=chipAnclaHTML(ancla);
+    chipEl.innerHTML=ancla?.foto
+      ?`<img class="res-ancla-thumb" src="${ancla.foto}" alt="">`
+      :`<div class="res-ancla-color" style="background:${ancla?.color}"></div>`;
   }
   let grupos;
   if(modoLibreActivo){
     const anclas=inventario.filter(p=>['superior','exterior','inferior'].includes(getPosicion(p.tipo)));
     const combinados={};
     ARMONIAS.forEach(arm=>combinados[arm.key]={arm,outfitsSet:new Set(),outfits:[]});
-    anclas.forEach(ref=>{
-      ARMONIAS.forEach(arm=>{
-        const res=generarParaArmonia(ref,arm.key);
-        res.forEach(o=>{const k=o.piezas.map(p=>p.id).sort().join('-');if(!combinados[arm.key].outfitsSet.has(k)){combinados[arm.key].outfitsSet.add(k);combinados[arm.key].outfits.push(o);}});
+    anclas.forEach(ref=>{ARMONIAS.forEach(arm=>{
+      generarParaArmonia(ref,arm.key).forEach(o=>{
+        const k=o.piezas.map(p=>p.id).sort().join('-');
+        if(!combinados[arm.key].outfitsSet.has(k)){combinados[arm.key].outfitsSet.add(k);combinados[arm.key].outfits.push(o);}
       });
-    });
+    });});
     grupos=ARMONIAS.map(arm=>({arm,outfits:combinados[arm.key].outfits.sort(()=>Math.random()-0.5).slice(0,15)})).filter(g=>g.outfits.length);
   }else{
     grupos=generarTodosLosLooks(ancla);
@@ -657,7 +714,7 @@ function mostrarLooks(){
     const basicos=g.outfits.filter(o=>o.nivel==='basico');
     const exterior=g.outfits.filter(o=>o.nivel==='exterior');
     return`<div class="arm-sec">
-      <div class="arm-sec-hdr" onclick="toggleSec(this,'arm-arrow','arm-items')">
+      <div class="arm-sec-hdr" onclick="this.querySelector('.arm-arrow').classList.toggle('open');this.nextElementSibling.classList.toggle('open')">
         <div class="arm-sec-left"><span class="arm-dot ${g.arm.dotClass}"></span><span class="arm-nombre">${g.arm.nombre}</span><span class="arm-count">${g.outfits.length} looks</span></div>
         <span class="arm-arrow">›</span>
       </div>
@@ -669,8 +726,7 @@ function mostrarLooks(){
   }).join('');
 }
 function lookCardHTML(o){
-  const piezas=o.piezas;
-  const colores=[...new Set(piezas.map(p=>p.color))];
+  const piezas=o.piezas,colores=[...new Set(piezas.map(p=>p.color))];
   const accCab=piezas.filter(p=>ACC_CABEZA.includes(p.tipo));
   const ext=piezas.filter(p=>getPosicion(p.tipo)==='exterior');
   const sup=piezas.filter(p=>getPosicion(p.tipo)==='superior');
@@ -678,30 +734,22 @@ function lookCardHTML(o){
   const cal=piezas.filter(p=>getPosicion(p.tipo)==='calzado');
   const accCue=piezas.filter(p=>ACC_CUERPO.includes(p.tipo));
   const orden=[...accCab,...ext,...sup,...inf,...cal,...accCue];
-  function fotoItem(p){const pos=getPosicion(p.tipo);return`<div class="of-item of-${pos}">${p.foto?`<img src="${p.foto}" alt="">`:`<div class="of-color" style="background:${p.color}">${tipoIcon(p.tipo)}</div>`}</div>`;}
-  return`<div class="outfit-card"><div class="outfit-col">${orden.map(fotoItem).join('')}</div><div class="outfit-paleta">${colores.map(c=>`<div class="paleta-seg" style="background:${c}"></div>`).join('')}</div></div>`;
+  function fi(p){const pos=getPosicion(p.tipo);return`<div class="of-item of-${pos}">${p.foto?`<img src="${p.foto}" alt="">`:`<div class="of-color" style="background:${p.color}">${tipoIcon(p.tipo)}</div>`}</div>`;}
+  return`<div class="outfit-card"><div class="outfit-col">${orden.map(fi).join('')}</div><div class="outfit-paleta">${colores.map(c=>`<div class="paleta-seg" style="background:${c}"></div>`).join('')}</div></div>`;
 }
 function tipoIcon(tipo){const pos=getPosicion(tipo);if(pos==='superior'||pos==='exterior')return'👕';if(pos==='inferior')return'👖';if(pos==='calzado')return'👟';return'🎩';}
 
 // SLIDESHOW
 let slideIdx=0,slideTimer=null;
 function initSlideshow(){
-  const slides=document.querySelectorAll('.slide');
-  const dots=document.querySelectorAll('.slide-dot');
-  if(!slides.length)return;
+  const slides=document.querySelectorAll('.slide');if(!slides.length)return;
   function goTo(n){
-    slides[slideIdx].classList.remove('active');
-    dots[slideIdx].classList.remove('active');
-    slideIdx=(n+slides.length)%slides.length;
-    slides[slideIdx].classList.add('active');
-    dots[slideIdx].classList.add('active');
+    slides[slideIdx].classList.remove('active');slideIdx=(n+slides.length)%slides.length;slides[slideIdx].classList.add('active');
   }
-  slideTimer=setInterval(()=>goTo(slideIdx+1),1200);
-  dots.forEach((d,i)=>d.addEventListener('click',()=>{clearInterval(slideTimer);goTo(i);slideTimer=setInterval(()=>goTo(slideIdx+1),1200);}));
-  let tx=0;
-  const ss=document.getElementById('slideshow');
+  slideTimer=setInterval(()=>goTo(slideIdx+1),900);
+  let tx=0;const ss=document.getElementById('slideshow');
   ss.addEventListener('touchstart',e=>{tx=e.touches[0].clientX;},{passive:true});
-  ss.addEventListener('touchend',e=>{const diff=tx-e.changedTouches[0].clientX;if(Math.abs(diff)>50){clearInterval(slideTimer);goTo(slideIdx+(diff>0?1:-1));slideTimer=setInterval(()=>goTo(slideIdx+1),1200);}},{passive:true});
+  ss.addEventListener('touchend',e=>{const diff=tx-e.changedTouches[0].clientX;if(Math.abs(diff)>50){clearInterval(slideTimer);goTo(slideIdx+(diff>0?1:-1));slideTimer=setInterval(()=>goTo(slideIdx+1),900);}},{passive:true});
 }
 
 // NAVEGACIÓN
@@ -711,21 +759,19 @@ function showScreen(id){
   document.getElementById('screen-'+id).classList.add('active');
   document.getElementById('nav-'+id).classList.add('active');
   window.scrollTo(0,0);
-  if(id==='closet')renderCloset();
-  else if(id==='outfit'&&!modoLibreActivo){renderCatAncla();irPaso(1);}
+  if(id==='closet'){renderClosetMain();volverClosetMain();}
+  else if(id==='outfit'&&!modoLibreActivo){renderOutfitMain();irPaso(1);}
   else if(id==='cargar'){document.getElementById('search-input').value='';document.getElementById('search-results').innerHTML='';}
 }
 
 if('serviceWorker' in navigator){navigator.serviceWorker.register('/wardrobe/sw.js').catch(()=>{});}
-
 window.addEventListener('load',()=>{
   initSlideshow();
   setTimeout(()=>{const sp=document.getElementById('splash');sp.classList.add('out');setTimeout(()=>sp.style.display='none',900);},2000);
 });
-
 if(inventario.length===0){
-  fetch('guardarropa.json').then(r=>r.json()).then(data=>{inventario=data;guardarLocal();renderCloset();renderCatAncla();});
-}else{renderCloset();renderCatAncla();}
+  fetch('guardarropa.json').then(r=>r.json()).then(data=>{inventario=data;guardarLocal();renderClosetMain();renderOutfitMain();});
+}else{renderClosetMain();renderOutfitMain();}
 </script>
 </body>
 </html>
