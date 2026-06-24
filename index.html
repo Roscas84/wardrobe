@@ -191,7 +191,7 @@ header h1{font-size:17px;font-weight:700}
     <h3 id="modal-titulo">Agregar prenda</h3>
     <div class="foto-area" id="foto-area" onclick="document.getElementById('input-foto').click()">
       <div style="font-size:32px">📷</div>
-      <p>Toca para agregar foto</p>
+      <p id="foto-status">Toca para agregar foto</p>
       <img id="preview-foto" style="display:none;margin-top:10px">
     </div>
     <input type="file" id="input-foto" accept="image/*" capture="environment" style="display:none" onchange="cargarFoto(this)">
@@ -528,6 +528,26 @@ function syncColor(origen) {
   else { const v=document.getElementById('inp-hex').value; if(/^#[0-9A-Fa-f]{6}$/.test(v)) document.getElementById('inp-color').value=v; }
 }
 
+const RMBG_KEY = 'Misp39S3s5vPZsMBwYcnA8s1';
+
+async function removerFondo(dataUrl) {
+  const blob = await fetch(dataUrl).then(r => r.blob());
+  const fd = new FormData();
+  fd.append('image_file', blob, 'photo.jpg');
+  fd.append('size', 'auto');
+  const res = await fetch('https://api.remove.bg/v1.0/removebg', {
+    method: 'POST',
+    headers: {'X-Api-Key': RMBG_KEY},
+    body: fd
+  });
+  if(!res.ok) throw new Error('removebg ' + res.status);
+  const buf = await res.arrayBuffer();
+  const bytes = new Uint8Array(buf);
+  let bin = '';
+  for(let i = 0; i < bytes.length; i++) bin += String.fromCharCode(bytes[i]);
+  return 'data:image/png;base64,' + btoa(bin);
+}
+
 function extraerColor(imgEl) {
   try {
     const c=document.createElement('canvas'); c.width=c.height=60;
@@ -545,19 +565,28 @@ function extraerColor(imgEl) {
 
 function cargarFoto(input) {
   if(!input.files[0]) return;
-  const r=new FileReader();
-  r.onload=e=>{
-    const img=document.getElementById('preview-foto');
-    img.src=e.target.result; img.style.display='block';
-    img.onload=()=>{
-      const color=extraerColor(img);
-      if(color){
-        document.getElementById('inp-color').value=color;
-        document.getElementById('inp-hex').value=color;
-      }
-    };
+  const reader = new FileReader();
+  reader.onload = async e => {
+    const img = document.getElementById('preview-foto');
+    const status = document.getElementById('foto-status');
+    img.src = e.target.result;
+    img.style.display = 'block';
+    status.textContent = '⏳ Quitando fondo...';
+    try {
+      const sinFondo = await removerFondo(e.target.result);
+      img.src = sinFondo;
+      await new Promise(res => { img.onload = res; img.onerror = res; });
+      status.textContent = '✓ Fondo eliminado';
+    } catch(err) {
+      status.textContent = 'Toca para cambiar foto';
+    }
+    const color = extraerColor(img);
+    if(color) {
+      document.getElementById('inp-color').value = color;
+      document.getElementById('inp-hex').value = color;
+    }
   };
-  r.readAsDataURL(input.files[0]);
+  reader.readAsDataURL(input.files[0]);
 }
 
 function guardarPrenda() {
