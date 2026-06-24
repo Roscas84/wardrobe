@@ -77,11 +77,9 @@ header h1{font-size:17px;font-weight:700}
 .paso-title{font-size:20px;font-weight:700;margin-bottom:4px}
 .paso-sub{font-size:13px;color:#888;margin-bottom:18px}
 
-.ancla-chip{display:flex;align-items:center;gap:10px;background:#fff;border-radius:12px;padding:10px;margin-bottom:16px;border:1px solid #e0e0e0}
-.ancla-thumb{width:44px;height:58px;border-radius:8px;object-fit:cover;object-position:center top;flex-shrink:0}
-.ancla-thumb-color{width:44px;height:58px;border-radius:8px;flex-shrink:0}
-.ancla-info .nombre{font-size:14px;font-weight:600}
-.ancla-info .meta{font-size:12px;color:#888;margin-top:2px}
+.ancla-banner{width:100%;height:130px;border-radius:12px;overflow:hidden;margin-bottom:12px;border:1px solid #e0e0e0;background:#e8e8e8}
+.ancla-banner img{width:100%;height:100%;object-fit:cover;object-position:center top}
+.ancla-banner-color{width:100%;height:100%}
 
 .fixed-btn-wrap{position:fixed;bottom:calc(60px + env(safe-area-inset-bottom));left:0;right:0;padding:8px 16px 4px;background:linear-gradient(transparent,rgba(242,242,247,0.97) 35%);z-index:150}
 .btn-negro{width:100%;max-width:600px;margin:0 auto 6px;display:block;padding:11px;background:#1a1a1a;color:#fff;border:none;border-radius:12px;font-size:14px;font-weight:600;cursor:pointer}
@@ -104,18 +102,13 @@ header h1{font-size:17px;font-weight:700}
 .armonia-section-items{display:none;padding:0 8px 8px}
 .armonia-section-items.open{display:block}
 
-/* OUTFIT CARD — VERTICAL BODY LAYOUT */
+/* OUTFIT CARD — COLUMNA ÚNICA BODY ORDER */
 .outfit-card{background:#fff;border-radius:14px;overflow:hidden;margin-bottom:14px;box-shadow:0 2px 10px rgba(0,0,0,0.08);border:1px solid #ebebeb}
-.outfit-fotos-v{display:flex;flex-direction:column;gap:1px;background:rgba(0,0,0,0.06)}
-.of-row{display:flex;gap:1px;overflow:hidden}
-.of-row-ext{height:130px}
-.of-row-mid{height:190px}
-.of-row-cal{height:88px}
-.of-row-acc{height:66px}
-.of-row .outfit-foto-item{flex:1;overflow:hidden}
-.of-row .outfit-foto-item img{width:100%;height:100%;object-fit:cover;object-position:center top}
-.of-row-cal .outfit-foto-item img{object-position:center center}
-.of-row .outfit-foto-color{width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-size:28px;background:#e8e8e8}
+.outfit-col{display:flex;flex-direction:column;gap:1px;background:rgba(0,0,0,0.06)}
+.of-item{height:110px;overflow:hidden;width:100%}
+.of-item img{width:100%;height:100%;object-fit:cover;object-position:center top}
+.of-item.cal img{object-position:center center}
+.of-color{width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-size:28px;background:#e8e8e8}
 .outfit-paleta{display:flex;height:14px;gap:2px;margin:0}
 .paleta-seg{flex:1}
 
@@ -182,12 +175,10 @@ header h1{font-size:17px;font-weight:700}
   <!-- Paso 2: Looks -->
   <div id="paso2-wrap" style="display:none">
     <div class="resultados-header">
-      <div>
-        <div id="ancla-chip-res"></div>
-        <div class="res-total" id="res-total"></div>
-      </div>
       <button onclick="irPaso(1)" style="padding:8px 16px;border:1px solid #e0e0e0;border-radius:20px;background:#fff;font-size:13px;cursor:pointer;font-weight:500;flex-shrink:0">← Cambiar prenda</button>
+      <div class="res-total" id="res-total"></div>
     </div>
+    <div id="ancla-chip-res"></div>
     <div id="lista-looks"></div>
     <div style="height:20px"></div>
   </div>
@@ -626,12 +617,10 @@ function irPaso(n) {
 }
 
 function chipAnclaHTML(p) {
-  return `<div class="ancla-chip">
-    ${p.foto?'<img class="ancla-thumb" src="'+p.foto+'">':`<div class="ancla-thumb-color" style="background:${p.color}"></div>`}
-    <div class="ancla-info">
-      <div class="nombre">${p.nombre}</div>
-      <div class="meta">${p.tipo}${p.marca?' · '+p.marca:''}</div>
-    </div>
+  return `<div class="ancla-banner">
+    ${p.foto
+      ? '<img src="'+p.foto+'" alt="">'
+      : '<div class="ancla-banner-color" style="background:'+p.color+'"></div>'}
   </div>`;
 }
 
@@ -722,33 +711,34 @@ function toggleArmonia(header) {
   items.classList.toggle('open');
 }
 
+const ACC_CABEZA = ['Gorra','Lentes'];
+const ACC_CUERPO = ['Bolso','Cinturón','Bufanda','Reloj'];
+
 function lookCardHTML(o) {
   const piezas = o.piezas;
   const colores = [...new Set(piezas.map(p=>p.color))];
 
-  const ext = piezas.filter(p => getPosicion(p.tipo) === 'exterior');
-  const sup = piezas.filter(p => getPosicion(p.tipo) === 'superior');
-  const inf = piezas.filter(p => getPosicion(p.tipo) === 'inferior');
-  const cal = piezas.filter(p => getPosicion(p.tipo) === 'calzado');
-  const acc = piezas.filter(p => getPosicion(p.tipo) === 'accesorios');
+  const accCab = piezas.filter(p => ACC_CABEZA.includes(p.tipo));
+  const ext    = piezas.filter(p => getPosicion(p.tipo) === 'exterior');
+  const sup    = piezas.filter(p => getPosicion(p.tipo) === 'superior');
+  const inf    = piezas.filter(p => getPosicion(p.tipo) === 'inferior');
+  const cal    = piezas.filter(p => getPosicion(p.tipo) === 'calzado');
+  const accCue = piezas.filter(p => ACC_CUERPO.includes(p.tipo));
+
+  const orden = [...accCab, ...ext, ...sup, ...inf, ...cal, ...accCue];
 
   function fotoItem(p) {
-    return `<div class="outfit-foto-item">${
-      p.foto ? '<img src="'+p.foto+'" alt="">'
-             : '<div class="outfit-foto-color" style="background:'+p.color+'">'+tipoIcon(p.tipo)+'</div>'
-    }</div>`;
+    const esCal = getPosicion(p.tipo) === 'calzado';
+    return `<div class="of-item${esCal?' cal':''}">
+      ${p.foto
+        ? '<img src="'+p.foto+'" alt="">'
+        : '<div class="of-color" style="background:'+p.color+'">'+tipoIcon(p.tipo)+'</div>'}
+    </div>`;
   }
-
-  let rows = '';
-  ext.forEach(p  => rows += `<div class="of-row of-row-ext">${fotoItem(p)}</div>`);
-  const mid = [...sup, ...inf];
-  if(mid.length) rows += `<div class="of-row of-row-mid">${mid.map(fotoItem).join('')}</div>`;
-  cal.forEach(p  => rows += `<div class="of-row of-row-cal">${fotoItem(p)}</div>`);
-  if(acc.length) rows += `<div class="of-row of-row-acc">${acc.map(fotoItem).join('')}</div>`;
 
   return `
   <div class="outfit-card">
-    <div class="outfit-fotos-v">${rows}</div>
+    <div class="outfit-col">${orden.map(fotoItem).join('')}</div>
     <div class="outfit-paleta">${colores.map(c=>`<div class="paleta-seg" style="background:${c}"></div>`).join('')}</div>
   </div>`;
 }
