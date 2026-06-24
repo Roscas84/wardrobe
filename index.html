@@ -5,183 +5,277 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
 <title>Mi Guardarropa</title>
 <link rel="manifest" href="manifest.json">
-<meta name="theme-color" content="#007aff">
+<meta name="theme-color" content="#000000">
 <meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-status-bar-style" content="black">
 <meta name="apple-mobile-web-app-title" content="Guardarropa">
 <link rel="apple-touch-icon" href="icon-192.png">
 <style>
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
-body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:#f2f2f7;color:#1a1a1a;min-height:100vh;padding-bottom:80px}
+body{font-family:-apple-system,BlinkMacSystemFont,'Helvetica Neue',sans-serif;background:#f5f0eb;color:#1a1a1a;min-height:100vh;padding-bottom:80px}
 
-.bottom-nav{position:fixed;bottom:0;left:0;right:0;background:#fff;border-top:1px solid #e0e0e0;display:flex;z-index:200;padding-bottom:env(safe-area-inset-bottom)}
-.bnav-btn{flex:1;padding:10px 0;display:flex;flex-direction:column;align-items:center;gap:2px;border:none;background:transparent;cursor:pointer;font-size:10px;color:#888}
-.bnav-btn.active{color:#007aff}
-.bnav-icon{font-size:22px}
+/* SPLASH */
+#splash{position:fixed;inset:0;background:#f5f0eb;display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:999;transition:opacity 0.9s ease}
+#splash.out{opacity:0;pointer-events:none}
+.splash-sub{font-size:10px;letter-spacing:5px;text-transform:uppercase;color:#1a1a1a;margin-top:18px;font-weight:300}
 
-header{background:#fff;border-bottom:1px solid #e0e0e0;padding:14px 16px;position:sticky;top:0;z-index:100}
-header h1{font-size:17px;font-weight:700}
+/* HEADER */
+header{background:#fff;border-bottom:1px solid #e0dbd5;padding:14px 16px;position:sticky;top:0;z-index:100}
+.header-logo{font-size:12px;font-weight:700;letter-spacing:4px;text-transform:uppercase;text-align:center}
 
-.screen{display:none;padding:16px;max-width:600px;margin:0 auto}
+/* NAV */
+.bottom-nav{position:fixed;bottom:0;left:0;right:0;background:#000;display:flex;z-index:200;padding-bottom:env(safe-area-inset-bottom)}
+.bnav-btn{flex:1;padding:11px 0 9px;display:flex;flex-direction:column;align-items:center;gap:3px;border:none;background:transparent;cursor:pointer;font-size:8px;color:#555;letter-spacing:2px;text-transform:uppercase}
+.bnav-btn.active{color:#fff}
+.bnav-icon{font-size:17px}
+
+/* SCREENS */
+.screen{display:none;max-width:600px;margin:0 auto}
 .screen.active{display:block}
 
-/* INVENTARIO */
-.top-bar{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px}
-.top-bar h2{font-size:15px;font-weight:600;color:#888}
-.btn-add{background:#007aff;color:#fff;border:none;border-radius:20px;padding:8px 18px;font-size:13px;cursor:pointer;font-weight:500}
+/* ── INICIO ── */
+.slideshow{position:relative;width:100%;background:#1a1a1a;overflow:hidden}
+.slide{display:none}
+.slide.active{display:block}
+.slide img{width:100%;height:72vh;object-fit:cover;display:block}
+.slide-dots{display:flex;justify-content:center;gap:6px;padding:10px 0 2px;background:#fff}
+.slide-dot{width:5px;height:5px;border-radius:50%;background:#ccc;transition:background .3s;cursor:pointer}
+.slide-dot.active{background:#000}
+.inicio-label{font-size:10px;letter-spacing:4px;text-transform:uppercase;font-weight:600;padding:18px 16px 10px;color:#1a1a1a;background:#fff}
+.editorial-grid{display:grid;grid-template-columns:1fr 1fr;gap:2px;background:#e0dbd5}
+.editorial-item{overflow:hidden;background:#e0dbd5}
+.editorial-item img{width:100%;aspect-ratio:3/4;object-fit:cover;display:block}
+.editorial-item.wide{grid-column:1/-1}
+.editorial-item.wide img{aspect-ratio:4/3}
 
-/* CATEGORIAS */
-.categoria-section{margin-bottom:8px;background:#fff;border-radius:14px;overflow:hidden;border:1px solid #e0e0e0}
-.categoria-header{display:flex;justify-content:space-between;align-items:center;padding:12px 14px;cursor:pointer;font-size:14px;font-weight:600}
-.categoria-header .count{font-size:12px;color:#888;font-weight:400}
-.categoria-arrow{font-size:12px;color:#888;transition:transform .2s}
-.categoria-arrow.open{transform:rotate(90deg)}
-.categoria-items{display:none;padding:0 10px 10px}
-.categoria-items.open{display:grid;grid-template-columns:1fr;gap:8px}
+/* ── CLOSET ── */
+.color-filter-bar{padding:10px 12px;background:#fff;border-bottom:1px solid #e0dbd5;display:flex;align-items:center;gap:8px;overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none}
+.color-filter-bar::-webkit-scrollbar{display:none}
+.filter-label{font-size:9px;letter-spacing:2px;text-transform:uppercase;color:#888;flex-shrink:0}
+.swatch-all{width:24px;height:24px;border-radius:50%;background:conic-gradient(red,yellow,lime,cyan,blue,magenta,red);border:2px solid transparent;cursor:pointer;flex-shrink:0}
+.swatch-all.on{border-color:#000}
+.swatch-c{width:24px;height:24px;border-radius:50%;border:2px solid transparent;cursor:pointer;flex-shrink:0}
+.swatch-c.on{border-color:#000;box-shadow:0 0 0 1px #000}
 
-.prenda-card{background:#f8f8f8;border-radius:10px;overflow:hidden;border:2px solid transparent;cursor:pointer;transition:all .15s;position:relative}
-.prenda-card:active{opacity:0.8}
-.prenda-card.selected{border-color:#007aff}
-.prenda-img{width:100%;aspect-ratio:3/5;object-fit:cover;background:#e8e8e8}
-.prenda-placeholder{width:100%;aspect-ratio:3/5;display:flex;align-items:center;justify-content:center;font-size:28px}
-.prenda-info{padding:8px}
-.prenda-nombre{font-size:11px;font-weight:600;line-height:1.3;margin-bottom:2px}
-.prenda-meta{font-size:10px;color:#888;display:flex;align-items:center;gap:4px}
-.color-dot{width:10px;height:10px;border-radius:50%;flex-shrink:0;border:1px solid rgba(0,0,0,0.1)}
-.prenda-actions{position:absolute;top:6px;right:6px;display:flex;gap:6px}
-.prenda-action-btn{width:32px;height:32px;border-radius:50%;border:none;cursor:pointer;font-size:13px;display:flex;align-items:center;justify-content:center;opacity:0.9;box-shadow:0 1px 4px rgba(0,0,0,0.18)}
-.btn-edit-p{background:#fff}
-.btn-del-p{background:#ff3b30;color:#fff}
+.closet-cat{margin-bottom:2px}
+.closet-cat-hdr{display:flex;justify-content:space-between;align-items:center;padding:13px 16px;background:#fff;cursor:pointer;border-bottom:1px solid #f0ebe5}
+.closet-cat-name{font-size:10px;letter-spacing:2.5px;text-transform:uppercase;font-weight:600}
+.closet-cat-right{display:flex;align-items:center;gap:8px}
+.closet-cat-count{font-size:11px;color:#aaa}
+.closet-cat-arrow{font-size:12px;color:#aaa;transition:transform .2s}
+.closet-cat-arrow.open{transform:rotate(90deg)}
+.closet-cat-items{display:none;background:#e0dbd5}
+.closet-cat-items.open{display:grid;grid-template-columns:1fr 1fr;gap:2px;padding:2px}
 
-/* MODAL */
-.modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.5);z-index:300;align-items:flex-end;justify-content:center}
-.modal-overlay.open{display:flex}
-.modal{background:#fff;border-radius:20px 20px 0 0;padding:20px 16px;width:100%;max-width:500px;max-height:92vh;overflow-y:auto}
-.modal-handle{width:36px;height:4px;background:#e0e0e0;border-radius:2px;margin:0 auto 16px}
-.modal h3{font-size:16px;font-weight:700;margin-bottom:16px}
-.field{margin-bottom:14px}
-.field label{display:block;font-size:12px;color:#888;margin-bottom:5px;font-weight:500;text-transform:uppercase;letter-spacing:0.3px}
-.field input,.field select{width:100%;padding:10px 12px;border:1px solid #e0e0e0;border-radius:10px;font-size:15px;background:#fff;-webkit-appearance:none}
-.foto-area{border:2px dashed #e0e0e0;border-radius:12px;padding:20px;text-align:center;cursor:pointer;margin-bottom:14px;min-height:100px;display:flex;flex-direction:column;align-items:center;justify-content:center}
-.foto-area img{width:100%;max-height:200px;object-fit:contain;border-radius:8px}
-.foto-area p{font-size:13px;color:#888;margin-top:6px}
-.modal-btns{display:flex;gap:10px;margin-top:8px;padding-bottom:env(safe-area-inset-bottom)}
-.btn-cancel{flex:1;padding:13px;border:1px solid #e0e0e0;border-radius:12px;background:#fff;font-size:15px;cursor:pointer}
-.btn-save{flex:2;padding:13px;border:none;border-radius:12px;background:#007aff;color:#fff;font-size:15px;cursor:pointer;font-weight:600}
+.c-card{background:#fff;overflow:hidden;cursor:pointer}
+.c-card:active{opacity:.85}
+.c-card-img{width:100%;aspect-ratio:3/5;object-fit:cover;background:#f0ebe5;display:block}
+.c-card-ph{width:100%;aspect-ratio:3/5;background:#f0ebe5;display:flex;align-items:center;justify-content:center;font-size:30px}
+.c-card-info{padding:8px 10px 10px}
+.c-card-nombre{font-size:12px;font-weight:500;line-height:1.3;margin-bottom:2px}
+.c-card-marca{font-size:10px;color:#888;letter-spacing:.5px;text-transform:uppercase;margin-bottom:5px}
+.c-card-color-row{display:flex;align-items:center;gap:5px}
+.c-dot{width:10px;height:10px;border-radius:50%;border:1px solid rgba(0,0,0,.1);flex-shrink:0}
+.c-hex{font-size:9px;color:#aaa;font-family:monospace}
 
-.color-row{display:flex;align-items:center;gap:10px}
-.color-swatch{width:44px;height:44px;border-radius:10px;border:1px solid #e0e0e0;cursor:pointer;flex-shrink:0}
-.hex-input{flex:1;padding:10px 12px;border:1px solid #e0e0e0;border-radius:10px;font-size:15px;font-family:monospace}
+/* ── OUTFIT ── */
+.outfit-intro{padding:20px 16px 8px}
+.outfit-intro-title{font-size:10px;letter-spacing:3px;text-transform:uppercase;font-weight:600;margin-bottom:4px}
+.outfit-intro-sub{font-size:13px;color:#888}
 
-/* CONSTRUCTOR */
-.paso-title{font-size:20px;font-weight:700;margin-bottom:4px}
-.paso-sub{font-size:13px;color:#888;margin-bottom:18px}
+.anc-cat{margin-bottom:2px}
+.anc-cat-hdr{display:flex;justify-content:space-between;align-items:center;padding:13px 16px;background:#fff;cursor:pointer;border-bottom:1px solid #f0ebe5}
+.anc-cat-name{font-size:10px;letter-spacing:2.5px;text-transform:uppercase;font-weight:600}
+.anc-cat-right{display:flex;align-items:center;gap:8px}
+.anc-cat-count{font-size:11px;color:#aaa}
+.anc-cat-arrow{font-size:12px;color:#aaa;transition:transform .2s}
+.anc-cat-arrow.open{transform:rotate(90deg)}
+.anc-cat-items{display:none;background:#e0dbd5}
+.anc-cat-items.open{display:grid;grid-template-columns:1fr 1fr;gap:2px;padding:2px}
 
-.ancla-chip{display:flex;align-items:stretch;background:#fff;border-radius:12px;overflow:hidden;margin-bottom:12px;border:1px solid #e0e0e0;height:80px}
-.ancla-thumb{width:60px;object-fit:contain;background:#f5f5f5;flex-shrink:0}
-.ancla-thumb-color{width:60px;flex-shrink:0}
-.ancla-cambiar-btn{flex:1;border:none;border-left:1px solid #e0e0e0;background:#fff;font-size:14px;font-weight:600;cursor:pointer;padding:0 16px;color:#1a1a1a;text-align:center}
+.anc-card{background:#fff;overflow:hidden;cursor:pointer;border:2px solid transparent}
+.anc-card.selected{border-color:#000}
+.anc-card:active{opacity:.8}
+.anc-card-img{width:100%;aspect-ratio:3/5;object-fit:cover;background:#f0ebe5;display:block}
+.anc-card-ph{width:100%;aspect-ratio:3/5;background:#f0ebe5;display:flex;align-items:center;justify-content:center;font-size:30px}
+.anc-card-info{padding:7px 10px 9px}
+.anc-card-nombre{font-size:11px;font-weight:500;line-height:1.3}
+.anc-card-meta{font-size:10px;color:#888;display:flex;align-items:center;gap:4px;margin-top:2px}
+.anc-dot{width:9px;height:9px;border-radius:50%;border:1px solid rgba(0,0,0,.1);flex-shrink:0}
 
-.fixed-btn-wrap{position:fixed;bottom:calc(60px + env(safe-area-inset-bottom));left:0;right:0;padding:8px 16px 4px;background:linear-gradient(transparent,rgba(242,242,247,0.97) 35%);z-index:150}
-.btn-negro{width:100%;max-width:600px;margin:0 auto 6px;display:block;padding:11px;background:#1a1a1a;color:#fff;border:none;border-radius:12px;font-size:14px;font-weight:600;cursor:pointer}
-.btn-negro:active{opacity:0.8}
-.btn-negro.secundario{background:#444;font-size:13px;padding:9px}
+.ml-wrap{position:fixed;bottom:calc(62px + env(safe-area-inset-bottom));left:0;right:0;padding:8px 16px;background:linear-gradient(transparent,rgba(245,240,235,.97) 35%);z-index:150}
+.btn-ml{width:100%;max-width:600px;margin:0 auto;display:block;padding:13px;background:#000;color:#fff;border:none;font-size:10px;font-weight:700;letter-spacing:3px;text-transform:uppercase;cursor:pointer}
 
-/* RESULTADOS */
-.resultados-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px}
-.res-total{font-size:13px;color:#888}
+/* Paso 2 */
+.res-hdr{padding:10px 16px;background:#fff;border-bottom:1px solid #e0dbd5;display:flex;align-items:center;gap:10px;position:sticky;top:57px;z-index:90}
+.res-ancla{display:flex;align-items:stretch;height:68px;flex:1;overflow:hidden;border:1px solid #e0dbd5;background:#f8f5f2}
+.res-ancla img{width:50px;height:68px;object-fit:contain;background:#f0ebe5;flex-shrink:0}
+.res-ancla-color{width:50px;height:68px;flex-shrink:0}
+.res-ancla-txt{flex:1;display:flex;align-items:center;padding:0 10px}
+.res-ancla-txt span{font-size:10px;letter-spacing:2px;text-transform:uppercase;font-weight:600}
+.btn-cambiar{padding:10px 14px;border:1px solid #000;background:#fff;font-size:9px;letter-spacing:2px;text-transform:uppercase;cursor:pointer;font-weight:600;flex-shrink:0;white-space:nowrap}
+.res-count{font-size:10px;color:#888;padding:8px 16px 2px;letter-spacing:.5px}
 
-/* Secciones de armonía — estilo categorías */
-.armonia-section{margin-bottom:8px;background:#fff;border-radius:14px;overflow:hidden;border:1px solid #e0e0e0}
-.armonia-section-header{display:flex;justify-content:space-between;align-items:center;padding:12px 14px;cursor:pointer}
-.armonia-section-left{display:flex;align-items:center;gap:8px}
-.armonia-dot{width:11px;height:11px;border-radius:50%;flex-shrink:0}
-.armonia-section-nombre{font-size:14px;font-weight:700}
-.armonia-section-count{font-size:12px;color:#888;font-weight:400;margin-left:4px}
-.armonia-section-arrow{font-size:12px;color:#888;transition:transform .2s}
-.armonia-section-arrow.open{transform:rotate(90deg)}
-.armonia-section-items{display:none;padding:0 8px 8px}
-.armonia-section-items.open{display:block}
+.arm-sec{margin-bottom:2px;background:#fff;border-bottom:1px solid #f0ebe5}
+.arm-sec-hdr{display:flex;justify-content:space-between;align-items:center;padding:13px 16px;cursor:pointer}
+.arm-sec-left{display:flex;align-items:center;gap:8px}
+.arm-dot{width:10px;height:10px;border-radius:50%;flex-shrink:0}
+.arm-nombre{font-size:10px;letter-spacing:2px;text-transform:uppercase;font-weight:600}
+.arm-count{font-size:10px;color:#888;margin-left:4px}
+.arm-arrow{font-size:12px;color:#888;transition:transform .2s}
+.arm-arrow.open{transform:rotate(90deg)}
+.arm-items{display:none;padding:2px;background:#e0dbd5}
+.arm-items.open{display:block}
 
-/* OUTFIT CARD — 2 COLUMNAS, BODY ORDER */
-.outfit-card{background:#fff;border-radius:12px;overflow:hidden;box-shadow:0 2px 8px rgba(0,0,0,0.08);border:1px solid #ebebeb}
-.outfit-col{display:flex;flex-direction:column;gap:1px;background:rgba(0,0,0,0.05)}
+.outfit-card{background:#fff;margin-bottom:2px}
+.outfit-col{display:flex;flex-direction:column;gap:1px;background:rgba(0,0,0,.05)}
 .of-item{overflow:hidden;width:100%;background:#f7f5f2}
 .of-item img{width:100%;height:100%;object-fit:contain}
 .of-color{width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-size:22px;background:#f7f5f2}
 .of-superior,.of-inferior,.of-exterior{height:238px}
 .of-calzado,.of-accesorios{height:150px}
-.outfit-paleta{display:flex;height:14px;gap:2px;margin:0}
+.outfit-paleta{display:flex;height:14px}
 .paleta-seg{flex:1}
-
-.nivel-divider{font-size:10px;color:#aaa;text-transform:uppercase;letter-spacing:0.6px;font-weight:600;margin:4px 2px 2px;grid-column:1/-1}
-
+.nivel-div{font-size:9px;color:#aaa;text-transform:uppercase;letter-spacing:2px;font-weight:600;margin:6px 16px 4px}
 .no-outfits{text-align:center;padding:40px 20px;color:#888}
 .no-outfits p{font-size:14px;margin-top:8px}
-.sin-combinacion{font-size:12px;color:#bbb;font-style:italic;padding:10px 14px}
 
-/* BADGE LIBRE */
-.badge-libre{display:inline-flex;align-items:center;gap:6px;padding:5px 12px;border-radius:20px;font-size:12px;font-weight:600;background:#1a1a1a;color:#fff;margin-bottom:10px}
+/* ── CARGAR ── */
+.cargar-block{background:#fff;margin-bottom:2px}
+.cargar-block-title{font-size:10px;letter-spacing:3px;text-transform:uppercase;font-weight:600;padding:18px 16px 12px}
+.search-wrap{display:flex;align-items:center;padding:0 16px 12px;gap:8px}
+.search-inp{flex:1;padding:10px 12px;border:1px solid #e0dbd5;font-size:14px;background:#f8f5f2;outline:none}
+.search-results{padding:0 16px 16px}
+.s-item{display:flex;align-items:center;gap:10px;padding:10px 0;border-bottom:1px solid #f0ebe5}
+.s-item-img{width:34px;height:46px;object-fit:contain;background:#f0ebe5;flex-shrink:0}
+.s-item-info{flex:1}
+.s-item-nombre{font-size:13px;font-weight:500}
+.s-item-meta{font-size:10px;color:#888;letter-spacing:.5px;margin-top:1px}
+.s-item-btns{display:flex;gap:4px;flex-shrink:0}
+.btn-edit-s{padding:6px 10px;border:1px solid #e0dbd5;background:#fff;font-size:9px;letter-spacing:1px;text-transform:uppercase;cursor:pointer}
+.btn-del-s{padding:6px 10px;background:#000;color:#fff;border:none;font-size:9px;letter-spacing:1px;text-transform:uppercase;cursor:pointer}
 
-/* DATOS */
-.data-section{background:#fff;border-radius:14px;padding:14px;margin-bottom:12px;margin-top:8px}
-.data-section h3{font-size:14px;font-weight:600;margin-bottom:10px}
-.data-btns{display:flex;gap:8px;flex-wrap:wrap}
-.data-btn{flex:1;padding:10px;border:1px solid #e0e0e0;border-radius:10px;background:#fff;font-size:13px;cursor:pointer;text-align:center;font-weight:500}
+/* ── MODAL ── */
+.modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:300;align-items:flex-end;justify-content:center}
+.modal-overlay.open{display:flex}
+.modal{background:#fff;padding:20px 16px;width:100%;max-width:500px;max-height:92vh;overflow-y:auto}
+.modal-handle{width:36px;height:3px;background:#e0dbd5;margin:0 auto 16px}
+.modal h3{font-size:10px;letter-spacing:3px;text-transform:uppercase;font-weight:700;margin-bottom:16px}
+.field{margin-bottom:14px}
+.field label{display:block;font-size:9px;color:#888;margin-bottom:5px;font-weight:500;text-transform:uppercase;letter-spacing:1px}
+.field input,.field select{width:100%;padding:10px 12px;border:1px solid #e0dbd5;font-size:15px;background:#fff;-webkit-appearance:none;outline:none}
+.foto-area{border:1px solid #e0dbd5;padding:20px;text-align:center;cursor:pointer;margin-bottom:14px;min-height:100px;display:flex;flex-direction:column;align-items:center;justify-content:center;background:#f8f5f2}
+.foto-area img{width:100%;max-height:200px;object-fit:contain}
+.foto-area p{font-size:10px;color:#888;margin-top:6px;letter-spacing:1px;text-transform:uppercase}
+.modal-btns{display:flex;gap:2px;margin-top:8px;padding-bottom:env(safe-area-inset-bottom)}
+.btn-cancel{flex:1;padding:14px;border:1px solid #e0dbd5;background:#fff;font-size:11px;cursor:pointer;letter-spacing:1px;text-transform:uppercase}
+.btn-save{flex:2;padding:14px;border:none;background:#000;color:#fff;font-size:11px;cursor:pointer;font-weight:600;letter-spacing:1px;text-transform:uppercase}
+.color-row{display:flex;align-items:center;gap:10px}
+.color-swatch{width:44px;height:44px;border:1px solid #e0dbd5;cursor:pointer;flex-shrink:0}
+.hex-input{flex:1;padding:10px 12px;border:1px solid #e0dbd5;font-size:15px;font-family:monospace;outline:none}
 
-/* ARM COLORS */
-.c-ana   {background:#1a7a1a}
-.c-comp  {background:#c44800}
-.c-split {background:#b87000}
-.c-tri   {background:#1a3acc}
-.c-tet   {background:#7700cc}
-.c-cua   {background:#cc0077}
-.c-abs   {background:#007755}
+/* HARM COLORS */
+.c-ana{background:#1a7a1a}.c-comp{background:#c44800}.c-split{background:#b87000}
+.c-tri{background:#1a3acc}.c-tet{background:#7700cc}.c-cua{background:#cc0077}.c-abs{background:#007755}
 </style>
 </head>
 <body>
 
-<header><h1>👔 Mi Guardarropa</h1></header>
-
-<!-- INVENTARIO -->
-<div id="screen-inventario" class="screen">
-  <div class="top-bar">
-    <h2 id="inv-count">0 prendas</h2>
-    <button class="btn-add" onclick="abrirModal()">+ Agregar</button>
-  </div>
-  <div id="categorias-wrap"></div>
-  <div class="data-section">
-    <h3>Datos</h3>
-    <div class="data-btns">
-      <button class="data-btn" onclick="exportarInventario()">⬆️ Exportar</button>
-      <button class="data-btn" onclick="document.getElementById('import-file').click()">⬇️ Importar</button>
-      <input type="file" id="import-file" accept=".json" style="display:none" onchange="importarInventario(this)">
-    </div>
-  </div>
+<!-- SPLASH -->
+<div id="splash">
+  <svg width="90" height="90" viewBox="0 0 90 90" xmlns="http://www.w3.org/2000/svg">
+    <rect width="90" height="90" fill="#f5f0eb"/>
+    <text x="45" y="56" text-anchor="middle" font-family="-apple-system,Helvetica Neue,sans-serif" font-size="38" font-weight="100" letter-spacing="2" fill="#1a1a1a">MG</text>
+    <line x1="12" y1="66" x2="78" y2="66" stroke="#1a1a1a" stroke-width="0.5"/>
+  </svg>
+  <div class="splash-sub">Mi Guardarropa</div>
 </div>
 
-<!-- CONSTRUCTOR -->
-<div id="screen-constructor" class="screen active">
+<!-- HEADER -->
+<header><div class="header-logo">Mi Guardarropa</div></header>
 
-  <!-- Paso 1: Ancla -->
+<!-- ══ INICIO ══ -->
+<div id="screen-inicio" class="screen active">
+  <div class="slideshow" id="slideshow">
+    <div class="slide active"><img src="slides/slide1.jpg" loading="eager" alt=""></div>
+    <div class="slide"><img src="slides/slide3.jpg" loading="lazy" alt=""></div>
+    <div class="slide"><img src="slides/slide5.jpg" loading="lazy" alt=""></div>
+    <div class="slide"><img src="slides/slide7.jpg" loading="lazy" alt=""></div>
+    <div class="slide"><img src="slides/slide9.jpg" loading="lazy" alt=""></div>
+  </div>
+  <div class="slide-dots" id="slide-dots">
+    <div class="slide-dot active"></div><div class="slide-dot"></div>
+    <div class="slide-dot"></div><div class="slide-dot"></div><div class="slide-dot"></div>
+  </div>
+  <div class="inicio-label">Collection</div>
+  <div class="editorial-grid">
+    <div class="editorial-item wide"><img src="slides/slide2.jpg" loading="lazy" alt=""></div>
+    <div class="editorial-item"><img src="slides/slide4.jpg" loading="lazy" alt=""></div>
+    <div class="editorial-item"><img src="slides/slide6.jpg" loading="lazy" alt=""></div>
+    <div class="editorial-item"><img src="slides/slide8.jpg" loading="lazy" alt=""></div>
+    <div class="editorial-item"><img src="slides/slide10.jpg" loading="lazy" alt=""></div>
+    <div class="editorial-item"><img src="slides/slide11.jpg" loading="lazy" alt=""></div>
+  </div>
+  <div style="height:12px"></div>
+</div>
+
+<!-- ══ CLOSET ══ -->
+<div id="screen-closet" class="screen">
+  <div class="color-filter-bar">
+    <span class="filter-label">Color</span>
+    <div class="swatch-all on" id="swatch-all" onclick="filtrarColor(null)"></div>
+    <div id="color-swatches" style="display:flex;gap:8px;align-items:center"></div>
+  </div>
+  <div id="closet-categorias"></div>
+</div>
+
+<!-- ══ OUTFIT ══ -->
+<div id="screen-outfit" class="screen">
   <div id="paso1-wrap">
-    <div class="paso-title">Prenda ancla</div>
-    <div class="paso-sub">¿Qué prenda quieres usar hoy?</div>
+    <div class="outfit-intro">
+      <div class="outfit-intro-title">Prenda ancla</div>
+      <div class="outfit-intro-sub">¿Qué quieres ponerte hoy?</div>
+    </div>
     <div id="ancla-categorias"></div>
-    <div style="height:70px"></div>
-    <div class="fixed-btn-wrap">
-      <button class="btn-negro secundario" onclick="activarModoLibre()">✦ Modo Libre</button>
+    <div style="height:72px"></div>
+    <div class="ml-wrap">
+      <button class="btn-ml" onclick="activarModoLibre()">✦ Modo Libre</button>
     </div>
   </div>
-
-  <!-- Paso 2: Looks -->
   <div id="paso2-wrap" style="display:none">
-    <div class="res-total" id="res-total" style="margin-bottom:8px"></div>
-    <div id="ancla-chip-res"></div>
+    <div class="res-hdr">
+      <div id="ancla-chip-res" style="flex:1"></div>
+      <button class="btn-cambiar" onclick="irPaso(1)">← Cambiar</button>
+    </div>
+    <div class="res-count" id="res-total"></div>
     <div id="lista-looks"></div>
     <div style="height:20px"></div>
   </div>
+</div>
 
+<!-- ══ CARGAR ══ -->
+<div id="screen-cargar" class="screen">
+  <div class="cargar-block">
+    <div class="cargar-block-title">Nueva Prenda</div>
+    <div style="padding:0 16px 16px">
+      <button onclick="abrirModal()" style="width:100%;padding:14px;background:#000;color:#fff;border:none;font-size:10px;font-weight:700;letter-spacing:3px;text-transform:uppercase;cursor:pointer">+ Agregar Prenda</button>
+    </div>
+  </div>
+  <div class="cargar-block" style="margin-top:2px">
+    <div class="cargar-block-title">Buscar & Gestionar</div>
+    <div class="search-wrap">
+      <input class="search-inp" id="search-input" type="text" placeholder="Nombre, tipo o marca..." oninput="buscarPrenda(this.value)">
+    </div>
+    <div class="search-results" id="search-results"></div>
+  </div>
+  <div class="cargar-block" style="margin-top:2px;padding:16px">
+    <div style="font-size:9px;letter-spacing:2px;text-transform:uppercase;color:#888;margin-bottom:12px">Datos</div>
+    <div style="display:flex;gap:2px">
+      <button onclick="exportarInventario()" style="flex:1;padding:12px;border:1px solid #e0dbd5;background:#fff;font-size:10px;letter-spacing:1px;text-transform:uppercase;cursor:pointer">Exportar</button>
+      <button onclick="document.getElementById('import-file').click()" style="flex:1;padding:12px;border:1px solid #e0dbd5;background:#fff;font-size:10px;letter-spacing:1px;text-transform:uppercase;cursor:pointer">Importar</button>
+      <input type="file" id="import-file" accept=".json" style="display:none" onchange="importarInventario(this)">
+    </div>
+  </div>
 </div>
 
 <!-- MODAL -->
@@ -195,55 +289,29 @@ header h1{font-size:17px;font-weight:700}
       <img id="preview-foto" style="display:none;margin-top:10px">
     </div>
     <input type="file" id="input-foto" accept="image/*" capture="environment" style="display:none" onchange="cargarFoto(this)">
-    <div class="field">
-      <label>Nombre</label>
-      <input type="text" id="inp-nombre" placeholder="Ej: Jean azul claro">
-    </div>
+    <div class="field"><label>Nombre</label><input type="text" id="inp-nombre" placeholder="Ej: Jean azul claro"></div>
     <div class="field">
       <label>Tipo</label>
       <select id="inp-tipo">
         <option value="">Selecciona...</option>
         <optgroup label="— Superior —">
-          <option value="Camiseta">Camiseta</option>
-          <option value="Camisa">Camisa</option>
-          <option value="Hoodie">Hoodie</option>
-          <option value="Polo">Polo</option>
-          <option value="Sudadera">Sudadera</option>
-          <option value="Suéter">Suéter</option>
-          <option value="Tank top">Tank top</option>
+          <option>Camiseta</option><option>Camisa</option><option>Hoodie</option>
+          <option>Polo</option><option>Sudadera</option><option>Suéter</option><option>Tank top</option>
         </optgroup>
         <optgroup label="— Exterior —">
-          <option value="Blazer">Blazer</option>
-          <option value="Chamarra">Chamarra</option>
-          <option value="Abrigo">Abrigo</option>
-          <option value="Chaqueta">Chaqueta</option>
+          <option>Blazer</option><option>Chamarra</option><option>Abrigo</option><option>Chaqueta</option>
         </optgroup>
         <optgroup label="— Inferior —">
-          <option value="Jean">Jean</option>
-          <option value="Jean largo">Jean largo</option>
-          <option value="Jean tres cuartos">Jean tres cuartos</option>
-          <option value="Pantalón">Pantalón</option>
-          <option value="Overalls">Overalls</option>
-          <option value="Short">Short</option>
-          <option value="Jogger">Jogger</option>
+          <option>Jean</option><option>Jean largo</option><option>Jean tres cuartos</option>
+          <option>Pantalón</option><option>Overalls</option><option>Short</option><option>Jogger</option>
         </optgroup>
         <optgroup label="— Calzado —">
-          <option value="Sneakers">Sneakers</option>
-          <option value="Converse">Converse</option>
-          <option value="Botas">Botas</option>
-          <option value="Bota">Bota</option>
-          <option value="Zapato">Zapato</option>
-          <option value="Sandalias">Sandalias</option>
-          <option value="Sandalia">Sandalia</option>
-          <option value="Mocasín">Mocasín</option>
+          <option>Sneakers</option><option>Converse</option><option>Botas</option><option>Bota</option>
+          <option>Zapato</option><option>Sandalias</option><option>Sandalia</option><option>Mocasín</option>
         </optgroup>
         <optgroup label="— Accesorios —">
-          <option value="Gorra">Gorra</option>
-          <option value="Bolso">Bolso</option>
-          <option value="Lentes">Lentes</option>
-          <option value="Cinturón">Cinturón</option>
-          <option value="Bufanda">Bufanda</option>
-          <option value="Reloj">Reloj</option>
+          <option>Gorra</option><option>Bolso</option><option>Lentes</option>
+          <option>Cinturón</option><option>Bufanda</option><option>Reloj</option>
         </optgroup>
       </select>
     </div>
@@ -254,17 +322,12 @@ header h1{font-size:17px;font-weight:700}
         <input type="text" class="hex-input" id="inp-hex" placeholder="#000000" maxlength="7" oninput="syncColor('hex')">
       </div>
     </div>
-    <div class="field">
-      <label>Marca</label>
-      <input type="text" id="inp-marca" placeholder="Ej: Zara, Nike...">
-    </div>
+    <div class="field"><label>Marca</label><input type="text" id="inp-marca" placeholder="Ej: Zara, Nike..."></div>
     <div class="field">
       <label>Formalidad</label>
       <select id="inp-formalidad">
-        <option value="casual">Casual</option>
-        <option value="smart casual">Smart casual</option>
-        <option value="streetwear">Streetwear</option>
-        <option value="formal">Formal</option>
+        <option value="casual">Casual</option><option value="smart casual">Smart casual</option>
+        <option value="streetwear">Streetwear</option><option value="formal">Formal</option>
       </select>
     </div>
     <div class="modal-btns">
@@ -276,38 +339,50 @@ header h1{font-size:17px;font-weight:700}
 
 <!-- NAV -->
 <nav class="bottom-nav">
-  <button class="bnav-btn active" id="nav-con" onclick="showScreen('constructor')">
-    <span class="bnav-icon">✨</span>Constructor
+  <button class="bnav-btn active" id="nav-inicio" onclick="showScreen('inicio')">
+    <span class="bnav-icon">⌂</span>Inicio
   </button>
-  <button class="bnav-btn" id="nav-inv" onclick="showScreen('inventario')">
-    <span class="bnav-icon">👕</span>Inventario
+  <button class="bnav-btn" id="nav-closet" onclick="showScreen('closet')">
+    <span class="bnav-icon">☰</span>Closet
+  </button>
+  <button class="bnav-btn" id="nav-outfit" onclick="showScreen('outfit')">
+    <span class="bnav-icon">✦</span>Outfit
+  </button>
+  <button class="bnav-btn" id="nav-cargar" onclick="showScreen('cargar')">
+    <span class="bnav-icon">＋</span>Cargar
   </button>
 </nav>
 
 <script>
-// ======== ESTADO ========
+// ═══ ESTADO ═══
 let inventario = JSON.parse(localStorage.getItem('wrd_inv') || '[]');
 let ancla = null;
 let modoLibreActivo = false;
 let editandoId = null;
+let colorFiltro = null;
+
+const RMBG_KEY = 'Misp39S3s5vPZsMBwYcnA8s1';
 
 const CATEGORIAS = [
-  { key:'superior',   label:'👕 Superior',   tipos:['Camiseta','Camisa','Hoodie','Polo','Sudadera','Suéter','Tank top'] },
-  { key:'exterior',   label:'🧥 Exterior',   tipos:['Blazer','Chamarra','Abrigo','Chaqueta'] },
-  { key:'inferior',   label:'👖 Inferior',   tipos:['Jean','Jean largo','Jean tres cuartos','Pantalón','Overalls','Short','Jogger'] },
-  { key:'calzado',    label:'👟 Calzado',    tipos:['Sneakers','Converse','Botas','Bota','Zapato','Sandalias','Sandalia','Mocasín'] },
-  { key:'accesorios', label:'🎩 Accesorios', tipos:['Gorra','Bolso','Lentes','Cinturón','Bufanda','Reloj'] },
+  {key:'superior',   label:'Superior',   tipos:['Camiseta','Camisa','Hoodie','Polo','Sudadera','Suéter','Tank top']},
+  {key:'exterior',   label:'Exterior',   tipos:['Blazer','Chamarra','Abrigo','Chaqueta']},
+  {key:'inferior',   label:'Inferior',   tipos:['Jean','Jean largo','Jean tres cuartos','Pantalón','Overalls','Short','Jogger']},
+  {key:'calzado',    label:'Calzado',    tipos:['Sneakers','Converse','Botas','Bota','Zapato','Sandalias','Sandalia','Mocasín']},
+  {key:'accesorios', label:'Accesorios', tipos:['Gorra','Bolso','Lentes','Cinturón','Bufanda','Reloj']},
 ];
 
 const ARMONIAS = [
-  { key:'analoga',        nombre:'Análoga',           dotClass:'c-ana',  color:'#1a7a1a', desc:'Colores vecinos (±30°)' },
-  { key:'complementaria', nombre:'Complementaria',    dotClass:'c-comp', color:'#c44800', desc:'Colores opuestos · máximo contraste' },
-  { key:'split',          nombre:'Split Comp.',       dotClass:'c-split',color:'#b87000', desc:'Dos colores junto al complementario' },
-  { key:'triadica',       nombre:'Triádica',          dotClass:'c-tri',  color:'#1a3acc', desc:'Tres colores equidistantes (120°)' },
-  { key:'tetradica',      nombre:'Tetrádica',         dotClass:'c-tet',  color:'#7700cc', desc:'Rectángulo en la rueda (60°+180°+240°)' },
-  { key:'cuadrada',       nombre:'Cuadrada',          dotClass:'c-cua',  color:'#cc0077', desc:'Cuatro colores en cuadrado (90°)' },
-  { key:'abstracta',      nombre:'Abstracta',         dotClass:'c-abs',  color:'#007755', desc:'Doble split complementaria (30°+150°+210°)' },
+  {key:'analoga',        nombre:'Análoga',        dotClass:'c-ana',  color:'#1a7a1a'},
+  {key:'complementaria', nombre:'Complementaria',  dotClass:'c-comp', color:'#c44800'},
+  {key:'split',          nombre:'Split Comp.',     dotClass:'c-split',color:'#b87000'},
+  {key:'triadica',       nombre:'Triádica',        dotClass:'c-tri',  color:'#1a3acc'},
+  {key:'tetradica',      nombre:'Tetrádica',       dotClass:'c-tet',  color:'#7700cc'},
+  {key:'cuadrada',       nombre:'Cuadrada',        dotClass:'c-cua',  color:'#cc0077'},
+  {key:'abstracta',      nombre:'Abstracta',       dotClass:'c-abs',  color:'#007755'},
 ];
+
+const ACC_CABEZA = ['Gorra','Lentes'];
+const ACC_CUERPO = ['Bolso','Cinturón','Bufanda','Reloj'];
 
 function getPosicion(tipo) {
   if(['Jean','Jean largo','Jean tres cuartos','Pantalón','Overalls','Short','Jogger'].includes(tipo)) return 'inferior';
@@ -319,7 +394,7 @@ function getPosicion(tipo) {
 
 function guardarLocal() { localStorage.setItem('wrd_inv', JSON.stringify(inventario)); }
 
-// ======== COLOR ENGINE ========
+// ═══ COLOR ENGINE ═══
 function hexToHsl(hex) {
   hex = hex.replace('#','');
   if(hex.length===3) hex=hex.split('').map(c=>c+c).join('');
@@ -334,23 +409,20 @@ function hexToHsl(hex) {
 }
 
 function esNeutro(hex) {
-  const {h, s, l} = hexToHsl(hex);
-  if(s < 15)  return true; // Negro, blanco, grises
-  if(l > 85)  return true; // Blanco / crema
-  if(l < 10)  return true; // Negro profundo
-  // Navy (azul oscuro — neutro de moda)
-  if(hueDist(h, 220) < 25 && l < 35) return true;
-  // Beige / camel / arena
-  if(h >= 25 && h <= 55 && s >= 12 && s <= 45 && l >= 50 && l <= 82) return true;
-  // Khaki / verde olivo neutro
-  if(h >= 50 && h <= 80 && s >= 10 && s <= 40 && l >= 30 && l <= 60) return true;
+  const {h,s,l} = hexToHsl(hex);
+  if(s<15) return true;
+  if(l>85) return true;
+  if(l<10) return true;
+  if(hueDist(h,220)<25 && l<35) return true;
+  if(h>=25&&h<=55&&s>=12&&s<=45&&l>=50&&l<=82) return true;
+  if(h>=50&&h<=80&&s>=10&&s<=40&&l>=30&&l<=60) return true;
   return false;
 }
 
-function hueDist(h1,h2) { const d=Math.abs(h1-h2); return Math.min(d,360-d); }
+function hueDist(h1,h2){const d=Math.abs(h1-h2);return Math.min(d,360-d);}
 
-function getHuesObjetivo(hAncla, arm) {
-  switch(arm) {
+function getHuesObjetivo(hAncla,arm){
+  switch(arm){
     case 'analoga':        return [(hAncla+30)%360,(hAncla+330)%360];
     case 'complementaria': return [(hAncla+180)%360];
     case 'split':          return [(hAncla+150)%360,(hAncla+210)%360];
@@ -362,234 +434,204 @@ function getHuesObjetivo(hAncla, arm) {
 }
 
 const TOLERANCIA = 28;
-
-function esCompatible(pHex, huesObj, anclaHex) {
-  if(pHex === anclaHex) return false;
+function esCompatible(pHex,huesObj,anclaHex){
+  if(pHex===anclaHex) return false;
   if(esNeutro(pHex)) return true;
-  const {h} = hexToHsl(pHex);
-  return huesObj.some(hObj => hueDist(h, hObj) <= TOLERANCIA);
+  const {h}=hexToHsl(pHex);
+  return huesObj.some(hObj=>hueDist(h,hObj)<=TOLERANCIA);
 }
 
-// ======== GENERADOR ========
-function generarParaArmonia(anclaRef, armKey) {
-  const huesObj = getHuesObjetivo(hexToHsl(anclaRef.color).h, armKey);
-  const otras = inventario.filter(p => p.id !== anclaRef.id);
-
-  function pool(pos) {
-    const all = otras.filter(p => getPosicion(p.tipo) === pos);
-    const c = all.filter(p => esCompatible(p.color, huesObj, anclaRef.color));
-    return c.length ? c : all;
+// ═══ GENERADOR ═══
+function generarParaArmonia(anclaRef,armKey){
+  const huesObj=getHuesObjetivo(hexToHsl(anclaRef.color).h,armKey);
+  const otras=inventario.filter(p=>p.id!==anclaRef.id);
+  function pool(pos){
+    const all=otras.filter(p=>getPosicion(p.tipo)===pos);
+    const c=all.filter(p=>esCompatible(p.color,huesObj,anclaRef.color));
+    return c.length?c:all;
   }
-
-  const anclaPos = getPosicion(anclaRef.tipo);
-  const sup = pool('superior');
-  const ext = pool('exterior');
-  const inf = pool('inferior');
-  const cal = pool('calzado');
-  const acc = pool('accesorios');
-
-  const outfits = [];
-
-  function push(piezas, nivel) {
-    // Añade un zapato compatible (rota entre los disponibles)
-    if (!piezas.some(p => getPosicion(p.tipo) === 'calzado') && cal.length) {
-      piezas = [...piezas, cal[outfits.length % cal.length]];
-    }
-    // Añade accesorio solo en 1 de cada 3 outfits para no duplicar
-    if (acc.length && outfits.length % 3 === 1 && !piezas.some(p => getPosicion(p.tipo) === 'accesorios')) {
-      piezas = [...piezas, acc[outfits.length % acc.length]];
-    }
-    outfits.push({nivel, piezas});
+  const anclaPos=getPosicion(anclaRef.tipo);
+  const sup=pool('superior'),ext=pool('exterior'),inf=pool('inferior'),cal=pool('calzado'),acc=pool('accesorios');
+  const outfits=[];
+  function push(piezas,nivel){
+    if(!piezas.some(p=>getPosicion(p.tipo)==='calzado')&&cal.length) piezas=[...piezas,cal[outfits.length%cal.length]];
+    if(acc.length&&outfits.length%3===1&&!piezas.some(p=>getPosicion(p.tipo)==='accesorios')) piezas=[...piezas,acc[outfits.length%acc.length]];
+    outfits.push({nivel,piezas});
   }
-
-  if(anclaPos === 'superior') {
-    inf.forEach(i => {
-      push([anclaRef, i], 'basico');
-      ext.forEach(e => push([e, anclaRef, i], 'exterior'));
-    });
-  } else if(anclaPos === 'exterior') {
-    sup.forEach(s => inf.forEach(i => push([anclaRef, s, i], 'exterior')));
-  } else if(anclaPos === 'inferior') {
-    sup.forEach(s => {
-      push([s, anclaRef], 'basico');
-      ext.forEach(e => push([e, s, anclaRef], 'exterior'));
-    });
-  } else if(anclaPos === 'calzado') {
-    sup.forEach(s => inf.forEach(i => {
-      push([s, i, anclaRef], 'basico');
-      ext.forEach(e => push([e, s, i, anclaRef], 'exterior'));
-    }));
-  } else if(anclaPos === 'accesorios') {
-    sup.forEach(s => inf.forEach(i => {
-      push([s, i, anclaRef], 'basico');
-      ext.forEach(e => push([e, s, i, anclaRef], 'exterior'));
-    }));
-  }
-
-  // Deduplicar dentro de la armonía
-  const seen = new Set();
-  const dedup = outfits.filter(o => {
-    const k = o.piezas.map(p=>p.id).sort().join('-');
-    if(seen.has(k)) return false;
-    seen.add(k); return true;
-  });
-
-  return dedup;
+  if(anclaPos==='superior'){inf.forEach(i=>{push([anclaRef,i],'basico');ext.forEach(e=>push([e,anclaRef,i],'exterior'));});}
+  else if(anclaPos==='exterior'){sup.forEach(s=>inf.forEach(i=>push([anclaRef,s,i],'exterior')));}
+  else if(anclaPos==='inferior'){sup.forEach(s=>{push([s,anclaRef],'basico');ext.forEach(e=>push([e,s,anclaRef],'exterior'));});}
+  else if(anclaPos==='calzado'){sup.forEach(s=>inf.forEach(i=>{push([s,i,anclaRef],'basico');ext.forEach(e=>push([e,s,i,anclaRef],'exterior'));}));}
+  else if(anclaPos==='accesorios'){sup.forEach(s=>inf.forEach(i=>{push([s,i,anclaRef],'basico');ext.forEach(e=>push([e,s,i,anclaRef],'exterior'));}));}
+  const seen=new Set();
+  return outfits.filter(o=>{const k=o.piezas.map(p=>p.id).sort().join('-');if(seen.has(k))return false;seen.add(k);return true;});
 }
 
-function generarTodosLosLooks(anclaRef) {
-  return ARMONIAS.map(arm => ({ arm, outfits: generarParaArmonia(anclaRef, arm.key) }));
+function generarTodosLosLooks(anclaRef){return ARMONIAS.map(arm=>({arm,outfits:generarParaArmonia(anclaRef,arm.key)}));}
+
+// ═══ CLOSET ═══
+function filtrarColor(color){
+  colorFiltro=color;
+  document.querySelectorAll('.swatch-c,.swatch-all').forEach(el=>el.classList.remove('on'));
+  if(color===null) document.getElementById('swatch-all').classList.add('on');
+  else document.querySelector(`.swatch-c[data-c="${color}"]`)?.classList.add('on');
+  renderCloset();
 }
 
-// ======== INVENTARIO ========
-function renderInventario() {
-  document.getElementById('inv-count').textContent = inventario.length + ' prendas';
-  const wrap = document.getElementById('categorias-wrap');
-  wrap.innerHTML = '';
-  CATEGORIAS.forEach(cat => {
-    const items = inventario.filter(p => getPosicion(p.tipo) === cat.key);
-    if(!items.length) return;
-    const sec = document.createElement('div');
-    sec.className = 'categoria-section';
-    sec.innerHTML = `
-      <div class="categoria-header" onclick="toggleCat(this)">
-        <span>${cat.label} <span class="count">(${items.length})</span></span>
-        <span class="categoria-arrow open">›</span>
+function renderCloset(){
+  const colors=[...new Set(inventario.map(p=>p.color))];
+  document.getElementById('color-swatches').innerHTML=colors.map(c=>
+    `<div class="swatch-c${colorFiltro===c?' on':''}" data-c="${c}" style="background:${c}" onclick="filtrarColor('${c}')"></div>`
+  ).join('');
+  const items=colorFiltro?inventario.filter(p=>p.color===colorFiltro):inventario;
+  const wrap=document.getElementById('closet-categorias');
+  wrap.innerHTML='';
+  CATEGORIAS.forEach(cat=>{
+    const catItems=items.filter(p=>getPosicion(p.tipo)===cat.key);
+    if(!catItems.length) return;
+    const sec=document.createElement('div');
+    sec.className='closet-cat';
+    sec.innerHTML=`
+      <div class="closet-cat-hdr" onclick="toggleSec(this,'closet-cat-arrow','closet-cat-items')">
+        <span class="closet-cat-name">${cat.label}</span>
+        <span class="closet-cat-right">
+          <span class="closet-cat-count">${catItems.length}</span>
+          <span class="closet-cat-arrow">›</span>
+        </span>
       </div>
-      <div class="categoria-items open">
-        ${items.map(p=>prendaCardHTML(p)).join('')}
+      <div class="closet-cat-items">
+        ${catItems.map(p=>closetCardHTML(p)).join('')}
       </div>`;
     wrap.appendChild(sec);
   });
 }
 
-function prendaCardHTML(p) {
-  return `
-  <div class="prenda-card" id="pc${p.id}">
-    ${p.foto ? '<img class="prenda-img" src="'+p.foto+'" onclick="selAnclaMobile('+p.id+')">'
-             : '<div class="prenda-placeholder" style="background:'+p.color+'" onclick="selAnclaMobile('+p.id+')">👕</div>'}
-    <div class="prenda-info" onclick="selAnclaMobile(${p.id})">
-      <div class="prenda-nombre">${p.nombre}</div>
-      <div class="prenda-meta"><span class="color-dot" style="background:${p.color}"></span>${p.tipo}</div>
-    </div>
-    <div class="prenda-actions">
-      <button class="prenda-action-btn btn-edit-p" onclick="editarPrenda(${p.id})">✏️</button>
-      <button class="prenda-action-btn btn-del-p" onclick="eliminarPrenda(${p.id})">✕</button>
+function closetCardHTML(p){
+  return `<div class="c-card">
+    ${p.foto?`<img class="c-card-img" src="${p.foto}" alt="">`:`<div class="c-card-ph" style="background:${p.color}">👕</div>`}
+    <div class="c-card-info">
+      <div class="c-card-nombre">${p.nombre}</div>
+      ${p.marca?`<div class="c-card-marca">${p.marca}</div>`:''}
+      <div class="c-card-color-row">
+        <div class="c-dot" style="background:${p.color}"></div>
+        <div class="c-hex">${p.color}</div>
+      </div>
     </div>
   </div>`;
 }
 
-function toggleCat(h) {
-  h.querySelector('.categoria-arrow').classList.toggle('open');
-  h.nextElementSibling.classList.toggle('open');
+// ═══ CARGAR ═══
+function buscarPrenda(q){
+  const res=document.getElementById('search-results');
+  if(!q.trim()){res.innerHTML='';return;}
+  const found=inventario.filter(p=>
+    p.nombre.toLowerCase().includes(q.toLowerCase())||
+    (p.marca||'').toLowerCase().includes(q.toLowerCase())||
+    p.tipo.toLowerCase().includes(q.toLowerCase())
+  );
+  if(!found.length){res.innerHTML='<p style="font-size:13px;color:#888;padding:12px 0">Sin resultados</p>';return;}
+  res.innerHTML=found.map(p=>`
+    <div class="s-item">
+      ${p.foto?`<img class="s-item-img" src="${p.foto}" alt="">`:`<div class="s-item-img" style="background:${p.color}"></div>`}
+      <div class="s-item-info">
+        <div class="s-item-nombre">${p.nombre}</div>
+        <div class="s-item-meta">${p.tipo}${p.marca?' · '+p.marca:''}</div>
+      </div>
+      <div class="s-item-btns">
+        <button class="btn-edit-s" onclick="editarPrenda(${p.id})">Editar</button>
+        <button class="btn-del-s" onclick="eliminarPrenda(${p.id})">Eliminar</button>
+      </div>
+    </div>`).join('');
 }
 
-// ======== MODAL ========
-function abrirModal() {
-  editandoId = null;
-  document.getElementById('modal-titulo').textContent = 'Agregar prenda';
+// ═══ MODAL ═══
+function abrirModal(){
+  editandoId=null;
+  document.getElementById('modal-titulo').textContent='Agregar prenda';
   limpiarModal();
   document.getElementById('modal-prenda').classList.add('open');
 }
-
-function editarPrenda(id) {
-  const p = inventario.find(x=>x.id===id); if(!p) return;
-  editandoId = id;
-  document.getElementById('modal-titulo').textContent = 'Editar prenda';
-  document.getElementById('inp-nombre').value = p.nombre;
-  document.getElementById('inp-tipo').value = p.tipo;
-  document.getElementById('inp-color').value = p.color;
-  document.getElementById('inp-hex').value = p.color;
-  document.getElementById('inp-marca').value = p.marca||'';
-  document.getElementById('inp-formalidad').value = p.formalidad;
-  if(p.foto){ const img=document.getElementById('preview-foto'); img.src=p.foto; img.style.display='block'; }
+function editarPrenda(id){
+  const p=inventario.find(x=>x.id===id);if(!p)return;
+  editandoId=id;
+  document.getElementById('modal-titulo').textContent='Editar prenda';
+  document.getElementById('inp-nombre').value=p.nombre;
+  document.getElementById('inp-tipo').value=p.tipo;
+  document.getElementById('inp-color').value=p.color;
+  document.getElementById('inp-hex').value=p.color;
+  document.getElementById('inp-marca').value=p.marca||'';
+  document.getElementById('inp-formalidad').value=p.formalidad;
+  if(p.foto){const img=document.getElementById('preview-foto');img.src=p.foto;img.style.display='block';}
   document.getElementById('modal-prenda').classList.add('open');
 }
-
-function eliminarPrenda(id) {
-  if(!confirm('¿Eliminar esta prenda?')) return;
-  inventario = inventario.filter(p=>p.id!==id);
-  guardarLocal(); renderInventario(); renderCatAncla();
+function eliminarPrenda(id){
+  if(!confirm('¿Eliminar esta prenda?'))return;
+  inventario=inventario.filter(p=>p.id!==id);
+  guardarLocal();renderCloset();renderCatAncla();
+  buscarPrenda(document.getElementById('search-input')?.value||'');
 }
-
-function cerrarModal() { document.getElementById('modal-prenda').classList.remove('open'); }
-
-function limpiarModal() {
+function cerrarModal(){document.getElementById('modal-prenda').classList.remove('open');}
+function limpiarModal(){
   ['inp-nombre','inp-marca'].forEach(id=>document.getElementById(id).value='');
   document.getElementById('inp-tipo').value='';
   document.getElementById('inp-color').value='#000000';
   document.getElementById('inp-hex').value='#000000';
   document.getElementById('inp-formalidad').value='casual';
-  const img=document.getElementById('preview-foto'); img.style.display='none'; img.src='';
+  const img=document.getElementById('preview-foto');img.style.display='none';img.src='';
+  document.getElementById('foto-status').textContent='Toca para agregar foto';
 }
-
-function syncColor(origen) {
+function syncColor(origen){
   if(origen==='picker') document.getElementById('inp-hex').value=document.getElementById('inp-color').value;
-  else { const v=document.getElementById('inp-hex').value; if(/^#[0-9A-Fa-f]{6}$/.test(v)) document.getElementById('inp-color').value=v; }
+  else{const v=document.getElementById('inp-hex').value;if(/^#[0-9A-Fa-f]{6}$/.test(v))document.getElementById('inp-color').value=v;}
 }
 
-const RMBG_KEY = 'Misp39S3s5vPZsMBwYcnA8s1';
-
-async function removerFondo(dataUrl) {
-  const blob = await fetch(dataUrl).then(r => r.blob());
-  const fd = new FormData();
-  fd.append('image_file', blob, 'photo.jpg');
-  fd.append('size', 'auto');
-  const res = await fetch('https://api.remove.bg/v1.0/removebg', {
-    method: 'POST',
-    headers: {'X-Api-Key': RMBG_KEY},
-    body: fd
-  });
-  if(!res.ok) throw new Error('removebg ' + res.status);
-  const buf = await res.arrayBuffer();
-  const bytes = new Uint8Array(buf);
-  let bin = '';
-  for(let i = 0; i < bytes.length; i++) bin += String.fromCharCode(bytes[i]);
-  return 'data:image/png;base64,' + btoa(bin);
+// ═══ REMOVE.BG ═══
+async function removerFondo(dataUrl){
+  const blob=await fetch(dataUrl).then(r=>r.blob());
+  const fd=new FormData();
+  fd.append('image_file',blob,'photo.jpg');
+  fd.append('size','auto');
+  const res=await fetch('https://api.remove.bg/v1.0/removebg',{method:'POST',headers:{'X-Api-Key':RMBG_KEY},body:fd});
+  if(!res.ok)throw new Error('removebg '+res.status);
+  const buf=await res.arrayBuffer();
+  const bytes=new Uint8Array(buf);
+  let bin='';for(let i=0;i<bytes.length;i++)bin+=String.fromCharCode(bytes[i]);
+  return 'data:image/png;base64,'+btoa(bin);
 }
 
-function extraerColor(imgEl) {
-  try {
-    const c=document.createElement('canvas'); c.width=c.height=60;
-    const ctx=c.getContext('2d'); ctx.drawImage(imgEl,0,0,60,60);
+function extraerColor(imgEl){
+  try{
+    const c=document.createElement('canvas');c.width=c.height=60;
+    const ctx=c.getContext('2d');ctx.drawImage(imgEl,0,0,60,60);
     const d=ctx.getImageData(0,0,60,60).data;
     let r=0,g=0,b=0,n=0;
-    for(let i=0;i<d.length;i+=4){
-      if(d[i+3]<128) continue;
-      r+=d[i]; g+=d[i+1]; b+=d[i+2]; n++;
-    }
-    if(!n) return null;
+    for(let i=0;i<d.length;i+=4){if(d[i+3]<128)continue;r+=d[i];g+=d[i+1];b+=d[i+2];n++;}
+    if(!n)return null;
     return '#'+[r,g,b].map(v=>Math.round(v/n).toString(16).padStart(2,'0')).join('');
-  } catch(e){ return null; }
+  }catch(e){return null;}
 }
 
-function cargarFoto(input) {
-  if(!input.files[0]) return;
-  const reader = new FileReader();
-  reader.onload = async e => {
-    const img = document.getElementById('preview-foto');
-    const status = document.getElementById('foto-status');
-    img.src = e.target.result;
-    img.style.display = 'block';
-    status.textContent = '⏳ Quitando fondo...';
-    try {
-      const sinFondo = await removerFondo(e.target.result);
-      img.src = sinFondo;
-      await new Promise(res => { img.onload = res; img.onerror = res; });
-      status.textContent = '✓ Fondo eliminado';
-    } catch(err) {
-      status.textContent = 'Toca para cambiar foto';
-    }
-    const color = extraerColor(img);
-    if(color) {
-      document.getElementById('inp-color').value = color;
-      document.getElementById('inp-hex').value = color;
-    }
+function cargarFoto(input){
+  if(!input.files[0])return;
+  const reader=new FileReader();
+  reader.onload=async e=>{
+    const img=document.getElementById('preview-foto');
+    const status=document.getElementById('foto-status');
+    img.src=e.target.result;img.style.display='block';
+    status.textContent='⏳ Quitando fondo...';
+    try{
+      const sinFondo=await removerFondo(e.target.result);
+      img.src=sinFondo;
+      await new Promise(res=>{img.onload=res;img.onerror=res;});
+      status.textContent='✓ Fondo eliminado';
+    }catch(err){status.textContent='Toca para cambiar foto';}
+    const color=extraerColor(img);
+    if(color){document.getElementById('inp-color').value=color;document.getElementById('inp-hex').value=color;}
   };
   reader.readAsDataURL(input.files[0]);
 }
 
-function guardarPrenda() {
+function guardarPrenda(){
   const nombre=document.getElementById('inp-nombre').value.trim();
   const tipo=document.getElementById('inp-tipo').value;
   const color=document.getElementById('inp-color').value;
@@ -597,51 +639,53 @@ function guardarPrenda() {
   const formalidad=document.getElementById('inp-formalidad').value;
   const fotoEl=document.getElementById('preview-foto');
   const foto=fotoEl.src&&fotoEl.style.display!=='none'?fotoEl.src:null;
-  if(!nombre||!tipo){ alert('Escribe el nombre y selecciona el tipo.'); return; }
+  if(!nombre||!tipo){alert('Escribe el nombre y selecciona el tipo.');return;}
   const pos=getPosicion(tipo);
-  if(editandoId) {
+  if(editandoId){
     const idx=inventario.findIndex(p=>p.id===editandoId);
-    if(idx>=0) inventario[idx]={...inventario[idx],nombre,tipo,color,marca,formalidad,foto,pos};
-  } else {
+    if(idx>=0)inventario[idx]={...inventario[idx],nombre,tipo,color,marca,formalidad,foto,pos};
+  }else{
     inventario.push({id:Date.now(),nombre,tipo,color,marca,formalidad,foto,pos});
   }
-  guardarLocal(); renderInventario(); renderCatAncla(); cerrarModal();
+  guardarLocal();renderCloset();renderCatAncla();cerrarModal();
 }
 
-// ======== EXPORT / IMPORT ========
-function exportarInventario() {
+// ═══ EXPORT / IMPORT ═══
+function exportarInventario(){
   const a=document.createElement('a');
   a.href=URL.createObjectURL(new Blob([JSON.stringify(inventario)],{type:'application/json'}));
-  a.download='guardarropa.json'; a.click();
+  a.download='guardarropa.json';a.click();
 }
-
-function importarInventario(input) {
+function importarInventario(input){
   const r=new FileReader();
-  r.onload=e=>{ try{
+  r.onload=e=>{try{
     const data=JSON.parse(e.target.result);
-    if(Array.isArray(data)){ inventario=data; guardarLocal(); renderInventario(); renderCatAncla(); alert('Importado: '+data.length+' prendas'); }
-  }catch(err){ alert('Error al importar.'); }};
+    if(Array.isArray(data)){inventario=data;guardarLocal();renderCloset();renderCatAncla();alert('Importado: '+data.length+' prendas');}
+  }catch(err){alert('Error al importar.');}};
   r.readAsText(input.files[0]);
 }
 
-// ======== CONSTRUCTOR ========
-function renderCatAncla() {
-  const wrap=document.getElementById('ancla-categorias'); wrap.innerHTML='';
+// ═══ OUTFIT CONSTRUCTOR ═══
+function renderCatAncla(){
+  const wrap=document.getElementById('ancla-categorias');wrap.innerHTML='';
   CATEGORIAS.forEach(cat=>{
-    const items=inventario.filter(p=>getPosicion(p.tipo)===cat.key); if(!items.length) return;
-    const sec=document.createElement('div'); sec.className='categoria-section';
+    const items=inventario.filter(p=>getPosicion(p.tipo)===cat.key);if(!items.length)return;
+    const sec=document.createElement('div');sec.className='anc-cat';
     sec.innerHTML=`
-      <div class="categoria-header" onclick="toggleCat(this)">
-        <span>${cat.label} <span class="count">(${items.length})</span></span>
-        <span class="categoria-arrow">›</span>
+      <div class="anc-cat-hdr" onclick="toggleSec(this,'anc-cat-arrow','anc-cat-items')">
+        <span class="anc-cat-name">${cat.label}</span>
+        <span class="anc-cat-right">
+          <span class="anc-cat-count">${items.length}</span>
+          <span class="anc-cat-arrow">›</span>
+        </span>
       </div>
-      <div class="categoria-items">
+      <div class="anc-cat-items">
         ${items.map(p=>`
-          <div class="prenda-card${ancla&&ancla.id===p.id?' selected':''}" onclick="selAncla(${p.id})">
-            ${p.foto?'<img class="prenda-img" src="'+p.foto+'">':`<div class="prenda-placeholder" style="background:${p.color}">👕</div>`}
-            <div class="prenda-info">
-              <div class="prenda-nombre">${p.nombre}</div>
-              <div class="prenda-meta"><span class="color-dot" style="background:${p.color}"></span>${p.tipo}</div>
+          <div class="anc-card${ancla&&ancla.id===p.id?' selected':''}" onclick="selAncla(${p.id})">
+            ${p.foto?`<img class="anc-card-img" src="${p.foto}" alt="">`:`<div class="anc-card-ph" style="background:${p.color}">👕</div>`}
+            <div class="anc-card-info">
+              <div class="anc-card-nombre">${p.nombre}</div>
+              <div class="anc-card-meta"><span class="anc-dot" style="background:${p.color}"></span>${p.tipo}</div>
             </div>
           </div>`).join('')}
       </div>`;
@@ -649,186 +693,180 @@ function renderCatAncla() {
   });
 }
 
-function selAncla(id) {
-  ancla = inventario.find(p=>p.id===id);
-  modoLibreActivo = false;
+function toggleSec(hdr,arrowClass,itemsClass){
+  const arrow=hdr.querySelector('.'+arrowClass);
+  const items=hdr.nextElementSibling;
+  arrow.classList.toggle('open');
+  items.classList.toggle('open');
+}
+
+function selAncla(id){
+  ancla=inventario.find(p=>p.id===id);
+  modoLibreActivo=false;
   mostrarLooks();
 }
 
-function selAnclaMobile(id) {
-  ancla=inventario.find(p=>p.id===id);
-  showScreen('constructor');
-  setTimeout(()=>{ renderCatAncla(); },50);
-}
-
-function irPaso(n) {
+function irPaso(n){
   ['paso1-wrap','paso2-wrap'].forEach(id=>document.getElementById(id).style.display='none');
   document.getElementById('paso'+n+'-wrap').style.display='block';
   window.scrollTo(0,0);
 }
 
-function chipAnclaHTML(p) {
-  return `<div class="ancla-chip">
-    ${p.foto
-      ? '<img class="ancla-thumb" src="'+p.foto+'" alt="">'
-      : '<div class="ancla-thumb-color" style="background:'+p.color+'"></div>'}
-    <button class="ancla-cambiar-btn" onclick="irPaso(1)">← Cambiar prenda</button>
+function chipAnclaHTML(p){
+  return `<div class="res-ancla">
+    ${p.foto?`<img src="${p.foto}" alt="" style="width:50px;height:68px;object-fit:contain;background:#f0ebe5;flex-shrink:0">`:`<div style="width:50px;height:68px;background:${p.color};flex-shrink:0"></div>`}
+    <div class="res-ancla-txt"><span>${p.nombre}</span></div>
   </div>`;
 }
 
-function activarModoLibre() {
-  modoLibreActivo = true;
-  ancla = null;
-  showScreen('constructor');
-  mostrarLooks();
+function activarModoLibre(){
+  modoLibreActivo=true;ancla=null;
+  showScreen('outfit');mostrarLooks();
 }
 
-function mostrarLooks() {
+function mostrarLooks(){
   irPaso(2);
-
-  // Chip ancla o badge libre
-  const chipEl = document.getElementById('ancla-chip-res');
-  if(modoLibreActivo) {
-    chipEl.innerHTML = `<div class="ancla-chip">
-      <div style="flex:1;display:flex;align-items:center;padding:0 14px;font-size:13px;font-weight:700">✦ Modo Libre</div>
-      <button class="ancla-cambiar-btn" onclick="irPaso(1)">← Cambiar prenda</button>
+  const chipEl=document.getElementById('ancla-chip-res');
+  if(modoLibreActivo){
+    chipEl.innerHTML=`<div class="res-ancla" style="align-items:center;padding:0 14px">
+      <div style="font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase">✦ Modo Libre</div>
     </div>`;
-  } else {
-    chipEl.innerHTML = chipAnclaHTML(ancla);
+  }else{
+    chipEl.innerHTML=chipAnclaHTML(ancla);
   }
-
   let grupos;
-
-  if(modoLibreActivo) {
-    // Genera desde todos los superiores como ancla para máxima variedad
-    const anclas = inventario.filter(p => ['superior','exterior','inferior'].includes(getPosicion(p.tipo)));
-    const combinados = {};
-    ARMONIAS.forEach(arm => combinados[arm.key] = { arm, outfitsSet: new Set(), outfits: [] });
-
-    anclas.forEach(ref => {
-      ARMONIAS.forEach(arm => {
-        const res = generarParaArmonia(ref, arm.key);
-        res.forEach(o => {
-          const k = o.piezas.map(p=>p.id).sort().join('-');
-          if(!combinados[arm.key].outfitsSet.has(k)) {
-            combinados[arm.key].outfitsSet.add(k);
-            combinados[arm.key].outfits.push(o);
-          }
+  if(modoLibreActivo){
+    const anclas=inventario.filter(p=>['superior','exterior','inferior'].includes(getPosicion(p.tipo)));
+    const combinados={};
+    ARMONIAS.forEach(arm=>combinados[arm.key]={arm,outfitsSet:new Set(),outfits:[]});
+    anclas.forEach(ref=>{
+      ARMONIAS.forEach(arm=>{
+        const res=generarParaArmonia(ref,arm.key);
+        res.forEach(o=>{
+          const k=o.piezas.map(p=>p.id).sort().join('-');
+          if(!combinados[arm.key].outfitsSet.has(k)){combinados[arm.key].outfitsSet.add(k);combinados[arm.key].outfits.push(o);}
         });
       });
     });
-
-    grupos = ARMONIAS
-      .map(arm => ({ arm, outfits: combinados[arm.key].outfits.sort(()=>Math.random()-0.5).slice(0,15) }))
-      .filter(g => g.outfits.length);
-  } else {
-    grupos = generarTodosLosLooks(ancla);
+    grupos=ARMONIAS.map(arm=>({arm,outfits:combinados[arm.key].outfits.sort(()=>Math.random()-0.5).slice(0,15)})).filter(g=>g.outfits.length);
+  }else{
+    grupos=generarTodosLosLooks(ancla);
   }
-
-  const total = grupos.reduce((s,g)=>s+g.outfits.length, 0);
-  const conResultados = grupos.filter(g=>g.outfits.length).length;
-  document.getElementById('res-total').textContent = total + ' looks · ' + conResultados + ' armonías';
-
-  if(!total) {
-    document.getElementById('lista-looks').innerHTML = `<div class="no-outfits"><div style="font-size:40px">🔍</div><p>No hay combinaciones.<br>Agrega más prendas al inventario.</p></div>`;
+  const gruposConRes=grupos.filter(g=>g.outfits.length>0);
+  const total=gruposConRes.reduce((s,g)=>s+g.outfits.length,0);
+  document.getElementById('res-total').textContent=total+' looks · '+gruposConRes.length+' armonías';
+  if(!total){
+    document.getElementById('lista-looks').innerHTML=`<div class="no-outfits"><div style="font-size:40px">🔍</div><p>No hay combinaciones.<br>Agrega más prendas.</p></div>`;
     return;
   }
-
-  const gruposConResultados = grupos.filter(g => g.outfits.length > 0);
-  let primeraExpandida = false;
-  document.getElementById('lista-looks').innerHTML = gruposConResultados.map(g => {
-    const basicos  = g.outfits.filter(o=>o.nivel==='basico');
-    const exterior = g.outfits.filter(o=>o.nivel==='exterior');
-    const expandir = !primeraExpandida;
-    primeraExpandida = true;
-    return `
-    <div class="armonia-section">
-      <div class="armonia-section-header" onclick="toggleArmonia(this)">
-        <div class="armonia-section-left">
-          <span class="armonia-dot ${g.arm.dotClass}"></span>
-          <span class="armonia-section-nombre">${g.arm.nombre}</span>
-          <span class="armonia-section-count">${g.outfits.length} looks</span>
+  let primeraExpandida=false;
+  document.getElementById('lista-looks').innerHTML=gruposConRes.map(g=>{
+    const basicos=g.outfits.filter(o=>o.nivel==='basico');
+    const exterior=g.outfits.filter(o=>o.nivel==='exterior');
+    const expandir=!primeraExpandida;primeraExpandida=true;
+    return `<div class="arm-sec">
+      <div class="arm-sec-hdr" onclick="toggleSec(this,'arm-arrow','arm-items')">
+        <div class="arm-sec-left">
+          <span class="arm-dot ${g.arm.dotClass}"></span>
+          <span class="arm-nombre">${g.arm.nombre}</span>
+          <span class="arm-count">${g.outfits.length} looks</span>
         </div>
-        <span class="armonia-section-arrow${expandir?' open':''}">›</span>
+        <span class="arm-arrow${expandir?' open':''}">›</span>
       </div>
-      <div class="armonia-section-items${expandir?' open':''}">
-        ${(basicos.length  ? '<div class="nivel-divider">Sin capa exterior</div>'+basicos.map(o=>lookCardHTML(o)).join('') : '')
-        + (exterior.length ? '<div class="nivel-divider">Con capa exterior</div>'+exterior.map(o=>lookCardHTML(o)).join('') : '')}
+      <div class="arm-items${expandir?' open':''}">
+        ${(basicos.length?'<div class="nivel-div">Sin capa exterior</div>'+basicos.map(o=>lookCardHTML(o)).join(''):'')
+        +(exterior.length?'<div class="nivel-div">Con capa exterior</div>'+exterior.map(o=>lookCardHTML(o)).join(''):'')}
       </div>
     </div>`;
   }).join('');
 }
 
-function toggleArmonia(header) {
-  const arrow = header.querySelector('.armonia-section-arrow');
-  const items = header.nextElementSibling;
-  arrow.classList.toggle('open');
-  items.classList.toggle('open');
-}
-
-const ACC_CABEZA = ['Gorra','Lentes'];
-const ACC_CUERPO = ['Bolso','Cinturón','Bufanda','Reloj'];
-
-function lookCardHTML(o) {
-  const piezas = o.piezas;
-  const colores = [...new Set(piezas.map(p=>p.color))];
-
-  const accCab = piezas.filter(p => ACC_CABEZA.includes(p.tipo));
-  const ext    = piezas.filter(p => getPosicion(p.tipo) === 'exterior');
-  const sup    = piezas.filter(p => getPosicion(p.tipo) === 'superior');
-  const inf    = piezas.filter(p => getPosicion(p.tipo) === 'inferior');
-  const cal    = piezas.filter(p => getPosicion(p.tipo) === 'calzado');
-  const accCue = piezas.filter(p => ACC_CUERPO.includes(p.tipo));
-
-  const orden = [...accCab, ...ext, ...sup, ...inf, ...cal, ...accCue];
-
-  function fotoItem(p) {
-    const pos = getPosicion(p.tipo);
-    return `<div class="of-item of-${pos}">
-      ${p.foto
-        ? '<img src="'+p.foto+'" alt="">'
-        : '<div class="of-color" style="background:'+p.color+'">'+tipoIcon(p.tipo)+'</div>'}
-    </div>`;
+function lookCardHTML(o){
+  const piezas=o.piezas;
+  const colores=[...new Set(piezas.map(p=>p.color))];
+  const accCab=piezas.filter(p=>ACC_CABEZA.includes(p.tipo));
+  const ext=piezas.filter(p=>getPosicion(p.tipo)==='exterior');
+  const sup=piezas.filter(p=>getPosicion(p.tipo)==='superior');
+  const inf=piezas.filter(p=>getPosicion(p.tipo)==='inferior');
+  const cal=piezas.filter(p=>getPosicion(p.tipo)==='calzado');
+  const accCue=piezas.filter(p=>ACC_CUERPO.includes(p.tipo));
+  const orden=[...accCab,...ext,...sup,...inf,...cal,...accCue];
+  function fotoItem(p){
+    const pos=getPosicion(p.tipo);
+    return `<div class="of-item of-${pos}">${p.foto?`<img src="${p.foto}" alt="">`:`<div class="of-color" style="background:${p.color}">${tipoIcon(p.tipo)}</div>`}</div>`;
   }
-
-  return `
-  <div class="outfit-card">
+  return `<div class="outfit-card">
     <div class="outfit-col">${orden.map(fotoItem).join('')}</div>
     <div class="outfit-paleta">${colores.map(c=>`<div class="paleta-seg" style="background:${c}"></div>`).join('')}</div>
   </div>`;
 }
 
-function tipoIcon(tipo) {
-  const pos = getPosicion(tipo);
-  if(pos==='superior'||pos==='exterior') return '👕';
-  if(pos==='inferior') return '👖';
-  if(pos==='calzado') return '👟';
+function tipoIcon(tipo){
+  const pos=getPosicion(tipo);
+  if(pos==='superior'||pos==='exterior')return '👕';
+  if(pos==='inferior')return '👖';
+  if(pos==='calzado')return '👟';
   return '🎩';
 }
 
-// ======== NAVEGACIÓN ========
-function showScreen(id) {
+// ═══ SLIDESHOW ═══
+let slideIdx=0,slideTimer=null;
+function initSlideshow(){
+  const slides=document.querySelectorAll('.slide');
+  const dots=document.querySelectorAll('.slide-dot');
+  if(!slides.length)return;
+  function goTo(n){
+    slides[slideIdx].classList.remove('active');
+    dots[slideIdx].classList.remove('active');
+    slideIdx=(n+slides.length)%slides.length;
+    slides[slideIdx].classList.add('active');
+    dots[slideIdx].classList.add('active');
+  }
+  slideTimer=setInterval(()=>goTo(slideIdx+1),4000);
+  dots.forEach((d,i)=>d.addEventListener('click',()=>{clearInterval(slideTimer);goTo(i);slideTimer=setInterval(()=>goTo(slideIdx+1),4000);}));
+  let tx=0;
+  const ss=document.getElementById('slideshow');
+  ss.addEventListener('touchstart',e=>{tx=e.touches[0].clientX;},{passive:true});
+  ss.addEventListener('touchend',e=>{
+    const diff=tx-e.changedTouches[0].clientX;
+    if(Math.abs(diff)>50){clearInterval(slideTimer);goTo(slideIdx+(diff>0?1:-1));slideTimer=setInterval(()=>goTo(slideIdx+1),4000);}
+  },{passive:true});
+}
+
+// ═══ NAVEGACIÓN ═══
+function showScreen(id){
   document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
   document.querySelectorAll('.bnav-btn').forEach(b=>b.classList.remove('active'));
   document.getElementById('screen-'+id).classList.add('active');
-  document.getElementById(id==='inventario'?'nav-inv':'nav-con').classList.add('active');
-  if(id==='constructor'&&!modoLibreActivo){ renderCatAncla(); irPaso(1); }
-  else if(id==='inventario') renderInventario();
+  document.getElementById('nav-'+id).classList.add('active');
   window.scrollTo(0,0);
+  if(id==='closet') renderCloset();
+  else if(id==='outfit'&&!modoLibreActivo){renderCatAncla();irPaso(1);}
+  else if(id==='cargar'){document.getElementById('search-input').value='';document.getElementById('search-results').innerHTML='';}
 }
 
-// ======== SERVICE WORKER ========
-if('serviceWorker' in navigator) {
+// ═══ SERVICE WORKER ═══
+if('serviceWorker' in navigator){
   navigator.serviceWorker.register('/wardrobe/sw.js').catch(()=>{});
 }
 
-// ======== INIT ========
+// ═══ SPLASH ═══
+window.addEventListener('load',()=>{
+  initSlideshow();
+  setTimeout(()=>{
+    const sp=document.getElementById('splash');
+    sp.classList.add('out');
+    setTimeout(()=>sp.style.display='none',900);
+  },2000);
+});
+
+// ═══ INIT ═══
 if(inventario.length===0){
-  fetch("guardarropa.json").then(r=>r.json()).then(data=>{
-    inventario=data; guardarLocal(); renderInventario(); renderCatAncla();
+  fetch('guardarropa.json').then(r=>r.json()).then(data=>{
+    inventario=data;guardarLocal();renderCloset();renderCatAncla();
   });
-} else {
-  renderInventario(); renderCatAncla();
+}else{
+  renderCloset();renderCatAncla();
 }
 </script>
 </body>
