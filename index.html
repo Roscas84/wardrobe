@@ -104,7 +104,9 @@ header{background:#fff;border-bottom:1px solid #e0dbd5;padding:14px 16px;positio
 
 /* Outfits lista */
 .outfits-wrap{background:#000;min-height:200px}
-.outfit-card{background:#fff;margin-bottom:2px}
+.outfit-card{background:#fff;margin-bottom:2px;position:relative}
+.outfit-card.wada-ok{border:4px solid #c9a227}
+.wada-badge{position:absolute;top:8px;right:8px;width:26px;height:26px;background:#c9a227;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:700;color:#000;z-index:10;line-height:1}
 .outfit-col{display:flex;flex-direction:column;gap:1px;background:rgba(0,0,0,.05)}
 .of-item{overflow:hidden;width:100%;background:#f7f5f2}
 .of-item img{width:100%;height:100%;object-fit:contain}
@@ -694,7 +696,7 @@ function lookCardHTML(o,wadaOk=false){
   const accCue=piezas.filter(p=>ACC_CUERPO.includes(p.tipo));
   const orden=[...accCab,...ext,...sup,...inf,...cal,...accCue];
   function fi(p){const pos=getPosicion(p.tipo);return`<div class="of-item of-${pos}">${p.foto?`<img src="${p.foto}" alt="">`:`<div class="of-color" style="background:${p.color}">${tipoIcon(p.tipo)}</div>`}</div>`;}
-  return`<div class="outfit-card${wadaOk?' wada-ok':''}"><div class="outfit-col">${orden.map(fi).join('')}</div><div class="outfit-paleta">${colores.map(c=>`<div class="paleta-seg" style="background:${c}"></div>`).join('')}${wadaOk?`<div style="width:18px;background:#c9a227;display:flex;align-items:center;justify-content:center;font-size:8px;color:#000;font-weight:700;letter-spacing:0">W</div>`:''}</div></div>`;
+  return`<div class="outfit-card${wadaOk?' wada-ok':''}">${wadaOk?'<div class="wada-badge">W</div>':''}<div class="outfit-col">${orden.map(fi).join('')}</div><div class="outfit-paleta">${colores.map(c=>`<div class="paleta-seg" style="background:${c}"></div>`).join('')}</div></div>`;
 }
 function tipoIcon(tipo){const pos=getPosicion(tipo);if(pos==='superior'||pos==='exterior')return'👕';if(pos==='inferior')return'👖';if(pos==='calzado')return'👟';return'🎩';}
 
