@@ -12,7 +12,8 @@
     "notas": null,
     "capa": 0,
     "foto": "images/DER85906_1_enlarged.jpg.png",
-    "pos": "superior"
+    "pos": "superior",
+    "subtipo": "Cropped"
   },
   {
     "id": 2,
@@ -27,7 +28,8 @@
     "notas": null,
     "capa": 3,
     "foto": "images/EMP64361_1_enlarged.jpg.png",
-    "pos": "exterior"
+    "pos": "exterior",
+    "subtipo": "Regular"
   },
   {
     "id": 3,
@@ -42,7 +44,8 @@
     "notas": null,
     "capa": 0,
     "foto": "images/ISA250149_3_enlarged.jpg.png",
-    "pos": "superior"
+    "pos": "superior",
+    "subtipo": "Aviador"
   },
   {
     "id": 4,
@@ -57,7 +60,8 @@
     "notas": null,
     "capa": 1,
     "foto": "images/PERGO20003_1_enlarged.jpg.png",
-    "pos": "superior"
+    "pos": "superior",
+    "subtipo": "Manga larga"
   },
   {
     "id": 5,
@@ -72,7 +76,8 @@
     "notas": null,
     "capa": 0,
     "foto": "images/W12198031_1_enlarged.jpg.png",
-    "pos": "superior"
+    "pos": "superior",
+    "subtipo": "Corto/Flecos"
   },
   {
     "id": 6,
@@ -87,7 +92,8 @@
     "notas": null,
     "capa": 0,
     "foto": "images/WAVIS64206_1_enlarged.jpg.png",
-    "pos": "superior"
+    "pos": "superior",
+    "subtipo": "Trucker"
   },
   {
     "id": 7,
@@ -102,7 +108,8 @@
     "notas": null,
     "capa": 0,
     "foto": "images/WDANP20612_1_enlarged.jpg.png",
-    "pos": "superior"
+    "pos": "superior",
+    "subtipo": "Vaqueras"
   },
   {
     "id": 8,
@@ -117,7 +124,8 @@
     "notas": null,
     "capa": 0,
     "foto": "images/WIR197626_1_enlarged.jpg.png",
-    "pos": "superior"
+    "pos": "superior",
+    "subtipo": "Recto"
   },
   {
     "id": 9,
@@ -132,7 +140,8 @@
     "notas": null,
     "capa": 0,
     "foto": "images/WKS33582_1_enlarged.jpg.png",
-    "pos": "superior"
+    "pos": "superior",
+    "subtipo": "Recto"
   },
   {
     "id": 10,
@@ -147,7 +156,8 @@
     "notas": null,
     "capa": 0,
     "foto": "images/WKULE31528_1_enlarged.jpg.png",
-    "pos": "inferior"
+    "pos": "inferior",
+    "subtipo": "Recto"
   },
   {
     "id": 11,
@@ -162,7 +172,8 @@
     "notas": null,
     "capa": 0,
     "foto": "images/WL3198924_1_enlarged.jpg.png",
-    "pos": "superior"
+    "pos": "superior",
+    "subtipo": "Recto"
   },
   {
     "id": 12,
@@ -177,7 +188,8 @@
     "notas": null,
     "capa": 0,
     "foto": "images/WL3200557_1_enlarged.jpg.png",
-    "pos": "superior"
+    "pos": "superior",
+    "subtipo": "Recto"
   },
   {
     "id": 13,
@@ -192,7 +204,8 @@
     "notas": "Cuello V",
     "capa": 1,
     "foto": "images/WLCST30215_1_enlarged.jpg.png",
-    "pos": "superior"
+    "pos": "superior",
+    "subtipo": "Manga corta"
   },
   {
     "id": 14,
@@ -207,7 +220,8 @@
     "notas": null,
     "capa": 2,
     "foto": "images/WMCVB25014_1_enlarged.jpg.png",
-    "pos": "superior"
+    "pos": "superior",
+    "subtipo": "Cropped"
   },
   {
     "id": 15,
@@ -222,7 +236,8 @@
     "notas": null,
     "capa": 2,
     "foto": "images/WMCVB26435_1_enlarged.jpg.png",
-    "pos": "superior"
+    "pos": "superior",
+    "subtipo": "Regular"
   },
   {
     "id": 16,
@@ -237,7 +252,8 @@
     "notas": null,
     "capa": 1,
     "foto": "images/WNBHD21274_1_enlarged.jpg.png",
-    "pos": "superior"
+    "pos": "superior",
+    "subtipo": "Manga corta"
   },
   {
     "id": 17,
@@ -252,7 +268,8 @@
     "notas": null,
     "capa": 2,
     "foto": "images/WNOAH23704_1_enlarged.jpg.png",
-    "pos": "superior"
+    "pos": "superior",
+    "subtipo": "Regular"
   },
   {
     "id": 18,
@@ -267,7 +284,8 @@
     "notas": null,
     "capa": 2,
     "foto": "images/WNOAH23949_1_enlarged.jpg.png",
-    "pos": "superior"
+    "pos": "superior",
+    "subtipo": "Regular"
   },
   {
     "id": 19,
@@ -282,7 +300,8 @@
     "notas": null,
     "capa": 2,
     "foto": "images/WPAAI28443_1_enlarged.jpg.png",
-    "pos": "superior"
+    "pos": "superior",
+    "subtipo": "Regular"
   },
   {
     "id": 20,
@@ -297,7 +316,8 @@
     "notas": null,
     "capa": 1,
     "foto": "images/WPRLN128720_1_enlarged.jpg.png",
-    "pos": "superior"
+    "pos": "superior",
+    "subtipo": "Manga corta"
   },
   {
     "id": 21,
@@ -312,7 +332,8 @@
     "notas": "Ribete verde cuello",
     "capa": 1,
     "foto": "images/WPRLN134630_1_enlarged.jpg.png",
-    "pos": "superior"
+    "pos": "superior",
+    "subtipo": "Manga corta"
   },
   {
     "id": 22,
@@ -327,7 +348,8 @@
     "notas": null,
     "capa": 2,
     "foto": "images/WPRPS21146_1_enlarged.jpg.png",
-    "pos": "superior"
+    "pos": "superior",
+    "subtipo": "Manga larga"
   },
   {
     "id": 23,
@@ -342,7 +364,8 @@
     "notas": null,
     "capa": 3,
     "foto": "images/WSEEZ20023_1_enlarged.jpg.png",
-    "pos": "exterior"
+    "pos": "exterior",
+    "subtipo": "Regular"
   },
   {
     "id": 24,
@@ -357,7 +380,8 @@
     "notas": null,
     "capa": 2,
     "foto": "images/WSTAM21988_1_enlarged.jpg.png",
-    "pos": "superior"
+    "pos": "superior",
+    "subtipo": "Regular"
   },
   {
     "id": 25,
@@ -372,7 +396,8 @@
     "notas": "Cordones azul cielo",
     "capa": 0,
     "foto": "images/WU2222977_1_enlarged.jpg.png",
-    "pos": "calzado"
+    "pos": "calzado",
+    "subtipo": "High-top"
   },
   {
     "id": 26,
@@ -387,7 +412,8 @@
     "notas": null,
     "capa": 1,
     "foto": "images/IMG_0623 2.png",
-    "pos": "superior"
+    "pos": "superior",
+    "subtipo": "Manga corta"
   },
   {
     "id": 27,
@@ -402,7 +428,8 @@
     "notas": null,
     "capa": 2,
     "foto": "images/IMG_0624 2.png",
-    "pos": "superior"
+    "pos": "superior",
+    "subtipo": "Oversized"
   },
   {
     "id": 28,
@@ -417,7 +444,8 @@
     "notas": null,
     "capa": 0,
     "foto": "images/IMG_0625 2.png",
-    "pos": "superior"
+    "pos": "superior",
+    "subtipo": "Planas"
   },
   {
     "id": 29,
@@ -432,7 +460,8 @@
     "notas": null,
     "capa": 0,
     "foto": "images/IMG_0626.png",
-    "pos": "calzado"
+    "pos": "calzado",
+    "subtipo": "High-top"
   },
   {
     "id": 30,
@@ -447,7 +476,8 @@
     "notas": null,
     "capa": 0,
     "foto": "images/IMG_0627.png",
-    "pos": "calzado"
+    "pos": "calzado",
+    "subtipo": "High-top"
   },
   {
     "id": 31,
@@ -462,7 +492,8 @@
     "notas": "Lana",
     "capa": 0,
     "foto": "images/IMG_0628.png",
-    "pos": "calzado"
+    "pos": "calzado",
+    "subtipo": "High-top"
   },
   {
     "id": 32,
@@ -477,7 +508,8 @@
     "notas": null,
     "capa": 0,
     "foto": "images/IMG_0629.png",
-    "pos": "calzado"
+    "pos": "calzado",
+    "subtipo": "High-top"
   },
   {
     "id": 33,
@@ -492,7 +524,8 @@
     "notas": null,
     "capa": 0,
     "foto": "images/IMG_0630.png",
-    "pos": "superior"
+    "pos": "superior",
+    "subtipo": "Newsboy"
   },
   {
     "id": 34,
@@ -507,7 +540,8 @@
     "notas": "3 botones metálicos",
     "capa": 3,
     "foto": "images/IMG_0631.png",
-    "pos": "exterior"
+    "pos": "exterior",
+    "subtipo": "Denim"
   },
   {
     "id": 35,
@@ -522,7 +556,8 @@
     "notas": null,
     "capa": 3,
     "foto": "images/IMG_0632.png",
-    "pos": "exterior"
+    "pos": "exterior",
+    "subtipo": "Denim/Cremallera"
   },
   {
     "id": 36,
@@ -537,7 +572,8 @@
     "notas": "Hair-on-hide",
     "capa": 0,
     "foto": "images/IMG_0633.png",
-    "pos": "superior"
+    "pos": "superior",
+    "subtipo": "Tote"
   },
   {
     "id": 37,
@@ -552,7 +588,8 @@
     "notas": null,
     "capa": 0,
     "foto": "images/IMG_0634.png",
-    "pos": "inferior"
+    "pos": "inferior",
+    "subtipo": "Flare"
   },
   {
     "id": 38,
@@ -567,7 +604,8 @@
     "notas": "Distressed",
     "capa": 0,
     "foto": "images/IMG_0635.png",
-    "pos": "superior"
+    "pos": "superior",
+    "subtipo": "Baseball"
   },
   {
     "id": 39,
@@ -582,7 +620,8 @@
     "notas": "Logo A rojo Alabama",
     "capa": 0,
     "foto": "images/IMG_0636.png",
-    "pos": "superior"
+    "pos": "superior",
+    "subtipo": "Baseball"
   },
   {
     "id": 40,
@@ -597,7 +636,8 @@
     "notas": null,
     "capa": 0,
     "foto": "images/IMG_0637.png",
-    "pos": "superior"
+    "pos": "superior",
+    "subtipo": "Maletín"
   },
   {
     "id": 41,
@@ -612,7 +652,8 @@
     "notas": null,
     "capa": 3,
     "foto": "images/IMG_0638.png",
-    "pos": "exterior"
+    "pos": "exterior",
+    "subtipo": "Regular"
   },
   {
     "id": 42,
@@ -627,7 +668,8 @@
     "notas": null,
     "capa": 0,
     "foto": "images/IMG_0639.png",
-    "pos": "inferior"
+    "pos": "inferior",
+    "subtipo": "Recto"
   },
   {
     "id": 43,
@@ -642,7 +684,8 @@
     "notas": null,
     "capa": 0,
     "foto": "images/IMG_0640.png",
-    "pos": "superior"
+    "pos": "superior",
+    "subtipo": "Newsboy"
   },
   {
     "id": 44,
@@ -657,7 +700,8 @@
     "notas": null,
     "capa": 0,
     "foto": "images/IMG_0641.png",
-    "pos": "superior"
+    "pos": "superior",
+    "subtipo": "Baseball"
   },
   {
     "id": 45,
@@ -672,7 +716,8 @@
     "notas": null,
     "capa": 0,
     "foto": "images/IMG_0642.png",
-    "pos": "calzado"
+    "pos": "calzado",
+    "subtipo": "High-top"
   },
   {
     "id": 46,
@@ -687,7 +732,8 @@
     "notas": null,
     "capa": 0,
     "foto": "images/IMG_0643.png",
-    "pos": "calzado"
+    "pos": "calzado",
+    "subtipo": "High-top"
   },
   {
     "id": 47,
@@ -702,7 +748,8 @@
     "notas": null,
     "capa": 0,
     "foto": "images/IMG_0644.png",
-    "pos": "superior"
+    "pos": "superior",
+    "subtipo": "Newsboy"
   },
   {
     "id": 48,
@@ -717,7 +764,8 @@
     "notas": null,
     "capa": 0,
     "foto": "images/IMG_0645.png",
-    "pos": "superior"
+    "pos": "superior",
+    "subtipo": "Gorro orejeras"
   },
   {
     "id": 49,
@@ -732,6 +780,7 @@
     "notas": null,
     "capa": 0,
     "foto": "images/IMG_0646.png",
-    "pos": "superior"
+    "pos": "superior",
+    "subtipo": "Peto"
   }
 ]

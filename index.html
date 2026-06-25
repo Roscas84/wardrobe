@@ -553,7 +553,7 @@ function cardBackHTML(p){
     <div class="cb-nombre">${p.nombre}</div>
     ${marcaTalla?`<div class="cb-marca">${marcaTalla}</div>`:''}
     <div class="c-card-color-row"><div class="c-dot" style="background:${p.color}"></div><div class="c-hex">${p.color}</div></div>
-    <div class="cb-tipo">${p.tipo}${patron?' · '+patron:''}</div>
+    <div class="cb-tipo">${p.tipo}${p.subtipo?' '+p.subtipo:''}${patron?' · '+patron:''}</div>
     <div class="cb-formalidad">${p.formalidad}</div>
     ${p.temporada?`<div class="cb-formalidad" style="color:#444">${p.temporada}</div>`:''}
     ${p.notas?`<div class="cb-formalidad" style="color:#3a3a3a;font-style:italic">${p.notas}</div>`:''}`;
