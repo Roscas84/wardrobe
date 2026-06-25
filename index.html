@@ -328,6 +328,7 @@ header{background:#fff;border-bottom:1px solid #e0dbd5;padding:14px 16px;positio
       </div>
     </div>
     <div class="field"><label>Marca</label><input type="text" id="inp-marca" placeholder="Ej: Zara, Nike..."></div>
+    <div class="field"><label>Talla</label><input type="text" id="inp-talla" placeholder="Ej: S, M, 28, 38..."></div>
     <div class="field">
       <label>Formalidad</label>
       <select id="inp-formalidad">
@@ -545,19 +546,25 @@ function volverClosetMain(){
   document.getElementById('closet-color-wrap').style.display='none';
   window.scrollTo(0,0);
 }
+function cardBackHTML(p){
+  const marcaTalla=[p.marca,p.talla].filter(Boolean).join(' · ');
+  const patron=p.patron&&p.patron!=='Liso'?p.patron:'';
+  return`
+    <div class="cb-nombre">${p.nombre}</div>
+    ${marcaTalla?`<div class="cb-marca">${marcaTalla}</div>`:''}
+    <div class="c-card-color-row"><div class="c-dot" style="background:${p.color}"></div><div class="c-hex">${p.color}</div></div>
+    <div class="cb-tipo">${p.tipo}${patron?' · '+patron:''}</div>
+    <div class="cb-formalidad">${p.formalidad}</div>
+    ${p.temporada?`<div class="cb-formalidad" style="color:#444">${p.temporada}</div>`:''}
+    ${p.notas?`<div class="cb-formalidad" style="color:#3a3a3a;font-style:italic">${p.notas}</div>`:''}`;
+}
 function closetCardHTML(p){
   return`<div class="c-card flip-card" onclick="flipCard(this)">
     <div class="flip-inner">
       <div class="flip-front">
         ${p.foto?`<img class="c-card-img" src="${p.foto}" alt="">`:`<div class="c-card-ph" style="background:${p.color}">👕</div>`}
       </div>
-      <div class="flip-back">
-        <div class="cb-nombre">${p.nombre}</div>
-        ${p.marca?`<div class="cb-marca">${p.marca}</div>`:''}
-        <div class="c-card-color-row"><div class="c-dot" style="background:${p.color}"></div><div class="c-hex">${p.color}</div></div>
-        <div class="cb-tipo">${p.tipo}</div>
-        <div class="cb-formalidad">${p.formalidad}</div>
-      </div>
+      <div class="flip-back">${cardBackHTML(p)}</div>
     </div>
   </div>`;
 }
@@ -587,12 +594,7 @@ function verCatOutfit(cat){
         <div class="flip-front">
           ${p.foto?`<img class="c-card-img" src="${p.foto}" alt="">`:`<div class="c-card-ph" style="background:${p.color}">👕</div>`}
         </div>
-        <div class="flip-back">
-          <div class="cb-nombre">${p.nombre}</div>
-          ${p.marca?`<div class="cb-marca">${p.marca}</div>`:''}
-          <div class="c-card-color-row"><div class="c-dot" style="background:${p.color}"></div><div class="c-hex">${p.color}</div></div>
-          <div class="cb-tipo">${p.tipo}</div>
-          <div class="cb-formalidad">${p.formalidad}</div>
+        <div class="flip-back">${cardBackHTML(p)}
           <button class="cb-select" onclick="event.stopPropagation();selAncla(${p.id})">Elegir</button>
         </div>
       </div>
@@ -723,6 +725,7 @@ function editarPrenda(id){
   document.getElementById('inp-color').value=p.color;
   document.getElementById('inp-hex').value=p.color;
   document.getElementById('inp-marca').value=p.marca||'';
+  document.getElementById('inp-talla').value=p.talla||'';
   document.getElementById('inp-formalidad').value=p.formalidad;
   if(p.foto){const img=document.getElementById('preview-foto');img.src=p.foto;img.style.display='block';}
   document.getElementById('modal-prenda').classList.add('open');
@@ -735,7 +738,7 @@ function eliminarPrenda(id){
 }
 function cerrarModal(){document.getElementById('modal-prenda').classList.remove('open');}
 function limpiarModal(){
-  ['inp-nombre','inp-marca'].forEach(id=>document.getElementById(id).value='');
+  ['inp-nombre','inp-marca','inp-talla'].forEach(id=>document.getElementById(id).value='');
   document.getElementById('inp-tipo').value='';document.getElementById('inp-color').value='#000000';
   document.getElementById('inp-hex').value='#000000';document.getElementById('inp-formalidad').value='casual';
   const img=document.getElementById('preview-foto');img.style.display='none';img.src='';
@@ -774,11 +777,12 @@ function cargarFoto(input){
 function guardarPrenda(){
   const nombre=document.getElementById('inp-nombre').value.trim(),tipo=document.getElementById('inp-tipo').value;
   const color=document.getElementById('inp-color').value,marca=document.getElementById('inp-marca').value.trim();
+  const talla=document.getElementById('inp-talla').value.trim();
   const formalidad=document.getElementById('inp-formalidad').value;
   const fotoEl=document.getElementById('preview-foto'),foto=fotoEl.src&&fotoEl.style.display!=='none'?fotoEl.src:null;
   if(!nombre||!tipo){alert('Escribe el nombre y selecciona el tipo.');return;}
-  if(editandoId){const idx=inventario.findIndex(p=>p.id===editandoId);if(idx>=0)inventario[idx]={...inventario[idx],nombre,tipo,color,marca,formalidad,foto,pos:getPosicion(tipo)};}
-  else{inventario.push({id:Date.now(),nombre,tipo,color,marca,formalidad,foto,pos:getPosicion(tipo)});}
+  if(editandoId){const idx=inventario.findIndex(p=>p.id===editandoId);if(idx>=0)inventario[idx]={...inventario[idx],nombre,tipo,color,marca,talla,formalidad,foto,pos:getPosicion(tipo)};}
+  else{inventario.push({id:Date.now(),nombre,tipo,color,marca,talla,formalidad,foto,pos:getPosicion(tipo)});}
   guardarLocal();renderClosetMain();renderOutfitMain();cerrarModal();
 }
 function exportarInventario(){
