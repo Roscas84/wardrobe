@@ -539,13 +539,19 @@ function esCompatible(pHex,huesObj,anclaHex){
 function generarParaArmonia(anclaRef,armKey){
   const huesObj=getHuesObjetivo(hexToHsl(anclaRef.color).h,armKey);
   const otras=inventario.filter(p=>p.id!==anclaRef.id);
-  function pool(pos){const all=otras.filter(p=>getPosicion(p.tipo)===pos);const c=all.filter(p=>esCompatible(p.color,huesObj,anclaRef.color));return c.length?c:all;}
+  function pool(pos){
+    const all=otras.filter(p=>getPosicion(p.tipo)===pos);
+    const compat=all.filter(p=>esCompatible(p.color,huesObj,anclaRef.color));
+    if(compat.length)return compat;
+    const neutros=all.filter(p=>esNeutro(p.color));
+    return neutros.length?neutros:all;
+  }
   const anclaPos=getPosicion(anclaRef.tipo);
   const sup=pool('superior'),ext=pool('exterior'),inf=pool('inferior'),cal=pool('calzado'),acc=pool('accesorios');
   const outfits=[];
   function push(piezas,nivel){
     if(!piezas.some(p=>getPosicion(p.tipo)==='calzado')&&cal.length)piezas=[...piezas,cal[outfits.length%cal.length]];
-    if(acc.length&&outfits.length%3===1&&!piezas.some(p=>getPosicion(p.tipo)==='accesorios'))piezas=[...piezas,acc[outfits.length%acc.length]];
+    if(acc.length&&!piezas.some(p=>getPosicion(p.tipo)==='accesorios'))piezas=[...piezas,acc[outfits.length%acc.length]];
     outfits.push({nivel,piezas});
   }
   if(anclaPos==='superior'){inf.forEach(i=>{push([anclaRef,i],'basico');ext.forEach(e=>push([e,anclaRef,i],'exterior'));});}
@@ -764,7 +770,9 @@ function irPaso(n){
 }
 
 function lookCardHTML(o,wadaOk=false){
-  const piezas=o.piezas,colores=[...new Set(piezas.map(p=>p.color))];
+  const piezas=o.piezas;
+  let colores=[...new Set(piezas.map(p=>p.color).filter(c=>!esNeutro(c)))];
+  if(!colores.length)colores=[...new Set(piezas.map(p=>p.color))];
   const left=[
     ...piezas.filter(p=>getPosicion(p.tipo)==='exterior'),
     ...piezas.filter(p=>getPosicion(p.tipo)==='superior'),
