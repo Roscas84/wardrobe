@@ -748,16 +748,16 @@ function mostrarArmonias(){
   document.getElementById('res-total').textContent=total+' looks disponibles';
 
   document.getElementById('lista-armonias').innerHTML=
-    `<div class="arm-link ver-todos-btn" onclick="verTodos()">
-      <span class="arm-link-nombre">Ver todos</span>
-      <span class="arm-link-count">${total}</span>
-    </div>`
-    +_grupos.map(g=>`
+    _grupos.map(g=>`
     <div class="arm-link" onclick="verArmonia('${g.arm.key}')">
       <span class="arm-dot ${g.arm.dotClass}"></span>
       <span class="arm-link-nombre">${g.arm.nombre}</span>
       <span class="arm-link-count">${g.outfits.length}</span>
-    </div>`).join('');
+    </div>`).join('')
+    +`<div class="arm-link ver-todos-btn" onclick="verTodos()">
+      <span class="arm-link-nombre">Ver todos</span>
+      <span class="arm-link-count">${total}</span>
+    </div>`;
 }
 
 function verTodos(){
