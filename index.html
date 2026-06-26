@@ -104,8 +104,8 @@ header{background:#fff;border-bottom:1px solid #e0dbd5;padding:8px 16px;position
 
 /* Outfits lista — scroll horizontal */
 #paso2-outfits{flex-direction:column;position:fixed;top:40px;bottom:62px;left:0;right:0;background:#000;z-index:60}
-.outfits-wrap{flex:1;min-height:0;display:flex;flex-direction:row;overflow-x:auto;overflow-y:hidden;scroll-snap-type:x mandatory;scroll-behavior:smooth;scrollbar-width:none;-ms-overflow-style:none}
-.outfits-wrap::-webkit-scrollbar{display:none}
+.outfits-wrap{flex:1;min-height:0;display:flex;flex-direction:row;overflow-x:auto;overflow-y:hidden;scroll-snap-type:x mandatory;scroll-behavior:smooth;scrollbar-width:none;-ms-overflow-style:none;touch-action:pan-x}
+.outfits-wrap::-webkit-scrollbar{display:none;width:0;height:0}
 .outfits-wrap .nivel-div{display:none}
 .outfit-card{background:#fff;flex-shrink:0;width:100%;height:100%;position:relative;display:flex;flex-direction:column;scroll-snap-align:start}
 .outfit-card.wada-ok{border:5px solid #c9a227}
@@ -673,19 +673,20 @@ function verArmonia(armKey){
     +(exterior.length?`<div class="nivel-div">Con capa exterior</div>`+sortW(exterior).map(o=>lookCardHTML(o,isWadaValidated(o))).join(''):'');
   document.getElementById('paso2-main').style.display='none';
   document.getElementById('paso2-outfits').style.display='flex';
-  window.scrollTo(0,0);
+  document.getElementById('lista-looks').scrollLeft=0;
+  document.body.style.overflow='hidden';
 }
 function volverArmonias(){
   document.getElementById('paso2-main').style.display='block';
   document.getElementById('paso2-outfits').style.display='none';
+  document.body.style.overflow='';
   window.scrollTo(0,0);
 }
 
 function irPaso(n){
   document.getElementById('paso1-wrap').style.display=n===1?'block':'none';
   document.getElementById('paso2-wrap').style.display=n===2?'block':'none';
-  window.scrollTo(0,0);
-  if(n===1){renderOutfitMain();volverOutfitMain();}
+  if(n===1){document.body.style.overflow='';window.scrollTo(0,0);renderOutfitMain();volverOutfitMain();}
 }
 
 function lookCardHTML(o,wadaOk=false){
@@ -818,6 +819,7 @@ function initSlideshow(){
 
 // NAVEGACIÓN
 function showScreen(id){
+  document.body.style.overflow='';
   const cur=document.querySelector('.screen.active')?.id?.replace('screen-','');
   if(id==='cargar'&&cur&&cur!=='cargar'){
     prevScreen=cur;
