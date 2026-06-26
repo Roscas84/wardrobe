@@ -12,7 +12,8 @@
 <link rel="apple-touch-icon" href="icon-192.png">
 <style>
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
-body{font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;background:#f5f0eb;color:#1a1a1a;min-height:100vh;padding-bottom:80px;overscroll-behavior-y:none}
+html{overscroll-behavior:none;-webkit-overflow-scrolling:auto}
+body{font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;background:#f5f0eb;color:#1a1a1a;min-height:100vh;padding-bottom:80px;overscroll-behavior:none;-webkit-overflow-scrolling:auto}
 
 /* SPLASH */
 #splash{position:fixed;inset:0;background:#000;display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:999;transition:opacity 0.9s ease}
@@ -52,7 +53,7 @@ header{background:#fff;border-bottom:1px solid #e0dbd5;padding:8px 16px;position
 .back-title{font-size:12px;letter-spacing:2px;text-transform:uppercase;color:#fff;font-weight:300}
 
 /* CATEGORY LINKS — centrados, sin divisor */
-.cat-link{display:block;text-align:center;padding:14px 20px;cursor:pointer}
+.cat-link{display:block;text-align:center;padding:9px 20px;cursor:pointer}
 .cat-link-text{font-size:14px;font-weight:300;letter-spacing:0.5px;color:#fff;text-transform:uppercase}
 .cat-link:active .cat-link-text{color:#555}
 .cat-link-dim .cat-link-text{color:#555}
@@ -225,7 +226,7 @@ header{background:#fff;border-bottom:1px solid #e0dbd5;padding:8px 16px;position
   <div id="paso1-wrap">
     <div id="outfit-main" class="dark-screen">
       <div style="padding:22px 20px 6px;text-align:center">
-        <div style="font-size:10px;letter-spacing:3px;text-transform:uppercase;color:#c0392b;font-weight:300">Elige tu prenda</div>
+        <div style="font-size:10px;letter-spacing:3px;text-transform:uppercase;color:#ff1a00;font-weight:300">Elige tu prenda</div>
       </div>
       <div id="outfit-cat-links"></div>
     </div>
@@ -713,7 +714,7 @@ function lookCardHTML(o,wadaOk=false){
   function imgOf(p,cls){return`<div class="${cls}">${p.foto?`<img src="${p.foto}" alt="">`:`<div class="of-color" style="background:${p.color}">${tipoIcon(p.tipo)}</div>`}</div>`;}
   const leftHTML=left.length?`<div class="of-left">${left.map(p=>imgOf(p,'of-left-item')).join('')}</div>`:'';
   const rightHTML=right.length?`<div class="of-right">${right.map(p=>imgOf(p,'of-right-item')).join('')}</div>`:'';
-  return`<div class="outfit-card${wadaOk?' wada-ok':''}">${wadaOk?'<div class="wada-badge">W</div>':''}<div class="outfit-paleta">${colores.map(c=>`<div class="paleta-seg" style="background:${c}"></div>`).join('')}</div><div class="outfit-body">${leftHTML}${rightHTML}</div></div>`;
+  return`<div class="outfit-card${wadaOk?' wada-ok':''}">${wadaOk?'<div class="wada-badge">W</div>':''}<div class="outfit-body">${leftHTML}${rightHTML}</div><div class="outfit-paleta">${colores.map(c=>`<div class="paleta-seg" style="background:${c}"></div>`).join('')}</div></div>`;
 }
 function tipoIcon(tipo){const pos=getPosicion(tipo);if(pos==='superior'||pos==='exterior')return'👕';if(pos==='inferior')return'👖';if(pos==='calzado')return'👟';return'🎩';}
 
