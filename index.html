@@ -529,7 +529,7 @@ function getHuesObjetivo(hAncla,arm){
     case'abstracta':return[(hAncla+30)%360,(hAncla+150)%360,(hAncla+210)%360];
   }
 }
-const TOLERANCIA=28;
+const TOLERANCIA=20;
 function esCompatible(pHex,huesObj,anclaHex){
   if(pHex===anclaHex)return false;if(esNeutro(pHex))return true;
   const{h}=hexToHsl(pHex);return huesObj.some(hObj=>hueDist(h,hObj)<=TOLERANCIA);
