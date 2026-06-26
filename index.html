@@ -537,7 +537,8 @@ function getHuesObjetivo(hAncla,arm){
 }
 const TOLERANCIA=15;
 function esCompatible(pHex,huesObj,anclaHex){
-  if(pHex===anclaHex)return false;if(esNeutro(pHex))return true;
+  if(pHex===anclaHex)return false;
+  if(esNeutro(pHex))return false;
   const{h}=hexToHsl(pHex);return huesObj.some(hObj=>hueDist(h,hObj)<=TOLERANCIA);
 }
 
