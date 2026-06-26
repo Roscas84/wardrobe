@@ -47,8 +47,8 @@ header{background:#fff;border-bottom:1px solid #e0dbd5;padding:8px 16px;position
 .editorial-strip img{width:100%;aspect-ratio:3/4;object-fit:cover;object-position:center top;display:block}
 
 /* PANTALLAS NEGRAS (Closet, Outfit) */
-.dark-screen{background:#000;height:calc(100vh - 40px - 62px);overflow:hidden}
-#lista-armonias{height:auto;overflow:visible;min-height:0}
+.dark-screen{background:#000;min-height:calc(100vh - 40px - 62px)}
+#lista-armonias{min-height:0;height:auto}
 #closet-main,#outfit-main{display:flex;flex-direction:column;justify-content:center}
 
 /* BACK BUTTON — grande y visible */
@@ -91,11 +91,11 @@ header{background:#fff;border-bottom:1px solid #e0dbd5;padding:8px 16px;position
 .color-bubble-all.on{border-color:#fff}
 
 /* OUTFIT paso 2 — armonías como links */
-.arm-link{display:flex;align-items:center;justify-content:center;gap:10px;padding:15px 20px;cursor:pointer;text-align:center}
+.arm-link{display:flex;align-items:center;justify-content:center;gap:10px;padding:9px 20px;cursor:pointer;text-align:center}
 .arm-link:active{opacity:.6}
 .arm-dot{width:10px;height:10px;border-radius:50%;flex-shrink:0;display:inline-block}
 .arm-link-nombre{font-size:13px;font-weight:300;letter-spacing:1px;text-transform:uppercase;color:#fff}
-.arm-link-count{font-size:11px;color:#444;font-weight:300}
+.arm-link-count{font-size:11px;color:#888;font-weight:300}
 
 /* Ancla chip en paso2 header */
 .res-hdr{padding:12px 20px;background:#000;border-bottom:1px solid #111;display:flex;align-items:center;gap:12px;position:sticky;top:57px;z-index:90}
@@ -639,6 +639,7 @@ function mostrarArmonias(){
   document.getElementById('paso2-wrap').style.display='block';
   document.getElementById('paso2-main').style.display='block';
   document.getElementById('paso2-outfits').style.display='none';
+  document.body.style.overflow='hidden';
   window.scrollTo(0,0);
 
   const chipEl=document.getElementById('ancla-chip-res');
@@ -695,7 +696,7 @@ function verArmonia(armKey){
 function volverArmonias(){
   document.getElementById('paso2-main').style.display='block';
   document.getElementById('paso2-outfits').style.display='none';
-  document.body.style.overflow='';
+  document.body.style.overflow='hidden';
   window.scrollTo(0,0);
 }
 
