@@ -16,11 +16,13 @@ html{overscroll-behavior:none;-webkit-overflow-scrolling:auto}
 body{font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;background:#f5f0eb;color:#1a1a1a;min-height:100vh;padding-bottom:80px;overscroll-behavior:none;-webkit-overflow-scrolling:auto}
 
 /* SPLASH */
-#splash{position:fixed;inset:0;background:#000;display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:999;transition:opacity 0.9s ease}
+@keyframes mg-zoom{from{transform:scale(0.3);opacity:0}15%{opacity:1}to{transform:scale(2.5);opacity:0}}
+#splash{position:fixed;inset:0;background:#000;display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:999;transition:opacity 0.5s ease}
 #splash.out{opacity:0;pointer-events:none}
-.splash-mg{font-size:48px;font-weight:100;letter-spacing:8px;color:#fff}
-.splash-line{width:60px;height:0.5px;background:#fff;margin:14px auto}
-.splash-sub{font-size:10px;letter-spacing:4px;text-transform:uppercase;color:#888;font-weight:300}
+.splash-mg{font-size:48px;font-weight:100;letter-spacing:8px;color:#fff;animation:mg-zoom 1.8s ease-in forwards}
+.splash-line{width:60px;height:0.5px;background:#fff;margin:14px auto;opacity:0;animation:fadeIn 0.3s 0.1s forwards}
+.splash-sub{font-size:10px;letter-spacing:4px;text-transform:uppercase;color:#888;font-weight:300;opacity:0;animation:fadeIn 0.3s 0.2s forwards}
+@keyframes fadeIn{to{opacity:1}}
 
 /* HEADER */
 header{background:#fff;border-bottom:1px solid #e0dbd5;padding:8px 16px;position:sticky;top:0;z-index:100}
@@ -45,7 +47,9 @@ header{background:#fff;border-bottom:1px solid #e0dbd5;padding:8px 16px;position
 .editorial-strip img{width:100%;aspect-ratio:3/4;object-fit:cover;object-position:center top;display:block}
 
 /* PANTALLAS NEGRAS (Closet, Outfit) */
-.dark-screen{background:#000;min-height:calc(100vh - 40px - 62px)}
+.dark-screen{background:#000;height:calc(100vh - 40px - 62px);overflow:hidden}
+#lista-armonias{height:auto;overflow:visible;min-height:0}
+#closet-main,#outfit-main{display:flex;flex-direction:column;justify-content:center}
 
 /* BACK BUTTON — grande y visible */
 .back-bar{display:flex;align-items:center;gap:12px;padding:10px 20px;background:#000;border-bottom:1px solid #111;cursor:pointer;position:sticky;top:40px;z-index:80}
@@ -100,14 +104,14 @@ header{background:#fff;border-bottom:1px solid #e0dbd5;padding:8px 16px;position
 .res-ancla-color{width:46px;height:62px;flex-shrink:0}
 .res-ancla-info{flex:1}
 .res-ancla-nombre{font-size:11px;letter-spacing:0.5px;color:#fff;font-weight:300}
-.res-count{font-size:10px;color:#444;padding:10px 20px 4px;background:#000}
+.res-count{font-size:10px;color:#ff1a00;padding:10px 20px 4px;background:#000;letter-spacing:1px}
 
 /* Outfits lista — scroll horizontal */
 #paso2-outfits{position:fixed;top:40px;bottom:62px;left:0;right:0;background:#000;z-index:60;flex-direction:column}
 .outfits-wrap{flex:1;min-height:0;display:flex;flex-direction:row;overflow-x:auto;overflow-y:hidden;scroll-snap-type:x mandatory;scroll-behavior:smooth;scrollbar-width:none;-ms-overflow-style:none;touch-action:pan-x}
 .outfits-wrap::-webkit-scrollbar{display:none;width:0;height:0}
 .outfits-wrap .nivel-div{display:none}
-.outfit-card{background:#fff;flex-shrink:0;width:100%;height:100%;position:relative;display:flex;flex-direction:column;scroll-snap-align:start}
+.outfit-card{background:#000;flex-shrink:0;width:100%;height:100%;position:relative;display:flex;flex-direction:column;scroll-snap-align:start}
 .wada-badge{position:absolute;top:8px;right:8px;font-size:15px;font-weight:700;color:#c9a227;z-index:10;line-height:1;text-shadow:0 0 6px rgba(0,0,0,0.6)}
 .outfit-body{display:flex;flex:1;min-height:0;gap:2px;background:#000}
 .of-left{flex:3;display:flex;flex-direction:column;gap:2px}
@@ -256,7 +260,6 @@ header{background:#fff;border-bottom:1px solid #e0dbd5;padding:8px 16px;position
         <span id="armonia-titulo" class="back-title"></span>
       </div>
       <div class="outfits-wrap" id="lista-looks"></div>
-      <div style="height:20px;background:#000"></div>
     </div>
   </div>
 </div>
@@ -555,7 +558,7 @@ function volverAColores(){
   window.scrollTo(0,0);
 }
 function volverClosetMain(){
-  document.getElementById('closet-main').style.display='block';
+  document.getElementById('closet-main').style.display='flex';
   document.getElementById('closet-items-wrap').style.display='none';
   document.getElementById('closet-color-wrap').style.display='none';
   document.body.style.overflow='';
@@ -619,7 +622,7 @@ function verCatOutfit(cat){
   window.scrollTo(0,0);
 }
 function volverOutfitMain(){
-  document.getElementById('outfit-main').style.display='block';
+  document.getElementById('outfit-main').style.display='flex';
   document.getElementById('outfit-items-wrap').style.display='none';
   window.scrollTo(0,0);
 }
@@ -851,7 +854,7 @@ function volverDesdeCargar(){if(prevScreen)showScreen(prevScreen);}
 if('serviceWorker' in navigator){navigator.serviceWorker.register('/wardrobe/sw.js').catch(()=>{});}
 window.addEventListener('load',()=>{
   initSlideshow();
-  setTimeout(()=>{const sp=document.getElementById('splash');sp.classList.add('out');setTimeout(()=>sp.style.display='none',900);},2000);
+  setTimeout(()=>{const sp=document.getElementById('splash');sp.classList.add('out');setTimeout(()=>sp.style.display='none',500);},1600);
 });
 if(inventario.length===0){
   fetch('guardarropa.json').then(r=>r.json()).then(data=>{inventario=data;guardarLocal();renderClosetMain();renderOutfitMain();});
