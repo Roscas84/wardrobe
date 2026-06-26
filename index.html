@@ -103,20 +103,20 @@ header{background:#fff;border-bottom:1px solid #e0dbd5;padding:8px 16px;position
 .res-count{font-size:10px;color:#444;padding:10px 20px 4px;background:#000}
 
 /* Outfits lista — scroll horizontal */
-#paso2-outfits{flex-direction:column;position:fixed;top:40px;bottom:62px;left:0;right:0;background:#000;z-index:60}
-.outfits-wrap{flex:1;min-height:0;display:flex;flex-direction:row;overflow-x:auto;overflow-y:hidden;scroll-snap-type:x mandatory;scroll-behavior:smooth;scrollbar-width:none;-ms-overflow-style:none;touch-action:pan-x}
+#paso2-outfits{position:fixed;top:0;bottom:62px;left:0;right:0;background:#000;z-index:110}
+#paso2-outfits>.back-bar{position:absolute;top:0;left:0;right:0;z-index:5;background:rgba(0,0,0,0.65);backdrop-filter:blur(4px);-webkit-backdrop-filter:blur(4px);border-bottom:none}
+.outfits-wrap{position:absolute;inset:0;display:flex;flex-direction:row;overflow-x:auto;overflow-y:hidden;scroll-snap-type:x mandatory;scroll-behavior:smooth;scrollbar-width:none;-ms-overflow-style:none;touch-action:pan-x}
 .outfits-wrap::-webkit-scrollbar{display:none;width:0;height:0}
 .outfits-wrap .nivel-div{display:none}
 .outfit-card{background:#fff;flex-shrink:0;width:100%;height:100%;position:relative;display:flex;flex-direction:column;scroll-snap-align:start}
-.outfit-card.wada-ok{border:5px solid #c9a227}
-.wada-badge{position:absolute;top:8px;right:8px;width:26px;height:26px;background:#c9a227;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:700;color:#000;z-index:10;line-height:1}
+.wada-badge{position:absolute;top:8px;right:8px;font-size:15px;font-weight:700;color:#c9a227;z-index:10;line-height:1;text-shadow:0 0 6px rgba(0,0,0,0.6)}
 .outfit-body{display:flex;flex:1;min-height:0;gap:2px;background:#000}
 .of-left{flex:3;display:flex;flex-direction:column;gap:2px}
 .of-right{flex:2;display:flex;flex-direction:column;gap:2px}
 .of-left-item,.of-right-item{flex:1;min-height:0;overflow:hidden;background:#f7f5f2;position:relative}
 .of-left-item img,.of-right-item img{width:100%;height:100%;object-fit:contain;display:block}
 .of-color{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:22px;background:#f7f5f2}
-.outfit-paleta{display:flex;height:14px;flex-shrink:0}
+.outfit-paleta{display:flex;height:28px;flex-shrink:0}
 .paleta-seg{flex:1}
 .nivel-div{font-size:9px;color:#555;text-transform:uppercase;letter-spacing:2px;font-weight:300;padding:10px 16px 4px;background:#000}
 .wada-dot{width:7px;height:7px;background:#c9a227;border-radius:50%;flex-shrink:0}
@@ -585,9 +585,9 @@ function renderOutfitMain(){
     wrap.appendChild(div);
   });
   // Modo Libre al final, mismo estilo pero en gris
-  const ml=document.createElement('div');ml.className='cat-link cat-link-dim';
+  const ml=document.createElement('div');ml.className='cat-link';
   ml.onclick=activarModoLibre;
-  ml.innerHTML=`<span class="cat-link-text">✦ Modo Libre</span>`;
+  ml.innerHTML=`<span class="cat-link-text">Modo Libre</span>`;
   wrap.appendChild(ml);
 }
 function verCatOutfit(cat){
@@ -672,7 +672,7 @@ function verArmonia(armKey){
     (basicos.length?`<div class="nivel-div">Sin capa exterior</div>`+sortW(basicos).map(o=>lookCardHTML(o,isWadaValidated(o))).join(''):'')
     +(exterior.length?`<div class="nivel-div">Con capa exterior</div>`+sortW(exterior).map(o=>lookCardHTML(o,isWadaValidated(o))).join(''):'');
   document.getElementById('paso2-main').style.display='none';
-  document.getElementById('paso2-outfits').style.display='flex';
+  document.getElementById('paso2-outfits').style.display='block';
   document.getElementById('lista-looks').scrollLeft=0;
   document.body.style.overflow='hidden';
 }
