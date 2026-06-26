@@ -760,7 +760,7 @@ function buscarPrenda(q){
 }
 
 // MODAL
-function abrirModal(){editandoId=null;document.getElementById('modal-titulo').textContent='Agregar prenda';limpiarModal();document.getElementById('modal-prenda').classList.add('open');}
+function abrirModal(){editandoId=null;document.getElementById('modal-titulo').textContent='Agregar prenda';limpiarModal();document.getElementById('modal-prenda').classList.add('open');document.querySelector('#modal-prenda .modal').scrollTop=0;}
 function editarPrenda(id){
   const p=inventario.find(x=>x.id===id);if(!p)return;
   editandoId=id;
@@ -778,6 +778,7 @@ function editarPrenda(id){
   document.getElementById('inp-formalidad').value=p.formalidad;
   if(p.foto){const img=document.getElementById('preview-foto');img.src=p.foto;img.style.display='block';}
   document.getElementById('modal-prenda').classList.add('open');
+  document.querySelector('#modal-prenda .modal').scrollTop=0;
 }
 function eliminarPrenda(id){
   if(!confirm('¿Eliminar esta prenda?'))return;
