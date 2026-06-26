@@ -55,28 +55,40 @@ App web progresiva (PWA) de uso personal para gestionar inventario de ropa y gen
 ## Lluvia de ideas — Mejoras posibles
 
 ### Funcionales (alta prioridad)
-1. **Favoritos de outfit** — corazón para guardar outfits que te gustaron, con su foto-collage
-2. **Historial / calendario** — "¿qué usé esta semana?" para no repetir outfits
-3. **Reglas de posición** — no permitir dos exteriores, no permitir dos inferiores en el mismo outfit
-4. **Filtro por ocasión** — casual / trabajo / noche — outfits filtrados por contexto antes de escoger ancla
+1. **Favoritos de outfit** — corazón para guardar outfits que te gustaron; se guardan en localStorage para no perderse al cerrar la app
+2. **Historial / calendario** — "¿qué usé esta semana?" para no repetir outfits; fecha + outfit guardados en localStorage
+3. **Prendas faltantes** — pestaña o sección que analice el inventario y diga qué colores te faltan para completar armonías (ej: "para cuadrada con el blazer burdeos te falta un tono H≈107°")
+4. **Fix bug dos capas exteriores** — el sistema puede generar outfits con blazer + chaqueta denim simultáneamente (ambos son 'exterior'). Regla a implementar: máximo 1 pieza exterior por outfit. Si el ancla ya es exterior, pool('exterior') debe retornar vacío.
+5. **Filtro por ocasión** — casual / trabajo / noche — outfits filtrados por contexto antes de escoger ancla
+
+### Colorimetría personal (nueva pestaña)
+6. **Análisis de Colorimetría Estacional** — el sistema clasifica personas en 4 estaciones (Primavera / Verano / Otoño / Invierno) según tono de piel, color de ojos y cabello. Cada estación define una paleta de colores que favorece a esa persona.
+   - Formulario: usuario ingresa hex de tono de piel, hex de ojos, hex de cabello
+   - Sistema calcula si es warm/cool y light/deep
+   - Resultado: estación + paleta recomendada
+   - Integración con outfits: filtrar o destacar outfits que usen colores de la paleta personal
+   - **Nombres de las estaciones:** Primavera (warm+light), Verano (cool+light), Otoño (warm+deep), Invierno (cool+deep)
 
 ### Inventario
-5. **Prendas faltantes** — después de generar outfits, mostrar qué color te falta para completar una armonía (ej: "para cuadrada solo te falta un tono +270°")
-6. **Estadísticas de uso** — qué prendas aparecen más en outfits, cuáles casi nunca, cuáles nunca
-7. **Wishlist de compras** — lista de prendas que falta comprar con el hex objetivo
+7. **Estadísticas de uso** — qué prendas aparecen más en outfits, cuáles casi nunca, cuáles nunca
+8. **Wishlist de compras** — lista de prendas que falta comprar con el hex objetivo
 
 ### Color
-8. **Detección de patrón en foto** — liso / rayas / cuadros / estampado detectado automáticamente al subir foto
-9. **Color secundario** — registrar un segundo hex para prendas multicolor con porcentaje, y usarlo como criterio adicional de compatibilidad
+9. **Color secundario** — para prendas 50/50 (ej: Lacoste rayas navy/blanco). Regla:
+   - Si color1 es neutro → usar color2 como color cromático de la prenda
+   - Si color2 es neutro → usar color1
+   - Si ambos son cromáticos → usar el de mayor saturación como primario, el otro como secundario
+   - El secundario puede ampliar compatibilidad: si color primario no pasa esCompatible pero el secundario sí → la prenda entra al outfit
+10. **Detección de patrón en foto** — liso / rayas / cuadros / estampado detectado automáticamente al subir foto
 
 ### Experiencia
-10. **Compartir outfit** — botón que genera imagen del outfit para compartir por WhatsApp/Instagram
-11. **Modo empaque de viaje** — seleccionar N días y clima, genera los outfits para el viaje con las prendas mínimas necesarias
-12. **Swipe para descartar** — deslizar un outfit hacia abajo para descartarlo y no verlo en esa sesión
+11. **Compartir outfit** — botón que genera imagen del outfit para compartir por WhatsApp/Instagram
+12. **Modo empaque de viaje** — seleccionar N días y clima, genera los outfits para el viaje con las prendas mínimas necesarias
+13. **Swipe para descartar** — deslizar un outfit hacia abajo para descartarlo y no verlo en esa sesión
 
 ### Técnico
-13. **Sincronización en la nube** — actualmente el JSON vive en GitHub; migrar a una base de datos real para edición sin necesidad de Excel
-14. **Notificación de mañana** — push notification a las 8am con un outfit sugerido para el día
+14. **Sincronización en la nube** — actualmente el JSON vive en GitHub; migrar a una base de datos real para edición sin necesidad de Excel
+15. **Notificación de mañana** — push notification a las 8am con un outfit sugerido para el día
 
 ---
 
