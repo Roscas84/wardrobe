@@ -782,8 +782,29 @@ function irPaso(n){
 
 function lookCardHTML(o,wadaOk=false){
   const piezas=o.piezas;
-  let colores=[...new Set(piezas.map(p=>p.color).filter(c=>!esNeutro(c)))];
-  if(!colores.length)colores=[...new Set(piezas.map(p=>p.color))];
+  let colores;
+  if(o.armKey&&o.anclaColor){
+    const{h:hAncla}=hexToHsl(o.anclaColor);
+    const positions=[hAncla,...getHuesObjetivo(hAncla,o.armKey)];
+    const nonNeutral=piezas.filter(p=>!esNeutro(p.color));
+    // Asignar cada prenda no-neutra a su posición harmónica más cercana
+    const buckets=positions.map(()=>[]);
+    nonNeutral.forEach(p=>{
+      const ph=hexToHsl(p.color).h;
+      let minD=Infinity,minI=0;
+      positions.forEach((pos,i)=>{const d=hueDist(ph,pos);if(d<minD){minD=d;minI=i;}});
+      buckets[minI].push(p);
+    });
+    // Un color real por posición: la prenda más cercana al ángulo objetivo
+    colores=buckets.map((bucket,i)=>{
+      if(!bucket.length)return null;
+      return bucket.reduce((best,p)=>hueDist(hexToHsl(p.color).h,positions[i])<hueDist(hexToHsl(best.color).h,positions[i])?p:best).color;
+    }).filter(c=>c!==null);
+    if(!colores.length)colores=[...new Set(nonNeutral.map(p=>p.color))];
+  }else{
+    colores=[...new Set(piezas.map(p=>p.color).filter(c=>!esNeutro(c)))];
+    if(!colores.length)colores=[...new Set(piezas.map(p=>p.color))];
+  }
   const left=[
     ...piezas.filter(p=>getPosicion(p.tipo)==='exterior'),
     ...piezas.filter(p=>getPosicion(p.tipo)==='superior'),
