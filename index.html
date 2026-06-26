@@ -102,10 +102,13 @@ header{background:#fff;border-bottom:1px solid #e0dbd5;padding:8px 16px;position
 .res-ancla-nombre{font-size:11px;letter-spacing:0.5px;color:#fff;font-weight:300}
 .res-count{font-size:10px;color:#444;padding:10px 20px 4px;background:#000}
 
-/* Outfits lista */
-.outfits-wrap{background:#000;min-height:200px}
-.outfit-card{background:#fff;margin-bottom:2px;position:relative;display:flex;flex-direction:column;height:calc(100vh - 145px);height:calc(100dvh - 145px)}
-.outfit-card.wada-ok{border:4px solid #c9a227}
+/* Outfits lista — scroll horizontal */
+#paso2-outfits{flex-direction:column;position:fixed;top:40px;bottom:62px;left:0;right:0;background:#000;z-index:60}
+.outfits-wrap{flex:1;min-height:0;display:flex;flex-direction:row;overflow-x:auto;overflow-y:hidden;scroll-snap-type:x mandatory;scroll-behavior:smooth;scrollbar-width:none;-ms-overflow-style:none}
+.outfits-wrap::-webkit-scrollbar{display:none}
+.outfits-wrap .nivel-div{display:none}
+.outfit-card{background:#fff;flex-shrink:0;width:100%;height:100%;position:relative;display:flex;flex-direction:column;scroll-snap-align:start}
+.outfit-card.wada-ok{border:5px solid #c9a227}
 .wada-badge{position:absolute;top:8px;right:8px;width:26px;height:26px;background:#c9a227;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:700;color:#000;z-index:10;line-height:1}
 .outfit-body{display:flex;flex:1;min-height:0;gap:2px;background:#000}
 .of-left{flex:3;display:flex;flex-direction:column;gap:2px}
@@ -117,7 +120,6 @@ header{background:#fff;border-bottom:1px solid #e0dbd5;padding:8px 16px;position
 .paleta-seg{flex:1}
 .nivel-div{font-size:9px;color:#555;text-transform:uppercase;letter-spacing:2px;font-weight:300;padding:10px 16px 4px;background:#000}
 .wada-dot{width:7px;height:7px;background:#c9a227;border-radius:50%;flex-shrink:0}
-.outfit-card.wada-ok{border-top:3px solid #c9a227}
 .no-outfits{text-align:center;padding:40px 20px;color:#555;background:#000;min-height:200px}
 .no-outfits p{font-size:14px;margin-top:8px;color:#555}
 
@@ -670,7 +672,7 @@ function verArmonia(armKey){
     (basicos.length?`<div class="nivel-div">Sin capa exterior</div>`+sortW(basicos).map(o=>lookCardHTML(o,isWadaValidated(o))).join(''):'')
     +(exterior.length?`<div class="nivel-div">Con capa exterior</div>`+sortW(exterior).map(o=>lookCardHTML(o,isWadaValidated(o))).join(''):'');
   document.getElementById('paso2-main').style.display='none';
-  document.getElementById('paso2-outfits').style.display='block';
+  document.getElementById('paso2-outfits').style.display='flex';
   window.scrollTo(0,0);
 }
 function volverArmonias(){

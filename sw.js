@@ -1,4 +1,4 @@
-const CACHE = 'guardarropa-v14';
+const CACHE = 'guardarropa-v15';
 const CORE = [
   '/wardrobe/',
   '/wardrobe/index.html',
