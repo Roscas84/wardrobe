@@ -58,8 +58,57 @@ App web progresiva (PWA) de uso personal para gestionar inventario de ropa y gen
 1. **Favoritos de outfit** — corazón para guardar outfits que te gustaron; se guardan en localStorage para no perderse al cerrar la app
 2. **Historial / calendario** — "¿qué usé esta semana?" para no repetir outfits; fecha + outfit guardados en localStorage
 3. **Prendas faltantes** — pestaña o sección que analice el inventario y diga qué colores te faltan para completar armonías (ej: "para cuadrada con el blazer burdeos te falta un tono H≈107°")
-4. **Fix bug dos capas exteriores** — el sistema puede generar outfits con blazer + chaqueta denim simultáneamente (ambos son 'exterior'). Regla a implementar: máximo 1 pieza exterior por outfit. Si el ancla ya es exterior, pool('exterior') debe retornar vacío.
-5. **Filtro por ocasión** — casual / trabajo / noche — outfits filtrados por contexto antes de escoger ancla
+4. **Filtro por ocasión** — casual / trabajo / noche — outfits filtrados por contexto antes de escoger ancla
+
+### Sistema de capas — rediseño de posiciones (pendiente)
+
+**Problema actual:** el sistema tiene solo 3 posiciones de capas superiores: `exterior`, `superior`, `inferior`. Un hoodie y una playera caen en la misma posición (`superior`), por lo que el generador nunca los combina en el mismo outfit.
+
+**Solución propuesta:** agregar posición `intermedio` y habilitar outfits de 2 y 3 capas superiores.
+
+#### Nueva clasificación de prendas
+
+| Posición actual | Posición propuesta | Prendas |
+|---|---|---|
+| `exterior` | `exterior` | abrigo, chamarra, trench, sobretodo |
+| `exterior` | `medio` | blazer, cardigan, kimono, chaqueta denim |
+| `superior` | `medio` | hoodie, suéter, sweater |
+| `superior` | `base` | playera, camiseta, camisa, polo, top, blusa |
+
+> Nota: blazer puede ser capa `medio` (sobre camisa) o capa `exterior` (última capa). La distinción importa para el orden visual. Una opción es mantenerlo como `exterior` y agregar un atributo `peso` (ligero / medio / pesado) para ordenar las capas.
+
+#### Combinaciones válidas a generar
+
+```
+Nivel 1 — base only:           [base + inferior]
+Nivel 2a — con capa media:     [medio + base + inferior]
+Nivel 2b — con exterior:       [exterior + base + inferior]
+Nivel 3 — tres capas:          [exterior + medio + base + inferior]
+```
+
+Ejemplos:
+- Playera blanca + jeans ← nivel 1
+- Hoodie tie-dye + camiseta blanca + jeans ← nivel 2a
+- Blazer burdeos + camisa + pantalón ← nivel 2b
+- Chamarra + hoodie + playera + jeans ← nivel 3
+
+#### Reglas de orden (capas apiladas correctamente)
+- `exterior` siempre va encima de `medio` que va encima de `base`
+- Máximo 1 `exterior` por outfit
+- Máximo 1 `medio` por outfit
+- Máximo 1 `base` por outfit
+- El sistema NO filtra por temperatura — el usuario decide si el outfit es apropiado para el clima
+
+#### Impacto en compatibilidad cromática
+- Outfit de 3 capas tiene más piezas → más restricciones de armonía → menos outfits generados (normal)
+- La paleta de colores se amplía a 4-5 colores en el layout visual
+- `pool('medio')` y `pool('base')` heredan la misma lógica de `esCompatible` que `pool('superior')` actual
+
+#### Migración necesaria
+1. Renombrar campo de posición en `guardarropa.json`: `superior` → clasificar cada prenda en `base` o `medio`
+2. Actualizar `getPosicion()` en `index.html`
+3. Reescribir la lógica de generación de outfits en `generarParaArmonia()`
+4. Actualizar el layout de outfit card para mostrar 3 columnas de capas si aplica
 
 ### Colorimetría personal (nueva pestaña)
 6. **Análisis de Colorimetría Estacional** — el sistema clasifica personas en 4 estaciones (Primavera / Verano / Otoño / Invierno) según tono de piel, color de ojos y cabello. Cada estación define una paleta de colores que favorece a esa persona.
