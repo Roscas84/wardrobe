@@ -540,7 +540,9 @@ const TOLERANCIA=15;
 function esCompatible(pHex,huesObj,anclaHex){
   if(pHex===anclaHex)return false;
   if(esNeutro(pHex))return false;
-  const{h}=hexToHsl(pHex);return huesObj.some(hObj=>hueDist(h,hObj)<=TOLERANCIA);
+  const{h}=hexToHsl(pHex);
+  const{h:hAncla}=hexToHsl(anclaHex);
+  return huesObj.some(hObj=>hueDist(h,hObj)<=TOLERANCIA)||hueDist(h,hAncla)<=TOLERANCIA;
 }
 
 // GENERADOR
