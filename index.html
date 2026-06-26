@@ -107,12 +107,20 @@ header{background:#fff;border-bottom:1px solid #e0dbd5;padding:8px 16px;position
 .outfit-card{background:#fff;margin-bottom:2px;position:relative;display:flex;flex-direction:column;height:calc(100vh - 145px);height:calc(100dvh - 145px)}
 .outfit-card.wada-ok{border:4px solid #c9a227}
 .wada-badge{position:absolute;top:8px;right:8px;width:26px;height:26px;background:#c9a227;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:700;color:#000;z-index:10;line-height:1}
-.outfit-col{flex:1;min-height:0;display:flex;flex-direction:column;gap:1px;background:rgba(0,0,0,.05)}
-.of-item{overflow:hidden;width:100%;background:#f7f5f2;flex:1;min-height:0}
-.of-item img{width:100%;height:100%;object-fit:contain}
-.of-color{width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-size:22px;background:#f7f5f2}
-.of-superior,.of-inferior,.of-exterior{flex:3;height:auto}
-.of-calzado,.of-accesorios{flex:2;height:auto}
+.outfit-body{position:relative;flex:1;min-height:0;overflow:hidden;background:#f7f5f2}
+.of-item{position:absolute;overflow:hidden}
+.of-item img{width:100%;height:100%;object-fit:contain;display:block}
+.of-color{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:22px;background:#f7f5f2}
+.of-inferior{top:46%;left:5%;width:90%;height:52%;z-index:2}
+.of-inferior img{object-position:top center}
+.of-calzado{bottom:0;left:50%;transform:translateX(-50%);width:62%;height:26%;z-index:3}
+.of-calzado img{object-position:bottom center}
+.of-superior{top:10%;left:5%;width:90%;height:58%;z-index:4}
+.of-superior img{object-position:top center}
+.of-exterior{top:6%;left:4%;width:92%;height:66%;z-index:5}
+.of-exterior img{object-position:top center}
+.of-accesorios{top:38%;right:4%;width:30%;height:22%;z-index:6}
+.of-acccab{top:0;left:10%;width:80%;height:18%;z-index:7}
 .outfit-paleta{display:flex;height:14px;flex-shrink:0}
 .paleta-seg{flex:1}
 .nivel-div{font-size:9px;color:#555;text-transform:uppercase;letter-spacing:2px;font-weight:300;padding:10px 16px 4px;background:#000}
@@ -688,15 +696,15 @@ function irPaso(n){
 
 function lookCardHTML(o,wadaOk=false){
   const piezas=o.piezas,colores=[...new Set(piezas.map(p=>p.color))];
-  const accCab=piezas.filter(p=>ACC_CABEZA.includes(p.tipo));
   const ext=piezas.filter(p=>getPosicion(p.tipo)==='exterior');
   const sup=piezas.filter(p=>getPosicion(p.tipo)==='superior');
   const inf=piezas.filter(p=>getPosicion(p.tipo)==='inferior');
   const cal=piezas.filter(p=>getPosicion(p.tipo)==='calzado');
+  const accCab=piezas.filter(p=>ACC_CABEZA.includes(p.tipo));
   const accCue=piezas.filter(p=>ACC_CUERPO.includes(p.tipo));
-  const orden=[...accCab,...ext,...sup,...inf,...cal,...accCue];
-  function fi(p){const pos=getPosicion(p.tipo);return`<div class="of-item of-${pos}">${p.foto?`<img src="${p.foto}" alt="">`:`<div class="of-color" style="background:${p.color}">${tipoIcon(p.tipo)}</div>`}</div>`;}
-  return`<div class="outfit-card${wadaOk?' wada-ok':''}">${wadaOk?'<div class="wada-badge">W</div>':''}<div class="outfit-col">${orden.map(fi).join('')}</div><div class="outfit-paleta">${colores.map(c=>`<div class="paleta-seg" style="background:${c}"></div>`).join('')}</div></div>`;
+  function fi(p,extra=''){const pos=getPosicion(p.tipo);return`<div class="of-item of-${pos}${extra}">${p.foto?`<img src="${p.foto}" alt="">`:`<div class="of-color" style="background:${p.color}">${tipoIcon(p.tipo)}</div>`}</div>`;}
+  const capas=[...inf.map(p=>fi(p)),...cal.map(p=>fi(p)),...sup.map(p=>fi(p)),...ext.map(p=>fi(p)),...accCue.map(p=>fi(p)),...accCab.map(p=>fi(p,' of-acccab'))].join('');
+  return`<div class="outfit-card${wadaOk?' wada-ok':''}">${wadaOk?'<div class="wada-badge">W</div>':''}<div class="outfit-body">${capas}</div><div class="outfit-paleta">${colores.map(c=>`<div class="paleta-seg" style="background:${c}"></div>`).join('')}</div></div>`;
 }
 function tipoIcon(tipo){const pos=getPosicion(tipo);if(pos==='superior'||pos==='exterior')return'👕';if(pos==='inferior')return'👖';if(pos==='calzado')return'👟';return'🎩';}
 
