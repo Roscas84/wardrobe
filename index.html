@@ -125,6 +125,9 @@ header{background:#fff;border-bottom:1px solid #e0dbd5;padding:8px 16px;position
 .paleta-seg{flex:1}
 .nivel-div{font-size:9px;color:#555;text-transform:uppercase;letter-spacing:2px;font-weight:300;padding:10px 16px 4px;background:#000}
 .wada-dot{width:7px;height:7px;background:#c9a227;border-radius:50%;flex-shrink:0}
+.ver-todos-btn{border-bottom:1px solid #333;margin-bottom:6px}
+.ver-todos-btn .arm-link-nombre{color:#fff;letter-spacing:.15em}
+.outfit-arm-label{position:absolute;bottom:36px;left:0;right:0;font-size:8px;letter-spacing:2px;text-transform:uppercase;color:#aaa;font-weight:300;background:rgba(0,0,0,0.7);padding:3px 8px;text-align:center;z-index:5}
 .no-outfits{text-align:center;padding:40px 20px;color:#555;background:#000;min-height:200px}
 .no-outfits p{font-size:14px;margin-top:8px;color:#555}
 
@@ -746,7 +749,12 @@ function mostrarArmonias(){
   const total=_grupos.reduce((s,g)=>s+g.outfits.length,0);
   document.getElementById('res-total').textContent=total+' looks disponibles';
 
-  document.getElementById('lista-armonias').innerHTML=_grupos.map(g=>`
+  document.getElementById('lista-armonias').innerHTML=
+    `<div class="arm-link ver-todos-btn" onclick="verTodos()">
+      <span class="arm-link-nombre">Ver todos</span>
+      <span class="arm-link-count">${total}</span>
+    </div>`
+    +_grupos.map(g=>`
     <div class="arm-link" onclick="verArmonia('${g.arm.key}')">
       <span class="arm-dot ${g.arm.dotClass}"></span>
       <span class="arm-link-nombre">${g.arm.nombre}</span>
@@ -754,6 +762,20 @@ function mostrarArmonias(){
     </div>`).join('');
 }
 
+function verTodos(){
+  document.getElementById('armonia-titulo').textContent='Todos los looks';
+  let html='';
+  _grupos.forEach(g=>{
+    if(!g.outfits.length)return;
+    const sorted=[...g.outfits].sort((a,b)=>isWadaValidated(b)-isWadaValidated(a));
+    html+=sorted.map(o=>lookCardHTML(o,isWadaValidated(o),g.arm.nombre)).join('');
+  });
+  document.getElementById('lista-looks').innerHTML=html;
+  document.getElementById('paso2-main').style.display='none';
+  document.getElementById('paso2-outfits').style.display='flex';
+  document.getElementById('lista-looks').scrollLeft=0;
+  document.body.style.overflow='hidden';
+}
 function verArmonia(armKey){
   const g=_grupos.find(g=>g.arm.key===armKey);if(!g)return;
   document.getElementById('armonia-titulo').textContent=g.arm.nombre;
@@ -781,7 +803,7 @@ function irPaso(n){
   if(n===1){document.body.style.overflow='';window.scrollTo(0,0);renderOutfitMain();volverOutfitMain();}
 }
 
-function lookCardHTML(o,wadaOk=false){
+function lookCardHTML(o,wadaOk=false,armNombre=null){
   const piezas=o.piezas;
   let colores;
   if(o.armKey&&o.anclaColor){
@@ -820,7 +842,8 @@ function lookCardHTML(o,wadaOk=false){
   function imgOf(p,cls){return`<div class="${cls}">${p.foto?`<img src="${p.foto}" alt="">`:`<div class="of-color" style="background:${p.color}">${tipoIcon(p.tipo)}</div>`}</div>`;}
   const leftHTML=left.length?`<div class="of-left">${left.map(p=>imgOf(p,'of-left-item')).join('')}</div>`:'';
   const rightHTML=right.length?`<div class="of-right">${right.map(p=>imgOf(p,'of-right-item')).join('')}</div>`:'';
-  return`<div class="outfit-card${wadaOk?' wada-ok':''}">${wadaOk?'<div class="wada-badge">W</div>':''}<div class="outfit-body">${leftHTML}${rightHTML}</div><div class="outfit-paleta">${colores.map(c=>`<div class="paleta-seg" style="background:${c}"></div>`).join('')}</div></div>`;
+  const labelHTML=armNombre?`<div class="outfit-arm-label">${armNombre}</div>`:'';
+  return`<div class="outfit-card${wadaOk?' wada-ok':''}">${labelHTML}${wadaOk?'<div class="wada-badge">W</div>':''}<div class="outfit-body">${leftHTML}${rightHTML}</div><div class="outfit-paleta">${colores.map(c=>`<div class="paleta-seg" style="background:${c}"></div>`).join('')}</div></div>`;
 }
 function tipoIcon(tipo){const pos=getPosicion(tipo);if(pos==='superior'||pos==='exterior')return'👕';if(pos==='inferior')return'👖';if(pos==='calzado')return'👟';return'🎩';}
 
