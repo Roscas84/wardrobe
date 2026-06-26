@@ -824,7 +824,7 @@ function cargarFoto(input){
     const color=extraerColor(img);if(color){document.getElementById('inp-color').value=color;document.getElementById('inp-hex').value=color;}
   };reader.readAsDataURL(input.files[0]);
 }
-const TELAS=['Algodón','Lino','Lana','Poliéster','Nylon','Spandex / Elastano','Fleece','Canvas','Cuero','Ante / Gamuza','Seda','Viscosa','Modal'];
+const TELAS=['Algodón','Lino','Lana','Seda','Bambú','Lyocell / Tencel','Viscosa','Gamuza','Cuero','Poliéster','Nylon','Spandex / Elastano'];
 function addMaterialRow(tela='',pct=''){
   const rows=document.getElementById('material-rows');
   const div=document.createElement('div');div.className='mat-row';
