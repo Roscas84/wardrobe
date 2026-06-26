@@ -22,7 +22,7 @@ body{font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;background:#f5f0eb;
 .splash-sub{font-size:10px;letter-spacing:4px;text-transform:uppercase;color:#888;font-weight:300}
 
 /* HEADER */
-header{background:#fff;border-bottom:1px solid #e0dbd5;padding:14px 16px;position:sticky;top:0;z-index:100}
+header{background:#fff;border-bottom:1px solid #e0dbd5;padding:8px 16px;position:sticky;top:0;z-index:100}
 .header-logo{font-size:18px;font-weight:300;letter-spacing:1px;text-transform:uppercase;text-align:center}
 
 /* NAV */
@@ -44,11 +44,11 @@ header{background:#fff;border-bottom:1px solid #e0dbd5;padding:14px 16px;positio
 .editorial-strip img{width:100%;aspect-ratio:3/4;object-fit:cover;object-position:center top;display:block}
 
 /* PANTALLAS NEGRAS (Closet, Outfit) */
-.dark-screen{background:#000;min-height:calc(100vh - 57px - 62px)}
+.dark-screen{background:#000;min-height:calc(100vh - 40px - 62px)}
 
 /* BACK BUTTON — grande y visible */
-.back-bar{display:flex;align-items:center;gap:12px;padding:18px 20px;background:#000;border-bottom:1px solid #111;cursor:pointer;position:sticky;top:57px;z-index:80}
-.back-arrow{font-size:30px;color:#fff;font-weight:100;line-height:1;flex-shrink:0}
+.back-bar{display:flex;align-items:center;gap:12px;padding:10px 20px;background:#000;border-bottom:1px solid #111;cursor:pointer;position:sticky;top:40px;z-index:80}
+.back-arrow{font-size:22px;color:#fff;font-weight:100;line-height:1;flex-shrink:0}
 .back-title{font-size:12px;letter-spacing:2px;text-transform:uppercase;color:#fff;font-weight:300}
 
 /* CATEGORY LINKS — centrados, sin divisor */
@@ -104,16 +104,16 @@ header{background:#fff;border-bottom:1px solid #e0dbd5;padding:14px 16px;positio
 
 /* Outfits lista */
 .outfits-wrap{background:#000;min-height:200px}
-.outfit-card{background:#fff;margin-bottom:2px;position:relative}
+.outfit-card{background:#fff;margin-bottom:2px;position:relative;display:flex;flex-direction:column;height:calc(100vh - 145px);height:calc(100dvh - 145px)}
 .outfit-card.wada-ok{border:4px solid #c9a227}
 .wada-badge{position:absolute;top:8px;right:8px;width:26px;height:26px;background:#c9a227;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:700;color:#000;z-index:10;line-height:1}
-.outfit-col{display:flex;flex-direction:column;gap:1px;background:rgba(0,0,0,.05)}
-.of-item{overflow:hidden;width:100%;background:#f7f5f2}
+.outfit-col{flex:1;min-height:0;display:flex;flex-direction:column;gap:1px;background:rgba(0,0,0,.05)}
+.of-item{overflow:hidden;width:100%;background:#f7f5f2;flex:1;min-height:0}
 .of-item img{width:100%;height:100%;object-fit:contain}
 .of-color{width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-size:22px;background:#f7f5f2}
-.of-superior,.of-inferior,.of-exterior{height:238px}
-.of-calzado,.of-accesorios{height:150px}
-.outfit-paleta{display:flex;height:14px}
+.of-superior,.of-inferior,.of-exterior{flex:3;height:auto}
+.of-calzado,.of-accesorios{flex:2;height:auto}
+.outfit-paleta{display:flex;height:14px;flex-shrink:0}
 .paleta-seg{flex:1}
 .nivel-div{font-size:9px;color:#555;text-transform:uppercase;letter-spacing:2px;font-weight:300;padding:10px 16px 4px;background:#000}
 .wada-dot{width:7px;height:7px;background:#c9a227;border-radius:50%;flex-shrink:0}
