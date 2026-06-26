@@ -145,6 +145,7 @@ header{background:#fff;border-bottom:1px solid #e0dbd5;padding:8px 16px;position
 
 /* MODAL */
 .modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.7);z-index:300;align-items:flex-end;justify-content:center}
+#toast{position:fixed;bottom:80px;left:50%;transform:translateX(-50%);background:#1a1a1a;color:#fff;padding:10px 22px;font-size:11px;letter-spacing:2px;text-transform:uppercase;font-weight:300;z-index:400;opacity:0;transition:opacity .25s;pointer-events:none;white-space:nowrap}
 .modal-overlay.open{display:flex}
 .modal{background:#fff;padding:20px 16px;width:100%;max-width:500px;max-height:92vh;overflow-y:auto}
 .modal-handle{width:36px;height:3px;background:#e0dbd5;margin:0 auto 16px}
@@ -367,6 +368,7 @@ header{background:#fff;border-bottom:1px solid #e0dbd5;padding:8px 16px;position
   </div>
 </div>
 
+<div id="toast"></div>
 <!-- NAV -->
 <nav class="bottom-nav">
   <button class="bnav-btn active" id="nav-inicio" onclick="showScreen('inicio')">
@@ -842,6 +844,11 @@ function updateMaterialTotal(){
 function getMaterial(){
   return[...document.querySelectorAll('.mat-row')].map(r=>({tela:r.querySelector('.mat-sel').value,pct:parseInt(r.querySelector('.mat-pct').value)||0})).filter(m=>m.tela&&m.pct>0);
 }
+let _toastTimer=null;
+function showToast(msg){
+  const t=document.getElementById('toast');t.textContent=msg;t.style.opacity='1';
+  clearTimeout(_toastTimer);_toastTimer=setTimeout(()=>{t.style.opacity='0';},2000);
+}
 function guardarPrenda(){
   const nombre=document.getElementById('inp-nombre').value.trim(),tipo=document.getElementById('inp-tipo').value;
   const color=document.getElementById('inp-color').value,marca=document.getElementById('inp-marca').value.trim();
@@ -853,7 +860,7 @@ function guardarPrenda(){
   if(material.length){const total=material.reduce((s,m)=>s+m.pct,0);if(total!==100){alert('Los porcentajes de tela deben sumar 100% (ahora suman '+total+'%).');return;}}
   if(editandoId){const idx=inventario.findIndex(p=>p.id===editandoId);if(idx>=0)inventario[idx]={...inventario[idx],nombre,tipo,color,marca,talla,material,formalidad,foto,pos:getPosicion(tipo)};}
   else{inventario.push({id:Date.now(),nombre,tipo,color,marca,talla,material,formalidad,foto,pos:getPosicion(tipo)});}
-  guardarLocal();renderClosetMain();renderOutfitMain();cerrarModal();
+  guardarLocal();renderClosetMain();renderOutfitMain();cerrarModal();showToast('Guardado exitosamente');
 }
 function exportarInventario(){
   const a=document.createElement('a');
