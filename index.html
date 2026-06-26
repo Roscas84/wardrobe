@@ -19,7 +19,7 @@ body{font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;background:#f5f0eb;
 @keyframes mg-zoom{from{transform:scale(0.3);opacity:0}15%{opacity:1}to{transform:scale(2.5);opacity:0}}
 #splash{position:fixed;inset:0;background:#000;display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:999;transition:opacity 0.5s ease}
 #splash.out{opacity:0;pointer-events:none}
-.splash-mg{font-size:48px;font-weight:100;letter-spacing:8px;color:#fff;animation:mg-zoom 1.8s ease-in forwards}
+.splash-mg{font-size:48px;font-weight:100;letter-spacing:8px;color:#fff;animation:mg-zoom 2.2s ease-in forwards}
 .splash-line{width:60px;height:0.5px;background:#fff;margin:14px auto;opacity:0;animation:fadeIn 0.3s 0.1s forwards}
 .splash-sub{font-size:10px;letter-spacing:4px;text-transform:uppercase;color:#888;font-weight:300;opacity:0;animation:fadeIn 0.3s 0.2s forwards}
 @keyframes fadeIn{to{opacity:1}}
@@ -524,6 +524,7 @@ function verCatCloset(cat){
   document.getElementById('closet-main').style.display='none';
   document.getElementById('closet-items-wrap').style.display='block';
   document.getElementById('closet-color-wrap').style.display='none';
+  document.body.style.overflow='';
   window.scrollTo(0,0);
 }
 function verColorCloset(){
@@ -561,7 +562,7 @@ function volverClosetMain(){
   document.getElementById('closet-main').style.display='flex';
   document.getElementById('closet-items-wrap').style.display='none';
   document.getElementById('closet-color-wrap').style.display='none';
-  document.body.style.overflow='';
+  document.body.style.overflow='hidden';
   window.scrollTo(0,0);
 }
 function cardBackHTML(p){
@@ -619,11 +620,13 @@ function verCatOutfit(cat){
     </div>`).join('');
   document.getElementById('outfit-main').style.display='none';
   document.getElementById('outfit-items-wrap').style.display='block';
+  document.body.style.overflow='';
   window.scrollTo(0,0);
 }
 function volverOutfitMain(){
   document.getElementById('outfit-main').style.display='flex';
   document.getElementById('outfit-items-wrap').style.display='none';
+  document.body.style.overflow='hidden';
   window.scrollTo(0,0);
 }
 
@@ -832,7 +835,7 @@ function initSlideshow(){
 
 // NAVEGACIÓN
 function showScreen(id){
-  document.body.style.overflow='';
+  document.body.style.overflow=(id==='closet'||id==='outfit')?'hidden':'';
   const cur=document.querySelector('.screen.active')?.id?.replace('screen-','');
   if(id==='cargar'&&cur&&cur!=='cargar'){
     prevScreen=cur;
@@ -854,7 +857,7 @@ function volverDesdeCargar(){if(prevScreen)showScreen(prevScreen);}
 if('serviceWorker' in navigator){navigator.serviceWorker.register('/wardrobe/sw.js').catch(()=>{});}
 window.addEventListener('load',()=>{
   initSlideshow();
-  setTimeout(()=>{const sp=document.getElementById('splash');sp.classList.add('out');setTimeout(()=>sp.style.display='none',500);},1600);
+  setTimeout(()=>{const sp=document.getElementById('splash');sp.classList.add('out');setTimeout(()=>sp.style.display='none',500);},1900);
 });
 if(inventario.length===0){
   fetch('guardarropa.json').then(r=>r.json()).then(data=>{inventario=data;guardarLocal();renderClosetMain();renderOutfitMain();});
