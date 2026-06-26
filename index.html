@@ -79,12 +79,11 @@ header{background:#fff;border-bottom:1px solid #e0dbd5;padding:8px 16px;position
 .cb-select{margin-top:12px;padding:8px 18px;background:#fff;color:#000;border:none;font-size:9px;letter-spacing:2px;text-transform:uppercase;cursor:pointer;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif}
 
 /* COLOR SEARCH */
-.color-grid{display:flex;flex-wrap:wrap;gap:12px;padding:20px}
-.color-bubble{width:52px;height:52px;border-radius:50%;cursor:pointer;border:2px solid transparent;flex-shrink:0}
+.color-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(40px,1fr));gap:8px;padding:12px}
+.color-bubble,.color-bubble-all{width:100%;aspect-ratio:1;border-radius:50%;cursor:pointer;border:2px solid transparent}
 .color-bubble.on{border-color:#fff;box-shadow:0 0 0 1px #fff}
-.color-bubble-all{width:52px;height:52px;border-radius:50%;background:conic-gradient(red,yellow,lime,cyan,blue,magenta,red);cursor:pointer;border:2px solid transparent;flex-shrink:0}
+.color-bubble-all{background:conic-gradient(red,yellow,lime,cyan,blue,magenta,red)}
 .color-bubble-all.on{border-color:#fff}
-.color-section-title{font-size:10px;letter-spacing:2px;text-transform:uppercase;color:#555;padding:14px 20px 6px;font-weight:300}
 
 /* OUTFIT paso 2 — armonías como links */
 .arm-link{display:flex;align-items:center;justify-content:center;gap:10px;padding:15px 20px;cursor:pointer;text-align:center}
@@ -103,9 +102,8 @@ header{background:#fff;border-bottom:1px solid #e0dbd5;padding:8px 16px;position
 .res-count{font-size:10px;color:#444;padding:10px 20px 4px;background:#000}
 
 /* Outfits lista — scroll horizontal */
-#paso2-outfits{position:fixed;top:0;bottom:62px;left:0;right:0;background:#000;z-index:110}
-#paso2-outfits>.back-bar{position:absolute;top:0;left:0;right:0;z-index:5;background:rgba(0,0,0,0.65);backdrop-filter:blur(4px);-webkit-backdrop-filter:blur(4px);border-bottom:none}
-.outfits-wrap{position:absolute;inset:0;display:flex;flex-direction:row;overflow-x:auto;overflow-y:hidden;scroll-snap-type:x mandatory;scroll-behavior:smooth;scrollbar-width:none;-ms-overflow-style:none;touch-action:pan-x}
+#paso2-outfits{position:fixed;top:40px;bottom:62px;left:0;right:0;background:#000;z-index:60;flex-direction:column}
+.outfits-wrap{flex:1;min-height:0;display:flex;flex-direction:row;overflow-x:auto;overflow-y:hidden;scroll-snap-type:x mandatory;scroll-behavior:smooth;scrollbar-width:none;-ms-overflow-style:none;touch-action:pan-x}
 .outfits-wrap::-webkit-scrollbar{display:none;width:0;height:0}
 .outfits-wrap .nivel-div{display:none}
 .outfit-card{background:#fff;flex-shrink:0;width:100%;height:100%;position:relative;display:flex;flex-direction:column;scroll-snap-align:start}
@@ -212,7 +210,10 @@ header{background:#fff;border-bottom:1px solid #e0dbd5;padding:8px 16px;position
     </div>
     <div id="color-bubbles" class="color-grid"></div>
     <div id="closet-color-items" style="display:none">
-      <div class="color-section-title" id="color-items-label"></div>
+      <div class="back-bar" onclick="volverAColores()">
+        <span class="back-arrow">‹</span>
+        <span class="back-title" id="color-items-label"></span>
+      </div>
       <div id="closet-color-grid" class="items-grid"></div>
     </div>
   </div>
@@ -530,25 +531,30 @@ function verColorCloset(){
   document.getElementById('closet-main').style.display='none';
   document.getElementById('closet-items-wrap').style.display='none';
   document.getElementById('closet-color-wrap').style.display='block';
+  document.body.style.overflow='hidden';
   window.scrollTo(0,0);
 }
 function filtrarColorBubble(color){
-  document.querySelectorAll('.color-bubble,.color-bubble-all').forEach(el=>el.classList.remove('on'));
-  if(color){
-    document.querySelector(`.color-bubble[data-c="${color}"]`)?.classList.add('on');
-    const items=inventario.filter(p=>p.color===color);
-    document.getElementById('closet-color-items').style.display='block';
-    document.getElementById('color-items-label').textContent=items.length+' prendas';
-    document.getElementById('closet-color-grid').innerHTML=items.map(p=>closetCardHTML(p)).join('');
-  }else{
-    document.querySelector('.color-bubble-all')?.classList.add('on');
-    document.getElementById('closet-color-items').style.display='none';
-  }
+  if(!color)return;
+  const items=inventario.filter(p=>p.color===color);
+  document.getElementById('color-items-label').textContent=items.length+' prenda'+(items.length!==1?'s':'');
+  document.getElementById('closet-color-grid').innerHTML=items.map(p=>closetCardHTML(p)).join('');
+  document.getElementById('color-bubbles').style.display='none';
+  document.getElementById('closet-color-items').style.display='block';
+  document.body.style.overflow='';
+  window.scrollTo(0,0);
+}
+function volverAColores(){
+  document.getElementById('color-bubbles').style.display='';
+  document.getElementById('closet-color-items').style.display='none';
+  document.body.style.overflow='hidden';
+  window.scrollTo(0,0);
 }
 function volverClosetMain(){
   document.getElementById('closet-main').style.display='block';
   document.getElementById('closet-items-wrap').style.display='none';
   document.getElementById('closet-color-wrap').style.display='none';
+  document.body.style.overflow='';
   window.scrollTo(0,0);
 }
 function cardBackHTML(p){
@@ -672,7 +678,7 @@ function verArmonia(armKey){
     (basicos.length?`<div class="nivel-div">Sin capa exterior</div>`+sortW(basicos).map(o=>lookCardHTML(o,isWadaValidated(o))).join(''):'')
     +(exterior.length?`<div class="nivel-div">Con capa exterior</div>`+sortW(exterior).map(o=>lookCardHTML(o,isWadaValidated(o))).join(''):'');
   document.getElementById('paso2-main').style.display='none';
-  document.getElementById('paso2-outfits').style.display='block';
+  document.getElementById('paso2-outfits').style.display='flex';
   document.getElementById('lista-looks').scrollLeft=0;
   document.body.style.overflow='hidden';
 }
@@ -704,7 +710,7 @@ function lookCardHTML(o,wadaOk=false){
   function imgOf(p,cls){return`<div class="${cls}">${p.foto?`<img src="${p.foto}" alt="">`:`<div class="of-color" style="background:${p.color}">${tipoIcon(p.tipo)}</div>`}</div>`;}
   const leftHTML=left.length?`<div class="of-left">${left.map(p=>imgOf(p,'of-left-item')).join('')}</div>`:'';
   const rightHTML=right.length?`<div class="of-right">${right.map(p=>imgOf(p,'of-right-item')).join('')}</div>`:'';
-  return`<div class="outfit-card${wadaOk?' wada-ok':''}">${wadaOk?'<div class="wada-badge">W</div>':''}<div class="outfit-body">${leftHTML}${rightHTML}</div><div class="outfit-paleta">${colores.map(c=>`<div class="paleta-seg" style="background:${c}"></div>`).join('')}</div></div>`;
+  return`<div class="outfit-card${wadaOk?' wada-ok':''}">${wadaOk?'<div class="wada-badge">W</div>':''}<div class="outfit-paleta">${colores.map(c=>`<div class="paleta-seg" style="background:${c}"></div>`).join('')}</div><div class="outfit-body">${leftHTML}${rightHTML}</div></div>`;
 }
 function tipoIcon(tipo){const pos=getPosicion(tipo);if(pos==='superior'||pos==='exterior')return'👕';if(pos==='inferior')return'👖';if(pos==='calzado')return'👟';return'🎩';}
 
