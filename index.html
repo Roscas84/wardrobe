@@ -49,7 +49,8 @@ header{background:#fff;border-bottom:1px solid #e0dbd5;padding:8px 16px;position
 /* PANTALLAS NEGRAS (Closet, Outfit) */
 .dark-screen{background:#000;min-height:calc(100vh - 40px - 62px)}
 #lista-armonias{min-height:0;height:auto}
-#closet-main,#outfit-main{display:flex;flex-direction:column;justify-content:center;padding-bottom:62px}
+#closet-main{display:flex;flex-direction:column;justify-content:center;padding-bottom:62px}
+#outfit-main{display:flex;flex-direction:column;justify-content:center;padding-top:0;padding-bottom:0}
 
 /* BACK BUTTON — grande y visible */
 .back-bar{display:flex;align-items:center;gap:12px;padding:10px 20px;background:#000;border-bottom:1px solid #111;cursor:pointer;position:sticky;top:40px;z-index:80}
@@ -91,11 +92,11 @@ header{background:#fff;border-bottom:1px solid #e0dbd5;padding:8px 16px;position
 .color-bubble-all.on{border-color:#fff}
 
 /* OUTFIT paso 2 — armonías como links */
-.arm-link{display:flex;align-items:center;justify-content:center;gap:10px;padding:9px 20px;cursor:pointer;text-align:center}
+.arm-link{display:flex;align-items:center;justify-content:center;gap:10px;padding:14px 20px;cursor:pointer;text-align:center}
 .arm-link:active{opacity:.6}
 .arm-dot{width:10px;height:10px;border-radius:50%;flex-shrink:0;display:inline-block}
-.arm-link-nombre{font-size:13px;font-weight:300;letter-spacing:1px;text-transform:uppercase;color:#fff}
-.arm-link-count{font-size:11px;color:#888;font-weight:300}
+.arm-link-nombre{font-size:16px;font-weight:300;letter-spacing:1px;text-transform:uppercase;color:#fff}
+.arm-link-count{font-size:12px;color:#888;font-weight:300}
 
 /* Ancla chip en paso2 header */
 .res-hdr{padding:12px 20px;background:#000;border-bottom:1px solid #111;display:flex;align-items:center;gap:12px;position:relative;top:0;z-index:90}
@@ -105,7 +106,7 @@ header{background:#fff;border-bottom:1px solid #e0dbd5;padding:8px 16px;position
 .res-ancla-color{width:46px;height:62px;flex-shrink:0}
 .res-ancla-info{flex:1}
 .res-ancla-nombre{font-size:11px;letter-spacing:0.5px;color:#fff;font-weight:300}
-.res-count{font-size:10px;color:#ff1a00;padding:10px 20px 4px;background:#000;letter-spacing:1px}
+.res-count{font-size:16px;color:#ff1a00;padding:10px 20px 4px;background:#000;letter-spacing:1px}
 
 /* Outfits lista — scroll horizontal */
 #paso2-outfits{position:fixed;top:40px;bottom:62px;left:0;right:0;background:#000;z-index:60;flex-direction:column}
@@ -114,13 +115,13 @@ header{background:#fff;border-bottom:1px solid #e0dbd5;padding:8px 16px;position
 .outfits-wrap .nivel-div{display:none}
 .outfit-card{background:#000;flex-shrink:0;width:100%;height:100%;position:relative;display:flex;flex-direction:column;scroll-snap-align:start}
 .wada-badge{position:absolute;top:8px;right:8px;font-size:15px;font-weight:700;color:#c9a227;z-index:10;line-height:1;text-shadow:0 0 6px rgba(0,0,0,0.6)}
-.outfit-body{display:flex;flex:1;min-height:0;gap:2px;background:#000}
+.outfit-body{display:flex;flex:1;min-height:0;gap:2px;background:#000;padding:2px}
 .of-left{flex:3;display:flex;flex-direction:column;gap:2px}
 .of-right{flex:2;display:flex;flex-direction:column;gap:2px}
-.of-left-item,.of-right-item{flex:1;min-height:0;overflow:hidden;background:#f7f5f2;position:relative}
+.of-left-item,.of-right-item{flex:1;min-height:0;overflow:hidden;background:#000;position:relative}
 .of-left-item img,.of-right-item img{width:100%;height:100%;object-fit:contain;display:block}
-.of-color{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:22px;background:#f7f5f2}
-.outfit-paleta{display:flex;height:28px;flex-shrink:0}
+.of-color{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:22px;background:#000}
+.outfit-paleta{display:flex;height:36px;flex-shrink:0}
 .paleta-seg{flex:1}
 .nivel-div{font-size:9px;color:#555;text-transform:uppercase;letter-spacing:2px;font-weight:300;padding:10px 16px 4px;background:#000}
 .wada-dot{width:7px;height:7px;background:#c9a227;border-radius:50%;flex-shrink:0}
@@ -304,7 +305,7 @@ header{background:#fff;border-bottom:1px solid #e0dbd5;padding:8px 16px;position
       <p id="foto-status">Toca para agregar foto</p>
       <img id="preview-foto" style="display:none;margin-top:10px">
     </div>
-    <input type="file" id="input-foto" accept="image/*" capture="environment" style="display:none" onchange="cargarFoto(this)">
+    <input type="file" id="input-foto" accept="image/*" style="display:none" onchange="cargarFoto(this)">
     <div class="field"><label>Nombre</label><input type="text" id="inp-nombre" placeholder="Ej: Jean azul claro"></div>
     <div class="field">
       <label>Tipo</label>
@@ -340,6 +341,17 @@ header{background:#fff;border-bottom:1px solid #e0dbd5;padding:8px 16px;position
     </div>
     <div class="field"><label>Marca</label><input type="text" id="inp-marca" placeholder="Ej: Zara, Nike..."></div>
     <div class="field"><label>Talla</label><input type="text" id="inp-talla" placeholder="Ej: S, M, 28, 38..."></div>
+    <div class="field">
+      <label>Material / Tela</label>
+      <select id="inp-material">
+        <option value="">Sin especificar</option>
+        <option>Algodón</option><option>Mezclilla</option><option>Lino</option>
+        <option>Lana</option><option>Punto</option><option>Fleece</option>
+        <option>Poliéster</option><option>Nylon</option><option>Sintético</option>
+        <option>Cuero</option><option>Ante / Gamuza</option>
+        <option>Canvas</option><option>Seda</option>
+      </select>
+    </div>
     <div class="field">
       <label>Formalidad</label>
       <select id="inp-formalidad">
@@ -754,6 +766,7 @@ function editarPrenda(id){
   document.getElementById('inp-hex').value=p.color;
   document.getElementById('inp-marca').value=p.marca||'';
   document.getElementById('inp-talla').value=p.talla||'';
+  document.getElementById('inp-material').value=p.material||'';
   document.getElementById('inp-formalidad').value=p.formalidad;
   if(p.foto){const img=document.getElementById('preview-foto');img.src=p.foto;img.style.display='block';}
   document.getElementById('modal-prenda').classList.add('open');
@@ -768,7 +781,7 @@ function cerrarModal(){document.getElementById('modal-prenda').classList.remove(
 function limpiarModal(){
   ['inp-nombre','inp-marca','inp-talla'].forEach(id=>document.getElementById(id).value='');
   document.getElementById('inp-tipo').value='';document.getElementById('inp-color').value='#000000';
-  document.getElementById('inp-hex').value='#000000';document.getElementById('inp-formalidad').value='casual';
+  document.getElementById('inp-hex').value='#000000';document.getElementById('inp-material').value='';document.getElementById('inp-formalidad').value='casual';
   const img=document.getElementById('preview-foto');img.style.display='none';img.src='';
   document.getElementById('foto-status').textContent='Toca para agregar foto';
 }
@@ -806,11 +819,12 @@ function guardarPrenda(){
   const nombre=document.getElementById('inp-nombre').value.trim(),tipo=document.getElementById('inp-tipo').value;
   const color=document.getElementById('inp-color').value,marca=document.getElementById('inp-marca').value.trim();
   const talla=document.getElementById('inp-talla').value.trim();
+  const material=document.getElementById('inp-material').value;
   const formalidad=document.getElementById('inp-formalidad').value;
   const fotoEl=document.getElementById('preview-foto'),foto=fotoEl.src&&fotoEl.style.display!=='none'?fotoEl.src:null;
   if(!nombre||!tipo){alert('Escribe el nombre y selecciona el tipo.');return;}
-  if(editandoId){const idx=inventario.findIndex(p=>p.id===editandoId);if(idx>=0)inventario[idx]={...inventario[idx],nombre,tipo,color,marca,talla,formalidad,foto,pos:getPosicion(tipo)};}
-  else{inventario.push({id:Date.now(),nombre,tipo,color,marca,talla,formalidad,foto,pos:getPosicion(tipo)});}
+  if(editandoId){const idx=inventario.findIndex(p=>p.id===editandoId);if(idx>=0)inventario[idx]={...inventario[idx],nombre,tipo,color,marca,talla,material,formalidad,foto,pos:getPosicion(tipo)};}
+  else{inventario.push({id:Date.now(),nombre,tipo,color,marca,talla,material,formalidad,foto,pos:getPosicion(tipo)});}
   guardarLocal();renderClosetMain();renderOutfitMain();cerrarModal();
 }
 function exportarInventario(){
