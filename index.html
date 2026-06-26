@@ -509,6 +509,12 @@ function hexToHsl(hex){
   if(max!==min){let d=max-min;s=l>0.5?d/(2-max-min):d/(max+min);switch(max){case r:h=(g-b)/d+(g<b?6:0);break;case g:h=(b-r)/d+2;break;case b:h=(r-g)/d+4;break;}h/=6;}
   return{h:Math.round(h*360),s:Math.round(s*100),l:Math.round(l*100)};
 }
+function hslToHex(h,s,l){
+  h=((h%360)+360)%360;s/=100;l/=100;
+  const a=s*Math.min(l,1-l);
+  const f=n=>{const k=(n+h/30)%12;const c=l-a*Math.max(Math.min(k-3,9-k,1),-1);return Math.round(255*c).toString(16).padStart(2,'0');};
+  return'#'+f(0)+f(8)+f(4);
+}
 function esNeutro(hex){
   const{h,s,l}=hexToHsl(hex);
   if(s<15||l>85||l<10)return true;
@@ -552,7 +558,7 @@ function generarParaArmonia(anclaRef,armKey){
   function push(piezas,nivel){
     if(!piezas.some(p=>getPosicion(p.tipo)==='calzado')&&cal.length)piezas=[...piezas,cal[outfits.length%cal.length]];
     if(acc.length&&!piezas.some(p=>getPosicion(p.tipo)==='accesorios'))piezas=[...piezas,acc[outfits.length%acc.length]];
-    outfits.push({nivel,piezas});
+    outfits.push({nivel,piezas,armKey,anclaColor:anclaRef.color});
   }
   if(anclaPos==='superior'){inf.forEach(i=>{push([anclaRef,i],'basico');ext.forEach(e=>push([e,anclaRef,i],'exterior'));});}
   else if(anclaPos==='exterior'){sup.forEach(s=>inf.forEach(i=>push([anclaRef,s,i],'exterior')));}
@@ -771,8 +777,15 @@ function irPaso(n){
 
 function lookCardHTML(o,wadaOk=false){
   const piezas=o.piezas;
-  let colores=[...new Set(piezas.map(p=>p.color).filter(c=>!esNeutro(c)))];
-  if(!colores.length)colores=[...new Set(piezas.map(p=>p.color))];
+  let colores;
+  if(o.armKey&&o.anclaColor){
+    const{h,s,l}=hexToHsl(o.anclaColor);
+    const vs=Math.max(s,55),vl=Math.min(Math.max(l,35),62);
+    colores=[h,...getHuesObjetivo(h,o.armKey)].map(hue=>hslToHex(hue,vs,vl));
+  }else{
+    colores=[...new Set(piezas.map(p=>p.color).filter(c=>!esNeutro(c)))];
+    if(!colores.length)colores=[...new Set(piezas.map(p=>p.color))];
+  }
   const left=[
     ...piezas.filter(p=>getPosicion(p.tipo)==='exterior'),
     ...piezas.filter(p=>getPosicion(p.tipo)==='superior'),
