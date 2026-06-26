@@ -160,6 +160,13 @@ header{background:#fff;border-bottom:1px solid #e0dbd5;padding:8px 16px;position
 .mat-row .mat-sel{flex:1;min-width:0;width:auto;padding:10px 12px;border:1px solid #e0dbd5;font-size:15px;background:#fff;-webkit-appearance:none;outline:none;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif}
 .mat-row .mat-pct{width:46px;flex-shrink:0;padding:10px 6px;border:1px solid #e0dbd5;font-size:14px;text-align:center;outline:none;-webkit-appearance:none;font-family:inherit}
 .mat-del{width:34px;height:40px;border:none;background:#f0ebe5;font-size:17px;cursor:pointer;color:#888;flex-shrink:0}
+.cuidado-grupo{margin-bottom:10px}
+.cuidado-lbl{font-size:9px;color:#888;letter-spacing:1px;text-transform:uppercase;display:block;margin-bottom:5px}
+.cuidado-opts{display:flex;flex-wrap:wrap;gap:5px}
+.c-chip{padding:5px 10px;border:1px solid #e0dbd5;background:#fff;font-size:10px;letter-spacing:1px;text-transform:uppercase;cursor:pointer;font-family:inherit;color:#888;-webkit-appearance:none}
+.c-chip.on{background:#000;color:#fff;border-color:#000}
+.cb-cuidado{display:flex;flex-wrap:wrap;gap:4px;justify-content:center;margin-top:3px}
+.cb-care-chip{font-size:8px;color:#555;letter-spacing:1px;text-transform:uppercase;border:1px solid #2a2a2a;padding:2px 6px}
 .modal-btns{display:flex;gap:2px;margin-top:8px;padding-bottom:env(safe-area-inset-bottom)}
 .btn-cancel{flex:1;padding:14px;border:1px solid #e0dbd5;background:#fff;font-size:11px;cursor:pointer;letter-spacing:1px;text-transform:uppercase}
 .btn-save{flex:2;padding:14px;border:none;background:#000;color:#fff;font-size:11px;cursor:pointer;font-weight:400;letter-spacing:1px;text-transform:uppercase}
@@ -352,6 +359,36 @@ header{background:#fff;border-bottom:1px solid #e0dbd5;padding:8px 16px;position
       <div style="display:flex;justify-content:space-between;align-items:center;margin-top:6px">
         <button type="button" onclick="addMaterialRow()" style="padding:7px 14px;border:1px solid #e0dbd5;background:#fff;font-size:9px;letter-spacing:2px;text-transform:uppercase;cursor:pointer;font-family:inherit">+ Tela</button>
         <span id="material-total" style="font-size:11px;font-weight:300;letter-spacing:1px"></span>
+      </div>
+    </div>
+    <div class="field">
+      <label>Cuidados</label>
+      <div class="cuidado-grupo">
+        <div class="cuidado-lbl">Lavado</div>
+        <div class="cuidado-opts" id="cuidado-lavado">
+          <button type="button" class="c-chip" data-val="W30" onclick="toggleChip(this)">30°</button>
+          <button type="button" class="c-chip" data-val="W40" onclick="toggleChip(this)">40°</button>
+          <button type="button" class="c-chip" data-val="W60" onclick="toggleChip(this)">60°</button>
+          <button type="button" class="c-chip" data-val="Mano" onclick="toggleChip(this)">Mano</button>
+          <button type="button" class="c-chip" data-val="NoLavar" onclick="toggleChip(this)">No lavar</button>
+        </div>
+      </div>
+      <div class="cuidado-grupo">
+        <div class="cuidado-lbl">Secado</div>
+        <div class="cuidado-opts" id="cuidado-secado">
+          <button type="button" class="c-chip" data-val="Secadora" onclick="toggleChip(this)">Secadora</button>
+          <button type="button" class="c-chip" data-val="Tender" onclick="toggleChip(this)">Tender</button>
+          <button type="button" class="c-chip" data-val="NoSecadora" onclick="toggleChip(this)">No secadora</button>
+        </div>
+      </div>
+      <div class="cuidado-grupo" style="margin-bottom:0">
+        <div class="cuidado-lbl">Plancha</div>
+        <div class="cuidado-opts" id="cuidado-plancha">
+          <button type="button" class="c-chip" data-val="Baja" onclick="toggleChip(this)">Baja</button>
+          <button type="button" class="c-chip" data-val="Media" onclick="toggleChip(this)">Media</button>
+          <button type="button" class="c-chip" data-val="Alta" onclick="toggleChip(this)">Alta</button>
+          <button type="button" class="c-chip" data-val="NoPlancha" onclick="toggleChip(this)">No planchar</button>
+        </div>
       </div>
     </div>
     <div class="field">
@@ -585,12 +622,14 @@ function cardBackHTML(p){
   const marcaTalla=[p.marca,p.talla].filter(Boolean).join(' · ');
   const patron=p.patron&&p.patron!=='Liso'?p.patron:'';
   const matStr=Array.isArray(p.material)&&p.material.length?p.material.map(m=>m.tela+' '+m.pct+'%').join(' · '):(typeof p.material==='string'?p.material:'');
+  const cuidadoHTML=p.cuidado?`<div class="cb-cuidado">${[p.cuidado.lavado,p.cuidado.secado,p.cuidado.plancha].filter(Boolean).map(v=>`<span class="cb-care-chip">${CARE_DISPLAY[v]||v}</span>`).join('')}</div>`:'';
   return`
     <div class="cb-nombre">${p.nombre}</div>
     ${marcaTalla?`<div class="cb-marca">${marcaTalla}</div>`:''}
     <div class="c-card-color-row"><div class="c-dot" style="background:${p.color}"></div><div class="c-hex">${p.color}</div></div>
     <div class="cb-tipo">${p.tipo}${p.subtipo?' '+p.subtipo:''}${patron?' · '+patron:''}</div>
     ${matStr?`<div class="cb-formalidad" style="color:#777">${matStr}</div>`:''}
+    ${cuidadoHTML}
     <div class="cb-formalidad">${p.formalidad}</div>
     ${p.temporada?`<div class="cb-formalidad" style="color:#444">${p.temporada}</div>`:''}
     ${p.notas?`<div class="cb-formalidad" style="color:#3a3a3a;font-style:italic">${p.notas}</div>`:''}`;
@@ -776,6 +815,8 @@ function editarPrenda(id){
   if(Array.isArray(p.material)&&p.material.length){p.material.forEach(m=>addMaterialRow(m.tela,m.pct));}
   else if(typeof p.material==='string'&&p.material){addMaterialRow(p.material,100);}
   document.getElementById('inp-formalidad').value=p.formalidad;
+  document.querySelectorAll('.c-chip.on').forEach(b=>b.classList.remove('on'));
+  if(p.cuidado)setCuidado(p.cuidado);
   if(p.foto){const img=document.getElementById('preview-foto');img.src=p.foto;img.style.display='block';}
   document.getElementById('modal-prenda').classList.add('open');
   document.querySelector('#modal-prenda .modal').scrollTop=0;
@@ -793,6 +834,7 @@ function limpiarModal(){
   document.getElementById('inp-hex').value='#000000';
   document.getElementById('material-rows').innerHTML='';
   document.getElementById('material-total').textContent='';
+  document.querySelectorAll('.c-chip.on').forEach(b=>b.classList.remove('on'));
   document.getElementById('inp-formalidad').value='casual';
   const img=document.getElementById('preview-foto');img.style.display='none';img.src='';
   document.getElementById('foto-status').textContent='Toca para agregar foto';
@@ -827,6 +869,50 @@ function cargarFoto(input){
     const color=extraerColor(img);if(color){document.getElementById('inp-color').value=color;document.getElementById('inp-hex').value=color;}
   };reader.readAsDataURL(input.files[0]);
 }
+const CUIDADOS_POR_TELA={
+  'Algodón':          {lavado:'W40',secado:'Secadora',plancha:'Media'},
+  'Lino':             {lavado:'W30',secado:'Tender',  plancha:'Alta'},
+  'Lana':             {lavado:'Mano',secado:'Tender', plancha:'Baja'},
+  'Seda':             {lavado:'Mano',secado:'Tender', plancha:'Baja'},
+  'Bambú':            {lavado:'W30',secado:'Tender',  plancha:'Baja'},
+  'Lyocell / Tencel': {lavado:'W30',secado:'Tender',  plancha:'Baja'},
+  'Viscosa':          {lavado:'Mano',secado:'Tender', plancha:'Media'},
+  'Gamuza':           {lavado:'NoLavar',secado:'Tender',plancha:'NoPlancha'},
+  'Cuero':            {lavado:'NoLavar',secado:'Tender',plancha:'NoPlancha'},
+  'Poliéster':        {lavado:'W40',secado:'Secadora',plancha:'Baja'},
+  'Nylon':            {lavado:'W30',secado:'Tender',  plancha:'NoPlancha'},
+  'Spandex / Elastano':{lavado:'W30',secado:'Tender', plancha:'NoPlancha'},
+};
+const CARE_DISPLAY={
+  W30:'Lavar 30°',W40:'Lavar 40°',W60:'Lavar 60°',Mano:'Lavar a mano',NoLavar:'No lavar',
+  Secadora:'Secadora',Tender:'Tender',NoSecadora:'No secadora',
+  Baja:'Plancha baja',Media:'Plancha media',Alta:'Plancha alta',NoPlancha:'No planchar'
+};
+function toggleChip(btn){
+  const grupo=btn.closest('.cuidado-opts');
+  const yaOn=btn.classList.contains('on');
+  grupo.querySelectorAll('.c-chip').forEach(b=>b.classList.remove('on'));
+  if(!yaOn)btn.classList.add('on');
+}
+function getCuidado(){
+  const get=id=>{const b=document.querySelector('#'+id+' .c-chip.on');return b?b.dataset.val:null;};
+  const c={lavado:get('cuidado-lavado'),secado:get('cuidado-secado'),plancha:get('cuidado-plancha')};
+  return(c.lavado||c.secado||c.plancha)?c:null;
+}
+function setCuidado(c){
+  if(!c)return;
+  ['lavado','secado','plancha'].forEach(g=>{
+    if(!c[g])return;
+    const btn=document.querySelector('#cuidado-'+g+' [data-val="'+c[g]+'"]');
+    if(btn){document.querySelectorAll('#cuidado-'+g+' .c-chip').forEach(b=>b.classList.remove('on'));btn.classList.add('on');}
+  });
+}
+function sugerirCuidados(){
+  const mats=getMaterial();if(!mats.length)return;
+  const dom=mats.sort((a,b)=>b.pct-a.pct)[0].tela;
+  const sug=CUIDADOS_POR_TELA[dom];if(!sug)return;
+  if(!document.querySelector('.c-chip.on'))setCuidado(sug);
+}
 const TELAS=['Algodón','Lino','Lana','Seda','Bambú','Lyocell / Tencel','Viscosa','Gamuza','Cuero','Poliéster','Nylon','Spandex / Elastano'];
 function addMaterialRow(tela='',pct=''){
   const rows=document.getElementById('material-rows');
@@ -841,6 +927,7 @@ function updateMaterialTotal(){
   if(!vals.length){el.textContent='';return;}
   el.textContent='Total: '+total+'%';
   el.style.color=total===100?'#4caf50':'#ff1a00';
+  sugerirCuidados();
 }
 function getMaterial(){
   return[...document.querySelectorAll('.mat-row')].map(r=>({tela:r.querySelector('.mat-sel').value,pct:parseInt(r.querySelector('.mat-pct').value)||0})).filter(m=>m.tela&&m.pct>0);
@@ -856,11 +943,12 @@ function guardarPrenda(){
   const talla=document.getElementById('inp-talla').value.trim();
   const material=getMaterial();
   const formalidad=document.getElementById('inp-formalidad').value;
+  const cuidado=getCuidado();
   const fotoEl=document.getElementById('preview-foto'),foto=fotoEl.src&&fotoEl.style.display!=='none'?fotoEl.src:null;
   if(!nombre||!tipo){alert('Escribe el nombre y selecciona el tipo.');return;}
   if(material.length){const total=material.reduce((s,m)=>s+m.pct,0);if(total!==100){alert('Los porcentajes de tela deben sumar 100% (ahora suman '+total+'%).');return;}}
-  if(editandoId){const idx=inventario.findIndex(p=>p.id===editandoId);if(idx>=0)inventario[idx]={...inventario[idx],nombre,tipo,color,marca,talla,material,formalidad,foto,pos:getPosicion(tipo)};}
-  else{inventario.push({id:Date.now(),nombre,tipo,color,marca,talla,material,formalidad,foto,pos:getPosicion(tipo)});}
+  if(editandoId){const idx=inventario.findIndex(p=>p.id===editandoId);if(idx>=0)inventario[idx]={...inventario[idx],nombre,tipo,color,marca,talla,material,cuidado,formalidad,foto,pos:getPosicion(tipo)};}
+  else{inventario.push({id:Date.now(),nombre,tipo,color,marca,talla,material,cuidado,formalidad,foto,pos:getPosicion(tipo)});}
   guardarLocal();renderClosetMain();renderOutfitMain();cerrarModal();showToast('Guardado exitosamente');
 }
 function exportarInventario(){
