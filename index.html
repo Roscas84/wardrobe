@@ -49,11 +49,11 @@ header{background:#fff;border-bottom:1px solid #e0dbd5;padding:8px 16px;position
 /* PANTALLAS NEGRAS (Closet, Outfit) */
 .dark-screen{background:#000;min-height:calc(100vh - 40px - 62px)}
 #lista-armonias{min-height:0;height:auto}
-#closet-main,#outfit-main{display:flex;flex-direction:column;justify-content:center}
+#closet-main,#outfit-main{display:flex;flex-direction:column;justify-content:center;padding-bottom:62px}
 
 /* BACK BUTTON — grande y visible */
 .back-bar{display:flex;align-items:center;gap:12px;padding:10px 20px;background:#000;border-bottom:1px solid #111;cursor:pointer;position:sticky;top:40px;z-index:80}
-.back-arrow{font-size:22px;color:#fff;font-weight:100;line-height:1;flex-shrink:0}
+.back-arrow{font-size:44px;color:#fff;font-weight:100;line-height:1;flex-shrink:0;padding:0 6px 0 0}
 .back-title{font-size:12px;letter-spacing:2px;text-transform:uppercase;color:#fff;font-weight:300}
 
 /* CATEGORY LINKS — centrados, sin divisor */
@@ -98,7 +98,8 @@ header{background:#fff;border-bottom:1px solid #e0dbd5;padding:8px 16px;position
 .arm-link-count{font-size:11px;color:#888;font-weight:300}
 
 /* Ancla chip en paso2 header */
-.res-hdr{padding:12px 20px;background:#000;border-bottom:1px solid #111;display:flex;align-items:center;gap:12px;position:sticky;top:57px;z-index:90}
+.res-hdr{padding:12px 20px;background:#000;border-bottom:1px solid #111;display:flex;align-items:center;gap:12px;position:relative;top:0;z-index:90}
+#paso2-main{background:#000;min-height:calc(100vh - 40px - 62px)}
 .res-back{font-size:30px;color:#fff;font-weight:100;cursor:pointer;flex-shrink:0;line-height:1}
 .res-ancla-thumb{width:46px;height:62px;object-fit:contain;background:#111;flex-shrink:0;display:block}
 .res-ancla-color{width:46px;height:62px;flex-shrink:0}
