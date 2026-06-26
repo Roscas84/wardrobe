@@ -108,14 +108,11 @@ header{background:#fff;border-bottom:1px solid #e0dbd5;padding:8px 16px;position
 .outfit-card.wada-ok{border:4px solid #c9a227}
 .wada-badge{position:absolute;top:8px;right:8px;width:26px;height:26px;background:#c9a227;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:700;color:#000;z-index:10;line-height:1}
 .outfit-body{display:flex;flex:1;min-height:0;gap:2px;background:#000}
-.of-hero{flex:3;overflow:hidden;background:#f7f5f2;position:relative}
-.of-hero img{width:100%;height:100%;object-fit:contain;object-position:top center;display:block}
-.of-hero .of-color{position:absolute;inset:0}
-.of-side{flex:2;display:flex;flex-direction:column;gap:2px}
-.of-side-item{flex:1;overflow:hidden;background:#f7f5f2;min-height:0;position:relative}
-.of-side-item img{width:100%;height:100%;object-fit:contain;display:block}
-.of-side-item .of-color{position:absolute;inset:0}
-.of-color{display:flex;align-items:center;justify-content:center;font-size:22px;background:#f7f5f2}
+.of-left{flex:3;display:flex;flex-direction:column;gap:2px}
+.of-right{flex:2;display:flex;flex-direction:column;gap:2px}
+.of-left-item,.of-right-item{flex:1;min-height:0;overflow:hidden;background:#f7f5f2;position:relative}
+.of-left-item img,.of-right-item img{width:100%;height:100%;object-fit:contain;display:block}
+.of-color{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:22px;background:#f7f5f2}
 .outfit-paleta{display:flex;height:14px;flex-shrink:0}
 .paleta-seg{flex:1}
 .nivel-div{font-size:9px;color:#555;text-transform:uppercase;letter-spacing:2px;font-weight:300;padding:10px 16px 4px;background:#000}
@@ -691,17 +688,20 @@ function irPaso(n){
 
 function lookCardHTML(o,wadaOk=false){
   const piezas=o.piezas,colores=[...new Set(piezas.map(p=>p.color))];
-  const ext=piezas.filter(p=>getPosicion(p.tipo)==='exterior');
-  const sup=piezas.filter(p=>getPosicion(p.tipo)==='superior');
-  const inf=piezas.filter(p=>getPosicion(p.tipo)==='inferior');
-  const cal=piezas.filter(p=>getPosicion(p.tipo)==='calzado');
-  const accCab=piezas.filter(p=>ACC_CABEZA.includes(p.tipo));
-  const accCue=piezas.filter(p=>ACC_CUERPO.includes(p.tipo));
-  const hero=ext[0]||sup[0]||inf[0]||cal[0]||piezas[0];
-  const rest=[...sup,...inf,...cal,...accCab,...accCue].filter(p=>p!==hero);
+  const left=[
+    ...piezas.filter(p=>getPosicion(p.tipo)==='exterior'),
+    ...piezas.filter(p=>getPosicion(p.tipo)==='superior'),
+    ...piezas.filter(p=>getPosicion(p.tipo)==='inferior'),
+  ];
+  const right=[
+    ...piezas.filter(p=>getPosicion(p.tipo)==='calzado'),
+    ...piezas.filter(p=>ACC_CABEZA.includes(p.tipo)),
+    ...piezas.filter(p=>ACC_CUERPO.includes(p.tipo)),
+  ];
   function imgOf(p,cls){return`<div class="${cls}">${p.foto?`<img src="${p.foto}" alt="">`:`<div class="of-color" style="background:${p.color}">${tipoIcon(p.tipo)}</div>`}</div>`;}
-  const sideHTML=rest.length?`<div class="of-side">${rest.map(p=>imgOf(p,'of-side-item')).join('')}</div>`:'';
-  return`<div class="outfit-card${wadaOk?' wada-ok':''}">${wadaOk?'<div class="wada-badge">W</div>':''}<div class="outfit-body">${imgOf(hero,'of-hero')}${sideHTML}</div><div class="outfit-paleta">${colores.map(c=>`<div class="paleta-seg" style="background:${c}"></div>`).join('')}</div></div>`;
+  const leftHTML=left.length?`<div class="of-left">${left.map(p=>imgOf(p,'of-left-item')).join('')}</div>`:'';
+  const rightHTML=right.length?`<div class="of-right">${right.map(p=>imgOf(p,'of-right-item')).join('')}</div>`:'';
+  return`<div class="outfit-card${wadaOk?' wada-ok':''}">${wadaOk?'<div class="wada-badge">W</div>':''}<div class="outfit-body">${leftHTML}${rightHTML}</div><div class="outfit-paleta">${colores.map(c=>`<div class="paleta-seg" style="background:${c}"></div>`).join('')}</div></div>`;
 }
 function tipoIcon(tipo){const pos=getPosicion(tipo);if(pos==='superior'||pos==='exterior')return'👕';if(pos==='inferior')return'👖';if(pos==='calzado')return'👟';return'🎩';}
 
