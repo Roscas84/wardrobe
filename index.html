@@ -543,14 +543,19 @@ function esCompatible(pHex,huesObj,anclaHex){
 
 // GENERADOR
 function generarParaArmonia(anclaRef,armKey){
-  const huesObj=getHuesObjetivo(hexToHsl(anclaRef.color).h,armKey);
+  const{h:hAncla}=hexToHsl(anclaRef.color);
+  const huesObj=getHuesObjetivo(hAncla,armKey);
   const otras=inventario.filter(p=>p.id!==anclaRef.id);
+  // Pre-check: cada ángulo objetivo debe tener al menos una prenda real en el inventario
+  for(const th of huesObj){
+    if(!otras.some(p=>!esNeutro(p.color)&&hueDist(hexToHsl(p.color).h,th)<=TOLERANCIA))return[];
+  }
   function pool(pos){
     const all=otras.filter(p=>getPosicion(p.tipo)===pos);
     const compat=all.filter(p=>esCompatible(p.color,huesObj,anclaRef.color));
     if(compat.length)return compat;
-    const neutros=all.filter(p=>esNeutro(p.color));
-    return neutros.length?neutros:all;
+    // Solo neutros como fallback — nunca "todo" para no inventar outfits
+    return all.filter(p=>esNeutro(p.color));
   }
   const anclaPos=getPosicion(anclaRef.tipo);
   const sup=pool('superior'),ext=pool('exterior'),inf=pool('inferior'),cal=pool('calzado'),acc=pool('accesorios');
@@ -777,15 +782,8 @@ function irPaso(n){
 
 function lookCardHTML(o,wadaOk=false){
   const piezas=o.piezas;
-  let colores;
-  if(o.armKey&&o.anclaColor){
-    const{h,s,l}=hexToHsl(o.anclaColor);
-    const vs=Math.max(s,55),vl=Math.min(Math.max(l,35),62);
-    colores=[h,...getHuesObjetivo(h,o.armKey)].map(hue=>hslToHex(hue,vs,vl));
-  }else{
-    colores=[...new Set(piezas.map(p=>p.color).filter(c=>!esNeutro(c)))];
-    if(!colores.length)colores=[...new Set(piezas.map(p=>p.color))];
-  }
+  let colores=[...new Set(piezas.map(p=>p.color).filter(c=>!esNeutro(c)))];
+  if(!colores.length)colores=[...new Set(piezas.map(p=>p.color))];
   const left=[
     ...piezas.filter(p=>getPosicion(p.tipo)==='exterior'),
     ...piezas.filter(p=>getPosicion(p.tipo)==='superior'),
