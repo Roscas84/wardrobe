@@ -795,12 +795,13 @@ function lookCardHTML(o,wadaOk=false){
       positions.forEach((pos,i)=>{const d=hueDist(ph,pos);if(d<minD){minD=d;minI=i;}});
       buckets[minI].push(p);
     });
-    // Un color real por posición: la prenda más cercana al ángulo objetivo
+    // Un color por posición: prenda real si existe, teórico como fallback
+    const{s:sA,l:lA}=hexToHsl(o.anclaColor);
+    const vs=Math.max(sA,55),vl=Math.min(Math.max(lA,35),62);
     colores=buckets.map((bucket,i)=>{
-      if(!bucket.length)return null;
-      return bucket.reduce((best,p)=>hueDist(hexToHsl(p.color).h,positions[i])<hueDist(hexToHsl(best.color).h,positions[i])?p:best).color;
-    }).filter(c=>c!==null);
-    if(!colores.length)colores=[...new Set(nonNeutral.map(p=>p.color))];
+      if(bucket.length)return bucket.reduce((best,p)=>hueDist(hexToHsl(p.color).h,positions[i])<hueDist(hexToHsl(best.color).h,positions[i])?p:best).color;
+      return hslToHex(positions[i],vs,vl);
+    });
   }else{
     colores=[...new Set(piezas.map(p=>p.color).filter(c=>!esNeutro(c)))];
     if(!colores.length)colores=[...new Set(piezas.map(p=>p.color))];
