@@ -312,6 +312,12 @@ header{background:#fff;border-bottom:1px solid #e0dbd5;padding:8px 16px;position
       <input type="file" id="import-file" accept=".json" style="display:none" onchange="importarInventario(this)">
     </div>
   </div>
+  <div class="cargar-block" style="margin-top:2px;padding:16px">
+    <div style="font-size:9px;letter-spacing:2px;text-transform:uppercase;color:#888;margin-bottom:10px">Sincronización GitHub</div>
+    <div id="gh-sync-status" style="font-size:10px;color:#888;margin-bottom:10px;letter-spacing:0.5px"></div>
+    <input id="gh-token-inp" type="password" placeholder="Token de GitHub (ghp_...)" style="width:100%;padding:10px;border:1px solid #e0dbd5;font-size:11px;margin-bottom:8px;font-family:monospace">
+    <button onclick="guardarToken()" style="width:100%;padding:11px;background:#000;color:#fff;border:none;font-size:10px;letter-spacing:2px;text-transform:uppercase;cursor:pointer">Guardar Token</button>
+  </div>
 </div>
 
 <!-- MODAL -->
@@ -1173,19 +1179,84 @@ function showToast(msg){
   const t=document.getElementById('toast');t.textContent=msg;t.style.opacity='1';
   clearTimeout(_toastTimer);_toastTimer=setTimeout(()=>{t.style.opacity='0';},2000);
 }
-function guardarPrenda(){
+const GH_REPO='Roscas84/wardrobe';
+const GH_BRANCH='main';
+function ghToken(){return localStorage.getItem('gh_token')||'';}
+function guardarToken(){
+  const t=document.getElementById('gh-token-inp').value.trim();
+  if(!t){alert('Pega tu token de GitHub');return;}
+  localStorage.setItem('gh_token',t);
+  document.getElementById('gh-token-inp').value='';
+  mostrarEstadoSync();
+  showToast('Token guardado');
+}
+function mostrarEstadoSync(){
+  const el=document.getElementById('gh-sync-status');
+  if(!el)return;
+  el.textContent=ghToken()?'✓ Token configurado — fotos se suben automáticamente':'⚠ Sin token — fotos solo en este dispositivo';
+  el.style.color=ghToken()?'#22aa55':'#cc6600';
+}
+async function ghGet(path){
+  const r=await fetch(`https://api.github.com/repos/${GH_REPO}/contents/${path}`,
+    {headers:{Authorization:`token ${ghToken()}`,Accept:'application/vnd.github.v3+json'}});
+  if(!r.ok)return null;
+  return r.json();
+}
+async function ghPut(path,base64Content,message,sha){
+  const body={message,content:base64Content,branch:GH_BRANCH};
+  if(sha)body.sha=sha;
+  const r=await fetch(`https://api.github.com/repos/${GH_REPO}/contents/${path}`,
+    {method:'PUT',headers:{Authorization:`token ${ghToken()}`,Accept:'application/vnd.github.v3+json','Content-Type':'application/json'},
+     body:JSON.stringify(body)});
+  return r.ok;
+}
+function dataUrlToBase64(dataUrl){return dataUrl.split(',')[1]||'';}
+async function subirFotoGitHub(dataUrl,filename){
+  const b64=dataUrlToBase64(dataUrl);
+  if(!b64)return false;
+  const existing=await ghGet(`images/${filename}`);
+  return ghPut(`images/${filename}`,b64,`Add photo ${filename}`,existing?.sha);
+}
+async function subirJsonGitHub(){
+  const existing=await ghGet('guardarropa.json');
+  const content=btoa(unescape(encodeURIComponent(JSON.stringify(inventario,null,2))));
+  return ghPut('guardarropa.json',content,'Update inventory',existing?.sha);
+}
+async function guardarPrenda(){
   const nombre=document.getElementById('inp-nombre').value.trim(),tipo=document.getElementById('inp-tipo').value;
   const color=document.getElementById('inp-color').value,marca=document.getElementById('inp-marca').value.trim();
   const talla=document.getElementById('inp-talla').value.trim();
   const material=getMaterial();
   const formalidad=document.getElementById('inp-formalidad').value;
   const cuidado=getCuidado();
-  const fotoEl=document.getElementById('preview-foto'),foto=fotoEl.src&&fotoEl.style.display!=='none'?fotoEl.src:null;
+  const fotoEl=document.getElementById('preview-foto');
+  let foto=fotoEl.src&&fotoEl.style.display!=='none'?fotoEl.src:null;
   if(!nombre||!tipo){alert('Escribe el nombre y selecciona el tipo.');return;}
   if(material.length){const total=material.reduce((s,m)=>s+m.pct,0);if(total!==100){alert('Los porcentajes de tela deben sumar 100% (ahora suman '+total+'%).');return;}}
+  const esDataUrl=foto&&foto.startsWith('data:');
+  const tieneToken=!!ghToken();
+  if(esDataUrl&&tieneToken){
+    const filename=`user_${Date.now()}.webp`;
+    cerrarModal();
+    showToast('⏳ Subiendo foto...');
+    const ok=await subirFotoGitHub(foto,filename);
+    if(ok){foto=`images/${filename}`;}
+    else{showToast('⚠ Error al subir — guardado local');}
+  }else{
+    cerrarModal();
+  }
   if(editandoId){const idx=inventario.findIndex(p=>p.id===editandoId);if(idx>=0)inventario[idx]={...inventario[idx],nombre,tipo,color,marca,talla,material,cuidado,formalidad,foto,pos:getPosicion(tipo)};}
   else{inventario.push({id:Date.now(),nombre,tipo,color,marca,talla,material,cuidado,formalidad,foto,pos:getPosicion(tipo)});}
-  guardarLocal();renderClosetMain();renderOutfitMain();cerrarModal();showToast('Guardado exitosamente');
+  guardarLocal();renderClosetMain();renderOutfitMain();
+  if(esDataUrl&&tieneToken&&!foto.startsWith('data:')){
+    showToast('⏳ Sincronizando inventario...');
+    await subirJsonGitHub();
+    showToast('✓ Guardado y sincronizado con GitHub');
+  }else if(esDataUrl&&!tieneToken){
+    showToast('Guardado local — configura token para sincronizar');
+  }else{
+    showToast('Guardado exitosamente');
+  }
 }
 function exportarInventario(){
   const a=document.createElement('a');
@@ -1233,6 +1304,7 @@ function volverDesdeCargar(){if(prevScreen)showScreen(prevScreen);}
 if('serviceWorker' in navigator){navigator.serviceWorker.register('/wardrobe/sw.js').catch(()=>{});}
 window.addEventListener('load',()=>{
   initSlideshow();
+  mostrarEstadoSync();
   setTimeout(()=>{const sp=document.getElementById('splash');sp.classList.add('out');setTimeout(()=>sp.style.display='none',500);},1900);
 });
 // Siempre sincronizar con guardarropa.json como fuente de verdad
