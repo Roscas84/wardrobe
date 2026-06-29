@@ -49,7 +49,7 @@ header{background:#fff;border-bottom:1px solid #e0dbd5;padding:8px 16px;position
 /* PANTALLAS NEGRAS (Closet, Outfit) */
 .dark-screen{background:#000;min-height:calc(100vh - 40px - 62px)}
 #lista-armonias{min-height:0;height:auto}
-#closet-main{display:flex;flex-direction:column;justify-content:center;padding:20px 0 20px;height:calc(100vh - 40px - 62px);box-sizing:border-box;overflow-y:auto}
+#closet-main{display:flex;flex-direction:column;align-items:stretch;justify-content:flex-start;padding:20px 0 20px;height:calc(100vh - 40px - 62px);box-sizing:border-box;overflow-y:auto}
 #outfit-main{display:flex;flex-direction:column;justify-content:center;padding:20px 0 80px;height:calc(100vh - 40px - 62px);box-sizing:border-box;overflow-y:auto}
 
 /* BACK BUTTON — grande y visible */
@@ -217,9 +217,6 @@ header{background:#fff;border-bottom:1px solid #e0dbd5;padding:8px 16px;position
 <div id="screen-closet" class="screen">
   <div id="closet-main" class="dark-screen">
     <div id="closet-cat-links"></div>
-    <div class="cat-link" onclick="verColorCloset()">
-      <span class="cat-link-text">Búsqueda por color</span>
-    </div>
   </div>
   <div id="closet-items-wrap" style="display:none">
     <div class="back-bar" onclick="volverClosetMain()">
@@ -602,6 +599,11 @@ function flipCard(el){el.querySelector('.flip-inner').classList.toggle('flipped'
 // CLOSET
 function renderClosetMain(){
   const wrap=document.getElementById('closet-cat-links');wrap.innerHTML='';
+  // Búsqueda por color — siempre primero para que sea visible en móvil
+  const colorBtn=document.createElement('div');colorBtn.className='cat-link';
+  colorBtn.onclick=verColorCloset;
+  colorBtn.innerHTML=`<span class="cat-link-text">Búsqueda por color</span>`;
+  wrap.appendChild(colorBtn);
   ZARA_CATS.forEach(cat=>{
     const items=inventario.filter(p=>cat.tipos.includes(p.tipo));if(!items.length)return;
     const div=document.createElement('div');div.className='cat-link';

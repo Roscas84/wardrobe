@@ -3,151 +3,149 @@
 App web progresiva (PWA) de uso personal para gestionar inventario de ropa y generar outfits basados en teoría del color. Funciona como app instalada en iPhone/Android sin necesidad de App Store.
 
 **URL:** https://roscas84.github.io/wardrobe/
+**Repo:** https://github.com/Roscas84/wardrobe (privado)
 
 ---
 
-## Estado actual
+## Estado actual — SW v67
 
 ### Lo que funciona hoy
 
 | Módulo | Estado |
 |---|---|
-| Inventario (Closet) con foto, flip-card y búsqueda por color | Completo |
+| Inventario (Closet) con foto flip-card | Completo |
+| Búsqueda por color — burbujas con conteo | Completo |
 | Carga de prendas con rembg (fondo eliminado automáticamente) | Completo |
+| Normalización automática de proporciones al subir foto | Completo |
 | Extracción automática de colores dominantes al subir foto | Completo |
+| Sincronización GitHub: fotos nuevas se suben al repo automáticamente | Completo |
 | Motor cromático HSL — 7 armonías de la color wheel | Completo |
 | Pre-check por armonía: todos los ángulos deben tener prenda real | Completo |
 | Tolerancia ±15° por posición harmónica (C1 exacto + C2 flexible) | Completo |
-| Prendas ancla y prendas del mismo hue que el ancla incluidas | Completo |
 | Neutros excluidos de esCompatible (solo entran como fallback) | Completo |
 | Paleta de colores en cada outfit (agrupada por posición harmónica) | Completo |
 | Badge Sanzo Wada en outfits validados cromáticamente | Completo |
 | Layout 60/40 — izquierda: exterior+superior+inferior / derecha: calzado+accesorios | Completo |
 | Carrusel horizontal con scroll-snap | Completo |
-| Ver todos los outfits en un solo carrusel | Completo |
 | Material / composición de tela con porcentajes | Completo |
 | Símbolos de cuidado (lavado, secado, plancha) con auto-sugerencia | Completo |
-| Service Worker v47 — network-first para HTML, cache-first para imágenes | Completo |
+| Service Worker v67 — network-first para HTML/JSON, cache-first para imágenes | Completo |
 
 ### Inventario actual
-- 49 prendas cargadas con foto procesada (rembg)
-- 1 foto pendiente: sandalia rope beige (necesita foto sin pie, fondo oscuro)
+- 49 prendas cargadas con foto procesada (WebP, 1200×1600 px, fondo transparente)
+- Imágenes respaldadas en: `/Users/angelalcantara/Claude/Proyects/Wardrobe/Inventory/images_procesadas/`
+- Excel fuente de verdad: `/Users/angelalcantara/Claude/Proyects/Wardrobe/Inventory/Mi_Guardarropa_v3.xlsx`
 
 ---
 
 ## TODO — Pendientes
 
 ### Datos (trabajo manual)
-- [ ] Actualizar **cuidados de lavado/secado/plancha** en las 49 prendas existentes (el campo existe pero está vacío en prendas antiguas — requiere editar el JSON o Excel)
-- [ ] Foto nueva de **sandalia rope beige** — sin pie, fondo oscuro → rembg → reemplazar `IMG_0625 2.png`
-- [ ] Verificar y corregir **tallas reales** en todas las prendas del Excel
-- [ ] Revisar prendas con colores multicolor ya cargadas y confirmar que el hex registrado representa el color cromático correcto (no el neutro)
+- [ ] Actualizar **cuidados de lavado/secado/plancha** en las 49 prendas existentes
+- [ ] Foto nueva de **sandalia rope beige** (ID 28) — sin pie, fondo oscuro
+- [ ] Verificar y corregir **tallas reales** en todas las prendas
 
 ### Lógica / Bugs conocidos
-- [ ] **Dos capas exteriores**: el sistema puede generar outfits con blazer + chamarra como exterior simultáneamente — agregar regla que excluya la segunda capa exterior si el ancla ya es exterior
-- [ ] **Cuidados en prendas existentes**: las 49 prendas necesitan que alguien llene los campos lavado/secado/plancha manualmente o via Excel
+- [ ] **Dos capas exteriores**: puede generar outfits con blazer + chamarra simultáneamente — excluir segunda capa exterior si el ancla ya es exterior
+- [ ] **ID 49 Overalls**: canvas fill 23.1% con bbox sospechosamente angosto (346px wide) — posible artefacto rembg
 
 ### UX pequeñas
-- [ ] Revisar que el menú Outfit esté bien centrado en todos los iPhone (probar en SE y Pro Max)
+- [ ] Revisar que el menú Outfit esté bien centrado en todos los iPhone (SE y Pro Max)
+
+---
+
+## Pipeline de imágenes
+
+### Procesamiento estándar (Python)
+```
+Fuente: /Inventory/Images/{nombre}.png o .webp
+→ Verificar modo PIL:
+   - RGBA → usar directamente (usuario ya removió fondo)
+   - RGB  → rembg isnet-general-use (elimina fondo)
+→ PIL enhance: Contrast×1.12, Color×1.15, Sharpness×1.30, UnsharpMask(1.0,50,3)
+→ auto_crop_dominant: bbox no-transparente + 5% margen → escalar por dimensión dominante al 90% fill → canvas 1200×1600 RGBA
+→ Guardar WebP quality=85
+→ Respaldar en images_procesadas/
+→ git add + commit + push
+```
+
+### Normalización automática al subir desde la app
+```
+cargarFoto() → removerFondo() (rembg en browser) → normalizarProporcion() (Canvas API)
+→ misma lógica: bbox + escala por dimensión dominante al 90% fill → 1200×1600
+→ si token GitHub configurado: subirFotoGitHub() + subirJsonGitHub()
+→ si no hay token: guardar en localStorage del dispositivo
+```
+
+### Sincronización GitHub desde la app
+El token se guarda en `localStorage` del dispositivo (nunca en el código).
+Configurar en: app → pestaña Cargar → sección "Sincronización GitHub".
+Permisos necesarios: `repo` (Personal Access Token classic).
 
 ---
 
 ## Lluvia de ideas — Mejoras posibles
 
 ### Funcionales (alta prioridad)
-1. **Favoritos de outfit** — corazón para guardar outfits que te gustaron; se guardan en localStorage para no perderse al cerrar la app
-2. **Historial / calendario** — "¿qué usé esta semana?" para no repetir outfits; fecha + outfit guardados en localStorage
-3. **Prendas faltantes** — pestaña o sección que analice el inventario y diga qué colores te faltan para completar armonías (ej: "para cuadrada con el blazer burdeos te falta un tono H≈107°")
-4. **Filtro por ocasión** — casual / trabajo / noche — outfits filtrados por contexto antes de escoger ancla
+1. **Favoritos de outfit** — corazón para guardar outfits; guardados en localStorage
+2. **Historial / calendario** — "¿qué usé esta semana?" para no repetir outfits
+3. **Prendas faltantes** — analiza el inventario y dice qué colores faltan para completar armonías
+4. **Filtro por ocasión** — casual / trabajo / noche
 
 ### Sistema de capas — rediseño de posiciones (pendiente)
 
-**Problema actual:** el sistema tiene solo 3 posiciones de capas superiores: `exterior`, `superior`, `inferior`. Un hoodie y una playera caen en la misma posición (`superior`), por lo que el generador nunca los combina en el mismo outfit.
+**Problema actual:** `exterior`, `superior`, `inferior` — hoodie y playera caen en `superior`, nunca se combinan.
 
-**Solución propuesta:** agregar posición `intermedio` y habilitar outfits de 2 y 3 capas superiores.
+**Solución propuesta:** agregar posición `medio` (hoodie/suéter) y `base` (playera/camisa).
 
-#### Nueva clasificación de prendas
-
-| Posición actual | Posición propuesta | Prendas |
+| Posición actual | Propuesta | Prendas |
 |---|---|---|
-| `exterior` | `exterior` | abrigo, chamarra, trench, sobretodo |
-| `exterior` | `medio` | blazer, cardigan, kimono, chaqueta denim |
-| `superior` | `medio` | hoodie, suéter, sweater |
-| `superior` | `base` | playera, camiseta, camisa, polo, top, blusa |
+| `exterior` | `exterior` | abrigo, chamarra, trench |
+| `exterior` | `medio` | blazer, cardigan, chaqueta denim |
+| `superior` | `medio` | hoodie, suéter |
+| `superior` | `base` | playera, camiseta, camisa, polo |
 
-> Nota: blazer puede ser capa `medio` (sobre camisa) o capa `exterior` (última capa). La distinción importa para el orden visual. Una opción es mantenerlo como `exterior` y agregar un atributo `peso` (ligero / medio / pesado) para ordenar las capas.
-
-#### Combinaciones válidas a generar
-
+**Combinaciones válidas:**
 ```
-Nivel 1 — base only:           [base + inferior]
-Nivel 2a — con capa media:     [medio + base + inferior]
-Nivel 2b — con exterior:       [exterior + base + inferior]
-Nivel 3 — tres capas:          [exterior + medio + base + inferior]
+Nivel 1: [base + inferior]
+Nivel 2a: [medio + base + inferior]
+Nivel 2b: [exterior + base + inferior]
+Nivel 3: [exterior + medio + base + inferior]
 ```
 
-Ejemplos:
-- Playera blanca + jeans ← nivel 1
-- Hoodie tie-dye + camiseta blanca + jeans ← nivel 2a
-- Blazer burdeos + camisa + pantalón ← nivel 2b
-- Chamarra + hoodie + playera + jeans ← nivel 3
-
-#### Reglas de orden (capas apiladas correctamente)
-- `exterior` siempre va encima de `medio` que va encima de `base`
-- Máximo 1 `exterior` por outfit
-- Máximo 1 `medio` por outfit
-- Máximo 1 `base` por outfit
-- El sistema NO filtra por temperatura — el usuario decide si el outfit es apropiado para el clima
-
-#### Impacto en compatibilidad cromática
-- Outfit de 3 capas tiene más piezas → más restricciones de armonía → menos outfits generados (normal)
-- La paleta de colores se amplía a 4-5 colores en el layout visual
-- `pool('medio')` y `pool('base')` heredan la misma lógica de `esCompatible` que `pool('superior')` actual
-
-#### Migración necesaria
-1. Renombrar campo de posición en `guardarropa.json`: `superior` → clasificar cada prenda en `base` o `medio`
+**Migración necesaria:**
+1. Renombrar `superior` → `base` o `medio` en `guardarropa.json`
 2. Actualizar `getPosicion()` en `index.html`
-3. Reescribir la lógica de generación de outfits en `generarParaArmonia()`
-4. Actualizar el layout de outfit card para mostrar 3 columnas de capas si aplica
+3. Reescribir `generarParaArmonia()`
+4. Actualizar layout de outfit card
 
-### Colorimetría personal (nueva pestaña)
-6. **Análisis de Colorimetría Estacional** — el sistema clasifica personas en 4 estaciones (Primavera / Verano / Otoño / Invierno) según tono de piel, color de ojos y cabello. Cada estación define una paleta de colores que favorece a esa persona.
-   - Formulario: usuario ingresa hex de tono de piel, hex de ojos, hex de cabello
-   - Sistema calcula si es warm/cool y light/deep
-   - Resultado: estación + paleta recomendada
-   - Integración con outfits: filtrar o destacar outfits que usen colores de la paleta personal
-   - **Nombres de las estaciones:** Primavera (warm+light), Verano (cool+light), Otoño (warm+deep), Invierno (cool+deep)
+### Colorimetría personal
+5. **Análisis Estacional** — Primavera/Verano/Otoño/Invierno según tono de piel, ojos y cabello
+   - warm+light = Primavera, cool+light = Verano, warm+deep = Otoño, cool+deep = Invierno
+   - Integrar con outfits: destacar outfits de la paleta personal
 
 ### Inventario
-7. **Estadísticas de uso** — qué prendas aparecen más en outfits, cuáles casi nunca, cuáles nunca
-8. **Wishlist de compras** — lista de prendas que falta comprar con el hex objetivo
+6. **Estadísticas de uso** — qué prendas aparecen más/menos en outfits
+7. **Wishlist** — prendas por comprar con hex objetivo
 
 ### Color
-9. **Color secundario** — para prendas 50/50 (ej: Lacoste rayas navy/blanco). Regla:
-   - Si color1 es neutro → usar color2 como color cromático de la prenda
-   - Si color2 es neutro → usar color1
-   - Si ambos son cromáticos → usar el de mayor saturación como primario, el otro como secundario
-   - El secundario puede ampliar compatibilidad: si color primario no pasa esCompatible pero el secundario sí → la prenda entra al outfit
-10. **Detección de patrón en foto** — liso / rayas / cuadros / estampado detectado automáticamente al subir foto
+8. **Color secundario** — prendas 50/50 (rayas, etc.) con dos hexes
+9. **Detección de patrón** — liso / rayas / cuadros / estampado al subir foto
 
 ### Experiencia
-11. **Compartir outfit** — botón que genera imagen del outfit para compartir por WhatsApp/Instagram
-12. **Modo empaque de viaje** — seleccionar N días y clima, genera los outfits para el viaje con las prendas mínimas necesarias
-13. **Swipe para descartar** — deslizar un outfit hacia abajo para descartarlo y no verlo en esa sesión
-
-### Técnico
-14. **Sincronización en la nube** — actualmente el JSON vive en GitHub; migrar a una base de datos real para edición sin necesidad de Excel
-15. **Notificación de mañana** — push notification a las 8am con un outfit sugerido para el día
+10. **Compartir outfit** — imagen para WhatsApp/Instagram
+11. **Modo viaje** — N días + clima → outfits mínimos
+12. **Swipe para descartar** — deslizar outfit hacia abajo
 
 ---
 
-## Arquitectura técnica actual
+## Arquitectura técnica
 
 ```
 index.html          — App completa (single-file PWA, todo inline)
-sw.js               — Service Worker v47
-guardarropa.json    — 49 prendas (fuente de verdad)
-images/             — PNGs procesados con rembg, 600×800 px
+sw.js               — Service Worker v67
+guardarropa.json    — 49 prendas (fuente de verdad, siempre se carga al iniciar)
+images/             — WebPs procesados con rembg, 1200×1600 px, fondo transparente
 manifest.json       — PWA manifest
 ```
 
@@ -157,13 +155,13 @@ manifest.json       — PWA manifest
 Ancla → getHuesObjetivo() → [target1°, target2°, ...]
 Pre-check: cada target debe tener ≥1 prenda no-neutra en inventario
 esCompatible: !esNeutro && (dist ≤ 15° de cualquier target || dist ≤ 15° del ancla)
-pool(): compatibles → fallback neutros (nunca "todo")
-Paleta: agrupar por posición harmónica más cercana → 1 color real por posición
+pool(): compatibles → fallback neutros (nunca "todo el inventario")
+Paleta: agrupar por posición harmónica → 1 color real por posición
 ```
 
 ### Armonías implementadas
 
-| Armonía | Ángulos objetivo | Colores en paleta |
+| Armonía | Ángulos objetivo | Colores |
 |---|---|---|
 | Análoga | ±30° | 3 |
 | Complementaria | +180° | 2 |
@@ -173,6 +171,14 @@ Paleta: agrupar por posición harmónica más cercana → 1 color real por posic
 | Cuadrada | +90°, +180°, +270° | 4 |
 | Abstracta | +30°, +150°, +210° | 4 |
 
+### Invariantes que NO deben cambiar
+- `TOLERANCIA = 15` — garantiza sin solapamiento entre armonías adyacentes
+- Neutros NUNCA en `esCompatible` — solo fallback
+- `pool()` fallback: solo neutros, nunca "todo el inventario"
+- `object-fit: contain` — nunca recortar prendas
+- Sin nombres en outfit cards — solo imagen + paleta + badge Wada
+- Fondo negro en Closet y Outfit
+
 ---
 
 ## Arranque de sesión de desarrollo
@@ -180,6 +186,12 @@ Paleta: agrupar por posición harmónica más cercana → 1 color real por posic
 ```bash
 git clone https://ghp_TOKEN@github.com/Roscas84/wardrobe.git /tmp/wardrobe
 # trabajar en /tmp/wardrobe/index.html y sw.js
-# siempre subir CACHE version en sw.js al hacer push
-git add index.html sw.js && git commit -m "descripción" && git push origin main
+# siempre subir versión de CACHE en sw.js al hacer push
+git add index.html sw.js && git commit -m "descripción" && git push
+```
+
+**Backup local de imágenes:**
+```bash
+# Respaldar imágenes procesadas a carpeta local
+cp /tmp/wardrobe/images/*.webp "/Users/angelalcantara/Claude/Proyects/Wardrobe/Inventory/images_procesadas/"
 ```
