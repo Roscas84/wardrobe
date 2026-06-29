@@ -596,6 +596,19 @@ function renderClosetMain(){
     div.innerHTML=`<span class="cat-link-text">${cat.label}</span>`;
     wrap.appendChild(div);
   });
+  const vt=document.createElement('div');vt.className='arm-link ver-todos-btn';
+  vt.onclick=verTodosCloset;
+  vt.innerHTML=`<span class="arm-link-nombre">Ver todos</span><span class="arm-link-count">${inventario.length}</span>`;
+  wrap.appendChild(vt);
+}
+function verTodosCloset(){
+  document.getElementById('closet-items-title').textContent='Todo el guardarropa';
+  document.getElementById('closet-items-grid').innerHTML=inventario.map(p=>closetCardHTML(p)).join('');
+  document.getElementById('closet-main').style.display='none';
+  document.getElementById('closet-items-wrap').style.display='block';
+  document.getElementById('closet-color-wrap').style.display='none';
+  document.body.style.overflow='';
+  window.scrollTo(0,0);
 }
 function verCatCloset(cat){
   const items=inventario.filter(p=>cat.tipos.includes(p.tipo));
