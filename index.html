@@ -1148,11 +1148,13 @@ window.addEventListener('load',()=>{
   initSlideshow();
   setTimeout(()=>{const sp=document.getElementById('splash');sp.classList.add('out');setTimeout(()=>sp.style.display='none',500);},1900);
 });
-// Migración: rutas .png → .webp + espacios → guión bajo en localStorage
-(()=>{let m=false;inventario.forEach(p=>{if(p.foto&&p.foto.startsWith('images/')){let f=p.foto;if(f.endsWith('.png')){f=f.slice(0,-4)+'.webp';m=true;}f=f.replace(/ /g,'_');if(f!==p.foto){p.foto=f;m=true;}}});if(m)localStorage.setItem('wrd_inv',JSON.stringify(inventario));})();
-if(inventario.length===0){
-  fetch('guardarropa.json').then(r=>r.json()).then(data=>{inventario=data;guardarLocal();renderClosetMain();renderOutfitMain();});
-}else{renderClosetMain();renderOutfitMain();}
+// Siempre sincronizar con guardarropa.json como fuente de verdad
+fetch('guardarropa.json').then(r=>r.json()).then(jsonData=>{
+  // Preservar prendas añadidas por el usuario desde la app (ID tipo timestamp)
+  const userAdded=inventario.filter(p=>!jsonData.find(j=>j.id===p.id));
+  inventario=[...jsonData,...userAdded];
+  guardarLocal();renderClosetMain();renderOutfitMain();
+}).catch(()=>{renderClosetMain();renderOutfitMain();});
 </script>
 </body>
 </html>
