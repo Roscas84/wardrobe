@@ -85,11 +85,21 @@ header{background:#fff;border-bottom:1px solid #e0dbd5;padding:8px 16px;position
 .cb-select{margin-top:12px;padding:8px 18px;background:#fff;color:#000;border:none;font-size:9px;letter-spacing:2px;text-transform:uppercase;cursor:pointer;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif}
 
 /* COLOR SEARCH */
-.color-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(40px,1fr));gap:8px;padding:12px}
+.color-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(44px,1fr));gap:10px;padding:12px}
+.color-bubble-wrap{position:relative}
 .color-bubble,.color-bubble-all{width:100%;aspect-ratio:1;border-radius:50%;cursor:pointer;border:2px solid transparent}
 .color-bubble.on{border-color:#fff;box-shadow:0 0 0 1px #fff}
 .color-bubble-all{background:conic-gradient(red,yellow,lime,cyan,blue,magenta,red)}
 .color-bubble-all.on{border-color:#fff}
+.color-cnt{position:absolute;bottom:0;right:0;background:rgba(0,0,0,0.85);color:#fff;font-size:8px;font-weight:600;border-radius:50%;width:16px;height:16px;display:flex;align-items:center;justify-content:center;border:1px solid rgba(255,255,255,0.25);pointer-events:none}
+.familia-bar{display:flex;gap:6px;padding:8px 12px;overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none;background:#000;border-bottom:1px solid #111}
+.familia-bar::-webkit-scrollbar{display:none}
+.familia-chip{flex-shrink:0;display:flex;align-items:center;gap:5px;padding:5px 11px;border-radius:20px;border:1px solid #333;cursor:pointer}
+.familia-chip.active{border-color:#fff}
+.familia-dot{width:10px;height:10px;border-radius:50%;flex-shrink:0}
+.familia-lbl{font-size:9px;color:#aaa;letter-spacing:1px;text-transform:uppercase;font-weight:300}
+.familia-n{font-size:9px;color:#fff;font-weight:600;margin-left:2px}
+.familia-chip.active .familia-lbl{color:#fff}
 
 /* OUTFIT paso 2 — armonías como links */
 .arm-link{display:flex;align-items:center;justify-content:center;gap:10px;padding:14px 20px;cursor:pointer;text-align:center}
@@ -231,6 +241,7 @@ header{background:#fff;border-bottom:1px solid #e0dbd5;padding:8px 16px;position
       <span class="back-arrow">‹</span>
       <span class="back-title">Búsqueda por color</span>
     </div>
+    <div id="color-familia-bar" class="familia-bar"></div>
     <div id="color-bubbles" class="color-grid"></div>
     <div id="closet-color-items" style="display:none">
       <div class="back-bar" onclick="volverAColores()">
@@ -624,11 +635,53 @@ function verCatCloset(cat){
   document.body.style.overflow='';
   window.scrollTo(0,0);
 }
+const FAMILIAS=[
+  {key:'rojo',    label:'Rojos',    color:'#CC2222', rng:[[340,360],[0,20]]},
+  {key:'naranja', label:'Naranjas', color:'#E07820', rng:[[20,45]]},
+  {key:'amarillo',label:'Amarillos',color:'#CCBB00', rng:[[45,75]]},
+  {key:'verde',   label:'Verdes',   color:'#22AA44', rng:[[75,165]]},
+  {key:'azul',    label:'Azules',   color:'#2255CC', rng:[[165,255]]},
+  {key:'morado',  label:'Morados',  color:'#8822BB', rng:[[255,340]]},
+  {key:'neutro',  label:'Neutros',  color:'#888888', rng:null},
+];
+function colorFamilia(hex){
+  if(!hex||hex.length<7)return'neutro';
+  try{
+    const {h,s,l}=hexToHsl(hex);
+    if(s<18||l<9||l>91)return'neutro';
+    for(const f of FAMILIAS){
+      if(!f.rng)continue;
+      for(const [a,b] of f.rng){if(h>=a&&h<b)return f.key;}
+    }
+    return'neutro';
+  }catch(e){return'neutro';}
+}
+let _familiaActiva=null;
 function verColorCloset(){
-  const colors=[...new Set(inventario.map(p=>p.color))];
+  _familiaActiva=null;
+  const colorCount={};
+  inventario.forEach(p=>{if(p.color)colorCount[p.color]=(colorCount[p.color]||0)+1;});
+  const colors=Object.keys(colorCount);
+  // Familia bar
+  const famCount={};
+  colors.forEach(c=>{const f=colorFamilia(c);famCount[f]=(famCount[f]||0)+colorCount[c];});
+  document.getElementById('color-familia-bar').innerHTML=
+    FAMILIAS.filter(f=>famCount[f.key]).map(f=>
+      `<div class="familia-chip" data-familia="${f.key}" onclick="filtrarFamilia(this.dataset.familia)">
+        <span class="familia-dot" style="background:${f.color}"></span>
+        <span class="familia-lbl">${f.label}</span>
+        <span class="familia-n">${famCount[f.key]}</span>
+      </div>`
+    ).join('');
+  // Burbujas con contador
   document.getElementById('color-bubbles').innerHTML=
-    `<div class="color-bubble-all" onclick="filtrarColorBubble(null)"></div>`
-    +colors.map(c=>`<div class="color-bubble" style="background:${c}" data-color="${c}" onclick="filtrarColorBubble(this.dataset.color)"></div>`).join('');
+    `<div class="color-bubble-wrap"><div class="color-bubble-all" onclick="filtrarColorBubble(null)"></div></div>`
+    +colors.map(c=>
+      `<div class="color-bubble-wrap" data-familia="${colorFamilia(c)}">
+        <div class="color-bubble" style="background:${c}" data-color="${c}" onclick="filtrarColorBubble(this.dataset.color)"></div>
+        <span class="color-cnt">${colorCount[c]}</span>
+      </div>`
+    ).join('');
   document.getElementById('color-bubbles').style.display='';
   document.getElementById('color-main-back').style.display='';
   document.getElementById('closet-color-items').style.display='none';
@@ -638,6 +691,20 @@ function verColorCloset(){
   document.body.style.overflow='hidden';
   window.scrollTo(0,0);
 }
+function filtrarFamilia(key){
+  if(_familiaActiva===key){
+    _familiaActiva=null;
+    document.querySelectorAll('.familia-chip').forEach(c=>c.classList.remove('active'));
+    document.querySelectorAll('#color-bubbles .color-bubble-wrap').forEach(w=>w.style.display='');
+    return;
+  }
+  _familiaActiva=key;
+  document.querySelectorAll('.familia-chip').forEach(c=>c.classList.toggle('active',c.dataset.familia===key));
+  document.querySelectorAll('#color-bubbles .color-bubble-wrap').forEach(w=>{
+    if(!w.dataset.familia)return;
+    w.style.display=w.dataset.familia===key?'':'none';
+  });
+}
 function filtrarColorBubble(color){
   const items=color?inventario.filter(p=>p.color===color):inventario;
   document.getElementById('color-items-label').innerHTML=color
@@ -645,6 +712,7 @@ function filtrarColorBubble(color){
     :`Todo el guardarropa`;
   document.getElementById('closet-color-grid').innerHTML=items.map(p=>closetCardHTML(p)).join('');
   document.getElementById('color-main-back').style.display='none';
+  document.getElementById('color-familia-bar').style.display='none';
   document.getElementById('color-bubbles').style.display='none';
   document.getElementById('closet-color-items').style.display='block';
   document.body.style.overflow='';
@@ -652,6 +720,7 @@ function filtrarColorBubble(color){
 }
 function volverAColores(){
   document.getElementById('color-main-back').style.display='';
+  document.getElementById('color-familia-bar').style.display='flex';
   document.getElementById('color-bubbles').style.display='';
   document.getElementById('closet-color-items').style.display='none';
   document.body.style.overflow='hidden';
