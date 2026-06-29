@@ -49,7 +49,7 @@ header{background:#fff;border-bottom:1px solid #e0dbd5;padding:8px 16px;position
 /* PANTALLAS NEGRAS (Closet, Outfit) */
 .dark-screen{background:#000;min-height:calc(100vh - 40px - 62px)}
 #lista-armonias{min-height:0;height:auto}
-#closet-main{display:flex;flex-direction:column;justify-content:center;padding-bottom:62px}
+#closet-main{display:flex;flex-direction:column;justify-content:center;padding:20px 0 20px;height:calc(100vh - 40px - 62px);box-sizing:border-box;overflow-y:auto}
 #outfit-main{display:flex;flex-direction:column;justify-content:center;padding:20px 0 80px;height:calc(100vh - 40px - 62px);box-sizing:border-box;overflow-y:auto}
 
 /* BACK BUTTON — grande y visible */
@@ -506,7 +506,10 @@ function getPosicion(tipo){
   if(['Gorra','Bolso','Lentes','Cinturón','Bufanda','Reloj'].includes(tipo))return'accesorios';
   return'superior';
 }
-function guardarLocal(){localStorage.setItem('wrd_inv',JSON.stringify(inventario));}
+function guardarLocal(){
+  try{localStorage.setItem('wrd_inv',JSON.stringify(inventario));}
+  catch(e){showToast('⚠ Sin espacio — elimina fotos de prendas');}
+}
 
 // COLOR ENGINE
 function hexToHsl(hex){
@@ -540,6 +543,7 @@ function getHuesObjetivo(hAncla,arm){
     case'tetradica':return[(hAncla+60)%360,(hAncla+180)%360,(hAncla+240)%360];
     case'cuadrada':return[(hAncla+90)%360,(hAncla+180)%360,(hAncla+270)%360];
     case'abstracta':return[(hAncla+30)%360,(hAncla+150)%360,(hAncla+210)%360];
+    default:return[];
   }
 }
 const TOLERANCIA=15;
@@ -624,7 +628,9 @@ function verColorCloset(){
   const colors=[...new Set(inventario.map(p=>p.color))];
   document.getElementById('color-bubbles').innerHTML=
     `<div class="color-bubble-all" onclick="filtrarColorBubble(null)"></div>`
-    +colors.map(c=>`<div class="color-bubble" style="background:${c}" data-c="${c}" onclick="filtrarColorBubble('${c}')"></div>`).join('');
+    +colors.map(c=>`<div class="color-bubble" style="background:${c}" data-color="${c}" onclick="filtrarColorBubble(this.dataset.color)"></div>`).join('');
+  document.getElementById('color-bubbles').style.display='';
+  document.getElementById('color-main-back').style.display='';
   document.getElementById('closet-color-items').style.display='none';
   document.getElementById('closet-main').style.display='none';
   document.getElementById('closet-items-wrap').style.display='none';
@@ -633,10 +639,10 @@ function verColorCloset(){
   window.scrollTo(0,0);
 }
 function filtrarColorBubble(color){
-  if(!color)return;
-  const items=inventario.filter(p=>p.color===color);
-  document.getElementById('color-items-label').innerHTML=
-    `<span style="display:inline-block;width:14px;height:14px;border-radius:50%;background:${color};vertical-align:middle;margin-right:7px;border:1px solid rgba(255,255,255,0.3)"></span>${items.length} prenda${items.length!==1?'s':''}`;
+  const items=color?inventario.filter(p=>p.color===color):inventario;
+  document.getElementById('color-items-label').innerHTML=color
+    ?`<span style="display:inline-block;width:14px;height:14px;border-radius:50%;background:${color};vertical-align:middle;margin-right:7px;border:1px solid rgba(255,255,255,0.3)"></span>${items.length} prenda${items.length!==1?'s':''}`
+    :`Todo el guardarropa`;
   document.getElementById('closet-color-grid').innerHTML=items.map(p=>closetCardHTML(p)).join('');
   document.getElementById('color-main-back').style.display='none';
   document.getElementById('color-bubbles').style.display='none';
@@ -825,9 +831,10 @@ function irPaso(n){
 function lookCardHTML(o,wadaOk=false,armNombre=null){
   const piezas=o.piezas;
   let colores;
-  if(o.armKey&&o.anclaColor){
+  const _huesObj=o.armKey&&o.anclaColor?getHuesObjetivo(hexToHsl(o.anclaColor).h,o.armKey):null;
+  if(o.armKey&&o.anclaColor&&_huesObj&&_huesObj.length){
     const{h:hAncla}=hexToHsl(o.anclaColor);
-    const positions=[hAncla,...getHuesObjetivo(hAncla,o.armKey)];
+    const positions=[hAncla,..._huesObj];
     const nonNeutral=piezas.filter(p=>!esNeutro(p.color));
     // Asignar cada prenda no-neutra a su posición harmónica más cercana
     const buckets=positions.map(()=>[]);
@@ -898,9 +905,12 @@ function editarPrenda(id){
   if(Array.isArray(p.material)&&p.material.length){p.material.forEach(m=>addMaterialRow(m.tela,m.pct));}
   else if(typeof p.material==='string'&&p.material){addMaterialRow(p.material,100);}
   document.getElementById('inp-formalidad').value=p.formalidad;
+  _cuidadosManual=false;
   document.querySelectorAll('.c-chip.on').forEach(b=>b.classList.remove('on'));
-  if(p.cuidado)setCuidado(p.cuidado);
-  if(p.foto){const img=document.getElementById('preview-foto');img.src=p.foto;img.style.display='block';}
+  if(p.cuidado){setCuidado(p.cuidado);_cuidadosManual=true;}
+  const _prevImg=document.getElementById('preview-foto');
+  if(p.foto){_prevImg.src=p.foto;_prevImg.style.display='block';document.getElementById('foto-status').textContent='';}
+  else{_prevImg.src='';_prevImg.style.display='none';document.getElementById('foto-status').textContent='Toca para agregar foto';}
   document.getElementById('modal-prenda').classList.add('open');
   document.querySelector('#modal-prenda .modal').scrollTop=0;
 }
@@ -923,6 +933,7 @@ function limpiarModal(){
   document.getElementById('inp-formalidad').value='casual';
   const img=document.getElementById('preview-foto');img.style.display='none';img.src='';
   document.getElementById('foto-status').textContent='Toca para agregar foto';
+  _cuidadosManual=false;
 }
 function syncColor(origen){
   if(origen==='picker')document.getElementById('inp-hex').value=document.getElementById('inp-color').value;
@@ -991,9 +1002,17 @@ function cargarFoto(input){
   reader.onload=async e=>{
     const img=document.getElementById('preview-foto'),status=document.getElementById('foto-status');
     img.src=e.target.result;img.style.display='block';status.textContent='⏳ Quitando fondo...';
-    try{const sinFondo=await removerFondo(e.target.result);img.src=sinFondo;await new Promise(res=>{img.onload=res;img.onerror=res;});status.textContent='✓ Fondo eliminado';}
-    catch(err){status.textContent='Toca para cambiar foto';}
-    const colores=extraerColoresDominantes(img);mostrarChipsColor(colores);
+    try{
+      const sinFondo=await removerFondo(e.target.result);
+      img.src=sinFondo;
+      await new Promise(res=>{img.onload=res;img.onerror=res;});
+      status.textContent='✓ Fondo eliminado';
+      mostrarChipsColor(extraerColoresDominantes(img));
+    }catch(err){
+      status.textContent='Toca para cambiar foto';
+      await new Promise(res=>{img.complete?res():(img.onload=img.onerror=res);});
+      mostrarChipsColor(extraerColoresDominantes(img));
+    }
   };reader.readAsDataURL(input.files[0]);
 }
 const CUIDADOS_POR_TELA={
@@ -1015,11 +1034,13 @@ const CARE_DISPLAY={
   Secadora:'Secadora',Tender:'Tender',NoSecadora:'No secadora',
   Baja:'Plancha baja',Media:'Plancha media',Alta:'Plancha alta',NoPlancha:'No planchar'
 };
+let _cuidadosManual=false;
 function toggleChip(btn){
   const grupo=btn.closest('.cuidado-opts');
   const yaOn=btn.classList.contains('on');
   grupo.querySelectorAll('.c-chip').forEach(b=>b.classList.remove('on'));
   if(!yaOn)btn.classList.add('on');
+  _cuidadosManual=true;
 }
 function getCuidado(){
   const get=id=>{const b=document.querySelector('#'+id+' .c-chip.on');return b?b.dataset.val:null;};
@@ -1035,10 +1056,11 @@ function setCuidado(c){
   });
 }
 function sugerirCuidados(){
+  if(_cuidadosManual)return;
   const mats=getMaterial();if(!mats.length)return;
   const dom=mats.sort((a,b)=>b.pct-a.pct)[0].tela;
   const sug=CUIDADOS_POR_TELA[dom];if(!sug)return;
-  if(!document.querySelector('.c-chip.on'))setCuidado(sug);
+  setCuidado(sug);
 }
 const TELAS=['Algodón','Lino','Lana','Seda','Bambú','Lyocell / Tencel','Viscosa','Gamuza','Cuero','Poliéster','Nylon','Spandex / Elastano'];
 function addMaterialRow(tela='',pct=''){
@@ -1116,7 +1138,7 @@ function showScreen(id){
   document.getElementById('nav-'+id).classList.add('active');
   window.scrollTo(0,0);
   if(id==='closet'){renderClosetMain();volverClosetMain();}
-  else if(id==='outfit'&&!modoLibreActivo){renderOutfitMain();irPaso(1);}
+  else if(id==='outfit'&&!modoLibreActivo){irPaso(1);}
   else if(id==='cargar'){document.getElementById('search-input').value='';document.getElementById('search-results').innerHTML='';}
 }
 function volverDesdeCargar(){if(prevScreen)showScreen(prevScreen);}
