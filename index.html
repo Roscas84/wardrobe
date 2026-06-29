@@ -883,7 +883,7 @@ function volverArmonias(){
 function irPaso(n){
   document.getElementById('paso1-wrap').style.display=n===1?'block':'none';
   document.getElementById('paso2-wrap').style.display=n===2?'block':'none';
-  if(n===1){document.body.style.overflow='';window.scrollTo(0,0);renderOutfitMain();volverOutfitMain();}
+  if(n===1){modoLibreActivo=false;ancla=null;document.body.style.overflow='';window.scrollTo(0,0);renderOutfitMain();volverOutfitMain();}
 }
 
 function lookCardHTML(o,wadaOk=false,armNombre=null){
@@ -1298,7 +1298,7 @@ function showScreen(id){
   document.getElementById('nav-'+id).classList.add('active');
   window.scrollTo(0,0);
   if(id==='closet'){renderClosetMain();volverClosetMain();}
-  else if(id==='outfit'&&!modoLibreActivo){irPaso(1);}
+  else if(id==='outfit'){irPaso(1);}
   else if(id==='cargar'){document.getElementById('search-input').value='';document.getElementById('search-results').innerHTML='';}
 }
 function volverDesdeCargar(){if(prevScreen)showScreen(prevScreen);}
