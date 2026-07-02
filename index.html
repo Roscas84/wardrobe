@@ -974,9 +974,19 @@ function editarPrenda(id){
 }
 function eliminarPrenda(id){
   if(!confirm('¿Eliminar esta prenda?'))return;
+  const prenda=inventario.find(p=>p.id===id);
   inventario=inventario.filter(p=>p.id!==id);
+  // Registrar eliminación pendiente: si el sync falla (sin conexión), al arrancar
+  // NO se revive desde guardarropa.json y se reintenta subir la eliminación
+  const pend=JSON.parse(localStorage.getItem('wrd_pending_del')||'[]');
+  if(!pend.includes(id)){pend.push(id);localStorage.setItem('wrd_pending_del',JSON.stringify(pend));}
   guardarLocal();renderClosetMain();renderOutfitMain();
   buscarPrenda(document.getElementById('search-input')?.value||'');
+  // Borrar del repo la foto subida desde la app (best-effort; las curadas no se tocan)
+  if(prenda&&prenda.foto&&prenda.foto.startsWith('images/user_')&&ghToken()){
+    ghDelete(prenda.foto,`Delete photo ${prenda.foto}`).catch(()=>{});
+  }
+  sincronizarInventario();
 }
 function cerrarModal(){document.getElementById('modal-prenda').classList.remove('open');}
 function limpiarModal(){
@@ -1224,6 +1234,50 @@ async function subirJsonGitHub(){
   const content=btoa(unescape(encodeURIComponent(JSON.stringify(inventario,null,2))));
   return ghPut('guardarropa.json',content,'Update inventory',existing?.sha);
 }
+async function ghDelete(path,message){
+  const existing=await ghGet(path);
+  if(!existing)return true;
+  const r=await fetch(`https://api.github.com/repos/${GH_REPO}/contents/${path}`,
+    {method:'DELETE',headers:{Authorization:`token ${ghToken()}`,Accept:'application/vnd.github.v3+json','Content-Type':'application/json'},
+     body:JSON.stringify({message,sha:existing.sha,branch:GH_BRANCH})});
+  return r.ok;
+}
+// ── Sync centralizado: toda mutación (alta/edición/eliminación) pasa por aquí ──
+// Sube primero las fotos pendientes (base64) y luego el JSON completo.
+// Si algo falla (sin conexión), marca wrd_dirty y se reintenta al arrancar.
+let _syncEnCurso=false;
+function _pendDel(){return JSON.parse(localStorage.getItem('wrd_pending_del')||'[]');}
+async function sincronizarInventario(silencioso){
+  if(!ghToken()){if(!silencioso)showToast('Guardado local — configura token para sincronizar');return false;}
+  if(_syncEnCurso){localStorage.setItem('wrd_dirty','1');return false;}
+  _syncEnCurso=true;
+  if(!silencioso)showToast('⏳ Sincronizando...');
+  try{
+    const pendSnapshot=_pendDel();
+    // 1. Fotos pendientes: si una falla, abortar — el JSON nunca debe llevar base64
+    for(const p of inventario){
+      if(p.foto&&p.foto.startsWith('data:')){
+        const filename=`user_${p.id}.webp`;
+        const okFoto=await subirFotoGitHub(p.foto,filename).catch(()=>false);
+        if(!okFoto){localStorage.setItem('wrd_dirty','1');if(!silencioso)showToast('⚠ Sin conexión — cambios guardados solo local');return false;}
+        p.foto=`images/${filename}`;guardarLocal();
+      }
+    }
+    // 2. JSON completo (fuente de verdad)
+    const ok=await subirJsonGitHub().catch(()=>false);
+    if(ok){
+      localStorage.removeItem('wrd_dirty');
+      const rest=_pendDel().filter(x=>!pendSnapshot.includes(x));
+      if(rest.length)localStorage.setItem('wrd_pending_del',JSON.stringify(rest));
+      else localStorage.removeItem('wrd_pending_del');
+      if(!silencioso)showToast('✓ Sincronizado con GitHub');
+    }else{
+      localStorage.setItem('wrd_dirty','1');
+      if(!silencioso)showToast('⚠ Sin conexión — cambios guardados solo local');
+    }
+    return ok;
+  }finally{_syncEnCurso=false;}
+}
 async function guardarPrenda(){
   const nombre=document.getElementById('inp-nombre').value.trim(),tipo=document.getElementById('inp-tipo').value;
   const color=document.getElementById('inp-color').value,marca=document.getElementById('inp-marca').value.trim();
@@ -1235,30 +1289,12 @@ async function guardarPrenda(){
   let foto=fotoEl.src&&fotoEl.style.display!=='none'?fotoEl.src:null;
   if(!nombre||!tipo){alert('Escribe el nombre y selecciona el tipo.');return;}
   if(material.length){const total=material.reduce((s,m)=>s+m.pct,0);if(total!==100){alert('Los porcentajes de tela deben sumar 100% (ahora suman '+total+'%).');return;}}
-  const esDataUrl=foto&&foto.startsWith('data:');
-  const tieneToken=!!ghToken();
-  if(esDataUrl&&tieneToken){
-    const filename=`user_${Date.now()}.webp`;
-    cerrarModal();
-    showToast('⏳ Subiendo foto...');
-    const ok=await subirFotoGitHub(foto,filename);
-    if(ok){foto=`images/${filename}`;}
-    else{showToast('⚠ Error al subir — guardado local');}
-  }else{
-    cerrarModal();
-  }
+  cerrarModal();
   if(editandoId){const idx=inventario.findIndex(p=>p.id===editandoId);if(idx>=0)inventario[idx]={...inventario[idx],nombre,tipo,color,marca,talla,material,cuidado,formalidad,foto,pos:getPosicion(tipo)};}
   else{inventario.push({id:Date.now(),nombre,tipo,color,marca,talla,material,cuidado,formalidad,foto,pos:getPosicion(tipo)});}
   guardarLocal();renderClosetMain();renderOutfitMain();
-  if(esDataUrl&&tieneToken&&!foto.startsWith('data:')){
-    showToast('⏳ Sincronizando inventario...');
-    await subirJsonGitHub();
-    showToast('✓ Guardado y sincronizado con GitHub');
-  }else if(esDataUrl&&!tieneToken){
-    showToast('Guardado local — configura token para sincronizar');
-  }else{
-    showToast('Guardado exitosamente');
-  }
+  // Sync centralizado: sube foto pendiente (si hay) + JSON, en altas y ediciones
+  await sincronizarInventario();
 }
 function exportarInventario(){
   const a=document.createElement('a');
@@ -1311,10 +1347,15 @@ window.addEventListener('load',()=>{
 });
 // Siempre sincronizar con guardarropa.json como fuente de verdad
 fetch('guardarropa.json').then(r=>r.json()).then(jsonData=>{
+  const pendDel=JSON.parse(localStorage.getItem('wrd_pending_del')||'[]');
+  // No revivir prendas cuya eliminación aún no se ha subido a GitHub
+  jsonData=jsonData.filter(j=>!pendDel.includes(j.id));
   // Preservar prendas añadidas por el usuario desde la app (ID tipo timestamp)
-  const userAdded=inventario.filter(p=>!jsonData.find(j=>j.id===p.id));
+  const userAdded=inventario.filter(p=>!jsonData.find(j=>j.id===p.id)&&!pendDel.includes(p.id));
   inventario=[...jsonData,...userAdded];
   guardarLocal();renderClosetMain();renderOutfitMain();
+  // Reintentar sync pendiente (cambios hechos sin conexión o con fallo previo)
+  if((localStorage.getItem('wrd_dirty')||pendDel.length)&&ghToken())sincronizarInventario(true);
 }).catch(()=>{renderClosetMain();renderOutfitMain();});
 </script>
 </body>
