@@ -186,6 +186,15 @@ header{background:#fff;border-bottom:1px solid #e0dbd5;padding:8px 16px;position
 .hex-input{flex:1;padding:10px 12px;border:1px solid #e0dbd5;font-size:15px;font-family:monospace;outline:none}
 .c-ana{background:#1a7a1a}.c-comp{background:#c44800}.c-split{background:#b87000}
 .c-tri{background:#1a3acc}.c-tet{background:#7700cc}.c-cua{background:#cc0077}.c-abs{background:#007755}
+
+/* WEB (>700px): misma columna de 600px que el resto de la app — los elementos
+   position:fixed escapan de .screen y sin esto se estiran a todo el monitor */
+@media (min-width:700px){
+  .bottom-nav{left:50%;right:auto;transform:translateX(-50%);width:100%;max-width:600px}
+  #paso2-outfits{left:50%;right:auto;transform:translateX(-50%);width:100%;max-width:600px}
+  header{max-width:600px;margin:0 auto}
+  body{background:#eae5df}
+}
 </style>
 </head>
 <body>
@@ -1403,6 +1412,11 @@ window.addEventListener('load',()=>{
   initTipoSelect();
   mostrarEstadoSync();
   mostrarEstadoRmbg();
+  // Web: la rueda del mouse desplaza el carrusel horizontal de outfits
+  const looks=document.getElementById('lista-looks');
+  looks.addEventListener('wheel',e=>{
+    if(Math.abs(e.deltaY)>Math.abs(e.deltaX)){e.preventDefault();looks.scrollLeft+=e.deltaY;}
+  },{passive:false});
   setTimeout(()=>{const sp=document.getElementById('splash');sp.classList.add('out');setTimeout(()=>sp.style.display='none',500);},1900);
 });
 // Siempre sincronizar con guardarropa.json como fuente de verdad
