@@ -7,7 +7,7 @@ App web progresiva (PWA) de uso personal para gestionar inventario de ropa y gen
 
 ---
 
-## Estado actual — SW v88
+## Estado actual — SW v89
 
 ### Lo que funciona hoy
 
@@ -29,7 +29,7 @@ App web progresiva (PWA) de uso personal para gestionar inventario de ropa y gen
 | Carrusel horizontal con scroll-snap | Completo |
 | Material / composición de tela con porcentajes | Completo |
 | Símbolos de cuidado (lavado, secado, plancha) con auto-sugerencia | Completo |
-| Service Worker v88 — network-first para HTML/JSON, cache-first para imágenes | Completo |
+| Service Worker v89 — network-first para HTML/JSON, cache-first para imágenes | Completo |
 | Sección "Ajustes" colapsable en Cargar (Datos/GitHub/Remove.bg) | Completo |
 | Eliminaciones propagadas entre dispositivos (tombstones en guardarropa.json) | Completo |
 | API key de remove.bg en localStorage por dispositivo (nunca en el código) | Completo |
@@ -171,7 +171,7 @@ Nivel 3: [exterior + medio + base + inferior]
 
 ```
 index.html          — App completa (single-file PWA, todo inline)
-sw.js               — Service Worker v88
+sw.js               — Service Worker v89
 guardarropa.json    — {prendas, deleted} — 52 prendas (fuente de verdad, siempre se carga al iniciar)
 images/             — WebPs procesados con rembg, 1200×1600 px, fondo transparente
 manifest.json       — PWA manifest
