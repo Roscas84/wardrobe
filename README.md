@@ -7,7 +7,7 @@ App web progresiva (PWA) de uso personal para gestionar inventario de ropa y gen
 
 ---
 
-## Estado actual — SW v73
+## Estado actual — SW v74
 
 ### Lo que funciona hoy
 
@@ -29,8 +29,8 @@ App web progresiva (PWA) de uso personal para gestionar inventario de ropa y gen
 | Carrusel horizontal con scroll-snap | Completo |
 | Material / composición de tela con porcentajes | Completo |
 | Símbolos de cuidado (lavado, secado, plancha) con auto-sugerencia | Completo |
-| Service Worker v73 — network-first para HTML/JSON, cache-first para imágenes y fuentes | Completo |
-| Refinamiento monocromo editorial (ui-ux-pro-max 2026-07-04): Playfair Display en titulares, contraste WCAG en textos secundarios, touch targets 44px, inversión b/n al tocar, Ajustes colapsable en Cargar | Completo |
+| Service Worker v74 — network-first para HTML/JSON, cache-first para imágenes | Completo |
+| Sección "Ajustes" colapsable en Cargar (Datos/GitHub/Remove.bg) | Completo |
 | Eliminaciones propagadas entre dispositivos (tombstones en guardarropa.json) | Completo |
 | API key de remove.bg en localStorage por dispositivo (nunca en el código) | Completo |
 
@@ -56,7 +56,8 @@ App web progresiva (PWA) de uso personal para gestionar inventario de ropa y gen
 - [ ] Revisar que el menú Outfit esté bien centrado en todos los iPhone (SE y Pro Max)
 
 ### Diseño
-- [x] Ejecutar el skill **ui-ux-pro-max** — hecho 2026-07-04. Configuración elegida: estilo "Minimalist Monochrome" (móvil) + serif editorial Playfair Display en titulares + acento único #ff1a00. Aplicado en SW v73.
+- [x] ~~Ejecutar el skill ui-ux-pro-max~~ — se aplicó el paquete "Minimalist Monochrome + Playfair Display" (SW v73) y **se revirtió el mismo día**: al usuario no le gustó; solo se conservó el acordeón "Ajustes" en Cargar. NO volver a proponer serif editorial ni cambios masivos de estilo.
+- [ ] **Nueva dirección de diseño basada en referencias de Zara**: el usuario subirá capturas de la app de Zara a una carpeta local para extraer ideas (tipografía, arquitectura de pantallas) y aplicar mejoras puntuales sobre la base actual, sin romperla
 
 ---
 
@@ -160,7 +161,7 @@ Nivel 3: [exterior + medio + base + inferior]
 
 ```
 index.html          — App completa (single-file PWA, todo inline)
-sw.js               — Service Worker v73
+sw.js               — Service Worker v74
 guardarropa.json    — {prendas, deleted} — 52 prendas (fuente de verdad, siempre se carga al iniciar)
 images/             — WebPs procesados con rembg, 1200×1600 px, fondo transparente
 manifest.json       — PWA manifest
