@@ -133,6 +133,11 @@ header{background:#fff;border-bottom:1px solid #e0dbd5;padding:8px 16px;position
 
 /* CARGAR */
 .cargar-block{background:#fff;margin-bottom:2px}
+.ajustes-toggle{width:100%;display:flex;justify-content:space-between;align-items:center;padding:18px 16px;background:#fff;border:none;cursor:pointer;font-size:10px;letter-spacing:2px;text-transform:uppercase;font-weight:400;font-family:inherit;color:#1a1a1a}
+.ajustes-chevron{font-size:17px;font-weight:300;color:#888;transition:transform .2s;display:inline-block;line-height:1}
+.ajustes-chevron.open{transform:rotate(90deg)}
+.ajustes-sec{padding:0 16px 18px;border-top:1px solid #f0ebe5}
+.ajustes-sec-title{font-size:9px;letter-spacing:2px;text-transform:uppercase;color:#888;margin:14px 0 10px}
 .cargar-block-title{font-size:10px;letter-spacing:2px;text-transform:uppercase;font-weight:400;padding:18px 16px 12px}
 .search-wrap{display:flex;align-items:center;padding:0 16px 12px;gap:8px}
 .search-inp{flex:1;padding:10px 12px;border:1px solid #e0dbd5;font-size:14px;background:#f8f5f2;outline:none}
@@ -301,25 +306,32 @@ header{background:#fff;border-bottom:1px solid #e0dbd5;padding:8px 16px;position
     </div>
     <div class="search-results" id="search-results"></div>
   </div>
-  <div class="cargar-block" style="margin-top:2px;padding:16px">
-    <div style="font-size:9px;letter-spacing:2px;text-transform:uppercase;color:#888;margin-bottom:12px">Datos</div>
-    <div style="display:flex;gap:2px">
-      <button onclick="exportarInventario()" style="flex:1;padding:12px;border:1px solid #e0dbd5;background:#fff;font-size:10px;letter-spacing:1px;text-transform:uppercase;cursor:pointer">Exportar</button>
-      <button onclick="document.getElementById('import-file').click()" style="flex:1;padding:12px;border:1px solid #e0dbd5;background:#fff;font-size:10px;letter-spacing:1px;text-transform:uppercase;cursor:pointer">Importar</button>
-      <input type="file" id="import-file" accept=".json" style="display:none" onchange="importarInventario(this)">
+  <div class="cargar-block" style="margin-top:2px">
+    <button class="ajustes-toggle" onclick="toggleAjustes()">
+      <span>Ajustes</span><span id="ajustes-chevron" class="ajustes-chevron">›</span>
+    </button>
+    <div id="ajustes-body" style="display:none">
+      <div class="ajustes-sec">
+        <div class="ajustes-sec-title">Datos</div>
+        <div style="display:flex;gap:2px">
+          <button onclick="exportarInventario()" style="flex:1;padding:12px;border:1px solid #e0dbd5;background:#fff;font-size:10px;letter-spacing:1px;text-transform:uppercase;cursor:pointer">Exportar</button>
+          <button onclick="document.getElementById('import-file').click()" style="flex:1;padding:12px;border:1px solid #e0dbd5;background:#fff;font-size:10px;letter-spacing:1px;text-transform:uppercase;cursor:pointer">Importar</button>
+          <input type="file" id="import-file" accept=".json" style="display:none" onchange="importarInventario(this)">
+        </div>
+      </div>
+      <div class="ajustes-sec">
+        <div class="ajustes-sec-title">Sincronización GitHub</div>
+        <div id="gh-sync-status" style="font-size:10px;color:#888;margin-bottom:10px;letter-spacing:0.5px"></div>
+        <input id="gh-token-inp" type="password" placeholder="Token de GitHub (ghp_...)" style="width:100%;padding:10px;border:1px solid #e0dbd5;font-size:11px;margin-bottom:8px;font-family:monospace">
+        <button onclick="guardarToken()" style="width:100%;padding:11px;background:#000;color:#fff;border:none;font-size:10px;letter-spacing:2px;text-transform:uppercase;cursor:pointer">Guardar Token</button>
+      </div>
+      <div class="ajustes-sec">
+        <div class="ajustes-sec-title">Remove.bg — quitar fondo</div>
+        <div id="rmbg-status" style="font-size:10px;color:#888;margin-bottom:10px;letter-spacing:0.5px"></div>
+        <input id="rmbg-key-inp" type="password" placeholder="API key de remove.bg" style="width:100%;padding:10px;border:1px solid #e0dbd5;font-size:11px;margin-bottom:8px;font-family:monospace">
+        <button onclick="guardarRmbgKey()" style="width:100%;padding:11px;background:#000;color:#fff;border:none;font-size:10px;letter-spacing:2px;text-transform:uppercase;cursor:pointer">Guardar API Key</button>
+      </div>
     </div>
-  </div>
-  <div class="cargar-block" style="margin-top:2px;padding:16px">
-    <div style="font-size:9px;letter-spacing:2px;text-transform:uppercase;color:#888;margin-bottom:10px">Sincronización GitHub</div>
-    <div id="gh-sync-status" style="font-size:10px;color:#888;margin-bottom:10px;letter-spacing:0.5px"></div>
-    <input id="gh-token-inp" type="password" placeholder="Token de GitHub (ghp_...)" style="width:100%;padding:10px;border:1px solid #e0dbd5;font-size:11px;margin-bottom:8px;font-family:monospace">
-    <button onclick="guardarToken()" style="width:100%;padding:11px;background:#000;color:#fff;border:none;font-size:10px;letter-spacing:2px;text-transform:uppercase;cursor:pointer">Guardar Token</button>
-  </div>
-  <div class="cargar-block" style="margin-top:2px;padding:16px">
-    <div style="font-size:9px;letter-spacing:2px;text-transform:uppercase;color:#888;margin-bottom:10px">Remove.bg — quitar fondo</div>
-    <div id="rmbg-status" style="font-size:10px;color:#888;margin-bottom:10px;letter-spacing:0.5px"></div>
-    <input id="rmbg-key-inp" type="password" placeholder="API key de remove.bg" style="width:100%;padding:10px;border:1px solid #e0dbd5;font-size:11px;margin-bottom:8px;font-family:monospace">
-    <button onclick="guardarRmbgKey()" style="width:100%;padding:11px;background:#000;color:#fff;border:none;font-size:10px;letter-spacing:2px;text-transform:uppercase;cursor:pointer">Guardar API Key</button>
   </div>
 </div>
 
@@ -1208,6 +1220,12 @@ function mostrarEstadoSync(){
   if(!el)return;
   el.textContent=ghToken()?'✓ Token configurado — fotos se suben automáticamente':'⚠ Sin token — fotos solo en este dispositivo';
   el.style.color=ghToken()?'#22aa55':'#cc6600';
+}
+function toggleAjustes(){
+  const b=document.getElementById('ajustes-body'),ch=document.getElementById('ajustes-chevron');
+  const abierto=b.style.display!=='none';
+  b.style.display=abierto?'none':'block';
+  ch.classList.toggle('open',!abierto);
 }
 function guardarRmbgKey(){
   const k=document.getElementById('rmbg-key-inp').value.trim();
