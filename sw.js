@@ -1,4 +1,4 @@
-const CACHE = 'guardarropa-v84';
+const CACHE = 'guardarropa-v85';
 const CORE = [
   '/wardrobe/manifest.json',
   '/wardrobe/icon-192.png',
@@ -24,7 +24,8 @@ self.addEventListener('fetch', e => {
   // Network first para HTML y JSON — siempre sirve la versión más reciente
   if(url.includes('/wardrobe/index.html') || url.endsWith('/wardrobe/') || url.includes('/wardrobe/guardarropa.json')) {
     e.respondWith(
-      fetch(e.request).then(res => {
+      // no-cache: revalida contra el servidor y esquiva el max-age=600 de GitHub Pages
+      fetch(e.request, {cache:'no-cache'}).then(res => {
         const clone = res.clone();
         caches.open(CACHE).then(c => c.put(e.request, clone));
         return res;
