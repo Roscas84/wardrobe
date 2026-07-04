@@ -187,13 +187,23 @@ header{background:#fff;border-bottom:1px solid #e0dbd5;padding:8px 16px;position
 .c-ana{background:#1a7a1a}.c-comp{background:#c44800}.c-split{background:#b87000}
 .c-tri{background:#1a3acc}.c-tet{background:#7700cc}.c-cua{background:#cc0077}.c-abs{background:#007755}
 
-/* WEB (>700px): misma columna de 600px que el resto de la app — los elementos
-   position:fixed escapan de .screen y sin esto se estiran a todo el monitor */
+/* WEB Nivel 2 (>700px): Closet y Outfit aprovechan la pantalla grande (columna 1080px,
+   grid 3-4 columnas, 2-3 looks lado a lado); Inicio y Cargar se quedan en 600px.
+   Los elementos position:fixed se centran para no estirarse a todo el monitor. */
 @media (min-width:700px){
-  .bottom-nav{left:50%;right:auto;transform:translateX(-50%);width:100%;max-width:600px}
-  #paso2-outfits{left:50%;right:auto;transform:translateX(-50%);width:100%;max-width:600px}
-  header{max-width:600px;margin:0 auto}
   body{background:#eae5df}
+  header{max-width:1080px;margin:0 auto}
+  .bottom-nav{left:50%;right:auto;transform:translateX(-50%);width:100%;max-width:1080px}
+  #screen-closet,#screen-outfit{max-width:1080px}
+  #paso2-outfits{left:50%;right:auto;transform:translateX(-50%);width:100%;max-width:1080px}
+  .items-grid{grid-template-columns:repeat(3,1fr)}
+  .outfit-card{width:50%}
+  .modal-overlay{align-items:center}
+  .modal{max-height:85vh}
+}
+@media (min-width:1100px){
+  .items-grid{grid-template-columns:repeat(4,1fr)}
+  .outfit-card{width:33.3333%}
 }
 </style>
 </head>
