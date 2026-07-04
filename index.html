@@ -315,6 +315,12 @@ header{background:#fff;border-bottom:1px solid #e0dbd5;padding:8px 16px;position
     <input id="gh-token-inp" type="password" placeholder="Token de GitHub (ghp_...)" style="width:100%;padding:10px;border:1px solid #e0dbd5;font-size:11px;margin-bottom:8px;font-family:monospace">
     <button onclick="guardarToken()" style="width:100%;padding:11px;background:#000;color:#fff;border:none;font-size:10px;letter-spacing:2px;text-transform:uppercase;cursor:pointer">Guardar Token</button>
   </div>
+  <div class="cargar-block" style="margin-top:2px;padding:16px">
+    <div style="font-size:9px;letter-spacing:2px;text-transform:uppercase;color:#888;margin-bottom:10px">Remove.bg — quitar fondo</div>
+    <div id="rmbg-status" style="font-size:10px;color:#888;margin-bottom:10px;letter-spacing:0.5px"></div>
+    <input id="rmbg-key-inp" type="password" placeholder="API key de remove.bg" style="width:100%;padding:10px;border:1px solid #e0dbd5;font-size:11px;margin-bottom:8px;font-family:monospace">
+    <button onclick="guardarRmbgKey()" style="width:100%;padding:11px;background:#000;color:#fff;border:none;font-size:10px;letter-spacing:2px;text-transform:uppercase;cursor:pointer">Guardar API Key</button>
+  </div>
 </div>
 
 <!-- MODAL -->
@@ -333,25 +339,7 @@ header{background:#fff;border-bottom:1px solid #e0dbd5;padding:8px 16px;position
       <label>Tipo</label>
       <select id="inp-tipo">
         <option value="">Selecciona...</option>
-        <optgroup label="— Superior —">
-          <option>Camiseta</option><option>Camisa</option><option>Hoodie</option>
-          <option>Polo</option><option>Sudadera</option><option>Suéter</option><option>Tank top</option>
-        </optgroup>
-        <optgroup label="— Exterior —">
-          <option>Blazer</option><option>Chamarra</option><option>Abrigo</option><option>Chaqueta</option>
-        </optgroup>
-        <optgroup label="— Inferior —">
-          <option>Jean</option><option>Jean largo</option><option>Jean tres cuartos</option>
-          <option>Pantalón</option><option>Overalls</option><option>Short</option><option>Jogger</option>
-        </optgroup>
-        <optgroup label="— Calzado —">
-          <option>Sneakers</option><option>Converse</option><option>Botas</option><option>Bota</option>
-          <option>Zapato</option><option>Sandalias</option><option>Sandalia</option><option>Mocasín</option>
-        </optgroup>
-        <optgroup label="— Accesorios —">
-          <option>Gorra</option><option>Bolso</option><option>Lentes</option>
-          <option>Cinturón</option><option>Bufanda</option><option>Reloj</option>
-        </optgroup>
+        <!-- optgroups generados desde CATEGORIAS en initTipoSelect() -->
       </select>
     </div>
     <div class="field">
@@ -437,6 +425,8 @@ header{background:#fff;border-bottom:1px solid #e0dbd5;padding:8px 16px;position
 
 <script>
 let inventario = JSON.parse(localStorage.getItem('wrd_inv') || '[]');
+// Tombstones: IDs eliminados, viven en guardarropa.json para propagar eliminaciones entre dispositivos
+let _tombstones = [];
 let ancla = null, modoLibreActivo = false, editandoId = null, prevScreen = null;
 
 // SANZO WADA — 159 colores, combinaciones validadas
@@ -472,7 +462,8 @@ function isWadaValidated(outfit){
   return false;
 }
 let _grupos = [];
-const RMBG_KEY = 'Misp39S3s5vPZsMBwYcnA8s1';
+// API key de remove.bg: vive en localStorage (como el token de GitHub), nunca en el código
+function rmbgKey(){return localStorage.getItem('rmbg_key')||'';}
 
 const CATEGORIAS = [
   {key:'superior',   tipos:['Camiseta','Camisa','Hoodie','Polo','Sudadera','Suéter','Tank top']},
@@ -506,11 +497,18 @@ const ARMONIAS = [
 const ACC_CABEZA=['Gorra','Lentes'],ACC_CUERPO=['Bolso','Cinturón','Bufanda','Reloj'];
 
 function getPosicion(tipo){
-  if(['Jean','Jean largo','Jean tres cuartos','Pantalón','Overalls','Short','Jogger'].includes(tipo))return'inferior';
-  if(['Blazer','Chamarra','Abrigo','Chaqueta'].includes(tipo))return'exterior';
-  if(['Sneakers','Converse','Botas','Bota','Zapato','Sandalias','Sandalia','Mocasín'].includes(tipo))return'calzado';
-  if(['Gorra','Bolso','Lentes','Cinturón','Bufanda','Reloj'].includes(tipo))return'accesorios';
-  return'superior';
+  const cat=CATEGORIAS.find(c=>c.tipos.includes(tipo));
+  return cat?cat.key:'superior';
+}
+// El <select> de tipo del modal se genera desde CATEGORIAS (fuente única tipo→posición)
+function initTipoSelect(){
+  const sel=document.getElementById('inp-tipo');
+  const labels={superior:'Superior',exterior:'Exterior',inferior:'Inferior',calzado:'Calzado',accesorios:'Accesorios'};
+  CATEGORIAS.forEach(c=>{
+    const og=document.createElement('optgroup');og.label=`— ${labels[c.key]} —`;
+    c.tipos.forEach(t=>{const o=document.createElement('option');o.textContent=t;og.appendChild(o);});
+    sel.appendChild(og);
+  });
 }
 function guardarLocal(){
   try{localStorage.setItem('wrd_inv',JSON.stringify(inventario));}
@@ -980,11 +978,13 @@ function eliminarPrenda(id){
   // NO se revive desde guardarropa.json y se reintenta subir la eliminación
   const pend=JSON.parse(localStorage.getItem('wrd_pending_del')||'[]');
   if(!pend.includes(id)){pend.push(id);localStorage.setItem('wrd_pending_del',JSON.stringify(pend));}
+  if(!_tombstones.includes(id))_tombstones.push(id);
   guardarLocal();renderClosetMain();renderOutfitMain();
   buscarPrenda(document.getElementById('search-input')?.value||'');
   // Borrar del repo la foto subida desde la app (best-effort; las curadas no se tocan)
-  if(prenda&&prenda.foto&&prenda.foto.startsWith('images/user_')&&ghToken()){
-    ghDelete(prenda.foto,`Delete photo ${prenda.foto}`).catch(()=>{});
+  const fotoPath=prenda&&prenda.foto?prenda.foto.split('?')[0]:'';
+  if(fotoPath.startsWith('images/user_')&&ghToken()){
+    ghDelete(fotoPath,`Delete photo ${fotoPath}`).catch(()=>{});
   }
   sincronizarInventario();
 }
@@ -1041,9 +1041,10 @@ async function normalizarProporcion(dataUrl,targetW=1200,targetH=1600,fill=0.90)
   });
 }
 async function removerFondo(dataUrl){
+  if(!rmbgKey())throw new Error('sin API key de remove.bg');
   const blob=await fetch(dataUrl).then(r=>r.blob());
   const fd=new FormData();fd.append('image_file',blob,'photo.jpg');fd.append('size','auto');
-  const res=await fetch('https://api.remove.bg/v1.0/removebg',{method:'POST',headers:{'X-Api-Key':RMBG_KEY},body:fd});
+  const res=await fetch('https://api.remove.bg/v1.0/removebg',{method:'POST',headers:{'X-Api-Key':rmbgKey()},body:fd});
   if(!res.ok)throw new Error('removebg '+res.status);
   const buf=await res.arrayBuffer();const bytes=new Uint8Array(buf);
   let bin='';for(let i=0;i<bytes.length;i++)bin+=String.fromCharCode(bytes[i]);
@@ -1208,6 +1209,20 @@ function mostrarEstadoSync(){
   el.textContent=ghToken()?'✓ Token configurado — fotos se suben automáticamente':'⚠ Sin token — fotos solo en este dispositivo';
   el.style.color=ghToken()?'#22aa55':'#cc6600';
 }
+function guardarRmbgKey(){
+  const k=document.getElementById('rmbg-key-inp').value.trim();
+  if(!k){alert('Pega tu API key de remove.bg');return;}
+  localStorage.setItem('rmbg_key',k);
+  document.getElementById('rmbg-key-inp').value='';
+  mostrarEstadoRmbg();
+  showToast('API key guardada');
+}
+function mostrarEstadoRmbg(){
+  const el=document.getElementById('rmbg-status');
+  if(!el)return;
+  el.textContent=rmbgKey()?'✓ Key configurada — el fondo se quita automáticamente':'⚠ Sin key — las fotos se guardan sin quitar el fondo';
+  el.style.color=rmbgKey()?'#22aa55':'#cc6600';
+}
 async function ghGet(path){
   const r=await fetch(`https://api.github.com/repos/${GH_REPO}/contents/${path}`,
     {headers:{Authorization:`token ${ghToken()}`,Accept:'application/vnd.github.v3+json'}});
@@ -1231,7 +1246,18 @@ async function subirFotoGitHub(dataUrl,filename){
 }
 async function subirJsonGitHub(){
   const existing=await ghGet('guardarropa.json');
-  const content=btoa(unescape(encodeURIComponent(JSON.stringify(inventario,null,2))));
+  // Unir tombstones remotos para no pisar eliminaciones hechas desde otro dispositivo
+  if(existing&&existing.content){
+    try{
+      const remote=JSON.parse(decodeURIComponent(escape(atob(existing.content.replace(/\n/g,'')))));
+      const remoteDel=Array.isArray(remote)?[]:(remote.deleted||[]);
+      remoteDel.forEach(id=>{if(!_tombstones.includes(id))_tombstones.push(id);});
+    }catch(e){}
+  }
+  const antes=inventario.length;
+  inventario=inventario.filter(p=>!_tombstones.includes(p.id));
+  if(inventario.length!==antes)guardarLocal();
+  const content=btoa(unescape(encodeURIComponent(JSON.stringify({prendas:inventario,deleted:_tombstones},null,2))));
   return ghPut('guardarropa.json',content,'Update inventory',existing?.sha);
 }
 async function ghDelete(path,message){
@@ -1260,7 +1286,8 @@ async function sincronizarInventario(silencioso){
         const filename=`user_${p.id}.webp`;
         const okFoto=await subirFotoGitHub(p.foto,filename).catch(()=>false);
         if(!okFoto){localStorage.setItem('wrd_dirty','1');if(!silencioso)showToast('⚠ Sin conexión — cambios guardados solo local');return false;}
-        p.foto=`images/${filename}`;guardarLocal();
+        // ?v= evita que el SW (cache-first en imágenes) siga sirviendo la foto vieja tras una edición
+        p.foto=`images/${filename}?v=${Date.now()}`;guardarLocal();
       }
     }
     // 2. JSON completo (fuente de verdad)
@@ -1286,7 +1313,9 @@ async function guardarPrenda(){
   const formalidad=document.getElementById('inp-formalidad').value;
   const cuidado=getCuidado();
   const fotoEl=document.getElementById('preview-foto');
-  let foto=fotoEl.src&&fotoEl.style.display!=='none'?fotoEl.src:null;
+  // getAttribute: .src devolvería la URL absoluta y rompería rutas relativas al editar
+  const fotoSrc=fotoEl.getAttribute('src');
+  let foto=fotoSrc&&fotoEl.style.display!=='none'?fotoSrc:null;
   if(!nombre||!tipo){alert('Escribe el nombre y selecciona el tipo.');return;}
   if(material.length){const total=material.reduce((s,m)=>s+m.pct,0);if(total!==100){alert('Los porcentajes de tela deben sumar 100% (ahora suman '+total+'%).');return;}}
   cerrarModal();
@@ -1303,7 +1332,18 @@ function exportarInventario(){
 }
 function importarInventario(input){
   const r=new FileReader();
-  r.onload=e=>{try{const data=JSON.parse(e.target.result);if(Array.isArray(data)){inventario=data;guardarLocal();renderClosetMain();renderOutfitMain();alert('Importado: '+data.length+' prendas');}}catch(err){alert('Error al importar.');}};
+  r.onload=e=>{
+    try{
+      const raw=JSON.parse(e.target.result);
+      const data=Array.isArray(raw)?raw:(Array.isArray(raw?.prendas)?raw.prendas:null);
+      if(!data)throw new Error('formato');
+      const valida=p=>p&&typeof p==='object'&&p.id!=null&&typeof p.nombre==='string'&&typeof p.tipo==='string'&&typeof p.color==='string';
+      if(!data.length||!data.every(valida))throw new Error('estructura');
+      inventario=data;guardarLocal();renderClosetMain();renderOutfitMain();
+      alert('Importado: '+data.length+' prendas');
+      sincronizarInventario();
+    }catch(err){alert('Error al importar: el archivo no tiene el formato esperado.');}
+  };
   r.readAsText(input.files[0]);
 }
 
@@ -1342,16 +1382,22 @@ function volverDesdeCargar(){if(prevScreen)showScreen(prevScreen);}
 if('serviceWorker' in navigator){navigator.serviceWorker.register('/wardrobe/sw.js').catch(()=>{});}
 window.addEventListener('load',()=>{
   initSlideshow();
+  initTipoSelect();
   mostrarEstadoSync();
+  mostrarEstadoRmbg();
   setTimeout(()=>{const sp=document.getElementById('splash');sp.classList.add('out');setTimeout(()=>sp.style.display='none',500);},1900);
 });
 // Siempre sincronizar con guardarropa.json como fuente de verdad
-fetch('guardarropa.json').then(r=>r.json()).then(jsonData=>{
+fetch('guardarropa.json').then(r=>r.json()).then(data=>{
+  // Formato nuevo {prendas, deleted} o legado (array plano)
+  let jsonData=Array.isArray(data)?data:(data.prendas||[]);
+  _tombstones=Array.isArray(data)?[]:(data.deleted||[]);
   const pendDel=JSON.parse(localStorage.getItem('wrd_pending_del')||'[]');
-  // No revivir prendas cuya eliminación aún no se ha subido a GitHub
-  jsonData=jsonData.filter(j=>!pendDel.includes(j.id));
+  // No revivir prendas eliminadas (en otro dispositivo o pendientes de subir)
+  pendDel.forEach(id=>{if(!_tombstones.includes(id))_tombstones.push(id);});
+  jsonData=jsonData.filter(j=>!_tombstones.includes(j.id));
   // Preservar prendas añadidas por el usuario desde la app (ID tipo timestamp)
-  const userAdded=inventario.filter(p=>!jsonData.find(j=>j.id===p.id)&&!pendDel.includes(p.id));
+  const userAdded=inventario.filter(p=>!jsonData.find(j=>j.id===p.id)&&!_tombstones.includes(p.id));
   inventario=[...jsonData,...userAdded];
   guardarLocal();renderClosetMain();renderOutfitMain();
   // Reintentar sync pendiente (cambios hechos sin conexión o con fallo previo)

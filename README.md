@@ -7,7 +7,7 @@ App web progresiva (PWA) de uso personal para gestionar inventario de ropa y gen
 
 ---
 
-## Estado actual — SW v67
+## Estado actual — SW v71
 
 ### Lo que funciona hoy
 
@@ -29,10 +29,12 @@ App web progresiva (PWA) de uso personal para gestionar inventario de ropa y gen
 | Carrusel horizontal con scroll-snap | Completo |
 | Material / composición de tela con porcentajes | Completo |
 | Símbolos de cuidado (lavado, secado, plancha) con auto-sugerencia | Completo |
-| Service Worker v67 — network-first para HTML/JSON, cache-first para imágenes | Completo |
+| Service Worker v71 — network-first para HTML/JSON, cache-first para imágenes | Completo |
+| Eliminaciones propagadas entre dispositivos (tombstones en guardarropa.json) | Completo |
+| API key de remove.bg en localStorage por dispositivo (nunca en el código) | Completo |
 
 ### Inventario actual
-- 49 prendas cargadas con foto procesada (WebP, 1200×1600 px, fondo transparente)
+- 52 prendas cargadas con foto procesada (WebP, 1200×1600 px, fondo transparente)
 - Imágenes respaldadas en: `/Users/angelalcantara/Claude/Proyects/Wardrobe/Inventory/images_procesadas/`
 - Excel fuente de verdad: `/Users/angelalcantara/Claude/Proyects/Wardrobe/Inventory/Mi_Guardarropa_v3.xlsx`
 
@@ -41,13 +43,13 @@ App web progresiva (PWA) de uso personal para gestionar inventario de ropa y gen
 ## TODO — Pendientes
 
 ### Datos (trabajo manual)
-- [ ] Actualizar **cuidados de lavado/secado/plancha** en las 49 prendas existentes
-- [ ] Foto nueva de **sandalia rope beige** (ID 28) — sin pie, fondo oscuro
-- [ ] Verificar y corregir **tallas reales** en todas las prendas
+- [ ] Actualizar **cuidados de lavado/secado/plancha** en las 49 prendas originales (Excel con dropdowns listo)
+- [ ] Verificar y corregir **tallas reales** en todas las prendas (decisión 2026-07-01: no prioridad)
+- [ ] Pegar la **API key de remove.bg** en cada dispositivo (app → Cargar → Remove.bg) — desde 2026-07-04 ya no va en el código
 
 ### Lógica / Bugs conocidos
-- [ ] **Dos capas exteriores**: puede generar outfits con blazer + chamarra simultáneamente — excluir segunda capa exterior si el ancla ya es exterior
 - [ ] **ID 49 Overalls**: canvas fill 23.1% con bbox sospechosamente angosto (346px wide) — posible artefacto rembg
+- Nota: el bug "dos capas exteriores" (blazer + chamarra juntos) **no es reproducible en el código actual** (revisión 2026-07-04) — ninguna ruta de `generarParaArmonia` agrega dos exteriores; verificar en la app antes de reabrir
 
 ### UX pequeñas
 - [ ] Revisar que el menú Outfit esté bien centrado en todos los iPhone (SE y Pro Max)
@@ -84,6 +86,17 @@ cargarFoto() → removerFondo() (rembg en browser) → normalizarProporcion() (C
 El token se guarda en `localStorage` del dispositivo (nunca en el código).
 Configurar en: app → pestaña Cargar → sección "Sincronización GitHub".
 Permisos necesarios: `repo` (Personal Access Token classic).
+
+La API key de remove.bg también vive en `localStorage` (`rmbg_key`), configurable en
+app → Cargar → "Remove.bg — quitar fondo". Sin key, la foto se guarda sin quitar el fondo.
+
+**Formato de `guardarropa.json` (desde 2026-07-04):** `{prendas: [...], deleted: [ids]}`.
+`deleted` son tombstones: IDs eliminados que ningún dispositivo debe revivir. Al subir el JSON
+se hace unión con los tombstones remotos para no pisar eliminaciones de otros dispositivos.
+El loader también acepta el formato legado (array plano).
+
+**Fotos editadas:** al resubir una foto se guarda la ruta con `?v=<timestamp>` para invalidar
+el cache-first del service worker (misma URL nunca se revalida).
 
 ---
 
@@ -146,8 +159,8 @@ Nivel 3: [exterior + medio + base + inferior]
 
 ```
 index.html          — App completa (single-file PWA, todo inline)
-sw.js               — Service Worker v67
-guardarropa.json    — 49 prendas (fuente de verdad, siempre se carga al iniciar)
+sw.js               — Service Worker v71
+guardarropa.json    — {prendas, deleted} — 52 prendas (fuente de verdad, siempre se carga al iniciar)
 images/             — WebPs procesados con rembg, 1200×1600 px, fondo transparente
 manifest.json       — PWA manifest
 ```
