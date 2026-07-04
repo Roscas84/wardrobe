@@ -447,6 +447,15 @@ body{font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;background:#f5f0eb;
       </select>
     </div>
     <div class="field">
+      <label>Capa (cómo la usas al vestir)</label>
+      <select id="inp-capa">
+        <option value="">Automática — según el tipo</option>
+        <option value="base">Base — pegada al cuerpo</option>
+        <option value="medio">Media — abierta o ligera (camisa abierta, blazer, rompevientos)</option>
+        <option value="exterior">Exterior — gruesa (chamarra pesada, abrigo)</option>
+      </select>
+    </div>
+    <div class="field">
       <label>Color principal</label>
       <div class="color-row">
         <input type="color" class="color-swatch-inp" id="inp-color" value="#000000" oninput="syncColor('picker')">
@@ -636,6 +645,13 @@ function getPosicion(tipo){
   const cat=CATEGORIAS.find(c=>c.tipos.includes(tipo));
   return cat?cat.key:'base';
 }
+// Posición de una prenda concreta: la capa es variable (camisa abierta=media, rompevientos=media,
+// suéter delgado=base) — el override p.capa manda sobre el tipo, solo entre capas superiores
+function posDe(p){
+  const auto=getPosicion(p.tipo);
+  if(p.capa&&['base','medio','exterior'].includes(p.capa)&&['base','medio','exterior'].includes(auto))return p.capa;
+  return auto;
+}
 // El <select> de tipo del modal se genera desde CATEGORIAS (fuente única tipo→posición)
 function initTipoSelect(){
   const sel=document.getElementById('inp-tipo');
@@ -708,18 +724,18 @@ function generarParaArmonia(anclaRef,armKey){
     if(!otras.some(p=>coloresDe(p).some(c=>!esNeutro(c)&&hueDist(hexToHsl(c).h,th)<=TOLERANCIA)))return[];
   }
   function pool(pos){
-    const all=otras.filter(p=>getPosicion(p.tipo)===pos);
+    const all=otras.filter(p=>posDe(p)===pos);
     const compat=all.filter(p=>coloresDe(p).some(c=>esCompatible(c,huesObj,anclaRef.color)));
     if(compat.length)return compat;
     // Solo neutros como fallback — nunca "todo" para no inventar outfits
     return all.filter(p=>coloresDe(p).every(c=>esNeutro(c)));
   }
-  const anclaPos=getPosicion(anclaRef.tipo);
+  const anclaPos=posDe(anclaRef);
   const base=pool('base'),med=pool('medio'),ext=pool('exterior'),inf=pool('inferior'),cal=pool('calzado'),acc=pool('accesorios');
   const outfits=[];
   function push(piezas,nivel){
-    if(!piezas.some(p=>getPosicion(p.tipo)==='calzado')&&cal.length)piezas=[...piezas,cal[outfits.length%cal.length]];
-    if(acc.length&&!piezas.some(p=>getPosicion(p.tipo)==='accesorios'))piezas=[...piezas,acc[outfits.length%acc.length]];
+    if(!piezas.some(p=>posDe(p)==='calzado')&&cal.length)piezas=[...piezas,cal[outfits.length%cal.length]];
+    if(acc.length&&!piezas.some(p=>posDe(p)==='accesorios'))piezas=[...piezas,acc[outfits.length%acc.length]];
     outfits.push({nivel,piezas,armKey,anclaColor:anclaRef.color});
   }
   // Niveles: basico [base+inf] · medio [medio+base+inf] · exterior [ext+base+inf] · completo [ext+medio+base+inf]
@@ -889,7 +905,7 @@ function analizarDesbloqueos(){
   const claveDe=o=>o.piezas.map(p=>p.id).sort().join('-');
   const contar=()=>{
     const s=new Set();
-    inventario.filter(p=>['base','medio','exterior','inferior'].includes(getPosicion(p.tipo)))
+    inventario.filter(p=>['base','medio','exterior','inferior'].includes(posDe(p)))
       .forEach(ref=>ARMONIAS.forEach(a=>generarParaArmonia(ref,a.key).forEach(o=>s.add(claveDe(o)))));
     return s;
   };
@@ -1035,7 +1051,7 @@ function mostrarArmonias(){
 
   // Generar grupos
   if(modoLibreActivo){
-    const anclas=inventario.filter(p=>['base','medio','exterior','inferior'].includes(getPosicion(p.tipo)));
+    const anclas=inventario.filter(p=>['base','medio','exterior','inferior'].includes(posDe(p)));
     const combinados={};
     ARMONIAS.forEach(arm=>combinados[arm.key]={arm,outfitsSet:new Set(),outfits:[]});
     anclas.forEach(ref=>{ARMONIAS.forEach(arm=>{
@@ -1137,13 +1153,13 @@ function lookCardHTML(o,wadaOk=false,armNombre=null){
     if(!colores.length)colores=[...new Set(piezas.map(p=>p.color))];
   }
   const left=[
-    ...piezas.filter(p=>getPosicion(p.tipo)==='exterior'),
-    ...piezas.filter(p=>getPosicion(p.tipo)==='medio'),
-    ...piezas.filter(p=>getPosicion(p.tipo)==='base'),
-    ...piezas.filter(p=>getPosicion(p.tipo)==='inferior'),
+    ...piezas.filter(p=>posDe(p)==='exterior'),
+    ...piezas.filter(p=>posDe(p)==='medio'),
+    ...piezas.filter(p=>posDe(p)==='base'),
+    ...piezas.filter(p=>posDe(p)==='inferior'),
   ];
   const right=[
-    ...piezas.filter(p=>getPosicion(p.tipo)==='calzado'),
+    ...piezas.filter(p=>posDe(p)==='calzado'),
     ...piezas.filter(p=>ACC_CABEZA.includes(p.tipo)),
     ...piezas.filter(p=>ACC_CUERPO.includes(p.tipo)),
   ];
@@ -1215,6 +1231,7 @@ function editarPrenda(id){
   document.getElementById('modal-titulo').textContent='Editar prenda';
   document.getElementById('inp-nombre').value=p.nombre;
   document.getElementById('inp-tipo').value=p.tipo;
+  document.getElementById('inp-capa').value=p.capa||'';
   document.getElementById('inp-color').value=p.color;
   document.getElementById('inp-hex').value=p.color;
   document.getElementById('inp-hex2').value=p.color2||'';
@@ -1260,7 +1277,8 @@ function eliminarPrenda(id){
 function cerrarModal(){desactivarGotero();document.getElementById('modal-prenda').classList.remove('open');}
 function limpiarModal(){
   ['inp-nombre','inp-marca','inp-talla'].forEach(id=>document.getElementById(id).value='');
-  document.getElementById('inp-tipo').value='';document.getElementById('inp-color').value='#000000';
+  document.getElementById('inp-tipo').value='';document.getElementById('inp-capa').value='';
+  document.getElementById('inp-color').value='#000000';
   document.getElementById('inp-hex').value='#000000';
   limpiarColorN(2);limpiarColorN(3);
   mostrarFilaColor(2,false);mostrarFilaColor(3,false);
@@ -1681,6 +1699,7 @@ async function guardarPrenda(){
   const color3=/^#[0-9A-Fa-f]{6}$/.test(c3v)?c3v:null;
   const talla=document.getElementById('inp-talla').value.trim();
   const material=getMaterial();
+  const capa=document.getElementById('inp-capa').value||null;
   const formalidad=document.getElementById('inp-formalidad').value;
   const cuidado=getCuidado();
   const fotoEl=document.getElementById('preview-foto');
@@ -1690,8 +1709,8 @@ async function guardarPrenda(){
   if(!nombre||!tipo){alert('Escribe el nombre y selecciona el tipo.');return;}
   if(material.length){const total=material.reduce((s,m)=>s+m.pct,0);if(total!==100){alert('Los porcentajes de tela deben sumar 100% (ahora suman '+total+'%).');return;}}
   cerrarModal();
-  if(editandoId){const idx=inventario.findIndex(p=>p.id===editandoId);if(idx>=0)inventario[idx]={...inventario[idx],nombre,tipo,color,color2,color3,marca,talla,material,cuidado,formalidad,foto,pos:getPosicion(tipo)};}
-  else{inventario.push({id:Date.now(),nombre,tipo,color,color2,color3,marca,talla,material,cuidado,formalidad,foto,pos:getPosicion(tipo)});}
+  if(editandoId){const idx=inventario.findIndex(p=>p.id===editandoId);if(idx>=0)inventario[idx]={...inventario[idx],nombre,tipo,capa,color,color2,color3,marca,talla,material,cuidado,formalidad,foto,pos:getPosicion(tipo)};}
+  else{inventario.push({id:Date.now(),nombre,tipo,capa,color,color2,color3,marca,talla,material,cuidado,formalidad,foto,pos:getPosicion(tipo)});}
   guardarLocal();renderClosetMain();renderOutfitMain();
   // Sync centralizado: sube foto pendiente (si hay) + JSON, en altas y ediciones
   await sincronizarInventario();
