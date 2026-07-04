@@ -167,7 +167,7 @@ body{font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;background:#f5f0eb;
 .modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.7);z-index:300;align-items:flex-end;justify-content:center}
 #toast{position:fixed;bottom:80px;left:50%;transform:translateX(-50%);background:#1a1a1a;color:#fff;padding:10px 22px;font-size:11px;letter-spacing:2px;text-transform:uppercase;font-weight:300;z-index:400;opacity:0;transition:opacity .25s;pointer-events:none;white-space:nowrap}
 .modal-overlay.open{display:flex}
-.modal{background:#fff;padding:20px 16px;width:100%;max-width:500px;max-height:92vh;overflow-y:auto}
+.modal{background:#fff;padding:20px 16px;width:100%;max-width:500px;max-height:92vh;overflow-y:auto;overflow-x:hidden}
 .modal-handle{width:36px;height:3px;background:#e0dbd5;margin:0 auto 16px}
 .modal h3{font-size:10px;letter-spacing:2px;text-transform:uppercase;font-weight:400;margin-bottom:16px}
 .field{margin-bottom:14px}
@@ -193,12 +193,13 @@ body{font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;background:#f5f0eb;
 .modal-btns{display:flex;gap:2px;margin-top:8px;padding-bottom:env(safe-area-inset-bottom)}
 .btn-cancel{flex:1;padding:14px;border:1px solid #e0dbd5;background:#fff;font-size:11px;cursor:pointer;letter-spacing:1px;text-transform:uppercase}
 .btn-save{flex:2;padding:14px;border:none;background:#000;color:#fff;font-size:11px;cursor:pointer;font-weight:400;letter-spacing:1px;text-transform:uppercase}
-.color-row{display:flex;align-items:center;gap:10px}
+.color-row{display:flex;align-items:center;gap:6px;min-width:0}
 .color-swatch-inp{width:44px;height:44px;border:1px solid #e0dbd5;cursor:pointer;flex-shrink:0}
-.gotero-btn{width:44px;height:44px;border:1px solid #e0dbd5;background:#fff;cursor:pointer;color:#555;flex-shrink:0;display:inline-flex;align-items:center;justify-content:center;-webkit-appearance:none;padding:0}
+.gotero-btn{width:38px;height:44px;border:1px solid #e0dbd5;background:#fff;cursor:pointer;color:#555;flex-shrink:0;display:inline-flex;align-items:center;justify-content:center;-webkit-appearance:none;padding:0}
+.clear-x{width:38px;height:44px;border:none;background:#f0ebe5;font-size:17px;cursor:pointer;color:#888;flex-shrink:0;-webkit-appearance:none}
 .gotero-btn.on{background:#000;color:#fff;border-color:#000}
 .foto-area.gotero-modo{outline:2px solid #ff1a00;outline-offset:-2px;cursor:crosshair}
-.hex-input{flex:1;padding:10px 12px;border:1px solid #e0dbd5;font-size:15px;font-family:monospace;outline:none}
+.hex-input{flex:1;min-width:0;width:100%;padding:10px 8px;border:1px solid #e0dbd5;font-size:14px;font-family:monospace;outline:none}
 .c-ana{background:#1a7a1a}.c-comp{background:#c44800}.c-split{background:#b87000}
 .c-tri{background:#1a3acc}.c-tet{background:#7700cc}.c-cua{background:#cc0077}.c-abs{background:#007755}
 
@@ -412,7 +413,7 @@ body{font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;background:#f5f0eb;
         <input type="color" class="color-swatch-inp" id="inp-color2" value="#888888" oninput="syncColorN(2,'picker')">
         <input type="text" class="hex-input" id="inp-hex2" placeholder="Sin color secundario" maxlength="7" oninput="syncColorN(2,'hex')">
         <button type="button" class="gotero-btn" onclick="activarGotero(2,this)" title="Tomar color de la foto"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m2 22 1-1h3l9-9"/><path d="M3 21v-3l9-9"/><path d="m15 6 3.4-3.4a2.1 2.1 0 1 1 3 3L18 9l.4.4a2.1 2.1 0 1 1-3 3l-3.8-3.8a2.1 2.1 0 1 1 3-3l.4.4Z"/></svg></button>
-        <button type="button" onclick="limpiarColorN(2)" style="width:44px;height:44px;border:none;background:#f0ebe5;font-size:17px;cursor:pointer;color:#888;flex-shrink:0">×</button>
+        <button type="button" class="clear-x" onclick="limpiarColorN(2);showToast('Color secundario eliminado')">×</button>
       </div>
     </div>
     <div class="field">
@@ -421,7 +422,7 @@ body{font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;background:#f5f0eb;
         <input type="color" class="color-swatch-inp" id="inp-color3" value="#888888" oninput="syncColorN(3,'picker')">
         <input type="text" class="hex-input" id="inp-hex3" placeholder="Sin tercer color" maxlength="7" oninput="syncColorN(3,'hex')">
         <button type="button" class="gotero-btn" onclick="activarGotero(3,this)" title="Tomar color de la foto"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m2 22 1-1h3l9-9"/><path d="M3 21v-3l9-9"/><path d="m15 6 3.4-3.4a2.1 2.1 0 1 1 3 3L18 9l.4.4a2.1 2.1 0 1 1-3 3l-3.8-3.8a2.1 2.1 0 1 1 3-3l.4.4Z"/></svg></button>
-        <button type="button" onclick="limpiarColorN(3)" style="width:44px;height:44px;border:none;background:#f0ebe5;font-size:17px;cursor:pointer;color:#888;flex-shrink:0">×</button>
+        <button type="button" class="clear-x" onclick="limpiarColorN(3);showToast('Tercer color eliminado')">×</button>
       </div>
     </div>
     <div class="field"><label>Marca</label><input type="text" id="inp-marca" placeholder="Ej: Zara, Nike..."></div>
@@ -680,10 +681,6 @@ function renderClosetMain(){
   colorBtn.onclick=verColorCloset;
   colorBtn.innerHTML=`<span class="cat-link-text">Búsqueda por color</span>`;
   wrap.appendChild(colorBtn);
-  const desbBtn=document.createElement('div');desbBtn.className='cat-link';
-  desbBtn.onclick=verDesbloqueos;
-  desbBtn.innerHTML=`<span class="cat-link-text">Desbloqueo de looks</span>`;
-  wrap.appendChild(desbBtn);
   ZARA_CATS.forEach(cat=>{
     const items=inventario.filter(p=>cat.tipos.includes(p.tipo));if(!items.length)return;
     const div=document.createElement('div');div.className='cat-link';
@@ -691,13 +688,17 @@ function renderClosetMain(){
     div.innerHTML=`<span class="cat-link-text">${cat.label}</span>`;
     wrap.appendChild(div);
   });
+  const desbBtn=document.createElement('div');desbBtn.className='cat-link';
+  desbBtn.onclick=verDesbloqueos;
+  desbBtn.innerHTML=`<span class="cat-link-text">Desbloqueo de looks</span>`;
+  wrap.appendChild(desbBtn);
   const vt=document.createElement('div');vt.className='arm-link ver-todos-btn';
   vt.onclick=verTodosCloset;
-  vt.innerHTML=`<span class="arm-link-nombre">Ver todos</span><span class="arm-link-count">${inventario.length}</span>`;
+  vt.innerHTML=`<span class="arm-link-nombre">Todo el clóset</span><span class="arm-link-count">${inventario.length}</span>`;
   wrap.appendChild(vt);
 }
 function verTodosCloset(){
-  document.getElementById('closet-items-title').textContent='Todo el guardarropa';
+  document.getElementById('closet-items-title').textContent='Todo el clóset';
   document.getElementById('closet-items-grid').innerHTML=inventario.map(p=>closetCardHTML(p)).join('');
   document.getElementById('closet-main').style.display='none';
   document.getElementById('closet-items-wrap').style.display='block';
