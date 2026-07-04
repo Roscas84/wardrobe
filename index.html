@@ -599,9 +599,11 @@ let _grupos = [];
 // API key de remove.bg: vive en localStorage (como el token de GitHub), nunca en el código
 function rmbgKey(){return localStorage.getItem('rmbg_key')||'';}
 
+// Sistema de capas: base (pegada al cuerpo) / medio (hoodie, suéter, blazer) / exterior (chamarra, abrigo)
 const CATEGORIAS = [
-  {key:'superior',   tipos:['Camiseta','Camisa','Hoodie','Polo','Sudadera','Suéter','Tank top']},
-  {key:'exterior',   tipos:['Blazer','Chamarra','Abrigo','Chaqueta']},
+  {key:'base',       tipos:['Camiseta','Camisa','Polo','Tank top']},
+  {key:'medio',      tipos:['Hoodie','Sudadera','Suéter','Blazer','Chaqueta']},
+  {key:'exterior',   tipos:['Chamarra','Abrigo']},
   {key:'inferior',   tipos:['Jean','Jean largo','Jean tres cuartos','Pantalón','Overalls','Short','Jogger']},
   {key:'calzado',    tipos:['Sneakers','Converse','Botas','Bota','Zapato','Sandalias','Sandalia','Mocasín']},
   {key:'accesorios', tipos:['Gorra','Bolso','Lentes','Cinturón','Bufanda','Reloj']},
@@ -632,12 +634,12 @@ const ACC_CABEZA=['Gorra','Lentes'],ACC_CUERPO=['Bolso','Cinturón','Bufanda','R
 
 function getPosicion(tipo){
   const cat=CATEGORIAS.find(c=>c.tipos.includes(tipo));
-  return cat?cat.key:'superior';
+  return cat?cat.key:'base';
 }
 // El <select> de tipo del modal se genera desde CATEGORIAS (fuente única tipo→posición)
 function initTipoSelect(){
   const sel=document.getElementById('inp-tipo');
-  const labels={superior:'Superior',exterior:'Exterior',inferior:'Inferior',calzado:'Calzado',accesorios:'Accesorios'};
+  const labels={base:'Base',medio:'Capa media',exterior:'Exterior',inferior:'Inferior',calzado:'Calzado',accesorios:'Accesorios'};
   CATEGORIAS.forEach(c=>{
     const og=document.createElement('optgroup');og.label=`— ${labels[c.key]} —`;
     c.tipos.forEach(t=>{const o=document.createElement('option');o.textContent=t;og.appendChild(o);});
@@ -713,18 +715,33 @@ function generarParaArmonia(anclaRef,armKey){
     return all.filter(p=>coloresDe(p).every(c=>esNeutro(c)));
   }
   const anclaPos=getPosicion(anclaRef.tipo);
-  const sup=pool('superior'),ext=pool('exterior'),inf=pool('inferior'),cal=pool('calzado'),acc=pool('accesorios');
+  const base=pool('base'),med=pool('medio'),ext=pool('exterior'),inf=pool('inferior'),cal=pool('calzado'),acc=pool('accesorios');
   const outfits=[];
   function push(piezas,nivel){
     if(!piezas.some(p=>getPosicion(p.tipo)==='calzado')&&cal.length)piezas=[...piezas,cal[outfits.length%cal.length]];
     if(acc.length&&!piezas.some(p=>getPosicion(p.tipo)==='accesorios'))piezas=[...piezas,acc[outfits.length%acc.length]];
     outfits.push({nivel,piezas,armKey,anclaColor:anclaRef.color});
   }
-  if(anclaPos==='superior'){inf.forEach(i=>{push([anclaRef,i],'basico');ext.forEach(e=>push([e,anclaRef,i],'exterior'));});}
-  else if(anclaPos==='exterior'){sup.forEach(s=>inf.forEach(i=>push([anclaRef,s,i],'exterior')));}
-  else if(anclaPos==='inferior'){sup.forEach(s=>{push([s,anclaRef],'basico');ext.forEach(e=>push([e,s,anclaRef],'exterior'));});}
-  else if(anclaPos==='calzado'){sup.forEach(s=>inf.forEach(i=>{push([s,i,anclaRef],'basico');ext.forEach(e=>push([e,s,i,anclaRef],'exterior'));}));}
-  else if(anclaPos==='accesorios'){sup.forEach(s=>inf.forEach(i=>{push([s,i,anclaRef],'basico');ext.forEach(e=>push([e,s,i,anclaRef],'exterior'));}));}
+  // Niveles: basico [base+inf] · medio [medio+base+inf] · exterior [ext+base+inf] · completo [ext+medio+base+inf]
+  function conCapas(b,i){
+    push([b,i],'basico');
+    med.forEach(m=>push([m,b,i],'medio'));
+    ext.forEach((e,k)=>{
+      push([e,b,i],'exterior');
+      if(med.length)push([e,med[k%med.length],b,i],'completo');
+    });
+  }
+  if(anclaPos==='base'){inf.forEach(i=>conCapas(anclaRef,i));}
+  else if(anclaPos==='medio'){base.forEach(b=>inf.forEach(i=>{push([anclaRef,b,i],'medio');ext.forEach(e=>push([e,anclaRef,b,i],'completo'));}));}
+  else if(anclaPos==='exterior'){base.forEach(b=>inf.forEach(i=>{push([anclaRef,b,i],'exterior');med.forEach((m,k)=>{if(k<2)push([anclaRef,m,b,i],'completo');});}));}
+  else if(anclaPos==='inferior'){base.forEach(b=>conCapas(b,anclaRef));}
+  else{ // calzado y accesorios como ancla
+    base.forEach(b=>inf.forEach(i=>{
+      push([b,i,anclaRef],'basico');
+      med.forEach(m=>push([m,b,i,anclaRef],'medio'));
+      ext.forEach(e=>push([e,b,i,anclaRef],'exterior'));
+    }));
+  }
   const seen=new Set();
   return outfits.filter(o=>{const k=o.piezas.map(p=>p.id).sort().join('-');if(seen.has(k))return false;seen.add(k);return true;});
 }
@@ -872,7 +889,7 @@ function analizarDesbloqueos(){
   const claveDe=o=>o.piezas.map(p=>p.id).sort().join('-');
   const contar=()=>{
     const s=new Set();
-    inventario.filter(p=>['superior','exterior','inferior'].includes(getPosicion(p.tipo)))
+    inventario.filter(p=>['base','medio','exterior','inferior'].includes(getPosicion(p.tipo)))
       .forEach(ref=>ARMONIAS.forEach(a=>generarParaArmonia(ref,a.key).forEach(o=>s.add(claveDe(o)))));
     return s;
   };
@@ -883,7 +900,7 @@ function analizarDesbloqueos(){
     if(inventario.some(p=>coloresDe(p).some(c=>!esNeutro(c)&&hueDist(hexToHsl(c).h,h)<=TOLERANCIA)))continue;
     const swatch=hslToHex(h,65,48);
     let mejor=0;
-    // Probar la prenda virtual como superior y como inferior; tomar el mejor caso
+    // Probar la prenda virtual como base y como inferior; tomar el mejor caso
     for(const tipo of ['Camiseta','Pantalón']){
       inventario.push({id:-1,nombre:'',tipo,color:swatch,formalidad:'casual'});
       const con=contar();
@@ -1018,7 +1035,7 @@ function mostrarArmonias(){
 
   // Generar grupos
   if(modoLibreActivo){
-    const anclas=inventario.filter(p=>['superior','exterior','inferior'].includes(getPosicion(p.tipo)));
+    const anclas=inventario.filter(p=>['base','medio','exterior','inferior'].includes(getPosicion(p.tipo)));
     const combinados={};
     ARMONIAS.forEach(arm=>combinados[arm.key]={arm,outfitsSet:new Set(),outfits:[]});
     anclas.forEach(ref=>{ARMONIAS.forEach(arm=>{
@@ -1065,12 +1082,12 @@ function verTodos(){
 function verArmonia(armKey){
   const g=_grupos.find(g=>g.arm.key===armKey);if(!g)return;
   document.getElementById('armonia-titulo').textContent=g.arm.nombre;
-  const basicos=g.outfits.filter(o=>o.nivel==='basico');
-  const exterior=g.outfits.filter(o=>o.nivel==='exterior');
   const sortW=arr=>[...arr].sort((a,b)=>isWadaValidated(b)-isWadaValidated(a));
-  document.getElementById('lista-looks').innerHTML=
-    (basicos.length?`<div class="nivel-div">Sin capa exterior</div>`+sortW(basicos).map(o=>lookCardHTML(o,isWadaValidated(o))).join(''):'')
-    +(exterior.length?`<div class="nivel-div">Con capa exterior</div>`+sortW(exterior).map(o=>lookCardHTML(o,isWadaValidated(o))).join(''):'');
+  const NIVELES=[['basico','Base'],['medio','Con capa media'],['exterior','Con exterior'],['completo','Tres capas']];
+  document.getElementById('lista-looks').innerHTML=NIVELES.map(([k,lbl])=>{
+    const arr=g.outfits.filter(o=>o.nivel===k);
+    return arr.length?`<div class="nivel-div">${lbl}</div>`+sortW(arr).map(o=>lookCardHTML(o,isWadaValidated(o))).join(''):'';
+  }).join('');
   document.getElementById('paso2-main').style.display='none';
   document.getElementById('paso2-outfits').style.display='flex';
   document.getElementById('lista-looks').scrollLeft=0;
@@ -1121,7 +1138,8 @@ function lookCardHTML(o,wadaOk=false,armNombre=null){
   }
   const left=[
     ...piezas.filter(p=>getPosicion(p.tipo)==='exterior'),
-    ...piezas.filter(p=>getPosicion(p.tipo)==='superior'),
+    ...piezas.filter(p=>getPosicion(p.tipo)==='medio'),
+    ...piezas.filter(p=>getPosicion(p.tipo)==='base'),
     ...piezas.filter(p=>getPosicion(p.tipo)==='inferior'),
   ];
   const right=[
@@ -1137,7 +1155,7 @@ function lookCardHTML(o,wadaOk=false,armNombre=null){
   const mio=esMiColorOutfit(o);
   return`<div class="outfit-card${wadaOk?' wada-ok':''}">${wadaOk?'<div class="wada-badge">W</div>':''}${mio?'<div class="mio-badge">✦</div>':''}<button class="fav-btn${esFav?' on':''}" data-key="${favK}" onclick="toggleFav(event,this)">${esFav?'♥':'♡'}</button><div class="outfit-body">${leftHTML}${rightHTML}</div><div class="outfit-paleta">${colores.map(c=>`<div class="paleta-seg" style="background:${c}"></div>`).join('')}</div></div>`;
 }
-function tipoIcon(tipo){const pos=getPosicion(tipo);if(pos==='superior'||pos==='exterior')return'👕';if(pos==='inferior')return'👖';if(pos==='calzado')return'👟';return'🎩';}
+function tipoIcon(tipo){const pos=getPosicion(tipo);if(pos==='base'||pos==='medio'||pos==='exterior')return'👕';if(pos==='inferior')return'👖';if(pos==='calzado')return'👟';return'🎩';}
 
 // FAVORITOS
 function toggleFav(ev,btn){
