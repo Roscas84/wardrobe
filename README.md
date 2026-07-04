@@ -7,7 +7,7 @@ App web progresiva (PWA) de uso personal para gestionar inventario de ropa y gen
 
 ---
 
-## Estado actual — SW v82
+## Estado actual — SW v83
 
 ### Lo que funciona hoy
 
@@ -29,7 +29,7 @@ App web progresiva (PWA) de uso personal para gestionar inventario de ropa y gen
 | Carrusel horizontal con scroll-snap | Completo |
 | Material / composición de tela con porcentajes | Completo |
 | Símbolos de cuidado (lavado, secado, plancha) con auto-sugerencia | Completo |
-| Service Worker v82 — network-first para HTML/JSON, cache-first para imágenes | Completo |
+| Service Worker v83 — network-first para HTML/JSON, cache-first para imágenes | Completo |
 | Sección "Ajustes" colapsable en Cargar (Datos/GitHub/Remove.bg) | Completo |
 | Eliminaciones propagadas entre dispositivos (tombstones en guardarropa.json) | Completo |
 | API key de remove.bg en localStorage por dispositivo (nunca en el código) | Completo |
@@ -109,6 +109,7 @@ el cache-first del service worker (misma URL nunca se revalida).
 | 1 | **Favoritos** | ♥ en outfit card (rojo #ff1a00 al activar) + link "Favoritos" en Outfit paso 1; sync en guardarropa.json (`favs`) | ✅ Hecho (SW v80) |
 | 2 | **Color secundario** | Campo opcional color2; el motor combina por ambos colores (rayas = combinación de fábrica); búsqueda por color y paleta lo incluyen | ✅ Hecho (SW v80) |
 | 3 | **Desbloqueo de looks** | Franjas de color a lo ancho (nombre + hex como referencia de compra) con el número de looks que desbloquea; en Closet | ✅ Hecho (SW v80) |
+| 3b | **Gotero de color** | Botón gotero en las 3 barras de color: toma el color exacto tocando la foto (iPhone) o con el gotero nativo del sistema (Chrome escritorio) | ✅ Hecho (SW v83) |
 | 4 | **Colorimetría personal** | Pestaña independiente: cuestionario (piel/ojos/cabello) → estación → paleta personal → badge en outfits que favorecen. Requiere cargar BD de 4 estaciones | Pendiente — sesión dedicada |
 | 5 | **Compartir outfit** | Genera imagen del look (canvas: collage + paleta + marca) → hoja de compartir iOS (WhatsApp/IG/Fotos) | Pendiente |
 | 6 | **Sistema de capas medio/base** | (pendiente previo) hoodie+playera combinables; ver sección de migración abajo | Pendiente |
@@ -170,7 +171,7 @@ Nivel 3: [exterior + medio + base + inferior]
 
 ```
 index.html          — App completa (single-file PWA, todo inline)
-sw.js               — Service Worker v82
+sw.js               — Service Worker v83
 guardarropa.json    — {prendas, deleted} — 52 prendas (fuente de verdad, siempre se carga al iniciar)
 images/             — WebPs procesados con rembg, 1200×1600 px, fondo transparente
 manifest.json       — PWA manifest
