@@ -123,6 +123,20 @@ body{font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;background:#f5f0eb;
 .fav-btn{position:absolute;top:2px;right:36px;z-index:10;background:none;border:none;font-size:22px;color:#fff;cursor:pointer;text-shadow:0 0 6px rgba(0,0,0,0.6);padding:8px;line-height:1}
 .fav-btn.on{color:#ff1a00}
 
+/* MI COLOR — colorimetría personal */
+.mc-titulo{font-size:10px;letter-spacing:3px;color:#ff1a00;text-transform:uppercase;text-align:center;padding:8px 20px 2px;font-weight:300}
+.mc-nombre{font-size:26px;letter-spacing:4px;color:#fff;text-transform:uppercase;text-align:center;font-weight:200;padding:6px 20px}
+.mc-desc{font-size:11px;color:#999;text-align:center;padding:0 32px 12px;letter-spacing:.5px;line-height:1.8;font-weight:300}
+.mc-sec{font-size:9px;letter-spacing:2px;color:#888;text-transform:uppercase;padding:20px 20px 8px;text-align:center}
+.mc-grid{display:grid;grid-template-columns:repeat(6,1fr);gap:3px;padding:0 20px}
+.mc-sw{aspect-ratio:1;cursor:pointer;border:1px solid rgba(255,255,255,.06)}
+.mc-btn{display:block;margin:22px auto 0;padding:14px 30px;background:#fff;color:#000;border:none;font-size:10px;letter-spacing:2px;text-transform:uppercase;cursor:pointer;font-family:inherit}
+.mc-btn-sec{display:block;margin:18px auto 0;padding:11px 22px;background:none;color:#888;border:1px solid #333;font-size:9px;letter-spacing:2px;text-transform:uppercase;cursor:pointer;font-family:inherit}
+.mc-q{font-size:15px;color:#fff;text-align:center;padding:12px 28px 18px;font-weight:300;letter-spacing:.5px;line-height:1.5}
+.mc-prog{font-size:9px;color:#888;letter-spacing:2px;text-align:center;padding-top:6px}
+.mc-dot{display:inline-block;width:12px;height:12px;border-radius:50%;margin-right:8px;vertical-align:middle;border:1px solid rgba(255,255,255,.2)}
+.mio-badge{position:absolute;top:8px;left:10px;font-size:16px;color:#ff1a00;z-index:10;line-height:1;text-shadow:0 0 6px rgba(0,0,0,.5)}
+
 /* DESBLOQUEO DE LOOKS — franjas de color a lo ancho */
 .desb-franja{display:flex;align-items:center;justify-content:space-between;padding:0 20px;height:76px;margin-bottom:2px}
 .desb-nombre{font-size:13px;letter-spacing:2.5px;text-transform:uppercase;font-weight:300}
@@ -354,6 +368,13 @@ body{font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;background:#f5f0eb;
   </div>
 </div>
 
+<!-- ══ MI COLOR ══ -->
+<div id="screen-micolor" class="screen">
+  <div class="dark-screen" style="padding:30px 0 44px">
+    <div id="micolor-body"></div>
+  </div>
+</div>
+
 <!-- ══ CARGAR ══ -->
 <div id="screen-cargar" class="screen">
   <div id="cargar-back-bar" class="back-bar" style="display:none" onclick="volverDesdeCargar()">
@@ -524,6 +545,9 @@ body{font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;background:#f5f0eb;
   </button>
   <button class="bnav-btn" id="nav-outfit" onclick="showScreen('outfit')">
     <span class="bnav-icon">✦</span>Outfit
+  </button>
+  <button class="bnav-btn" id="nav-micolor" onclick="showScreen('micolor')">
+    <span class="bnav-icon">◐</span>Mi Color
   </button>
   <button class="bnav-btn" id="nav-cargar" onclick="showScreen('cargar')">
     <span class="bnav-icon">＋</span>Cargar
@@ -906,6 +930,7 @@ function cardBackHTML(p){
     <div class="cb-tipo">${p.tipo}${p.subtipo?' '+p.subtipo:''}${patron?' · '+patron:''}</div>
     ${matStr?`<div class="cb-formalidad" style="color:#777">${matStr}</div>`:''}
     ${cuidadoHTML}
+    ${prendaFavorece(p)?`<div class="cb-formalidad" style="color:#ff1a00">✦ Te favorece</div>`:''}
     <div class="cb-formalidad">${p.formalidad}</div>
     ${p.temporada?`<div class="cb-formalidad" style="color:#444">${p.temporada}</div>`:''}
     ${p.notas?`<div class="cb-formalidad" style="color:#3a3a3a;font-style:italic">${p.notas}</div>`:''}`;
@@ -1109,7 +1134,8 @@ function lookCardHTML(o,wadaOk=false,armNombre=null){
   const rightHTML=right.length?`<div class="of-right">${right.map(p=>imgOf(p,'of-right-item')).join('')}</div>`:'';
   const favK=piezas.map(p=>p.id).sort().join('-');
   const esFav=_favs.includes(favK);
-  return`<div class="outfit-card${wadaOk?' wada-ok':''}">${wadaOk?'<div class="wada-badge">W</div>':''}<button class="fav-btn${esFav?' on':''}" data-key="${favK}" onclick="toggleFav(event,this)">${esFav?'♥':'♡'}</button><div class="outfit-body">${leftHTML}${rightHTML}</div><div class="outfit-paleta">${colores.map(c=>`<div class="paleta-seg" style="background:${c}"></div>`).join('')}</div></div>`;
+  const mio=esMiColorOutfit(o);
+  return`<div class="outfit-card${wadaOk?' wada-ok':''}">${wadaOk?'<div class="wada-badge">W</div>':''}${mio?'<div class="mio-badge">✦</div>':''}<button class="fav-btn${esFav?' on':''}" data-key="${favK}" onclick="toggleFav(event,this)">${esFav?'♥':'♡'}</button><div class="outfit-body">${leftHTML}${rightHTML}</div><div class="outfit-paleta">${colores.map(c=>`<div class="paleta-seg" style="background:${c}"></div>`).join('')}</div></div>`;
 }
 function tipoIcon(tipo){const pos=getPosicion(tipo);if(pos==='superior'||pos==='exterior')return'👕';if(pos==='inferior')return'👖';if(pos==='calzado')return'👟';return'🎩';}
 
@@ -1580,7 +1606,7 @@ async function subirJsonGitHub(){
   const antes=inventario.length;
   inventario=inventario.filter(p=>!_tombstones.includes(p.id));
   if(inventario.length!==antes)guardarLocal();
-  const content=btoa(unescape(encodeURIComponent(JSON.stringify({prendas:inventario,deleted:_tombstones,favs:_favs},null,2))));
+  const content=btoa(unescape(encodeURIComponent(JSON.stringify({prendas:inventario,deleted:_tombstones,favs:_favs,perfil:perfilColor()},null,2))));
   return ghPut('guardarropa.json',content,'Update inventory',existing?.sha);
 }
 async function ghDelete(path,message){
@@ -1685,6 +1711,169 @@ function initSlideshow(){
   ss.addEventListener('touchend',e=>{const diff=tx-e.changedTouches[0].clientX;if(Math.abs(diff)>50){clearInterval(slideTimer);goTo(slideIdx+(diff>0?1:-1));slideTimer=setInterval(()=>goTo(slideIdx+1),2800);}},{passive:true});
 }
 
+// ══ MI COLOR — Colorimetría personal (sistema 12 estaciones, método característica dominante) ══
+const ESTACIONES={
+primavera_clara:{nombre:'Primavera Clara',metal:'Oro claro',desc:'Cálida, ligera y delicada. Tus colores son frescos, con calidez de sol de mañana: nada pesado ni oscuro.',
+colores:['#FFD97D','#FFE1A8','#F9E076','#F4E285','#C9E265','#A8D672','#7DCE82','#8FE3CF','#9BE1E8','#7FD1E0','#FFB5A7','#FFA07A','#FF9770','#FFC4D6','#F4978E','#F08080','#F5CAC3','#B8E0D2'],
+neutros:['#FFF8E7','#F5DEB3','#E8D5B7','#C9B79C'],evitar:['#000000','#4B0082','#800020','#36454F','#FF00FF','#191970']},
+primavera_calida:{nombre:'Primavera Cálida',metal:'Oro',desc:'Dorada y radiante. El calor es tu rasgo dominante: naranjas, corales, verdes hierba y turquesas cálidos.',
+colores:['#FF6F3C','#FF8C42','#FFA600','#FFC300','#FFD60A','#F8961E','#F94144','#FF5A5F','#FF7B54','#9ACD32','#7CB518','#90BE6D','#43AA8B','#2EC4B6','#00B4D8','#48CAE4','#F9C74F','#38B000'],
+neutros:['#FFF3E0','#E9C46A','#C8A165','#8B6F47'],evitar:['#000000','#C0C0C0','#DDA0DD','#800020','#708090','#0F52BA']},
+primavera_brillante:{nombre:'Primavera Brillante',metal:'Oro claro',desc:'Nítida y luminosa. Tu contraste pide colores vivos y saturados con base cálida: nada empolvado.',
+colores:['#FF3F34','#FF5E57','#F53B57','#FF6B81','#FF9F1A','#FFC048','#FFD32A','#FFDD59','#C4E538','#0BE881','#05C46B','#00D8D6','#34E7E4','#12CBC4','#1289A7','#00A8FF','#ED4C67','#F79F1F'],
+neutros:['#FFFFFF','#F1F2F6','#57606F','#2F3542'],evitar:['#C3B091','#A3969B','#808000','#987654','#B49FB5','#8A795D']},
+verano_claro:{nombre:'Verano Claro',metal:'Plata',desc:'Fría, clara y luminosa. Pasteles frescos y tonos lavados, como cielo de verano al amanecer.',
+colores:['#AEC6CF','#B8D8E8','#ADD8E6','#B0E0E6','#A2C8CC','#C5CBE3','#8FA8C8','#CBAACB','#D8BFD8','#E0BBE4','#D291BC','#FEC8D8','#FFB7CE','#F4C2C2','#C1E1C1','#B5EAD7','#9FB7B9','#DDA0DD'],
+neutros:['#F8F8FF','#E6E6FA','#B6B8C4','#8C93A8'],evitar:['#FF4500','#B8860B','#8B4513','#000000','#808000','#FF8C00']},
+verano_frio:{nombre:'Verano Frío',metal:'Plata',desc:'Fría y serena. Azules empolvados, rosas de rosal y tonos de mar en calma: elegancia sin estridencia.',
+colores:['#4682B4','#5F9EA0','#6D8FAB','#8DA9C4','#7395AE','#557A95','#4A7B9D','#946B8C','#A54A66','#BC6C8C','#B57281','#86608E','#B1A2CA','#7B9E89','#6B8E7F','#9AA5B1','#8E7C93','#5D737E'],
+neutros:['#F5F5F5','#D3D3D3','#A9A9A9','#696969'],evitar:['#FF7F00','#DAA520','#8B4513','#ADFF2F','#FF4500','#D2691E']},
+verano_suave:{nombre:'Verano Suave',metal:'Plata mate',desc:'Difuminada y sofisticada. Todo con un velo gris: malvas, verdes salvia, azules niebla. Lo brillante te apaga.',
+colores:['#A3969B','#9E7B83','#8D8FA5','#7A8B99','#93A8AC','#A5978B','#B49FB5','#8B7D8B','#9C8AA5','#9DAAB6','#AC9FBB','#7D8CA3','#95818D','#778899','#8FA5A5','#A08894','#6C7A89','#B4A7B6'],
+neutros:['#EAE6E1','#C9C4BD','#9B958F','#6E6A65'],evitar:['#FF0000','#FFFF00','#FF00FF','#00FF00','#FF8C00','#000000']},
+otono_suave:{nombre:'Otoño Suave',metal:'Oro viejo',desc:'Cálida y difuminada. Tonos tierra suavizados: camel, salvia, oliva claro. La suavidad manda sobre el calor.',
+colores:['#C19A6B','#B08D57','#A67B5B','#C3B091','#BDB76B','#8F9779','#A0785A','#B87333','#CC9966','#D2B48C','#9B7653','#8A795D','#996633','#A89F91','#C8AD7F','#918151','#7C6A46','#BF8F5F'],
+neutros:['#F0E6D2','#D8CCB4','#A79B82','#71685A'],evitar:['#FF0090','#00FFFF','#000000','#FF0000','#4169E1','#FF00FF']},
+otono_calido:{nombre:'Otoño Cálido',metal:'Oro',desc:'Terrosa y rica. Los colores de octubre: óxido, mostaza, oliva, teja. El calor puro es tu rasgo dominante.',
+colores:['#C1440E','#B7410E','#CC5500','#D2691E','#E97451','#DAA520','#B8860B','#CD853F','#8B4513','#A0522D','#6B8E23','#556B2F','#808000','#BDB76B','#B22222','#CD5C5C','#DEB887','#BF8040'],
+neutros:['#F5EBD8','#D9C7A7','#8B7355','#5C4E37'],evitar:['#FF69B4','#00BFFF','#C0C0C0','#E6E6FA','#000000','#0F52BA']},
+otono_profundo:{nombre:'Otoño Profundo',metal:'Oro viejo',desc:'Intensa y cálida. Chocolate, borgoña cálido, verde bosque, mostaza profunda: riqueza con peso.',
+colores:['#7B3F00','#8B4513','#654321','#800020','#722F37','#6B4423','#556B2F','#3B5323','#8B0000','#A0522D','#B8860B','#996515','#5C4033','#704214','#7C0A02','#4A5D23','#6E260E','#8A360F'],
+neutros:['#EDE0CC','#C7B299','#6F5B3E','#3D2B1F'],evitar:['#FFB6C1','#E0FFFF','#C0C0C0','#F0F8FF','#DDA0DD','#B0E0E6']},
+invierno_frio:{nombre:'Invierno Frío',metal:'Plata',desc:'Fría e intensa. Colores puros y profundos: azul zafiro, carmesí, esmeralda. Sin rastro de calidez.',
+colores:['#0F52BA','#4169E1','#0000CD','#DC143C','#C71585','#E0115F','#008080','#00A86B','#4B0082','#8A2BE2','#191970','#00468C','#7851A9','#0095B6','#CE2029','#006D5B','#B80049','#2F4F4F'],
+neutros:['#FFFFFF','#D6D6D6','#4A4A4A','#000000'],evitar:['#D2691E','#DAA520','#8B4513','#BDB76B','#CC9966','#F5DEB3']},
+invierno_brillante:{nombre:'Invierno Brillante',metal:'Plata brillante',desc:'Eléctrica y contrastada. Los colores más vivos del sistema: fucsia, azul eléctrico, esmeralda neón sobre blanco y negro.',
+colores:['#FF0F80','#F72585','#FF3EA5','#EF476F','#FF0038','#4CC9F0','#00CCFF','#4361EE','#1F51FF','#7209B7','#6F00FF','#06D6A0','#00FA9A','#0ABAB5','#118AB2','#3A0CA3','#E0218A','#00E5EE'],
+neutros:['#FFFFFF','#EDEDED','#333333','#000000'],evitar:['#C3B091','#A67B5B','#8F9779','#D2B48C','#A89F91','#BDB76B']},
+invierno_profundo:{nombre:'Invierno Profundo',metal:'Plata oscura',desc:'Oscura e intensa. Profundidad fría: navy, vino, púrpura noche, verde pino. Dramática por naturaleza.',
+colores:['#191970','#000080','#0B3D91','#4B0082','#581845','#800020','#7C0A02','#013220','#014421','#36013F','#8B008B','#006400','#00416A','#1A1A40','#560319','#2C003E','#123458','#450C24'],
+neutros:['#FFFFFF','#B0B0B0','#36454F','#000000'],evitar:['#FFDAB9','#F0E68C','#FFB347','#D2B48C','#F5DEB3','#FFA07A']}
+};
+const PREGUNTAS_COLOR=[
+{q:'Mira las venas de tu muñeca a la luz del día. ¿De qué color se ven?',op:[
+  {t:'Verdosas',dot:'#5B8A5B',p:{warm:2}},
+  {t:'Azuladas o moradas',dot:'#5B6BB5',p:{cool:2}},
+  {t:'Una mezcla / no distingo',p:{}}]},
+{q:'¿Qué metal ilumina más tu cara?',op:[
+  {t:'Oro',dot:'#D4AF37',p:{warm:2}},
+  {t:'Plata',dot:'#C0C0C0',p:{cool:2}},
+  {t:'Ambos me quedan igual',p:{}}]},
+{q:'Cuando tomas sol, tu piel…',op:[
+  {t:'Se broncea fácil, tono dorado',p:{warm:1,deep:1}},
+  {t:'Primero se quema, luego se broncea un poco',p:{cool:1}},
+  {t:'Se quema o enrojece siempre',p:{cool:1,light:2}}]},
+{q:'¿De qué color son tus ojos?',op:[
+  {t:'Negros o café muy oscuro',dot:'#2B1A12',p:{deep:2}},
+  {t:'Café medio o miel',dot:'#7B4F2A',p:{warm:1}},
+  {t:'Ámbar o avellana',dot:'#A9743F',p:{warm:1,soft:1}},
+  {t:'Verdes',dot:'#4E7A4E',p:{bright:1}},
+  {t:'Azules o grises',dot:'#7A94AD',p:{cool:1,light:1}}]},
+{q:'¿Cuál es el color natural de tu cabello?',op:[
+  {t:'Negro',dot:'#151312',p:{deep:2,cool:1}},
+  {t:'Castaño oscuro',dot:'#3B2A1E',p:{deep:1}},
+  {t:'Castaño medio o claro',dot:'#6E4F33',p:{soft:1}},
+  {t:'Rubio',dot:'#C7A268',p:{light:2}},
+  {t:'Rojizo o cobrizo',dot:'#8C3A1D',p:{warm:2}},
+  {t:'Canoso o blanco',dot:'#CFCFCF',p:{cool:1,light:1}}]},
+{q:'El contraste entre tu piel, cabello y ojos es…',op:[
+  {t:'Alto — muy contrastados entre sí',p:{bright:2}},
+  {t:'Medio',p:{}},
+  {t:'Bajo — tonos parecidos entre sí',p:{soft:2}}]}
+];
+let _quizIdx=0,_quizPts=null;
+function perfilColor(){try{return JSON.parse(localStorage.getItem('wrd_color_perfil'))||null;}catch(e){return null;}}
+function renderMiColor(){
+  const body=document.getElementById('micolor-body');
+  const perfil=perfilColor();
+  if(!perfil||!ESTACIONES[perfil.estacion]){
+    body.innerHTML=`
+      <div class="mc-titulo">Colorimetría personal</div>
+      <div class="mc-nombre">Mi Color</div>
+      <div class="mc-desc">Descubre tu estación de color — sistema de 12 estaciones — y la paleta que más te favorece según tu piel, ojos y cabello. 6 preguntas, un minuto.</div>
+      <button class="mc-btn" onclick="empezarQuiz()">Comenzar análisis</button>`;
+    return;
+  }
+  const e=ESTACIONES[perfil.estacion];
+  const grid=arr=>`<div class="mc-grid">${arr.map(c=>`<div class="mc-sw" style="background:${c}" onclick="showToast('${c}')"></div>`).join('')}</div>`;
+  body.innerHTML=`
+    <div class="mc-titulo">Tu estación</div>
+    <div class="mc-nombre">${e.nombre}</div>
+    <div class="mc-desc">${e.desc}</div>
+    <div class="mc-sec">Tu paleta</div>${grid(e.colores)}
+    <div class="mc-sec">Tus neutros</div>${grid(e.neutros)}
+    <div class="mc-sec">Evita estos</div>${grid(e.evitar)}
+    <div class="mc-sec">Tu metal · ${e.metal}</div>
+    <div class="mc-desc" style="padding-top:8px">Los outfits dentro de tu paleta llevan la marca <span style="color:#ff1a00">✦</span> y las prendas que te favorecen lo indican en su ficha.</div>
+    <button class="mc-btn-sec" onclick="empezarQuiz()">Repetir análisis</button>`;
+}
+function empezarQuiz(){
+  _quizIdx=0;_quizPts={warm:0,cool:0,light:0,deep:0,bright:0,soft:0};
+  renderPreguntaColor();
+}
+function renderPreguntaColor(){
+  const q=PREGUNTAS_COLOR[_quizIdx];
+  document.getElementById('micolor-body').innerHTML=`
+    <div class="mc-prog">${_quizIdx+1} / ${PREGUNTAS_COLOR.length}</div>
+    <div class="mc-q">${q.q}</div>
+    ${q.op.map((o,i)=>`<div class="cat-link" onclick="responderQuiz(${i})"><span class="cat-link-text">${o.dot?`<span class="mc-dot" style="background:${o.dot}"></span>`:''}${o.t}</span></div>`).join('')}`;
+  window.scrollTo(0,0);
+}
+function responderQuiz(i){
+  const pts=PREGUNTAS_COLOR[_quizIdx].op[i].p||{};
+  for(const k in pts)_quizPts[k]+=pts[k];
+  _quizIdx++;
+  if(_quizIdx>=PREGUNTAS_COLOR.length)calcularEstacion();else renderPreguntaColor();
+}
+function calcularEstacion(){
+  // Método de característica dominante: subtono define familia cálida/fría,
+  // el eje más marcado (valor o croma) define la subestación
+  const p=_quizPts;
+  const calido=p.warm>=p.cool;
+  const ejes=[
+    {k:'light',v:p.light-p.deep},{k:'deep',v:p.deep-p.light},
+    {k:'bright',v:p.bright-p.soft},{k:'soft',v:p.soft-p.bright}
+  ].filter(e=>e.v>0).sort((a,b)=>b.v-a.v);
+  const dom=ejes.length?ejes[0].k:null;
+  let est;
+  if(calido){
+    if(dom==='light')est='primavera_clara';
+    else if(dom==='bright')est='primavera_brillante';
+    else if(dom==='deep')est='otono_profundo';
+    else if(dom==='soft')est='otono_suave';
+    else est=p.bright>=p.soft?'primavera_calida':'otono_calido';
+  }else{
+    if(dom==='light')est='verano_claro';
+    else if(dom==='soft')est='verano_suave';
+    else if(dom==='deep')est='invierno_profundo';
+    else if(dom==='bright')est='invierno_brillante';
+    else est=p.bright>=p.soft?'invierno_frio':'verano_frio';
+  }
+  localStorage.setItem('wrd_color_perfil',JSON.stringify({estacion:est,fecha:new Date().toISOString().slice(0,10)}));
+  _palCache={key:null,labs:null};
+  renderMiColor();
+  showToast('✦ Perfil de color guardado');
+  sincronizarInventario(true);
+}
+// Comparación contra la paleta personal (distancia LAB, misma matemática que el badge Wada)
+let _palCache={key:null,labs:null};
+function _paletaLabs(estKey){
+  if(_palCache.key!==estKey)_palCache={key:estKey,labs:ESTACIONES[estKey].colores.map(hexToLab)};
+  return _palCache.labs;
+}
+function enMiPaleta(hex){
+  const perfil=perfilColor();if(!perfil||!ESTACIONES[perfil.estacion])return false;
+  const[L,A,B]=hexToLab(hex);
+  return _paletaLabs(perfil.estacion).some(l=>Math.sqrt((L-l[0])**2+(A-l[1])**2+(B-l[2])**2)<=27);
+}
+function prendaFavorece(p){return coloresDe(p).some(c=>!esNeutro(c)&&enMiPaleta(c));}
+function esMiColorOutfit(o){
+  if(!perfilColor())return false;
+  const cols=[];o.piezas.forEach(p=>coloresDe(p).forEach(c=>{if(!esNeutro(c))cols.push(c);}));
+  if(!cols.length)return false;
+  return cols.filter(enMiPaleta).length>=Math.ceil(cols.length*0.6);
+}
+
 // NAVEGACIÓN
 function showScreen(id){
   document.body.style.overflow=(id==='closet'||id==='outfit')?'hidden':'';
@@ -1702,6 +1891,7 @@ function showScreen(id){
   window.scrollTo(0,0);
   if(id==='closet'){renderClosetMain();volverClosetMain();}
   else if(id==='outfit'){irPaso(1);}
+  else if(id==='micolor'){renderMiColor();}
   else if(id==='cargar'){document.getElementById('search-input').value='';document.getElementById('search-results').innerHTML='';}
 }
 function volverDesdeCargar(){if(prevScreen)showScreen(prevScreen);}
@@ -1725,6 +1915,7 @@ fetch('guardarropa.json').then(r=>r.json()).then(data=>{
   let jsonData=Array.isArray(data)?data:(data.prendas||[]);
   _tombstones=Array.isArray(data)?[]:(data.deleted||[]);
   if(!Array.isArray(data)&&Array.isArray(data.favs)){_favs=data.favs;localStorage.setItem('wrd_favs',JSON.stringify(_favs));}
+  if(!Array.isArray(data)&&data.perfil&&!perfilColor()){localStorage.setItem('wrd_color_perfil',JSON.stringify(data.perfil));}
   const pendDel=JSON.parse(localStorage.getItem('wrd_pending_del')||'[]');
   // No revivir prendas eliminadas (en otro dispositivo o pendientes de subir)
   pendDel.forEach(id=>{if(!_tombstones.includes(id))_tombstones.push(id);});
