@@ -1,4 +1,4 @@
-const CACHE = 'guardarropa-v72';
+const CACHE = 'guardarropa-v73';
 const CORE = [
   '/wardrobe/manifest.json',
   '/wardrobe/icon-192.png',
@@ -32,8 +32,8 @@ self.addEventListener('fetch', e => {
     );
     return;
   }
-  // Cache first para imágenes
-  if(url.includes('/wardrobe/images/')) {
+  // Cache first para imágenes y fuentes (Playfair Display funciona offline tras la primera visita)
+  if(url.includes('/wardrobe/images/') || url.includes('fonts.googleapis.com') || url.includes('fonts.gstatic.com')) {
     e.respondWith(
       caches.match(e.request).then(cached => cached || fetch(e.request).then(res => {
         if(res.ok){ const clone=res.clone(); caches.open(CACHE).then(c=>c.put(e.request,clone)); }
