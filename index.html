@@ -52,7 +52,7 @@ body{font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;background:#f5f0eb;
 /* PANTALLAS NEGRAS (Closet, Outfit) */
 .dark-screen{background:#000;min-height:calc(100vh - 62px)}
 #lista-armonias{min-height:0;height:auto}
-#closet-main{display:flex;flex-direction:column;align-items:stretch;justify-content:flex-start;padding:20px 0 20px;height:calc(100vh - 62px);box-sizing:border-box;overflow-y:auto}
+#closet-main{display:flex;flex-direction:column;align-items:stretch;justify-content:center;padding:20px 0 20px;height:calc(100vh - 62px);box-sizing:border-box;overflow-y:auto}
 #outfit-main{display:flex;flex-direction:column;justify-content:center;padding:20px 0 80px;height:calc(100vh - 62px);box-sizing:border-box;overflow-y:auto}
 
 /* BACK BUTTON — grande y visible */
@@ -61,8 +61,8 @@ body{font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;background:#f5f0eb;
 .back-title{font-size:12px;letter-spacing:2px;text-transform:uppercase;color:#fff;font-weight:300}
 
 /* CATEGORY LINKS — centrados, sin divisor */
-.cat-link{display:block;text-align:center;padding:9px 20px;cursor:pointer}
-.cat-link-text{font-size:14px;font-weight:300;letter-spacing:0.5px;color:#fff;text-transform:uppercase}
+.cat-link{display:block;text-align:center;padding:11px 20px;cursor:pointer}
+.cat-link-text{font-size:13px;font-weight:300;letter-spacing:1px;color:#fff;text-transform:uppercase}
 .cat-link:active .cat-link-text{color:#555}
 .cat-link-dim .cat-link-text{color:#555}
 
@@ -100,7 +100,7 @@ body{font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;background:#f5f0eb;
 .arm-link{display:flex;align-items:center;justify-content:center;gap:10px;padding:14px 20px;cursor:pointer;text-align:center}
 .arm-link:active{opacity:.6}
 .arm-dot{width:10px;height:10px;border-radius:50%;flex-shrink:0;display:inline-block}
-.arm-link-nombre{font-size:16px;font-weight:300;letter-spacing:1px;text-transform:uppercase;color:#fff}
+.arm-link-nombre{font-size:13px;font-weight:300;letter-spacing:1px;text-transform:uppercase;color:#fff}
 .arm-link-count{font-size:12px;color:#888;font-weight:300}
 
 /* Ancla chip en paso2 header */
@@ -143,7 +143,21 @@ body{font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;background:#f5f0eb;
 .no-outfits{text-align:center;padding:40px 20px;color:#555;background:#000;min-height:200px}
 .no-outfits p{font-size:14px;margin-top:8px;color:#555}
 
-/* CARGAR */
+/* CARGAR — en negro, misma lógica visual que Closet y Outfit */
+#screen-cargar{background:#000;min-height:calc(100vh - 62px);padding-bottom:20px}
+#screen-cargar .cargar-block{background:#000;border-bottom:1px solid #151515}
+#screen-cargar .cargar-block-title{color:#fff}
+#screen-cargar .ajustes-toggle{background:#000;color:#fff}
+#screen-cargar .ajustes-chevron{color:#888}
+#screen-cargar .ajustes-sec{border-top:1px solid #1a1a1a}
+#screen-cargar .ajustes-sec-title{color:#888}
+#screen-cargar .search-inp{background:#111;border-color:#333;color:#fff}
+#screen-cargar .s-item{border-bottom:1px solid #1a1a1a}
+#screen-cargar .s-item-nombre{color:#fff}
+#screen-cargar .s-item-meta{color:#888}
+#screen-cargar .s-item-img{background:#111}
+#screen-cargar .btn-edit-s{background:#000;border:1px solid #333;color:#fff}
+#screen-cargar .btn-del-s{background:#fff;color:#000}
 .cargar-block{background:#fff;margin-bottom:2px}
 .ajustes-toggle{width:100%;display:flex;justify-content:space-between;align-items:center;padding:18px 16px;background:#fff;border:none;cursor:pointer;font-size:10px;letter-spacing:2px;text-transform:uppercase;font-weight:400;font-family:inherit;color:#1a1a1a}
 .ajustes-chevron{font-size:17px;font-weight:300;color:#888;transition:transform .2s;display:inline-block;line-height:1}
@@ -208,11 +222,13 @@ body{font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;background:#f5f0eb;
    Los elementos position:fixed se centran para no estirarse a todo el monitor. */
 @media (min-width:700px){
   body{background:#eae5df}
-  /* La barra inferior se alinea al ancho del contenido de la pestaña activa */
-  .bottom-nav{left:50%;right:auto;transform:translateX(-50%);width:100%;max-width:600px}
-  body.pantalla-ancha .bottom-nav{max-width:1080px}
-  #screen-closet,#screen-outfit{max-width:1080px}
+  /* Todas las pestañas al mismo ancho (1080px), barra inferior alineada */
+  .screen{max-width:1080px}
+  .bottom-nav{left:50%;right:auto;transform:translateX(-50%);width:100%;max-width:1080px}
   #paso2-outfits{left:50%;right:auto;transform:translateX(-50%);width:100%;max-width:1080px}
+  /* Hero de Inicio a pantalla completa (estilo Zara web) */
+  #screen-inicio .slideshow{aspect-ratio:auto;height:calc(100vh - 62px)}
+  .editorial-strip{display:grid;grid-template-columns:1fr 1fr;gap:2px}
   .items-grid{grid-template-columns:repeat(3,1fr)}
   .outfit-card{width:50%}
   .modal-overlay{align-items:center}
@@ -333,14 +349,14 @@ body{font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;background:#f5f0eb;
 
 <!-- ══ CARGAR ══ -->
 <div id="screen-cargar" class="screen">
-  <div id="cargar-back-bar" class="back-bar" style="display:none;background:#f5f0eb;border-bottom:1px solid #e0dbd5" onclick="volverDesdeCargar()">
-    <span class="back-arrow" style="color:#1a1a1a">‹</span>
-    <span id="cargar-back-label" class="back-title" style="color:#1a1a1a"></span>
+  <div id="cargar-back-bar" class="back-bar" style="display:none" onclick="volverDesdeCargar()">
+    <span class="back-arrow">‹</span>
+    <span id="cargar-back-label" class="back-title"></span>
   </div>
   <div class="cargar-block">
     <div class="cargar-block-title">Nueva Prenda</div>
     <div style="padding:0 16px 16px">
-      <button onclick="abrirModal()" style="width:100%;padding:14px;background:#000;color:#fff;border:none;font-size:10px;font-weight:400;letter-spacing:3px;text-transform:uppercase;cursor:pointer">+ Agregar Prenda</button>
+      <button onclick="abrirModal()" style="width:100%;padding:14px;background:#fff;color:#000;border:none;font-size:10px;font-weight:400;letter-spacing:3px;text-transform:uppercase;cursor:pointer">+ Agregar Prenda</button>
     </div>
   </div>
   <div class="cargar-block" style="margin-top:2px">
@@ -367,13 +383,13 @@ body{font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;background:#f5f0eb;
         <div class="ajustes-sec-title">Sincronización GitHub</div>
         <div id="gh-sync-status" style="font-size:10px;color:#888;margin-bottom:10px;letter-spacing:0.5px"></div>
         <input id="gh-token-inp" type="password" placeholder="Token de GitHub (ghp_...)" style="width:100%;padding:10px;border:1px solid #e0dbd5;font-size:11px;margin-bottom:8px;font-family:monospace">
-        <button onclick="guardarToken()" style="width:100%;padding:11px;background:#000;color:#fff;border:none;font-size:10px;letter-spacing:2px;text-transform:uppercase;cursor:pointer">Guardar Token</button>
+        <button onclick="guardarToken()" style="width:100%;padding:11px;background:#fff;color:#000;border:none;font-size:10px;letter-spacing:2px;text-transform:uppercase;cursor:pointer">Guardar Token</button>
       </div>
       <div class="ajustes-sec">
         <div class="ajustes-sec-title">Remove.bg — quitar fondo</div>
         <div id="rmbg-status" style="font-size:10px;color:#888;margin-bottom:10px;letter-spacing:0.5px"></div>
         <input id="rmbg-key-inp" type="password" placeholder="API key de remove.bg" style="width:100%;padding:10px;border:1px solid #e0dbd5;font-size:11px;margin-bottom:8px;font-family:monospace">
-        <button onclick="guardarRmbgKey()" style="width:100%;padding:11px;background:#000;color:#fff;border:none;font-size:10px;letter-spacing:2px;text-transform:uppercase;cursor:pointer">Guardar API Key</button>
+        <button onclick="guardarRmbgKey()" style="width:100%;padding:11px;background:#fff;color:#000;border:none;font-size:10px;letter-spacing:2px;text-transform:uppercase;cursor:pointer">Guardar API Key</button>
       </div>
     </div>
   </div>
@@ -1466,7 +1482,7 @@ function mostrarEstadoSync(){
   const el=document.getElementById('gh-sync-status');
   if(!el)return;
   el.textContent=ghToken()?'✓ Token configurado — fotos se suben automáticamente':'⚠ Sin token — fotos solo en este dispositivo';
-  el.style.color=ghToken()?'#22aa55':'#cc6600';
+  el.style.color=ghToken()?'#2fbf6b':'#e0862e';
 }
 function toggleAjustes(){
   const b=document.getElementById('ajustes-body'),ch=document.getElementById('ajustes-chevron');
@@ -1486,7 +1502,7 @@ function mostrarEstadoRmbg(){
   const el=document.getElementById('rmbg-status');
   if(!el)return;
   el.textContent=rmbgKey()?'✓ Key configurada — el fondo se quita automáticamente':'⚠ Sin key — las fotos se guardan sin quitar el fondo';
-  el.style.color=rmbgKey()?'#22aa55':'#cc6600';
+  el.style.color=rmbgKey()?'#2fbf6b':'#e0862e';
 }
 async function ghGet(path){
   const r=await fetch(`https://api.github.com/repos/${GH_REPO}/contents/${path}`,
@@ -1630,7 +1646,6 @@ function initSlideshow(){
 // NAVEGACIÓN
 function showScreen(id){
   document.body.style.overflow=(id==='closet'||id==='outfit')?'hidden':'';
-  document.body.classList.toggle('pantalla-ancha',id==='closet'||id==='outfit');
   const cur=document.querySelector('.screen.active')?.id?.replace('screen-','');
   if(id==='cargar'&&cur&&cur!=='cargar'){
     prevScreen=cur;
