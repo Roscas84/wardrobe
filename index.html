@@ -209,6 +209,9 @@ body{font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;background:#f5f0eb;
 .btn-save{flex:2;padding:14px;border:none;background:#000;color:#fff;font-size:11px;cursor:pointer;font-weight:400;letter-spacing:1px;text-transform:uppercase}
 .color-row{display:flex;align-items:center;gap:6px;min-width:0}
 .color-swatch-inp{width:44px;height:44px;border:1px solid #e0dbd5;cursor:pointer;flex-shrink:0}
+/* Ganarle a la regla genérica .field input{width:100%} que inflaba el swatch y empujaba gotero/tache fuera de vista */
+.field input.color-swatch-inp{width:44px;height:44px;padding:0}
+.field input.hex-input{width:auto}
 .gotero-btn{width:38px;height:44px;border:1px solid #e0dbd5;background:#fff;cursor:pointer;color:#555;flex-shrink:0;display:inline-flex;align-items:center;justify-content:center;-webkit-appearance:none;padding:0}
 .clear-x{width:38px;height:44px;border:none;background:#f0ebe5;font-size:17px;cursor:pointer;color:#888;flex-shrink:0;-webkit-appearance:none}
 .gotero-btn.on{background:#000;color:#fff;border-color:#000}
@@ -231,8 +234,12 @@ body{font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;background:#f5f0eb;
   .editorial-strip{display:grid;grid-template-columns:1fr 1fr;gap:2px}
   .items-grid{grid-template-columns:repeat(3,1fr)}
   .outfit-card{width:50%}
+  /* Modal al ancho unificado: foto grande a la izquierda, campos a la derecha */
   .modal-overlay{align-items:center}
-  .modal{max-height:85vh}
+  .modal{max-width:1080px;max-height:88vh;padding:28px 32px}
+  .modal-cuerpo{display:grid;grid-template-columns:420px 1fr;gap:28px;align-items:start}
+  .modal-col-foto .foto-area{min-height:480px;margin-bottom:0}
+  .modal-col-foto .foto-area img{max-height:520px}
 }
 @media (min-width:1100px){
   .items-grid{grid-template-columns:repeat(4,1fr)}
@@ -400,12 +407,16 @@ body{font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;background:#f5f0eb;
   <div class="modal">
     <div class="modal-handle"></div>
     <h3 id="modal-titulo">Agregar prenda</h3>
+    <div class="modal-cuerpo">
+    <div class="modal-col-foto">
     <div class="foto-area" id="foto-area" onclick="fotoAreaClick(event)">
       <div style="font-size:32px">📷</div>
       <p id="foto-status">Toca para agregar foto</p>
       <img id="preview-foto" style="display:none;margin-top:10px">
     </div>
     <input type="file" id="input-foto" accept="image/*" style="display:none" onchange="cargarFoto(this)">
+    </div>
+    <div class="modal-col-campos">
     <div class="field"><label>Nombre</label><input type="text" id="inp-nombre" placeholder="Ej: Jean azul claro"></div>
     <div class="field">
       <label>Tipo</label>
@@ -493,6 +504,8 @@ body{font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;background:#f5f0eb;
     <div class="modal-btns">
       <button class="btn-cancel" onclick="cerrarModal()">Cancelar</button>
       <button class="btn-save" onclick="guardarPrenda()">Guardar</button>
+    </div>
+    </div>
     </div>
   </div>
 </div>
