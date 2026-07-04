@@ -52,6 +52,9 @@ App web progresiva (PWA) de uso personal para gestionar inventario de ropa y gen
 ### UX pequeñas
 - [ ] Revisar que el menú Outfit esté bien centrado en todos los iPhone (SE y Pro Max)
 
+### Diseño
+- [ ] Ejecutar el skill **ui-ux-pro-max** (análisis de diseño: estilos, paletas, tipografía, guías UX) sobre toda la app para proponer mejoras de diseño
+
 ---
 
 ## Pipeline de imágenes
