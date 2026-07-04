@@ -120,6 +120,15 @@ body{font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;background:#f5f0eb;
 .outfits-wrap .nivel-div{display:none}
 .outfit-card{background:#000;flex-shrink:0;width:100%;height:100%;position:relative;display:flex;flex-direction:column;scroll-snap-align:start}
 .wada-badge{position:absolute;top:8px;right:8px;font-size:15px;font-weight:700;color:#c9a227;z-index:10;line-height:1;text-shadow:0 0 6px rgba(0,0,0,0.6)}
+.fav-btn{position:absolute;top:2px;left:4px;z-index:10;background:none;border:none;font-size:22px;color:#fff;cursor:pointer;text-shadow:0 0 6px rgba(0,0,0,0.6);padding:8px;line-height:1}
+.fav-btn.on{color:#ff1a00}
+
+/* DESBLOQUEO DE LOOKS — franjas de color a lo ancho */
+.desb-franja{display:flex;align-items:center;justify-content:space-between;padding:0 20px;height:76px;margin-bottom:2px}
+.desb-nombre{font-size:13px;letter-spacing:2.5px;text-transform:uppercase;font-weight:300}
+.desb-hex{font-size:10px;font-family:monospace;opacity:.75;margin-top:3px}
+.desb-num{font-size:28px;font-weight:200;letter-spacing:1px}
+.desb-nota{font-size:9px;color:#888;letter-spacing:1.5px;text-transform:uppercase;padding:16px 20px;line-height:1.7;background:#000}
 .outfit-body{display:flex;flex:1;min-height:0;gap:0;background:#000;padding:2px}
 .of-left{flex:3;display:flex;flex-direction:column;gap:0}
 .of-right{flex:2;display:flex;flex-direction:column;gap:0}
@@ -267,6 +276,13 @@ body{font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;background:#f5f0eb;
       <div id="closet-color-grid" class="items-grid"></div>
     </div>
   </div>
+  <div id="closet-desbloqueo" style="display:none" class="dark-screen">
+    <div class="back-bar" onclick="volverClosetMain()">
+      <span class="back-arrow">‹</span>
+      <span class="back-title">Desbloqueo de looks</span>
+    </div>
+    <div id="desbloqueo-lista"></div>
+  </div>
 </div>
 
 <!-- ══ OUTFIT ══ -->
@@ -386,6 +402,14 @@ body{font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;background:#f5f0eb;
         <span style="font-size:9px;color:#888;letter-spacing:1px;text-transform:uppercase">Detectados:</span>
       </div>
     </div>
+    <div class="field">
+      <label>Color secundario (opcional — rayas, estampados)</label>
+      <div class="color-row">
+        <input type="color" class="color-swatch-inp" id="inp-color2" value="#888888" oninput="syncColor2('picker')">
+        <input type="text" class="hex-input" id="inp-hex2" placeholder="Sin color secundario" maxlength="7" oninput="syncColor2('hex')">
+        <button type="button" onclick="limpiarColor2()" style="width:44px;height:44px;border:none;background:#f0ebe5;font-size:17px;cursor:pointer;color:#888;flex-shrink:0">×</button>
+      </div>
+    </div>
     <div class="field"><label>Marca</label><input type="text" id="inp-marca" placeholder="Ej: Zara, Nike..."></div>
     <div class="field"><label>Talla</label><input type="text" id="inp-talla" placeholder="Ej: S, M, 28, 38..."></div>
     <div class="field">
@@ -461,6 +485,8 @@ body{font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;background:#f5f0eb;
 let inventario = JSON.parse(localStorage.getItem('wrd_inv') || '[]');
 // Tombstones: IDs eliminados, viven en guardarropa.json para propagar eliminaciones entre dispositivos
 let _tombstones = [];
+// Favoritos: claves de outfit (ids ordenados unidos por '-'), sincronizados en guardarropa.json
+let _favs = JSON.parse(localStorage.getItem('wrd_favs') || '[]');
 let ancla = null, modoLibreActivo = false, editandoId = null, prevScreen = null;
 
 // SANZO WADA — 159 colores, combinaciones validadas
@@ -484,9 +510,10 @@ function nearestWadaIdx(hex){
   return{idx,delta:min};
 }
 function isWadaValidated(outfit){
-  const nonNeutral=outfit.piezas.filter(p=>!esNeutro(p.color));
+  const nonNeutral=[];
+  outfit.piezas.forEach(p=>(p.color2?[p.color,p.color2]:[p.color]).forEach(c=>{if(!esNeutro(c))nonNeutral.push(c);}));
   if(nonNeutral.length<2)return false;
-  const matches=nonNeutral.map(p=>nearestWadaIdx(p.color));
+  const matches=nonNeutral.map(c=>nearestWadaIdx(c));
   for(let i=0;i<matches.length;i++){
     for(let j=i+1;j<matches.length;j++){
       if(matches[i].delta>30||matches[j].delta>30)continue;
@@ -585,6 +612,8 @@ function getHuesObjetivo(hAncla,arm){
   }
 }
 const TOLERANCIA=15;
+// Colores de una prenda: principal + secundario opcional (rayas/estampados = combinación de fábrica)
+function coloresDe(p){return p.color2?[p.color,p.color2]:[p.color];}
 function esCompatible(pHex,huesObj,anclaHex){
   if(pHex===anclaHex)return false;
   if(esNeutro(pHex))return false;
@@ -599,15 +628,16 @@ function generarParaArmonia(anclaRef,armKey){
   const huesObj=getHuesObjetivo(hAncla,armKey);
   const otras=inventario.filter(p=>p.id!==anclaRef.id);
   // Pre-check: cada ángulo objetivo debe tener al menos una prenda real en el inventario
+  // (una prenda cuenta por cualquiera de sus dos colores)
   for(const th of huesObj){
-    if(!otras.some(p=>!esNeutro(p.color)&&hueDist(hexToHsl(p.color).h,th)<=TOLERANCIA))return[];
+    if(!otras.some(p=>coloresDe(p).some(c=>!esNeutro(c)&&hueDist(hexToHsl(c).h,th)<=TOLERANCIA)))return[];
   }
   function pool(pos){
     const all=otras.filter(p=>getPosicion(p.tipo)===pos);
-    const compat=all.filter(p=>esCompatible(p.color,huesObj,anclaRef.color));
+    const compat=all.filter(p=>coloresDe(p).some(c=>esCompatible(c,huesObj,anclaRef.color)));
     if(compat.length)return compat;
     // Solo neutros como fallback — nunca "todo" para no inventar outfits
-    return all.filter(p=>esNeutro(p.color));
+    return all.filter(p=>coloresDe(p).every(c=>esNeutro(c)));
   }
   const anclaPos=getPosicion(anclaRef.tipo);
   const sup=pool('superior'),ext=pool('exterior'),inf=pool('inferior'),cal=pool('calzado'),acc=pool('accesorios');
@@ -636,6 +666,10 @@ function renderClosetMain(){
   colorBtn.onclick=verColorCloset;
   colorBtn.innerHTML=`<span class="cat-link-text">Búsqueda por color</span>`;
   wrap.appendChild(colorBtn);
+  const desbBtn=document.createElement('div');desbBtn.className='cat-link';
+  desbBtn.onclick=verDesbloqueos;
+  desbBtn.innerHTML=`<span class="cat-link-text">Desbloqueo de looks</span>`;
+  wrap.appendChild(desbBtn);
   ZARA_CATS.forEach(cat=>{
     const items=inventario.filter(p=>cat.tipos.includes(p.tipo));if(!items.length)return;
     const div=document.createElement('div');div.className='cat-link';
@@ -654,6 +688,7 @@ function verTodosCloset(){
   document.getElementById('closet-main').style.display='none';
   document.getElementById('closet-items-wrap').style.display='block';
   document.getElementById('closet-color-wrap').style.display='none';
+  document.getElementById('closet-desbloqueo').style.display='none';
   document.body.style.overflow='';
   window.scrollTo(0,0);
 }
@@ -664,6 +699,7 @@ function verCatCloset(cat){
   document.getElementById('closet-main').style.display='none';
   document.getElementById('closet-items-wrap').style.display='block';
   document.getElementById('closet-color-wrap').style.display='none';
+  document.getElementById('closet-desbloqueo').style.display='none';
   document.body.style.overflow='';
   window.scrollTo(0,0);
 }
@@ -692,7 +728,7 @@ let _familiaActiva=null;
 function verColorCloset(){
   _familiaActiva=null;
   const colorCount={};
-  inventario.forEach(p=>{if(p.color)colorCount[p.color]=(colorCount[p.color]||0)+1;});
+  inventario.forEach(p=>coloresDe(p).forEach(c=>{if(c)colorCount[c]=(colorCount[c]||0)+1;}));
   const colors=Object.keys(colorCount);
   // Burbujas con contador
   document.getElementById('color-bubbles').innerHTML=
@@ -708,6 +744,7 @@ function verColorCloset(){
   document.getElementById('closet-color-items').style.display='none';
   document.getElementById('closet-main').style.display='none';
   document.getElementById('closet-items-wrap').style.display='none';
+  document.getElementById('closet-desbloqueo').style.display='none';
   document.getElementById('closet-color-wrap').style.display='block';
   document.body.style.overflow='hidden';
   window.scrollTo(0,0);
@@ -727,7 +764,7 @@ function filtrarFamilia(key){
   });
 }
 function filtrarColorBubble(color){
-  const items=color?inventario.filter(p=>p.color===color):inventario;
+  const items=color?inventario.filter(p=>coloresDe(p).includes(color)):inventario;
   document.getElementById('color-items-label').innerHTML=color
     ?`<span style="display:inline-block;width:14px;height:14px;border-radius:50%;background:${color};vertical-align:middle;margin-right:7px;border:1px solid rgba(255,255,255,0.3)"></span>${items.length} prenda${items.length!==1?'s':''}`
     :`Todo el guardarropa`;
@@ -751,8 +788,62 @@ function volverClosetMain(){
   document.getElementById('closet-main').style.display='flex';
   document.getElementById('closet-items-wrap').style.display='none';
   document.getElementById('closet-color-wrap').style.display='none';
+  document.getElementById('closet-desbloqueo').style.display='none';
   document.body.style.overflow='hidden';
   window.scrollTo(0,0);
+}
+
+// DESBLOQUEO DE LOOKS — qué colores faltan y cuántos looks nuevos daría comprar cada uno
+function analizarDesbloqueos(){
+  const NOMBRES={0:'Rojo',30:'Naranja',60:'Amarillo',90:'Lima',120:'Verde',150:'Esmeralda',180:'Cian',210:'Azul',240:'Índigo',270:'Violeta',300:'Magenta',330:'Rosa'};
+  const claveDe=o=>o.piezas.map(p=>p.id).sort().join('-');
+  const contar=()=>{
+    const s=new Set();
+    inventario.filter(p=>['superior','exterior','inferior'].includes(getPosicion(p.tipo)))
+      .forEach(ref=>ARMONIAS.forEach(a=>generarParaArmonia(ref,a.key).forEach(o=>s.add(claveDe(o)))));
+    return s;
+  };
+  const base=contar();
+  const res=[];
+  for(let h=0;h<360;h+=30){
+    // Saltar tonos que el closet ya cubre
+    if(inventario.some(p=>coloresDe(p).some(c=>!esNeutro(c)&&hueDist(hexToHsl(c).h,h)<=TOLERANCIA)))continue;
+    const swatch=hslToHex(h,65,48);
+    let mejor=0;
+    // Probar la prenda virtual como superior y como inferior; tomar el mejor caso
+    for(const tipo of ['Camiseta','Pantalón']){
+      inventario.push({id:-1,nombre:'',tipo,color:swatch,formalidad:'casual'});
+      const con=contar();
+      inventario.pop();
+      let nuevos=0;con.forEach(k=>{if(!base.has(k))nuevos++;});
+      mejor=Math.max(mejor,nuevos);
+    }
+    if(mejor>0)res.push({color:swatch,nombre:NOMBRES[h],looks:mejor});
+  }
+  return res.sort((a,b)=>b.looks-a.looks).slice(0,6);
+}
+function verDesbloqueos(){
+  document.getElementById('closet-main').style.display='none';
+  document.getElementById('closet-items-wrap').style.display='none';
+  document.getElementById('closet-color-wrap').style.display='none';
+  document.getElementById('closet-desbloqueo').style.display='block';
+  document.body.style.overflow='';
+  window.scrollTo(0,0);
+  const lista=document.getElementById('desbloqueo-lista');
+  lista.innerHTML='<div class="no-outfits"><p>Analizando tu closet…</p></div>';
+  setTimeout(()=>{
+    const res=analizarDesbloqueos();
+    lista.innerHTML=(res.length
+      ?res.map(r=>{
+        const txt=hexToHsl(r.color).l>55?'#000':'#fff';
+        return`<div class="desb-franja" style="background:${r.color};color:${txt}">
+          <div><div class="desb-nombre">${r.nombre}</div><div class="desb-hex">${r.color}</div></div>
+          <div class="desb-num">+${r.looks}</div>
+        </div>`;
+      }).join('')
+      :'<div class="no-outfits"><p>Tu closet ya cubre todos los ángulos de color</p></div>')
+      +'<div class="desb-nota">Looks nuevos que obtienes si agregas una prenda de ese color. Usa el tono como referencia de compra.</div>';
+  },30);
 }
 function cardBackHTML(p){
   const marcaTalla=[p.marca,p.talla].filter(Boolean).join(' · ');
@@ -762,7 +853,7 @@ function cardBackHTML(p){
   return`
     <div class="cb-nombre">${p.nombre}</div>
     ${marcaTalla?`<div class="cb-marca">${marcaTalla}</div>`:''}
-    <div class="c-card-color-row"><div class="c-dot" style="background:${p.color}"></div><div class="c-hex">${p.color}</div></div>
+    <div class="c-card-color-row"><div class="c-dot" style="background:${p.color}"></div><div class="c-hex">${p.color}</div>${p.color2?`<div class="c-dot" style="background:${p.color2}"></div><div class="c-hex">${p.color2}</div>`:''}</div>
     <div class="cb-tipo">${p.tipo}${p.subtipo?' '+p.subtipo:''}${patron?' · '+patron:''}</div>
     ${matStr?`<div class="cb-formalidad" style="color:#777">${matStr}</div>`:''}
     ${cuidadoHTML}
@@ -791,7 +882,13 @@ function renderOutfitMain(){
     div.innerHTML=`<span class="cat-link-text">${cat.label}</span>`;
     wrap.appendChild(div);
   });
-  // Modo Libre al final, mismo estilo pero en gris
+  // Favoritos (si hay) y Modo Libre al final
+  if(_favs.length){
+    const fv=document.createElement('div');fv.className='cat-link';
+    fv.onclick=verFavoritos;
+    fv.innerHTML=`<span class="cat-link-text">Favoritos <span style="color:#ff1a00">♥</span></span> <span class="arm-link-count">${_favs.length}</span>`;
+    wrap.appendChild(fv);
+  }
   const ml=document.createElement('div');ml.className='cat-link';
   ml.onclick=activarModoLibre;
   ml.innerHTML=`<span class="cat-link-text">Modo Libre</span>`;
@@ -906,6 +1003,7 @@ function verArmonia(armKey){
   document.body.style.overflow='hidden';
 }
 function volverArmonias(){
+  if(_viendoFavs){_viendoFavs=false;irPaso(1);return;}
   document.getElementById('paso2-main').style.display='block';
   document.getElementById('paso2-outfits').style.display='none';
   document.body.style.overflow='hidden';
@@ -925,24 +1023,26 @@ function lookCardHTML(o,wadaOk=false,armNombre=null){
   if(o.armKey&&o.anclaColor&&_huesObj&&_huesObj.length){
     const{h:hAncla}=hexToHsl(o.anclaColor);
     const positions=[hAncla,..._huesObj];
-    const nonNeutral=piezas.filter(p=>!esNeutro(p.color));
-    // Asignar cada prenda no-neutra a su posición harmónica más cercana
+    // Colores reales no-neutros (incluye color secundario de prendas multicolor)
+    const nonNeutral=[];
+    piezas.forEach(p=>coloresDe(p).forEach(c=>{if(!esNeutro(c))nonNeutral.push(c);}));
+    // Asignar cada color a su posición harmónica más cercana
     const buckets=positions.map(()=>[]);
-    nonNeutral.forEach(p=>{
-      const ph=hexToHsl(p.color).h;
+    nonNeutral.forEach(c=>{
+      const ph=hexToHsl(c).h;
       let minD=Infinity,minI=0;
       positions.forEach((pos,i)=>{const d=hueDist(ph,pos);if(d<minD){minD=d;minI=i;}});
-      buckets[minI].push(p);
+      buckets[minI].push(c);
     });
-    // Un color por posición: prenda real si existe, teórico como fallback
+    // Un color por posición: real si existe, teórico como fallback
     const{s:sA,l:lA}=hexToHsl(o.anclaColor);
     const vs=Math.max(sA,55),vl=Math.min(Math.max(lA,35),62);
     colores=buckets.map((bucket,i)=>{
-      if(bucket.length)return bucket.reduce((best,p)=>hueDist(hexToHsl(p.color).h,positions[i])<hueDist(hexToHsl(best.color).h,positions[i])?p:best).color;
+      if(bucket.length)return bucket.reduce((best,c)=>hueDist(hexToHsl(c).h,positions[i])<hueDist(hexToHsl(best).h,positions[i])?c:best);
       return hslToHex(positions[i],vs,vl);
     });
   }else{
-    colores=[...new Set(piezas.map(p=>p.color).filter(c=>!esNeutro(c)))];
+    colores=[...new Set(piezas.flatMap(p=>coloresDe(p)).filter(c=>!esNeutro(c)))];
     if(!colores.length)colores=[...new Set(piezas.map(p=>p.color))];
   }
   const left=[
@@ -958,9 +1058,45 @@ function lookCardHTML(o,wadaOk=false,armNombre=null){
   function imgOf(p,cls){return`<div class="${cls}">${p.foto?`<img src="${p.foto}" alt="">`:`<div class="of-color" style="background:${p.color}">${tipoIcon(p.tipo)}</div>`}</div>`;}
   const leftHTML=left.length?`<div class="of-left">${left.map(p=>imgOf(p,'of-left-item')).join('')}</div>`:'';
   const rightHTML=right.length?`<div class="of-right">${right.map(p=>imgOf(p,'of-right-item')).join('')}</div>`:'';
-  return`<div class="outfit-card${wadaOk?' wada-ok':''}">${wadaOk?'<div class="wada-badge">W</div>':''}<div class="outfit-body">${leftHTML}${rightHTML}</div><div class="outfit-paleta">${colores.map(c=>`<div class="paleta-seg" style="background:${c}"></div>`).join('')}</div></div>`;
+  const favK=piezas.map(p=>p.id).sort().join('-');
+  const esFav=_favs.includes(favK);
+  return`<div class="outfit-card${wadaOk?' wada-ok':''}">${wadaOk?'<div class="wada-badge">W</div>':''}<button class="fav-btn${esFav?' on':''}" data-key="${favK}" onclick="toggleFav(event,this)">${esFav?'♥':'♡'}</button><div class="outfit-body">${leftHTML}${rightHTML}</div><div class="outfit-paleta">${colores.map(c=>`<div class="paleta-seg" style="background:${c}"></div>`).join('')}</div></div>`;
 }
 function tipoIcon(tipo){const pos=getPosicion(tipo);if(pos==='superior'||pos==='exterior')return'👕';if(pos==='inferior')return'👖';if(pos==='calzado')return'👟';return'🎩';}
+
+// FAVORITOS
+function toggleFav(ev,btn){
+  ev.stopPropagation();
+  const k=btn.dataset.key;
+  const i=_favs.indexOf(k);
+  if(i>=0)_favs.splice(i,1);else _favs.push(k);
+  localStorage.setItem('wrd_favs',JSON.stringify(_favs));
+  const on=_favs.includes(k);
+  btn.textContent=on?'♥':'♡';
+  btn.classList.toggle('on',on);
+  sincronizarInventario(true);
+}
+let _viendoFavs=false;
+function favToOutfit(k){
+  const ids=k.split('-');
+  const piezas=ids.map(id=>inventario.find(p=>String(p.id)===id)).filter(Boolean);
+  if(piezas.length!==ids.length)return null; // alguna prenda ya no existe
+  return{piezas,armKey:null,anclaColor:null};
+}
+function verFavoritos(){
+  _viendoFavs=true;
+  const outs=_favs.map(favToOutfit).filter(Boolean);
+  document.getElementById('paso1-wrap').style.display='none';
+  document.getElementById('paso2-wrap').style.display='block';
+  document.getElementById('paso2-main').style.display='none';
+  document.getElementById('armonia-titulo').textContent='Favoritos';
+  document.getElementById('lista-looks').innerHTML=outs.length
+    ?outs.map(o=>lookCardHTML(o,isWadaValidated(o))).join('')
+    :'<div class="no-outfits"><p>Sin favoritos aún — toca ♡ en un look para guardarlo</p></div>';
+  document.getElementById('paso2-outfits').style.display='flex';
+  document.getElementById('lista-looks').scrollLeft=0;
+  document.body.style.overflow='hidden';
+}
 
 // CARGAR
 function buscarPrenda(q){
@@ -988,6 +1124,8 @@ function editarPrenda(id){
   document.getElementById('inp-tipo').value=p.tipo;
   document.getElementById('inp-color').value=p.color;
   document.getElementById('inp-hex').value=p.color;
+  document.getElementById('inp-hex2').value=p.color2||'';
+  document.getElementById('inp-color2').value=p.color2||'#888888';
   document.getElementById('inp-marca').value=p.marca||'';
   document.getElementById('inp-talla').value=p.talla||'';
   document.getElementById('material-rows').innerHTML='';
@@ -1027,6 +1165,7 @@ function limpiarModal(){
   ['inp-nombre','inp-marca','inp-talla'].forEach(id=>document.getElementById(id).value='');
   document.getElementById('inp-tipo').value='';document.getElementById('inp-color').value='#000000';
   document.getElementById('inp-hex').value='#000000';
+  limpiarColor2();
   document.getElementById('color-sugs').style.display='none';
   [...document.querySelectorAll('.color-sug-chip')].forEach(el=>el.remove());
   document.getElementById('material-rows').innerHTML='';
@@ -1040,6 +1179,14 @@ function limpiarModal(){
 function syncColor(origen){
   if(origen==='picker')document.getElementById('inp-hex').value=document.getElementById('inp-color').value;
   else{const v=document.getElementById('inp-hex').value;if(/^#[0-9A-Fa-f]{6}$/.test(v))document.getElementById('inp-color').value=v;}
+}
+function syncColor2(origen){
+  if(origen==='picker')document.getElementById('inp-hex2').value=document.getElementById('inp-color2').value;
+  else{const v=document.getElementById('inp-hex2').value;if(/^#[0-9A-Fa-f]{6}$/.test(v))document.getElementById('inp-color2').value=v;}
+}
+function limpiarColor2(){
+  document.getElementById('inp-hex2').value='';
+  document.getElementById('inp-color2').value='#888888';
 }
 async function normalizarProporcion(dataUrl,targetW=1200,targetH=1600,fill=0.90){
   return new Promise(resolve=>{
@@ -1297,7 +1444,7 @@ async function subirJsonGitHub(){
   const antes=inventario.length;
   inventario=inventario.filter(p=>!_tombstones.includes(p.id));
   if(inventario.length!==antes)guardarLocal();
-  const content=btoa(unescape(encodeURIComponent(JSON.stringify({prendas:inventario,deleted:_tombstones},null,2))));
+  const content=btoa(unescape(encodeURIComponent(JSON.stringify({prendas:inventario,deleted:_tombstones,favs:_favs},null,2))));
   return ghPut('guardarropa.json',content,'Update inventory',existing?.sha);
 }
 async function ghDelete(path,message){
@@ -1348,6 +1495,8 @@ async function sincronizarInventario(silencioso){
 async function guardarPrenda(){
   const nombre=document.getElementById('inp-nombre').value.trim(),tipo=document.getElementById('inp-tipo').value;
   const color=document.getElementById('inp-color').value,marca=document.getElementById('inp-marca').value.trim();
+  const c2v=document.getElementById('inp-hex2').value.trim();
+  const color2=/^#[0-9A-Fa-f]{6}$/.test(c2v)?c2v:null;
   const talla=document.getElementById('inp-talla').value.trim();
   const material=getMaterial();
   const formalidad=document.getElementById('inp-formalidad').value;
@@ -1359,8 +1508,8 @@ async function guardarPrenda(){
   if(!nombre||!tipo){alert('Escribe el nombre y selecciona el tipo.');return;}
   if(material.length){const total=material.reduce((s,m)=>s+m.pct,0);if(total!==100){alert('Los porcentajes de tela deben sumar 100% (ahora suman '+total+'%).');return;}}
   cerrarModal();
-  if(editandoId){const idx=inventario.findIndex(p=>p.id===editandoId);if(idx>=0)inventario[idx]={...inventario[idx],nombre,tipo,color,marca,talla,material,cuidado,formalidad,foto,pos:getPosicion(tipo)};}
-  else{inventario.push({id:Date.now(),nombre,tipo,color,marca,talla,material,cuidado,formalidad,foto,pos:getPosicion(tipo)});}
+  if(editandoId){const idx=inventario.findIndex(p=>p.id===editandoId);if(idx>=0)inventario[idx]={...inventario[idx],nombre,tipo,color,color2,marca,talla,material,cuidado,formalidad,foto,pos:getPosicion(tipo)};}
+  else{inventario.push({id:Date.now(),nombre,tipo,color,color2,marca,talla,material,cuidado,formalidad,foto,pos:getPosicion(tipo)});}
   guardarLocal();renderClosetMain();renderOutfitMain();
   // Sync centralizado: sube foto pendiente (si hay) + JSON, en altas y ediciones
   await sincronizarInventario();
@@ -1437,6 +1586,7 @@ fetch('guardarropa.json').then(r=>r.json()).then(data=>{
   // Formato nuevo {prendas, deleted} o legado (array plano)
   let jsonData=Array.isArray(data)?data:(data.prendas||[]);
   _tombstones=Array.isArray(data)?[]:(data.deleted||[]);
+  if(!Array.isArray(data)&&Array.isArray(data.favs)){_favs=data.favs;localStorage.setItem('wrd_favs',JSON.stringify(_favs));}
   const pendDel=JSON.parse(localStorage.getItem('wrd_pending_del')||'[]');
   // No revivir prendas eliminadas (en otro dispositivo o pendientes de subir)
   pendDel.forEach(id=>{if(!_tombstones.includes(id))_tombstones.push(id);});

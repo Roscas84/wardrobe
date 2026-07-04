@@ -7,7 +7,7 @@ App web progresiva (PWA) de uso personal para gestionar inventario de ropa y gen
 
 ---
 
-## Estado actual — SW v79
+## Estado actual — SW v80
 
 ### Lo que funciona hoy
 
@@ -29,7 +29,7 @@ App web progresiva (PWA) de uso personal para gestionar inventario de ropa y gen
 | Carrusel horizontal con scroll-snap | Completo |
 | Material / composición de tela con porcentajes | Completo |
 | Símbolos de cuidado (lavado, secado, plancha) con auto-sugerencia | Completo |
-| Service Worker v79 — network-first para HTML/JSON, cache-first para imágenes | Completo |
+| Service Worker v80 — network-first para HTML/JSON, cache-first para imágenes | Completo |
 | Sección "Ajustes" colapsable en Cargar (Datos/GitHub/Remove.bg) | Completo |
 | Eliminaciones propagadas entre dispositivos (tombstones en guardarropa.json) | Completo |
 | API key de remove.bg en localStorage por dispositivo (nunca en el código) | Completo |
@@ -102,13 +102,22 @@ el cache-first del service worker (misma URL nunca se revalida).
 
 ---
 
-## Lluvia de ideas — Mejoras posibles
+## Roadmap decidido con el usuario — 2026-07-04
 
-### Funcionales (alta prioridad)
-1. **Favoritos de outfit** — corazón para guardar outfits; guardados en localStorage
-2. **Historial / calendario** — "¿qué usé esta semana?" para no repetir outfits
-3. **Prendas faltantes** — analiza el inventario y dice qué colores faltan para completar armonías
-4. **Filtro por ocasión** — casual / trabajo / noche
+| # | Función | Descripción acordada | Estado |
+|---|---|---|---|
+| 1 | **Favoritos** | ♥ en outfit card (rojo #ff1a00 al activar) + link "Favoritos" en Outfit paso 1; sync en guardarropa.json (`favs`) | ✅ Hecho (SW v80) |
+| 2 | **Color secundario** | Campo opcional color2; el motor combina por ambos colores (rayas = combinación de fábrica); búsqueda por color y paleta lo incluyen | ✅ Hecho (SW v80) |
+| 3 | **Desbloqueo de looks** | Franjas de color a lo ancho (nombre + hex como referencia de compra) con el número de looks que desbloquea; en Closet | ✅ Hecho (SW v80) |
+| 4 | **Colorimetría personal** | Pestaña independiente: cuestionario (piel/ojos/cabello) → estación → paleta personal → badge en outfits que favorecen. Requiere cargar BD de 4 estaciones | Pendiente — sesión dedicada |
+| 5 | **Compartir outfit** | Genera imagen del look (canvas: collage + paleta + marca) → hoja de compartir iOS (WhatsApp/IG/Fotos) | Pendiente |
+| 6 | **Sistema de capas medio/base** | (pendiente previo) hoodie+playera combinables; ver sección de migración abajo | Pendiente |
+| 7 | **Modo viaje** | N días → cápsula mínima de prendas + look por día | Al final |
+| — | ~~Filtro por ocasión~~ | Descartado por el usuario (ya existe campo formalidad) | ✗ |
+| — | ~~Historial/calendario~~ | Pospuesto: requiere registro manual diario, dudosa adopción | ⏸ |
+| — | Estadísticas de uso / Wishlist | Fusionadas conceptualmente con Desbloqueo de looks | → #3 |
+
+### Ideas restantes (sin compromiso)
 
 ### Sistema de capas — rediseño de posiciones (pendiente)
 
@@ -161,7 +170,7 @@ Nivel 3: [exterior + medio + base + inferior]
 
 ```
 index.html          — App completa (single-file PWA, todo inline)
-sw.js               — Service Worker v79
+sw.js               — Service Worker v80
 guardarropa.json    — {prendas, deleted} — 52 prendas (fuente de verdad, siempre se carga al iniciar)
 images/             — WebPs procesados con rembg, 1200×1600 px, fondo transparente
 manifest.json       — PWA manifest
