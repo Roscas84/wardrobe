@@ -208,7 +208,9 @@ body{font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;background:#f5f0eb;
    Los elementos position:fixed se centran para no estirarse a todo el monitor. */
 @media (min-width:700px){
   body{background:#eae5df}
-  .bottom-nav{left:50%;right:auto;transform:translateX(-50%);width:100%;max-width:1080px}
+  /* La barra inferior se alinea al ancho del contenido de la pestaña activa */
+  .bottom-nav{left:50%;right:auto;transform:translateX(-50%);width:100%;max-width:600px}
+  body.pantalla-ancha .bottom-nav{max-width:1080px}
   #screen-closet,#screen-outfit{max-width:1080px}
   #paso2-outfits{left:50%;right:auto;transform:translateX(-50%);width:100%;max-width:1080px}
   .items-grid{grid-template-columns:repeat(3,1fr)}
@@ -1628,6 +1630,7 @@ function initSlideshow(){
 // NAVEGACIÓN
 function showScreen(id){
   document.body.style.overflow=(id==='closet'||id==='outfit')?'hidden':'';
+  document.body.classList.toggle('pantalla-ancha',id==='closet'||id==='outfit');
   const cur=document.querySelector('.screen.active')?.id?.replace('screen-','');
   if(id==='cargar'&&cur&&cur!=='cargar'){
     prevScreen=cur;
