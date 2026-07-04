@@ -38,11 +38,18 @@ header{background:#fff;border-bottom:1px solid #e0dbd5;padding:8px 16px;position
 .screen{display:none;max-width:600px;margin:0 auto}
 .screen.active{display:block}
 
-/* INICIO */
+/* INICIO — hero editorial: fotos encadenadas con zoom lento + texto fijo encima (ref. Zara) */
 .slideshow{position:relative;width:100%;aspect-ratio:3/4;overflow:hidden;background:#000}
-.slide{position:absolute;inset:0;opacity:0;transition:opacity 0.2s ease;pointer-events:none}
+.slide{position:absolute;inset:0;opacity:0;transition:opacity 0.6s ease;pointer-events:none;overflow:hidden}
 .slide.active{opacity:1;pointer-events:auto}
 .slide img{width:100%;height:100%;object-fit:cover;object-position:center top;display:block}
+.slide.active img{animation:kenburns 7s ease-out forwards}
+@keyframes kenburns{from{transform:scale(1)}to{transform:scale(1.07)}}
+.slide-collage{display:flex;gap:4px;background:#f5f0eb}
+.slide-collage img{width:33.333%;min-width:0;object-position:center 20%}
+.slide-collage img:nth-child(2){height:86%;align-self:center}
+.slide-collage.active img{animation:none}
+.hero-txt{position:absolute;left:20px;top:50%;transform:translateY(-50%);z-index:5;color:#ff1a00;font-size:36px;font-weight:200;letter-spacing:3px;text-transform:uppercase;line-height:1.15;pointer-events:none}
 .editorial-strip{display:flex;flex-direction:column;gap:0}
 .editorial-strip img{width:100%;aspect-ratio:3/4;object-fit:cover;object-position:center top;display:block}
 
@@ -221,11 +228,13 @@ header{background:#fff;border-bottom:1px solid #e0dbd5;padding:8px 16px;position
 <!-- ══ INICIO ══ -->
 <div id="screen-inicio" class="screen active">
   <div class="slideshow" id="slideshow">
+    <div class="hero-txt">Mi<br>Guardarropa</div>
     <div class="slide active"><img src="slides/slide1.jpg" loading="eager" alt=""></div>
-    <div class="slide"><img src="slides/slide3.jpg" loading="lazy" alt=""></div>
-    <div class="slide"><img src="slides/slide5.jpg" loading="lazy" alt=""></div>
-    <div class="slide"><img src="slides/slide7.jpg" loading="lazy" alt=""></div>
+    <div class="slide slide-collage"><img src="slides/slide3.jpg" loading="lazy" alt=""><img src="slides/slide5.jpg" loading="lazy" alt=""><img src="slides/slide7.jpg" loading="lazy" alt=""></div>
     <div class="slide"><img src="slides/slide9.jpg" loading="lazy" alt=""></div>
+    <div class="slide"><img src="slides/slide4.jpg" loading="lazy" alt=""></div>
+    <div class="slide slide-collage"><img src="slides/slide8.jpg" loading="lazy" alt=""><img src="slides/slide11.jpg" loading="lazy" alt=""><img src="slides/slide10.jpg" loading="lazy" alt=""></div>
+    <div class="slide"><img src="slides/slide6.jpg" loading="lazy" alt=""></div>
   </div>
   <div class="editorial-strip">
     <img src="slides/slide2.jpg" loading="lazy" alt="">
@@ -1389,10 +1398,10 @@ let slideIdx=0,slideTimer=null;
 function initSlideshow(){
   const slides=document.querySelectorAll('.slide');if(!slides.length)return;
   function goTo(n){slides[slideIdx].classList.remove('active');slideIdx=(n+slides.length)%slides.length;slides[slideIdx].classList.add('active');}
-  slideTimer=setInterval(()=>goTo(slideIdx+1),900);
+  slideTimer=setInterval(()=>goTo(slideIdx+1),2800);
   let tx=0;const ss=document.getElementById('slideshow');
   ss.addEventListener('touchstart',e=>{tx=e.touches[0].clientX;},{passive:true});
-  ss.addEventListener('touchend',e=>{const diff=tx-e.changedTouches[0].clientX;if(Math.abs(diff)>50){clearInterval(slideTimer);goTo(slideIdx+(diff>0?1:-1));slideTimer=setInterval(()=>goTo(slideIdx+1),900);}},{passive:true});
+  ss.addEventListener('touchend',e=>{const diff=tx-e.changedTouches[0].clientX;if(Math.abs(diff)>50){clearInterval(slideTimer);goTo(slideIdx+(diff>0?1:-1));slideTimer=setInterval(()=>goTo(slideIdx+1),2800);}},{passive:true});
 }
 
 // NAVEGACIÓN
