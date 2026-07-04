@@ -405,9 +405,17 @@ body{font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;background:#f5f0eb;
     <div class="field">
       <label>Color secundario (opcional — rayas, estampados)</label>
       <div class="color-row">
-        <input type="color" class="color-swatch-inp" id="inp-color2" value="#888888" oninput="syncColor2('picker')">
-        <input type="text" class="hex-input" id="inp-hex2" placeholder="Sin color secundario" maxlength="7" oninput="syncColor2('hex')">
-        <button type="button" onclick="limpiarColor2()" style="width:44px;height:44px;border:none;background:#f0ebe5;font-size:17px;cursor:pointer;color:#888;flex-shrink:0">×</button>
+        <input type="color" class="color-swatch-inp" id="inp-color2" value="#888888" oninput="syncColorN(2,'picker')">
+        <input type="text" class="hex-input" id="inp-hex2" placeholder="Sin color secundario" maxlength="7" oninput="syncColorN(2,'hex')">
+        <button type="button" onclick="limpiarColorN(2)" style="width:44px;height:44px;border:none;background:#f0ebe5;font-size:17px;cursor:pointer;color:#888;flex-shrink:0">×</button>
+      </div>
+    </div>
+    <div class="field">
+      <label>Tercer color (opcional)</label>
+      <div class="color-row">
+        <input type="color" class="color-swatch-inp" id="inp-color3" value="#888888" oninput="syncColorN(3,'picker')">
+        <input type="text" class="hex-input" id="inp-hex3" placeholder="Sin tercer color" maxlength="7" oninput="syncColorN(3,'hex')">
+        <button type="button" onclick="limpiarColorN(3)" style="width:44px;height:44px;border:none;background:#f0ebe5;font-size:17px;cursor:pointer;color:#888;flex-shrink:0">×</button>
       </div>
     </div>
     <div class="field"><label>Marca</label><input type="text" id="inp-marca" placeholder="Ej: Zara, Nike..."></div>
@@ -511,7 +519,7 @@ function nearestWadaIdx(hex){
 }
 function isWadaValidated(outfit){
   const nonNeutral=[];
-  outfit.piezas.forEach(p=>(p.color2?[p.color,p.color2]:[p.color]).forEach(c=>{if(!esNeutro(c))nonNeutral.push(c);}));
+  outfit.piezas.forEach(p=>coloresDe(p).forEach(c=>{if(!esNeutro(c))nonNeutral.push(c);}));
   if(nonNeutral.length<2)return false;
   const matches=nonNeutral.map(c=>nearestWadaIdx(c));
   for(let i=0;i<matches.length;i++){
@@ -612,8 +620,8 @@ function getHuesObjetivo(hAncla,arm){
   }
 }
 const TOLERANCIA=15;
-// Colores de una prenda: principal + secundario opcional (rayas/estampados = combinación de fábrica)
-function coloresDe(p){return p.color2?[p.color,p.color2]:[p.color];}
+// Colores de una prenda: principal + hasta 2 opcionales (rayas/estampados = combinación de fábrica)
+function coloresDe(p){return[p.color,p.color2,p.color3].filter(Boolean);}
 function esCompatible(pHex,huesObj,anclaHex){
   if(pHex===anclaHex)return false;
   if(esNeutro(pHex))return false;
@@ -853,7 +861,7 @@ function cardBackHTML(p){
   return`
     <div class="cb-nombre">${p.nombre}</div>
     ${marcaTalla?`<div class="cb-marca">${marcaTalla}</div>`:''}
-    <div class="c-card-color-row"><div class="c-dot" style="background:${p.color}"></div><div class="c-hex">${p.color}</div>${p.color2?`<div class="c-dot" style="background:${p.color2}"></div><div class="c-hex">${p.color2}</div>`:''}</div>
+    <div class="c-card-color-row">${coloresDe(p).map(c=>`<div class="c-dot" style="background:${c}"></div><div class="c-hex">${c}</div>`).join('')}</div>
     <div class="cb-tipo">${p.tipo}${p.subtipo?' '+p.subtipo:''}${patron?' · '+patron:''}</div>
     ${matStr?`<div class="cb-formalidad" style="color:#777">${matStr}</div>`:''}
     ${cuidadoHTML}
@@ -1126,6 +1134,8 @@ function editarPrenda(id){
   document.getElementById('inp-hex').value=p.color;
   document.getElementById('inp-hex2').value=p.color2||'';
   document.getElementById('inp-color2').value=p.color2||'#888888';
+  document.getElementById('inp-hex3').value=p.color3||'';
+  document.getElementById('inp-color3').value=p.color3||'#888888';
   document.getElementById('inp-marca').value=p.marca||'';
   document.getElementById('inp-talla').value=p.talla||'';
   document.getElementById('material-rows').innerHTML='';
@@ -1165,7 +1175,7 @@ function limpiarModal(){
   ['inp-nombre','inp-marca','inp-talla'].forEach(id=>document.getElementById(id).value='');
   document.getElementById('inp-tipo').value='';document.getElementById('inp-color').value='#000000';
   document.getElementById('inp-hex').value='#000000';
-  limpiarColor2();
+  limpiarColorN(2);limpiarColorN(3);
   document.getElementById('color-sugs').style.display='none';
   [...document.querySelectorAll('.color-sug-chip')].forEach(el=>el.remove());
   document.getElementById('material-rows').innerHTML='';
@@ -1180,13 +1190,14 @@ function syncColor(origen){
   if(origen==='picker')document.getElementById('inp-hex').value=document.getElementById('inp-color').value;
   else{const v=document.getElementById('inp-hex').value;if(/^#[0-9A-Fa-f]{6}$/.test(v))document.getElementById('inp-color').value=v;}
 }
-function syncColor2(origen){
-  if(origen==='picker')document.getElementById('inp-hex2').value=document.getElementById('inp-color2').value;
-  else{const v=document.getElementById('inp-hex2').value;if(/^#[0-9A-Fa-f]{6}$/.test(v))document.getElementById('inp-color2').value=v;}
+function syncColorN(n,origen){
+  const hex=document.getElementById('inp-hex'+n),pick=document.getElementById('inp-color'+n);
+  if(origen==='picker')hex.value=pick.value;
+  else if(/^#[0-9A-Fa-f]{6}$/.test(hex.value))pick.value=hex.value;
 }
-function limpiarColor2(){
-  document.getElementById('inp-hex2').value='';
-  document.getElementById('inp-color2').value='#888888';
+function limpiarColorN(n){
+  document.getElementById('inp-hex'+n).value='';
+  document.getElementById('inp-color'+n).value='#888888';
 }
 async function normalizarProporcion(dataUrl,targetW=1200,targetH=1600,fill=0.90){
   return new Promise(resolve=>{
@@ -1351,9 +1362,16 @@ function sugerirCuidados(){
 }
 const TELAS=['Algodón','Lino','Lana','Seda','Bambú','Lyocell / Tencel','Viscosa','Gamuza','Cuero','Poliéster','Nylon','Spandex / Elastano'];
 function addMaterialRow(tela='',pct=''){
+  // Sin coincidencia exacta el <select> caería en la primera opción (Algodón) y
+  // corrompería el dato al guardar — normalizar o preservar la tela original
+  let opts=TELAS;
+  if(tela&&!TELAS.includes(tela)){
+    const m=TELAS.find(t=>t.toLowerCase()===tela.toLowerCase())||TELAS.find(t=>t.toLowerCase().includes(tela.toLowerCase()));
+    if(m)tela=m;else opts=[tela,...TELAS];
+  }
   const rows=document.getElementById('material-rows');
   const div=document.createElement('div');div.className='mat-row';
-  div.innerHTML=`<select class="mat-sel">${TELAS.map(t=>`<option${t===tela?' selected':''}>${t}</option>`).join('')}</select><input type="number" class="mat-pct" min="1" max="100" value="${pct}" placeholder="%"  oninput="updateMaterialTotal()"><button type="button" class="mat-del" onclick="this.parentElement.remove();updateMaterialTotal()">×</button>`;
+  div.innerHTML=`<select class="mat-sel">${opts.map(t=>`<option${t===tela?' selected':''}>${t}</option>`).join('')}</select><input type="number" class="mat-pct" min="1" max="100" value="${pct}" placeholder="%"  oninput="updateMaterialTotal()"><button type="button" class="mat-del" onclick="this.parentElement.remove();updateMaterialTotal()">×</button>`;
   rows.appendChild(div);updateMaterialTotal();
 }
 function updateMaterialTotal(){
@@ -1497,6 +1515,8 @@ async function guardarPrenda(){
   const color=document.getElementById('inp-color').value,marca=document.getElementById('inp-marca').value.trim();
   const c2v=document.getElementById('inp-hex2').value.trim();
   const color2=/^#[0-9A-Fa-f]{6}$/.test(c2v)?c2v:null;
+  const c3v=document.getElementById('inp-hex3').value.trim();
+  const color3=/^#[0-9A-Fa-f]{6}$/.test(c3v)?c3v:null;
   const talla=document.getElementById('inp-talla').value.trim();
   const material=getMaterial();
   const formalidad=document.getElementById('inp-formalidad').value;
@@ -1508,8 +1528,8 @@ async function guardarPrenda(){
   if(!nombre||!tipo){alert('Escribe el nombre y selecciona el tipo.');return;}
   if(material.length){const total=material.reduce((s,m)=>s+m.pct,0);if(total!==100){alert('Los porcentajes de tela deben sumar 100% (ahora suman '+total+'%).');return;}}
   cerrarModal();
-  if(editandoId){const idx=inventario.findIndex(p=>p.id===editandoId);if(idx>=0)inventario[idx]={...inventario[idx],nombre,tipo,color,color2,marca,talla,material,cuidado,formalidad,foto,pos:getPosicion(tipo)};}
-  else{inventario.push({id:Date.now(),nombre,tipo,color,color2,marca,talla,material,cuidado,formalidad,foto,pos:getPosicion(tipo)});}
+  if(editandoId){const idx=inventario.findIndex(p=>p.id===editandoId);if(idx>=0)inventario[idx]={...inventario[idx],nombre,tipo,color,color2,color3,marca,talla,material,cuidado,formalidad,foto,pos:getPosicion(tipo)};}
+  else{inventario.push({id:Date.now(),nombre,tipo,color,color2,color3,marca,talla,material,cuidado,formalidad,foto,pos:getPosicion(tipo)});}
   guardarLocal();renderClosetMain();renderOutfitMain();
   // Sync centralizado: sube foto pendiente (si hay) + JSON, en altas y ediciones
   await sincronizarInventario();
