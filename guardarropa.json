@@ -1660,6 +1660,32 @@
       "formalidad": "streetwear",
       "foto": "images/user_1783294628187.webp?v=1783294630489",
       "pos": "inferior"
+    },
+    {
+      "id": 1783294688096,
+      "nombre": "Bermudas blancas",
+      "tipo": "Short",
+      "capa": "base",
+      "temporada": "Todo",
+      "color": "#d8d8d8",
+      "color2": null,
+      "color3": null,
+      "marca": "Amazon",
+      "talla": "M",
+      "material": [
+        {
+          "tela": "Algodón",
+          "pct": 100
+        }
+      ],
+      "cuidado": {
+        "lavado": "W30",
+        "secado": "NoSecadora",
+        "plancha": "Media"
+      },
+      "formalidad": "casual",
+      "foto": "images/user_1783294688096.webp?v=1783294692646",
+      "pos": "inferior"
     }
   ],
   "deleted": [
