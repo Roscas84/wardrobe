@@ -1608,6 +1608,32 @@
       "formalidad": "casual",
       "foto": "images/user_1783294518448.webp?v=1783294520817",
       "pos": "base"
+    },
+    {
+      "id": 1783294575156,
+      "nombre": "Hoodie amarillo",
+      "tipo": "Hoodie",
+      "capa": null,
+      "temporada": "Otoño/Invierno",
+      "color": "#d8c030",
+      "color2": null,
+      "color3": null,
+      "marca": "Asos",
+      "talla": "M",
+      "material": [
+        {
+          "tela": "Algodón",
+          "pct": 100
+        }
+      ],
+      "cuidado": {
+        "lavado": "W30",
+        "secado": "NoSecadora",
+        "plancha": "Baja"
+      },
+      "formalidad": "streetwear",
+      "foto": "images/user_1783294575156.webp?v=1783294582258",
+      "pos": "medio"
     }
   ],
   "deleted": [
