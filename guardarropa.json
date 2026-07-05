@@ -1556,6 +1556,32 @@
       "formalidad": "streetwear",
       "foto": "images/user_1783294217293.webp?v=1783294219562",
       "pos": "inferior"
+    },
+    {
+      "id": 1783294276404,
+      "nombre": "Sudadera gris",
+      "tipo": "Sudadera",
+      "capa": null,
+      "temporada": "Todo",
+      "color": "#909090",
+      "color2": null,
+      "color3": null,
+      "marca": "Nike",
+      "talla": "M",
+      "material": [
+        {
+          "tela": "Poliéster",
+          "pct": 100
+        }
+      ],
+      "cuidado": {
+        "lavado": "W30",
+        "secado": "NoSecadora",
+        "plancha": "Baja"
+      },
+      "formalidad": "streetwear",
+      "foto": "images/user_1783294276404.webp?v=1783294282325",
+      "pos": "medio"
     }
   ],
   "deleted": [
