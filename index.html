@@ -441,6 +441,9 @@ body{font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;background:#000;col
         <div id="slides-status" style="font-size:10px;color:#888;margin-bottom:10px;letter-spacing:0.5px"></div>
         <button onclick="document.getElementById('slides-file').click()" style="width:100%;padding:11px;background:#fff;color:#000;border:none;font-size:10px;letter-spacing:2px;text-transform:uppercase;cursor:pointer">Agregar Fotos al Collage</button>
         <input type="file" id="slides-file" accept="image/*" multiple style="display:none" onchange="subirSlides(this)">
+        <button onclick="toggleSlidesAdmin()" style="width:100%;padding:11px;background:transparent;color:#fff;border:1px solid #333;font-size:10px;letter-spacing:2px;text-transform:uppercase;cursor:pointer;margin-top:8px">Administrar Fotos del Collage</button>
+        <div id="slides-admin" style="display:none;margin-top:10px"></div>
+        <input type="file" id="slide-replace-file" accept="image/*" style="display:none" onchange="archivoReemplazo(this)">
       </div>
     </div>
   </div>
@@ -1933,6 +1936,77 @@ async function subirSlides(input){
     if(subida){ok++;next++;}
   }
   showToast(ok?`✓ ${ok} foto${ok>1?'s':''} subida${ok>1?'s':''} — aparecerán en el collage en unos minutos`:'⚠ No se pudo subir — revisa tu conexión');
+  if(ok)setTimeout(renderSlidesAdmin,400);
+}
+
+// ══ Administrar galería del collage: ver, eliminar y reemplazar slides ══
+async function ghDelete(path,message,sha){
+  const r=await fetch(`https://api.github.com/repos/${GH_REPO}/contents/${path}`,
+    {method:'DELETE',headers:{Authorization:`token ${ghToken()}`,Accept:'application/vnd.github.v3+json','Content-Type':'application/json'},
+     body:JSON.stringify({message,sha,branch:GH_BRANCH})});
+  return r.ok;
+}
+// Purgar del caché del SW para que este dispositivo no siga mostrando la versión vieja
+async function purgarCacheSlide(url){
+  try{const keys=await caches.keys();for(const k of keys){await (await caches.open(k)).delete(url,{ignoreSearch:true});}}catch(e){}
+}
+function toggleSlidesAdmin(){
+  const el=document.getElementById('slides-admin');
+  const abierto=el.style.display!=='none';
+  el.style.display=abierto?'none':'block';
+  if(!abierto)renderSlidesAdmin();
+}
+function renderSlidesAdmin(){
+  const el=document.getElementById('slides-admin');
+  if(!el)return;
+  if(!_slides.length){el.innerHTML='<div style="font-size:10px;color:#888;letter-spacing:0.5px">Sin fotos en el collage</div>';return;}
+  el.innerHTML='<div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px">'
+    +_slides.map(s=>{
+      const n=parseInt(s.match(/slide(\d+)/)?.[1]||'0',10);
+      return `<div style="position:relative">
+        <img src="${s}" loading="lazy" style="width:100%;aspect-ratio:3/4;object-fit:cover;display:block;background:#111">
+        <div style="position:absolute;bottom:0;left:0;right:0;display:flex">
+          <button onclick="reemplazarSlide(${n})" title="Reemplazar" style="flex:1;padding:6px 0;background:rgba(0,0,0,0.72);color:#fff;border:none;font-size:12px;cursor:pointer">↻</button>
+          <button onclick="eliminarSlide(${n})" title="Eliminar" style="flex:1;padding:6px 0;background:rgba(0,0,0,0.72);color:#C9A227;border:none;font-size:12px;cursor:pointer">✕</button>
+        </div>
+      </div>`;
+    }).join('')+'</div>';
+}
+async function eliminarSlide(n){
+  if(!ghToken()){showToast('Configura tu token de GitHub primero');return;}
+  if(!confirm(`¿Eliminar la foto ${n} del collage?`))return;
+  const path=`slides/slide${n}.jpg`;
+  showToast('⏳ Eliminando…');
+  const existing=await ghGet(path);
+  if(!existing||!existing.sha){showToast('⚠ No se encontró la foto en GitHub');return;}
+  const ok=await ghDelete(path,`Delete gallery photo slide${n}.jpg`,existing.sha).catch(()=>false);
+  if(!ok){showToast('⚠ No se pudo eliminar — revisa tu conexión');return;}
+  _slides=_slides.filter(s=>s!==path);
+  localStorage.setItem('wrd_slides',JSON.stringify(_slides));
+  await purgarCacheSlide(path);
+  renderSlidesAdmin();mostrarEstadoSlides();
+  showToast('✓ Foto eliminada del collage');
+}
+let _slideReemplazo=null;
+function reemplazarSlide(n){
+  if(!ghToken()){showToast('Configura tu token de GitHub primero');return;}
+  _slideReemplazo=n;
+  document.getElementById('slide-replace-file').click();
+}
+async function archivoReemplazo(input){
+  if(!input.files.length||!_slideReemplazo)return;
+  const n=_slideReemplazo;_slideReemplazo=null;
+  const f=input.files[0];input.value='';
+  const path=`slides/slide${n}.jpg`;
+  showToast('⏳ Reemplazando…');
+  const dataUrl=await encogerFoto(f).catch(()=>null);
+  if(!dataUrl){showToast('⚠ No se pudo procesar la foto');return;}
+  const existing=await ghGet(path);
+  const ok=await ghPut(path,dataUrlToBase64(dataUrl),`Replace gallery photo slide${n}.jpg`,existing?.sha).catch(()=>false);
+  if(!ok){showToast('⚠ No se pudo reemplazar — revisa tu conexión');return;}
+  await purgarCacheSlide(path);
+  renderSlidesAdmin();
+  showToast('✓ Foto reemplazada — se actualizará al publicarse (unos minutos)');
 }
 
 // ══ MI COLOR — Colorimetría personal (sistema 12 estaciones, método característica dominante) ══
