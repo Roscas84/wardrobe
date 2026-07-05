@@ -61,12 +61,13 @@ git clone https://ghp_TOKEN@github.com/Roscas84/wardrobe.git /tmp/wardrobe   # t
 # verificar deploy: curl sw.js en vivo; si se atasca >5 min → commit vacío lo destraba
 ```
 
-## Pendientes (usuario)
+## Pendientes (próxima sesión — plan acordado 2026-07-05)
 
-1. Validar v101-v102 (compartir, modo viaje) y **repetir el quiz de Mi Color** (el perfil ya persiste)
-2. Llenar cuidados N/O/P en el Excel de las 49 prendas originales → pasar al JSON
-3. Cargar la ropa que falta; retomar fotos con maniquí (11) y las 3 que rembg no limpió; foto Overalls ID 49
-4. Tallas reales (decisión: sin prioridad)
+1. **Excel → JSON**: el usuario está llenando `Claude/Proyects/Wardrobe/Inventory/Mi_Guardarropa_v4.xlsx` al 100% (telas, lavado/secado/plancha, temporadas corregidas; generado desde el JSON con 52 prendas y dropdowns). Cuando avise: hacer copia de respaldo, comparar contra guardarropa.json, analizar inconsistencias (p.ej. tela vs temporada: lino→cálido), proponer ajustes y pasar todo al JSON.
+2. **Fotos del collage**: el usuario deja fotos nuevas en `Claude/Proyects/Wardrobe/Fotos_Collage/` (quiere +3 y quizá reemplazar alguna de las 11 actuales) → optimizar a JPEG ≤1600px y subirlas como `slides/slideN.jpg` (o reemplazar la N que indique). También puede subirlas él solo desde Cargar → Ajustes → Galería de Inicio.
+3. Validar v104 (collage, viaje con clima, acento oro, móvil compacto) y **repetir el quiz de Mi Color** (el perfil ya persiste); compartir outfit sigue sin probar.
+4. Cargar la ropa que falta; retomar fotos con maniquí (11) y las 3 que rembg no limpió; foto Overalls ID 49
+5. Tallas reales (decisión: sin prioridad)
 
 ## Futuro (sin compromiso)
 
