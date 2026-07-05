@@ -801,11 +801,8 @@ function flipCard(el){el.querySelector('.flip-inner').classList.toggle('flipped'
 // CLOSET
 function renderClosetMain(){
   const wrap=document.getElementById('closet-cat-links');wrap.innerHTML='';
-  // Búsqueda por color — siempre primero para que sea visible en móvil
-  const colorBtn=document.createElement('div');colorBtn.className='cat-link';
-  colorBtn.onclick=verColorCloset;
-  colorBtn.innerHTML=`<span class="cat-link-text">Búsqueda por color</span>`;
-  wrap.appendChild(colorBtn);
+  // Orden pedido: categorías primero (Playeras arriba), luego Búsqueda por color,
+  // Colores que te faltan y Todo el clóset
   ZARA_CATS.forEach(cat=>{
     const items=inventario.filter(p=>cat.tipos.includes(p.tipo));if(!items.length)return;
     const div=document.createElement('div');div.className='cat-link';
@@ -813,6 +810,10 @@ function renderClosetMain(){
     div.innerHTML=`<span class="cat-link-text">${cat.label}</span>`;
     wrap.appendChild(div);
   });
+  const colorBtn=document.createElement('div');colorBtn.className='cat-link';
+  colorBtn.onclick=verColorCloset;
+  colorBtn.innerHTML=`<span class="cat-link-text">Búsqueda por color</span>`;
+  wrap.appendChild(colorBtn);
   const desbBtn=document.createElement('div');desbBtn.className='cat-link';
   desbBtn.onclick=verDesbloqueos;
   desbBtn.innerHTML=`<span class="cat-link-text">Colores que te faltan</span>`;
