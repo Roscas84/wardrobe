@@ -121,7 +121,7 @@ body{font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;background:#f5f0eb;
 .outfits-wrap .nivel-div{display:none}
 .outfit-card{background:#000;flex-shrink:0;width:100%;height:100%;position:relative;display:flex;flex-direction:column;scroll-snap-align:start}
 .wada-badge{position:absolute;top:9px;right:12px;font-size:19px;font-weight:800;font-family:Georgia,'Times New Roman',serif;z-index:10;line-height:1;background:linear-gradient(180deg,#ffe27a 0%,#f5c518 45%,#b8860b 100%);-webkit-background-clip:text;background-clip:text;color:transparent;filter:drop-shadow(0 1px 1px rgba(0,0,0,0.55))}
-.fav-btn{position:absolute;top:2px;right:36px;z-index:10;background:none;border:none;font-size:22px;color:#fff;cursor:pointer;text-shadow:0 0 6px rgba(0,0,0,0.6);padding:8px;line-height:1}
+.fav-btn{position:absolute;top:2px;right:62px;z-index:10;background:none;border:none;font-size:22px;color:#fff;cursor:pointer;text-shadow:0 0 6px rgba(0,0,0,0.6);padding:8px;line-height:1}
 .fav-btn.on{color:#ff1a00}
 
 /* MI COLOR — colorimetría personal */
@@ -142,7 +142,8 @@ body{font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;background:#f5f0eb;
 .mc-q{font-size:15px;color:#fff;text-align:center;padding:12px 28px 18px;font-weight:300;letter-spacing:.5px;line-height:1.5}
 .mc-prog{font-size:9px;color:#888;letter-spacing:2px;text-align:center;padding-top:6px}
 .mc-dot{display:inline-block;width:12px;height:12px;border-radius:50%;margin-right:8px;vertical-align:middle;border:1px solid rgba(255,255,255,.2)}
-.mio-badge{position:absolute;top:8px;left:10px;font-size:16px;color:#ff1a00;z-index:10;line-height:1;text-shadow:0 0 6px rgba(0,0,0,.5)}
+/* Orden en la esquina: ♥ (62px) · ✦ (38px) · W (12px) */
+.mio-badge{position:absolute;top:9px;right:38px;font-size:19px;color:#ff1a00;z-index:10;line-height:1;text-shadow:0 0 6px rgba(0,0,0,.5)}
 
 /* DESBLOQUEO DE LOOKS — franjas de color a lo ancho */
 .desb-franja{display:flex;align-items:center;justify-content:space-between;padding:0 20px;height:76px;margin-bottom:2px}
@@ -920,8 +921,27 @@ function volverClosetMain(){
 
 // DESBLOQUEO DE LOOKS — colores de TU PALETA (colorimetría) que tu clóset no cubre
 // y cuántos looks nuevos daría comprar cada uno: compras que suman y te favorecen
+// Nombre humano del color por carácter real (no por sector de tono crudo):
+// un H30 oscuro es café, no "naranja"
+function nombreColor(hex){
+  const{h,s,l}=hexToHsl(hex);
+  if(s<15)return l>60?'Gris claro':'Gris';
+  if(h>=340||h<12)return l<30?'Vino':l<50?'Rojo':'Rojo claro';
+  if(h<40){
+    if(l<26)return'Café oscuro';
+    if(l<38)return s>55?(h<30?'Óxido':'Ocre'):'Café';
+    if(l<55)return s>50?'Terracota':'Café claro';
+    return'Naranja';
+  }
+  if(h<64)return l<30?'Oliva oscuro':l<45?'Mostaza':'Amarillo';
+  if(h<90)return l<45?'Oliva':'Lima';
+  if(h<160)return l<35?'Verde bosque':'Verde';
+  if(h<200)return'Turquesa';
+  if(h<255)return l<32?'Azul marino':'Azul';
+  if(h<290)return l<35?'Púrpura noche':'Violeta';
+  return l<35?'Ciruela':'Rosa';
+}
 function analizarDesbloqueos(){
-  const NOMBRES={0:'Rojo',30:'Naranja',60:'Amarillo',90:'Lima',120:'Verde',150:'Esmeralda',180:'Cian',210:'Azul',240:'Índigo',270:'Violeta',300:'Magenta',330:'Rosa',360:'Rojo'};
   const perfil=perfilColor();
   if(!perfil||!ESTACIONES[perfil.estacion])return null;
   const claveDe=o=>o.piezas.map(p=>p.id).sort().join('-');
@@ -941,8 +961,6 @@ function analizarDesbloqueos(){
     if(inventario.some(p=>coloresDe(p).some(cc=>labDist(cc,c)<=UMBRAL_TENGO)))continue;
     // Dedupe: no proponer dos colores casi iguales de la paleta
     if(res.some(r=>labDist(r.color,c)<=14))continue;
-    const{h}=hexToHsl(c);
-    const sector=Math.round(h/30)*30;
     let mejor=0;
     // Probar la prenda virtual como base y como inferior; tomar el mejor caso
     for(const tipo of ['Camiseta','Pantalón']){
@@ -952,7 +970,7 @@ function analizarDesbloqueos(){
       let nuevos=0;con.forEach(k=>{if(!base.has(k))nuevos++;});
       mejor=Math.max(mejor,nuevos);
     }
-    if(mejor>0)res.push({color:c,nombre:NOMBRES[sector]||'',looks:mejor});
+    if(mejor>0)res.push({color:c,nombre:nombreColor(c),looks:mejor});
   }
   return res.sort((a,b)=>b.looks-a.looks).slice(0,6);
 }
