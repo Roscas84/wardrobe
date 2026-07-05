@@ -128,8 +128,14 @@ body{font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;background:#f5f0eb;
 .mc-nombre{font-size:26px;letter-spacing:4px;color:#fff;text-transform:uppercase;text-align:center;font-weight:200;padding:6px 20px}
 .mc-desc{font-size:11px;color:#999;text-align:center;padding:0 32px 12px;letter-spacing:.5px;line-height:1.8;font-weight:300}
 .mc-sec{font-size:9px;letter-spacing:2px;color:#888;text-transform:uppercase;padding:20px 20px 8px;text-align:center}
-.mc-grid{display:grid;grid-template-columns:repeat(6,1fr);gap:3px;padding:0 20px}
+.mc-grid{display:grid;grid-template-columns:repeat(9,1fr);gap:2px;padding:0 20px}
 .mc-sw{aspect-ratio:1;cursor:pointer;border:1px solid rgba(255,255,255,.06)}
+.mc-ropa{display:grid;grid-template-columns:repeat(4,1fr);gap:2px;padding:8px 20px 0}
+.mc-prenda{aspect-ratio:3/4;background:#f7f5f2;overflow:hidden;cursor:pointer}
+.mc-prenda img{width:100%;height:100%;object-fit:contain;display:block}
+.mc-prenda-ph{width:100%;height:100%}
+.mc-vacio{font-size:10px;color:#666;text-align:center;padding:12px;letter-spacing:1px;text-transform:uppercase}
+.mc-atras{font-size:11px;color:#888;letter-spacing:1px;text-transform:uppercase;padding:2px 20px 6px;cursor:pointer}
 .mc-btn{display:block;margin:22px auto 0;padding:14px 30px;background:#fff;color:#000;border:none;font-size:10px;letter-spacing:2px;text-transform:uppercase;cursor:pointer;font-family:inherit}
 .mc-btn-sec{display:block;margin:18px auto 0;padding:11px 22px;background:none;color:#888;border:1px solid #333;font-size:9px;letter-spacing:2px;text-transform:uppercase;cursor:pointer;font-family:inherit}
 .mc-q{font-size:15px;color:#fff;text-align:center;padding:12px 28px 18px;font-weight:300;letter-spacing:.5px;line-height:1.5}
@@ -254,6 +260,8 @@ body{font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;background:#f5f0eb;
   .modal-cuerpo{display:grid;grid-template-columns:420px 1fr;gap:28px;align-items:start}
   .modal-col-foto .foto-area{min-height:480px;margin-bottom:0}
   .modal-col-foto .foto-area img{max-height:520px}
+  .mc-grid{grid-template-columns:repeat(16,1fr)}
+  .mc-ropa{grid-template-columns:repeat(8,1fr)}
 }
 @media (min-width:1100px){
   .items-grid{grid-template-columns:repeat(4,1fr)}
@@ -1775,7 +1783,7 @@ otono_calido:{nombre:'Otoño Cálido',metal:'Oro',desc:'Terrosa y rica. Los colo
 colores:['#C1440E','#B7410E','#CC5500','#D2691E','#E97451','#DAA520','#B8860B','#CD853F','#8B4513','#A0522D','#6B8E23','#556B2F','#808000','#BDB76B','#B22222','#CD5C5C','#DEB887','#BF8040'],
 neutros:['#F5EBD8','#D9C7A7','#8B7355','#5C4E37'],evitar:['#FF69B4','#00BFFF','#C0C0C0','#E6E6FA','#000000','#0F52BA']},
 otono_profundo:{nombre:'Otoño Profundo',metal:'Oro viejo',desc:'Intensa y cálida. Chocolate, borgoña cálido, verde bosque, mostaza profunda: riqueza con peso.',
-colores:['#7B3F00','#8B4513','#654321','#800020','#722F37','#6B4423','#556B2F','#3B5323','#8B0000','#A0522D','#B8860B','#996515','#5C4033','#704214','#7C0A02','#4A5D23','#6E260E','#8A360F'],
+colores:['#7B3F00','#8B4513','#654321','#800020','#722F37','#6B4423','#556B2F','#3B5323','#8B0000','#A0522D','#B8860B','#996515','#5C4033','#704214','#7C0A02','#4A5D23','#6E260E','#8A360F','#7A7A2E'],
 neutros:['#EDE0CC','#C7B299','#6F5B3E','#3D2B1F'],evitar:['#FFB6C1','#E0FFFF','#C0C0C0','#F0F8FF','#DDA0DD','#B0E0E6']},
 invierno_frio:{nombre:'Invierno Frío',metal:'Plata',desc:'Fría e intensa. Colores puros y profundos: azul zafiro, carmesí, esmeralda. Sin rastro de calidez.',
 colores:['#0F52BA','#4169E1','#0000CD','#DC143C','#C71585','#E0115F','#008080','#00A86B','#4B0082','#8A2BE2','#191970','#00468C','#7851A9','#0095B6','#CE2029','#006D5B','#B80049','#2F4F4F'],
@@ -1797,28 +1805,31 @@ const PREGUNTAS_COLOR=[
   {t:'Plata',dot:'#C0C0C0',p:{cool:2}},
   {t:'Ambos me quedan igual',p:{}}]},
 {q:'Cuando tomas sol, tu piel…',op:[
-  {t:'Se broncea fácil, tono dorado',p:{warm:1,deep:1}},
+  {t:'Se broncea fácil, tono dorado',p:{warm:1}},
   {t:'Primero se quema, luego se broncea un poco',p:{cool:1}},
-  {t:'Se quema o enrojece siempre',p:{cool:1,light:2}}]},
+  {t:'Se quema o enrojece siempre',p:{cool:1,light:1}}]},
 {q:'¿De qué color son tus ojos?',op:[
-  {t:'Negros o café muy oscuro',dot:'#2B1A12',p:{deep:2}},
+  {t:'Negros o café muy oscuro',dot:'#2B1A12',p:{deep:1}},
   {t:'Café medio o miel',dot:'#7B4F2A',p:{warm:1}},
   {t:'Ámbar o avellana',dot:'#A9743F',p:{warm:1,soft:1}},
   {t:'Verdes',dot:'#4E7A4E',p:{bright:1}},
   {t:'Azules o grises',dot:'#7A94AD',p:{cool:1,light:1}}]},
+{q:'¿Cuál es tu tono de piel? (elige el más cercano)',op:[
+  {t:'Muy clara',dot:'#F4E3D3',p:{light:2},d:0},
+  {t:'Clara',dot:'#EFD3B5',p:{light:1},d:0},
+  {t:'Media / apiñonada',dot:'#DDB287',p:{},d:1},
+  {t:'Morena clara',dot:'#C68F5F',p:{},d:1},
+  {t:'Morena',dot:'#9C6B44',p:{deep:1},d:2},
+  {t:'Morena oscura',dot:'#6E452B',p:{deep:2},d:2}]},
 {q:'¿Cuál es el color natural de tu cabello?',op:[
-  {t:'Negro',dot:'#151312',p:{deep:2,cool:1}},
-  {t:'Castaño oscuro',dot:'#3B2A1E',p:{deep:1}},
-  {t:'Castaño medio o claro',dot:'#6E4F33',p:{soft:1}},
-  {t:'Rubio',dot:'#C7A268',p:{light:2}},
-  {t:'Rojizo o cobrizo',dot:'#8C3A1D',p:{warm:2}},
-  {t:'Canoso o blanco',dot:'#CFCFCF',p:{cool:1,light:1}}]},
-{q:'El contraste entre tu piel, cabello y ojos es…',op:[
-  {t:'Alto — muy contrastados entre sí',p:{bright:2}},
-  {t:'Medio',p:{}},
-  {t:'Bajo — tonos parecidos entre sí',p:{soft:2}}]}
+  {t:'Negro',dot:'#151312',p:{deep:2},d:2},
+  {t:'Castaño oscuro',dot:'#3B2A1E',p:{deep:1},d:2},
+  {t:'Castaño medio o claro',dot:'#6E4F33',p:{soft:1},d:1},
+  {t:'Rubio',dot:'#C7A268',p:{light:2},d:0},
+  {t:'Rojizo o cobrizo',dot:'#8C3A1D',p:{warm:2},d:1},
+  {t:'Canoso o blanco',dot:'#CFCFCF',p:{cool:1,light:1},d:0}]}
 ];
-let _quizIdx=0,_quizPts=null;
+let _quizIdx=0,_quizResp=[];
 function perfilColor(){try{return JSON.parse(localStorage.getItem('wrd_color_perfil'))||null;}catch(e){return null;}}
 function renderMiColor(){
   const body=document.getElementById('micolor-body');
@@ -1833,58 +1844,81 @@ function renderMiColor(){
   }
   const e=ESTACIONES[perfil.estacion];
   const grid=arr=>`<div class="mc-grid">${arr.map(c=>`<div class="mc-sw" style="background:${c}" onclick="showToast('${c}')"></div>`).join('')}</div>`;
+  // Clasificar el clóset real contra la paleta (estricto, LAB ≤ UMBRAL_MIO)
+  const fav=[],neu=[],nof=[];
+  inventario.forEach(p=>{
+    const cs=coloresDe(p).filter(c=>!esNeutro(c));
+    if(!cs.length){neu.push(p);return;}
+    (cs.some(enMiPaleta)?fav:nof).push(p);
+  });
+  const ropa=arr=>arr.length
+    ?`<div class="mc-ropa">${arr.map(p=>`<div class="mc-prenda" onclick="showToast('${(p.nombre||'').replace(/'/g,'')}')">${p.foto?`<img src="${p.foto}" loading="lazy" alt="">`:`<div class="mc-prenda-ph" style="background:${p.color}"></div>`}</div>`).join('')}</div>`
+    :`<div class="mc-vacio">Nada de tu clóset por aquí</div>`;
   body.innerHTML=`
     <div class="mc-titulo">Tu estación</div>
     <div class="mc-nombre">${e.nombre}</div>
     <div class="mc-desc">${e.desc}</div>
-    <div class="mc-sec">Tu paleta</div>${grid(e.colores)}
-    <div class="mc-sec">Tus neutros</div>${grid(e.neutros)}
-    <div class="mc-sec">Evita estos</div>${grid(e.evitar)}
-    <div class="mc-sec">Tu metal · ${e.metal}</div>
-    <div class="mc-desc" style="padding-top:8px">Los outfits dentro de tu paleta llevan la marca <span style="color:#ff1a00">✦</span> y las prendas que te favorecen lo indican en su ficha.</div>
+    <div class="mc-sec" style="padding-top:6px">Tu metal · ${e.metal}</div>
+    <div class="mc-sec" style="color:#fff">Te favorecen · ${fav.length} prendas</div>
+    ${grid(e.colores)}${ropa(fav)}
+    <div class="mc-sec" style="color:#fff">Neutras — combinan con todo · ${neu.length} prendas</div>
+    ${grid(e.neutros)}${ropa(neu)}
+    <div class="mc-sec" style="color:#fff">No te favorecen · ${nof.length} prendas</div>
+    ${grid(e.evitar)}${ropa(nof)}
+    <div class="mc-desc" style="padding-top:14px">Los outfits dentro de tu paleta llevan la marca <span style="color:#ff1a00">✦</span> y las prendas que te favorecen lo indican en su ficha.</div>
     <button class="mc-btn-sec" onclick="empezarQuiz()">Repetir análisis</button>`;
 }
 function empezarQuiz(){
-  _quizIdx=0;_quizPts={warm:0,cool:0,light:0,deep:0,bright:0,soft:0};
+  _quizIdx=0;_quizResp=[];
   renderPreguntaColor();
 }
 function renderPreguntaColor(){
   const q=PREGUNTAS_COLOR[_quizIdx];
   document.getElementById('micolor-body').innerHTML=`
+    <div class="mc-atras" onclick="${_quizIdx>0?'quizAtras()':'renderMiColor()'}">‹ ${_quizIdx>0?'Anterior':'Salir'}</div>
     <div class="mc-prog">${_quizIdx+1} / ${PREGUNTAS_COLOR.length}</div>
     <div class="mc-q">${q.q}</div>
     ${q.op.map((o,i)=>`<div class="cat-link" onclick="responderQuiz(${i})"><span class="cat-link-text">${o.dot?`<span class="mc-dot" style="background:${o.dot}"></span>`:''}${o.t}</span></div>`).join('')}`;
   window.scrollTo(0,0);
 }
+function quizAtras(){if(_quizIdx>0){_quizIdx--;renderPreguntaColor();}}
 function responderQuiz(i){
-  const pts=PREGUNTAS_COLOR[_quizIdx].op[i].p||{};
-  for(const k in pts)_quizPts[k]+=pts[k];
+  _quizResp[_quizIdx]=i;
   _quizIdx++;
   if(_quizIdx>=PREGUNTAS_COLOR.length)calcularEstacion();else renderPreguntaColor();
 }
 function calcularEstacion(){
-  // Método de característica dominante: subtono define familia cálida/fría,
-  // el eje más marcado (valor o croma) define la subestación
-  const p=_quizPts;
+  // Método de característica dominante. El contraste NO se pregunta: se deriva
+  // de la diferencia de profundidad entre piel (pregunta 5) y cabello (pregunta 6)
+  const p={warm:0,cool:0,light:0,deep:0,bright:0,soft:0};
+  _quizResp.forEach((r,qi)=>{
+    const op=PREGUNTAS_COLOR[qi].op[r],pts=op.p||{};
+    for(const k in pts)p[k]+=pts[k];
+  });
+  const dPiel=PREGUNTAS_COLOR[4].op[_quizResp[4]].d;
+  const dPelo=PREGUNTAS_COLOR[5].op[_quizResp[5]].d;
+  const dif=Math.abs(dPiel-dPelo);
+  if(dif>=2)p.bright+=2;else if(dif===0)p.soft+=1;
   const calido=p.warm>=p.cool;
   const ejes=[
     {k:'light',v:p.light-p.deep},{k:'deep',v:p.deep-p.light},
     {k:'bright',v:p.bright-p.soft},{k:'soft',v:p.soft-p.bright}
   ].filter(e=>e.v>0).sort((a,b)=>b.v-a.v);
-  const dom=ejes.length?ejes[0].k:null;
+  // Umbral 2: ejes débiles caen en las estaciones "puras" (cálida/fría)
+  const dom=(ejes.length&&ejes[0].v>=2)?ejes[0].k:null;
   let est;
   if(calido){
     if(dom==='light')est='primavera_clara';
     else if(dom==='bright')est='primavera_brillante';
     else if(dom==='deep')est='otono_profundo';
     else if(dom==='soft')est='otono_suave';
-    else est=p.bright>=p.soft?'primavera_calida':'otono_calido';
+    else est=(p.deep>p.light||p.soft>p.bright)?'otono_calido':'primavera_calida';
   }else{
     if(dom==='light')est='verano_claro';
     else if(dom==='soft')est='verano_suave';
     else if(dom==='deep')est='invierno_profundo';
     else if(dom==='bright')est='invierno_brillante';
-    else est=p.bright>=p.soft?'invierno_frio':'verano_frio';
+    else est=(p.deep>p.light||p.bright>p.soft)?'invierno_frio':'verano_frio';
   }
   localStorage.setItem('wrd_color_perfil',JSON.stringify({estacion:est,fecha:new Date().toISOString().slice(0,10)}));
   _palCache={key:null,labs:null};
@@ -1898,10 +1932,13 @@ function _paletaLabs(estKey){
   if(_palCache.key!==estKey)_palCache={key:estKey,labs:ESTACIONES[estKey].colores.map(hexToLab)};
   return _palCache.labs;
 }
+// Umbral estricto elegido con datos reales del clóset: 19 admite camel (18.1)
+// y excluye rojo brillante (20.7), amarillo (21.4) y neones (40+)
+const UMBRAL_MIO=19;
 function enMiPaleta(hex){
   const perfil=perfilColor();if(!perfil||!ESTACIONES[perfil.estacion])return false;
   const[L,A,B]=hexToLab(hex);
-  return _paletaLabs(perfil.estacion).some(l=>Math.sqrt((L-l[0])**2+(A-l[1])**2+(B-l[2])**2)<=27);
+  return _paletaLabs(perfil.estacion).some(l=>Math.sqrt((L-l[0])**2+(A-l[1])**2+(B-l[2])**2)<=UMBRAL_MIO);
 }
 function prendaFavorece(p){return coloresDe(p).some(c=>!esNeutro(c)&&enMiPaleta(c));}
 function esMiColorOutfit(o){
