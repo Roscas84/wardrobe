@@ -1574,7 +1574,14 @@ function cargarFoto(input){
       status.textContent='✓ Listo';
       mostrarChipsColor(extraerColoresDominantes(img));
     }catch(err){
-      status.textContent='Toca para cambiar foto';
+      // Avisar POR QUÉ no se quitó el fondo (antes fallaba en silencio)
+      const m=String(err&&err.message||'');
+      let razon='remove.bg no respondió — la foto se queda con fondo';
+      if(m.includes('sin API key'))razon='Sin API key de remove.bg — configúrala en Ajustes';
+      else if(m.includes('402'))razon='remove.bg sin créditos este mes — la foto se queda con fondo';
+      else if(m.includes('403'))razon='API key de remove.bg inválida — revísala en Ajustes';
+      showToast('⚠ '+razon);
+      status.textContent='⚠ Fondo NO removido';
       const normalizado=await normalizarProporcion(e.target.result).catch(()=>e.target.result);
       img.src=normalizado;
       await new Promise(res=>{img.complete?res():(img.onload=img.onerror=res);});
