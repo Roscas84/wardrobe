@@ -1,225 +1,71 @@
-# Mi Guardarropa — PWA de outfits con motor cromático HSL
+# Mi Guardarropa — PWA de outfits con motor cromático y colorimetría personal
 
-App web progresiva (PWA) de uso personal para gestionar inventario de ropa y generar outfits basados en teoría del color. Funciona como app instalada en iPhone/Android sin necesidad de App Store.
+App web progresiva de uso personal: inventario de ropa, generación de outfits por teoría del color y análisis de colorimetría de 12 estaciones. Instalable en iPhone sin App Store.
 
-**URL:** https://roscas84.github.io/wardrobe/
-**Repo:** https://github.com/Roscas84/wardrobe (privado)
-
----
-
-## Estado actual — SW v102
-
-### Lo que funciona hoy
-
-| Módulo | Estado |
-|---|---|
-| Inventario (Closet) con foto flip-card | Completo |
-| Búsqueda por color — burbujas con conteo | Completo |
-| Carga de prendas con rembg (fondo eliminado automáticamente) | Completo |
-| Normalización automática de proporciones al subir foto | Completo |
-| Extracción automática de colores dominantes al subir foto | Completo |
-| Sincronización GitHub: fotos nuevas se suben al repo automáticamente | Completo |
-| Motor cromático HSL — 7 armonías de la color wheel | Completo |
-| Pre-check por armonía: todos los ángulos deben tener prenda real | Completo |
-| Tolerancia ±15° por posición harmónica (C1 exacto + C2 flexible) | Completo |
-| Neutros excluidos de esCompatible (solo entran como fallback) | Completo |
-| Paleta de colores en cada outfit (agrupada por posición harmónica) | Completo |
-| Badge Sanzo Wada en outfits validados cromáticamente | Completo |
-| Layout 60/40 — izquierda: exterior+superior+inferior / derecha: calzado+accesorios | Completo |
-| Carrusel horizontal con scroll-snap | Completo |
-| Material / composición de tela con porcentajes | Completo |
-| Símbolos de cuidado (lavado, secado, plancha) con auto-sugerencia | Completo |
-| Service Worker v102 — network-first para HTML/JSON, cache-first para imágenes | Completo |
-| Sección "Ajustes" colapsable en Cargar (Datos/GitHub/Remove.bg) | Completo |
-| Eliminaciones propagadas entre dispositivos (tombstones en guardarropa.json) | Completo |
-| API key de remove.bg en localStorage por dispositivo (nunca en el código) | Completo |
-
-### Inventario actual
-- 52 prendas cargadas con foto procesada (WebP, 1200×1600 px, fondo transparente)
-- Imágenes respaldadas en: `/Users/angelalcantara/Claude/Proyects/Wardrobe/Inventory/images_procesadas/`
-- Excel fuente de verdad: `/Users/angelalcantara/Claude/Proyects/Wardrobe/Inventory/Mi_Guardarropa_v3.xlsx`
+**URL:** https://roscas84.github.io/wardrobe/ · **Repo:** https://github.com/Roscas84/wardrobe (privado)
+**Estado:** SW v102 · 52 prendas · roadmap completado 2026-07-04
 
 ---
 
-## TODO — Pendientes
-
-### Datos (trabajo manual)
-- [ ] Actualizar **cuidados de lavado/secado/plancha** en las 49 prendas originales (Excel con dropdowns listo)
-- [ ] Verificar y corregir **tallas reales** en todas las prendas (decisión 2026-07-01: no prioridad)
-- [ ] Pegar la **API key de remove.bg** en cada dispositivo (app → Cargar → Remove.bg) — desde 2026-07-04 ya no va en el código
-
-### Lógica / Bugs conocidos
-- [ ] **ID 49 Overalls**: canvas fill 23.1% con bbox sospechosamente angosto (346px wide) — posible artefacto rembg
-- Nota: el bug "dos capas exteriores" (blazer + chamarra juntos) **no es reproducible en el código actual** (revisión 2026-07-04) — ninguna ruta de `generarParaArmonia` agrega dos exteriores; verificar en la app antes de reabrir
-
-### UX pequeñas
-- [ ] Revisar que el menú Outfit esté bien centrado en todos los iPhone (SE y Pro Max)
-
-### Diseño
-- [x] ~~Ejecutar el skill ui-ux-pro-max~~ — se aplicó el paquete "Minimalist Monochrome + Playfair Display" (SW v73) y **se revirtió el mismo día**: al usuario no le gustó; solo se conservó el acordeón "Ajustes" en Cargar. NO volver a proponer serif editorial ni cambios masivos de estilo.
-- [ ] **Nueva dirección de diseño basada en referencias de Zara**: el usuario subirá capturas de la app de Zara a una carpeta local para extraer ideas (tipografía, arquitectura de pantallas) y aplicar mejoras puntuales sobre la base actual, sin romperla
-
----
-
-## Pipeline de imágenes
-
-### Procesamiento estándar (Python)
-```
-Fuente: /Inventory/Images/{nombre}.png o .webp
-→ Verificar modo PIL:
-   - RGBA → usar directamente (usuario ya removió fondo)
-   - RGB  → rembg isnet-general-use (elimina fondo)
-→ PIL enhance: Contrast×1.12, Color×1.15, Sharpness×1.30, UnsharpMask(1.0,50,3)
-→ auto_crop_dominant: bbox no-transparente + 5% margen → escalar por dimensión dominante al 90% fill → canvas 1200×1600 RGBA
-→ Guardar WebP quality=85
-→ Respaldar en images_procesadas/
-→ git add + commit + push
-```
-
-### Normalización automática al subir desde la app
-```
-cargarFoto() → removerFondo() (rembg en browser) → normalizarProporcion() (Canvas API)
-→ misma lógica: bbox + escala por dimensión dominante al 90% fill → 1200×1600
-→ si token GitHub configurado: subirFotoGitHub() + subirJsonGitHub()
-→ si no hay token: guardar en localStorage del dispositivo
-```
-
-### Sincronización GitHub desde la app
-El token se guarda en `localStorage` del dispositivo (nunca en el código).
-Configurar en: app → pestaña Cargar → sección "Sincronización GitHub".
-Permisos necesarios: `repo` (Personal Access Token classic).
-
-La API key de remove.bg también vive en `localStorage` (`rmbg_key`), configurable en
-app → Cargar → "Remove.bg — quitar fondo". Sin key, la foto se guarda sin quitar el fondo.
-
-**Formato de `guardarropa.json` (desde 2026-07-04):** `{prendas: [...], deleted: [ids]}`.
-`deleted` son tombstones: IDs eliminados que ningún dispositivo debe revivir. Al subir el JSON
-se hace unión con los tombstones remotos para no pisar eliminaciones de otros dispositivos.
-El loader también acepta el formato legado (array plano).
-
-**Fotos editadas:** al resubir una foto se guarda la ruta con `?v=<timestamp>` para invalidar
-el cache-first del service worker (misma URL nunca se revalida).
-
----
-
-## Roadmap decidido con el usuario — 2026-07-04
-
-| # | Función | Descripción acordada | Estado |
-|---|---|---|---|
-| 1 | **Favoritos** | ♥ en outfit card (rojo #ff1a00 al activar) + link "Favoritos" en Outfit paso 1; sync en guardarropa.json (`favs`) | ✅ Hecho (SW v80) |
-| 2 | **Color secundario** | Campo opcional color2; el motor combina por ambos colores (rayas = combinación de fábrica); búsqueda por color y paleta lo incluyen | ✅ Hecho (SW v80) |
-| 3 | **Desbloqueo de looks** | Franjas de color a lo ancho (nombre + hex como referencia de compra) con el número de looks que desbloquea; en Closet | ✅ Hecho (SW v80) |
-| 3b | **Gotero de color** | Botón gotero en las 3 barras de color: toma el color exacto tocando la foto (iPhone) o con el gotero nativo del sistema (Chrome escritorio) | ✅ Hecho (SW v83) |
-| 4 | **Colorimetría personal** | Pestaña "Mi Color" (5ª en nav): cuestionario de 6 preguntas → 1 de 12 estaciones (método característica dominante, Sci\\ART) → paleta ~18 colores + neutros + evitar + metal → badge ✦ en outfits dentro de la paleta y "Te favorece" en fichas. BD de 12 estaciones embebida; perfil sync en guardarropa.json | ✅ Hecho (SW v90) |
-| 5 | **Compartir outfit** | Botón en cada outfit card → imagen vertical 1080×1920 (collage + franja de paleta + marca MI GUARDARROPA) → navigator.share (WhatsApp/IG/Fotos/AirDrop); descarga como fallback en desktop | ✅ Hecho (SW v101) |
-| 6 | **Sistema de capas medio/base** | Posiciones base/medio/exterior; 4 niveles de outfit: base+inf, medio+base+inf, ext+base+inf, ext+medio+base+inf. Blazer y Chaqueta = capa media; Chamarra y Abrigo = exterior | ✅ Hecho (SW v91) |
-| 7 | **Modo viaje** | Link en Outfit → eliges días (2-8) → greedy: cada look nuevo agrega el mínimo de prendas a la maleta, priorizando ✦ y Wada → lista de empaque en fotos + look por día | ✅ Hecho (SW v102) |
-| — | ~~Filtro por ocasión~~ | Descartado por el usuario (ya existe campo formalidad) | ✗ |
-| — | ~~Historial/calendario~~ | Pospuesto: requiere registro manual diario, dudosa adopción | ⏸ |
-| — | Estadísticas de uso / Wishlist | Fusionadas conceptualmente con Desbloqueo de looks | → #3 |
-
-### Ideas restantes (sin compromiso)
-
-### Sistema de capas — IMPLEMENTADO 2026-07-04 (SW v91)
-
-**Problema actual:** `exterior`, `superior`, `inferior` — hoodie y playera caen en `superior`, nunca se combinan.
-
-**Solución propuesta:** agregar posición `medio` (hoodie/suéter) y `base` (playera/camisa).
-
-| Posición actual | Propuesta | Prendas |
-|---|---|---|
-| `exterior` | `exterior` | abrigo, chamarra, trench |
-| `exterior` | `medio` | blazer, cardigan, chaqueta denim |
-| `superior` | `medio` | hoodie, suéter |
-| `superior` | `base` | playera, camiseta, camisa, polo |
-
-**Combinaciones válidas:**
-```
-Nivel 1: [base + inferior]
-Nivel 2a: [medio + base + inferior]
-Nivel 2b: [exterior + base + inferior]
-Nivel 3: [exterior + medio + base + inferior]
-```
-
-**Migración necesaria:**
-1. Renombrar `superior` → `base` o `medio` en `guardarropa.json`
-2. Actualizar `getPosicion()` en `index.html`
-3. Reescribir `generarParaArmonia()`
-4. Actualizar layout de outfit card
-
-### Colorimetría personal
-5. **Análisis Estacional** — Primavera/Verano/Otoño/Invierno según tono de piel, ojos y cabello
-   - warm+light = Primavera, cool+light = Verano, warm+deep = Otoño, cool+deep = Invierno
-   - Integrar con outfits: destacar outfits de la paleta personal
-
-### Inventario
-6. **Estadísticas de uso** — qué prendas aparecen más/menos en outfits
-7. **Wishlist** — prendas por comprar con hex objetivo
-
-### Color
-8. **Color secundario** — prendas 50/50 (rayas, etc.) con dos hexes
-9. **Detección de patrón** — liso / rayas / cuadros / estampado al subir foto
-
-### Experiencia
-10. **Compartir outfit** — imagen para WhatsApp/Instagram
-11. **Modo viaje** — N días + clima → outfits mínimos
-12. **Swipe para descartar** — deslizar outfit hacia abajo
-
----
-
-## Arquitectura técnica
+## Arquitectura
 
 ```
-index.html          — App completa (single-file PWA, todo inline)
-sw.js               — Service Worker v102
-guardarropa.json    — {prendas, deleted} — 52 prendas (fuente de verdad, siempre se carga al iniciar)
-images/             — WebPs procesados con rembg, 1200×1600 px, fondo transparente
-manifest.json       — PWA manifest
+index.html        — App completa (single-file, todo inline). Único archivo de código
+sw.js             — Service worker. SUBIR versión de CACHE en cada push de app
+guardarropa.json  — Fuente de verdad: {prendas:[...], deleted:[ids], favs:[claves], perfil:{estacion,fecha}}
+images/           — WebP 1200×1600 fondo transparente (curadas + user_<id>.webp de la app)
+slides/           — Fotos editoriales del usuario para el hero de Inicio
 ```
 
-### Motor de color (HSL)
+- **Sync bidireccional** vía GitHub API (token en localStorage `gh_token`): toda mutación llama `sincronizarInventario()`. Tombstones (`deleted`) propagan eliminaciones entre dispositivos; el perfil de colorimetría nunca se pisa con vacío; fotos editadas llevan `?v=<timestamp>` (SW cache-first en imágenes).
+- **SW**: network-first con `{cache:'no-cache'}` para HTML/JSON (esquiva el max-age=600 de GitHub Pages), cache-first para imágenes.
+- **localStorage**: `wrd_inv`, `wrd_favs`, `wrd_color_perfil`, `wrd_pending_del`, `wrd_dirty`, `gh_token`, `rmbg_key` (remove.bg — nunca en código).
 
-```
-Ancla → getHuesObjetivo() → [target1°, target2°, ...]
-Pre-check: cada target debe tener ≥1 prenda no-neutra en inventario
-esCompatible: !esNeutro && (dist ≤ 15° de cualquier target || dist ≤ 15° del ancla)
-pool(): compatibles → fallback neutros (nunca "todo el inventario")
-Paleta: agrupar por posición harmónica → 1 color real por posición
-```
+## Funcionalidades por pestaña
 
-### Armonías implementadas
+- **Inicio** — hero editorial: fotos del usuario encadenadas (ken burns, crossfade, 2.8s), 2 collages trípticos, "Mi Guardarropa" fijo en rojo. Sin header global.
+- **Closet** — Búsqueda por color (burbujas con conteo, incluye colores 2/3) · categorías · **Colores que te faltan** (colores de la paleta personal sin equivalente en clóset, con "+N looks"; sin perfil invita a Mi Color) · **Todo el clóset** agrupado por secciones.
+- **Outfit** — motor HSL de 7 armonías con **capas base/medio/exterior** (4 niveles: básico, capa media, exterior, tres capas) · Favoritos ♥ · Modo Libre · **Modo Viaje** (N días → maleta mínima greedy + look por día) · badges por card: ♥ ✦ (paleta personal) W (Sanzo Wada) · botón **compartir** (canvas 1080×1920 → hoja nativa).
+- **Mi Color** — quiz de 6 preguntas (venas, joyería, sol, ojos, tono de piel con muestras, cabello; contraste DERIVADO de piel vs cabello) → 1 de 12 estaciones (método característica dominante, umbral de dominancia ≥2, empates → estaciones puras) → paleta/neutros/evitar + **comparativa del clóset real en fotos en 4 niveles**: Te favorecen / Neutras / No recomendadas / Evítalas.
+- **Cargar** — form: tipo (generado de CATEGORIAS), **capa override** (auto/base/media/exterior — la capa es de la prenda, no del tipo), hasta **3 colores** con **gotero** (EyeDropper en Chrome, tap-en-foto en iPhone), telas con %, cuidados auto-sugeridos, remove.bg. Ajustes plegable (Datos/GitHub/Remove.bg). Todo en negro.
 
-| Armonía | Ángulos objetivo | Colores |
-|---|---|---|
-| Análoga | ±30° | 3 |
-| Complementaria | +180° | 2 |
-| Split complementaria | +150°, +210° | 3 |
-| Triádica | +120°, +240° | 3 |
-| Tetrádica | +60°, +180°, +240° | 4 |
-| Cuadrada | +90°, +180°, +270° | 4 |
-| Abstracta | +30°, +150°, +210° | 4 |
+## Motor de color — invariantes y umbrales
 
-### Invariantes que NO deben cambiar
-- `TOLERANCIA = 15` — garantiza sin solapamiento entre armonías adyacentes
-- Neutros NUNCA en `esCompatible` — solo fallback
-- `pool()` fallback: solo neutros, nunca "todo el inventario"
-- `object-fit: contain` — nunca recortar prendas
-- Sin nombres en outfit cards — solo imagen + paleta + badge Wada
-- Fondo negro en Closet y Outfit
+**NO cambiar:**
+- `TOLERANCIA = 15` (±15° por posición armónica)
+- Neutros NUNCA en esCompatible — solo fallback; `pool()` fallback solo neutros
+- `esNeutro` (motor: navy/camel/oliva = comodines) ≠ `esNeutroColorim` (colorimetría: solo acromáticos)
+- `object-fit: contain`, sin nombres en outfit cards, paleta 28px al pie
 
----
+**Umbrales calibrados con datos reales del clóset:**
+- `UMBRAL_MIO = 19` — "¿me favorece?" (camel entra a 18.1, rojo brillante fuera a 20.7)
+- `UMBRAL_TENGO = 14` — "¿ya tengo este color?" (compras; 1 prenda no debe cubrir 5 tonos)
+- Evitar (choque directo): LAB ≤ 28 contra arquetipos · Wada: LAB ≤ 30 · outfit ✦: ≥60% de colores cromáticos en paleta
+- `nombreColor()` nombra por carácter HSL (Vino, Café oscuro, Óxido, Ocre, Terracota, Mostaza…), no por sector de tono
 
-## Arranque de sesión de desarrollo
+## Diseño — decisiones fijas del usuario
+
+- Helvetica Neue 300, uppercase, letter-spacing (serif editorial RECHAZADA — no volver a proponer)
+- Fondo negro en Closet/Outfit/Cargar; acento único #ff1a00 (nav inferior roja, íconos 22px)
+- Menús: 13px / weight 300 / 1px tracking / UPPERCASE en todas las pestañas
+- Nada de rediseños masivos: mejoras puntuales con aprobación, referencia = app de Zara
+- Web ≥700px: columna 1080px las 4 pestañas, grid 3-4 cols, outfits 2-3 lado a lado, modal 2 columnas
+
+## Flujo de desarrollo
 
 ```bash
-git clone https://ghp_TOKEN@github.com/Roscas84/wardrobe.git /tmp/wardrobe
-# trabajar en /tmp/wardrobe/index.html y sw.js
-# siempre subir versión de CACHE en sw.js al hacer push
-git add index.html sw.js && git commit -m "descripción" && git push
+git clone https://ghp_TOKEN@github.com/Roscas84/wardrobe.git /tmp/wardrobe   # token: usuario lo pasa por chat
+# editar → extraer <script> y validar con node --check → subir CACHE en sw.js → commit + push
+# verificar deploy: curl sw.js en vivo; si se atasca >5 min → commit vacío lo destraba
 ```
 
-**Backup local de imágenes:**
-```bash
-# Respaldar imágenes procesadas a carpeta local
-cp /tmp/wardrobe/images/*.webp "/Users/angelalcantara/Claude/Proyects/Wardrobe/Inventory/images_procesadas/"
-```
+## Pendientes (usuario)
+
+1. Validar v101-v102 (compartir, modo viaje) y **repetir el quiz de Mi Color** (el perfil ya persiste)
+2. Llenar cuidados N/O/P en el Excel de las 49 prendas originales → pasar al JSON
+3. Cargar la ropa que falta; retomar fotos con maniquí (11) y las 3 que rembg no limpió; foto Overalls ID 49
+4. Tallas reales (decisión: sin prioridad)
+
+## Futuro (sin compromiso)
+
+Historial/calendario (pospuesto — requiere registro manual) · estadísticas de uso · detección de patrón · monetización (requeriría backend con cuentas: Supabase/Firebase).
