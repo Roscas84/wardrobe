@@ -460,7 +460,7 @@ body{font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;background:#f5f0eb;
     <div class="field"><label>Nombre</label><input type="text" id="inp-nombre" placeholder="Ej: Jean azul claro"></div>
     <div class="field">
       <label>Tipo</label>
-      <select id="inp-tipo">
+      <select id="inp-tipo" onchange="sugerirTemporada()">
         <option value="">Selecciona...</option>
         <!-- optgroups generados desde CATEGORIAS en initTipoSelect() -->
       </select>
@@ -472,6 +472,17 @@ body{font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;background:#f5f0eb;
         <option value="base">Base — pegada al cuerpo</option>
         <option value="medio">Media — abierta o ligera (camisa abierta, blazer, rompevientos)</option>
         <option value="exterior">Exterior — gruesa (chamarra pesada, abrigo)</option>
+      </select>
+    </div>
+    <div class="field">
+      <label>Temporada (define en qué clima viaja contigo)</label>
+      <select id="inp-temporada" onchange="_temporadaManual=true">
+        <option value="Todo">Todo el año</option>
+        <option value="Primavera/Verano">Primavera/Verano</option>
+        <option value="Primavera/Otoño">Primavera/Otoño</option>
+        <option value="Otoño/Invierno">Otoño/Invierno</option>
+        <option value="Verano">Solo verano</option>
+        <option value="Invierno">Solo invierno</option>
       </select>
     </div>
     <div class="field">
@@ -1298,6 +1309,9 @@ function editarPrenda(id){
   document.getElementById('inp-nombre').value=p.nombre;
   document.getElementById('inp-tipo').value=p.tipo;
   document.getElementById('inp-capa').value=p.capa||'';
+  // Al editar, la temporada guardada es decisión del usuario: no la pisan las sugerencias
+  document.getElementById('inp-temporada').value=p.temporada||'Todo';
+  _temporadaManual=true;
   document.getElementById('inp-color').value=p.color;
   document.getElementById('inp-hex').value=p.color;
   document.getElementById('inp-hex2').value=p.color2||'';
@@ -1344,6 +1358,7 @@ function cerrarModal(){desactivarGotero();document.getElementById('modal-prenda'
 function limpiarModal(){
   ['inp-nombre','inp-marca','inp-talla'].forEach(id=>document.getElementById(id).value='');
   document.getElementById('inp-tipo').value='';document.getElementById('inp-capa').value='';
+  document.getElementById('inp-temporada').value='Todo';_temporadaManual=false;
   document.getElementById('inp-color').value='#000000';
   document.getElementById('inp-hex').value='#000000';
   limpiarColorN(2);limpiarColorN(3);
@@ -1606,6 +1621,23 @@ function sugerirCuidados(){
   const sug=CUIDADOS_POR_TELA[dom];if(!sug)return;
   setCuidado(sug);
 }
+// Temporada sugerida: el tipo abrigador manda; si no, la tela dominante (lino=cálido,
+// lana=frío). Es solo un punto de partida — el valor por prenda siempre lo decide el usuario
+let _temporadaManual=false;
+const TIPOS_FRIO=['Hoodie','Sudadera','Suéter','Chamarra','Abrigo','Botas','Bota','Bufanda'];
+function sugerirTemporada(){
+  if(_temporadaManual)return;
+  const sel=document.getElementById('inp-temporada');
+  const tipo=document.getElementById('inp-tipo').value;
+  if(TIPOS_FRIO.includes(tipo)){sel.value='Otoño/Invierno';return;}
+  const mats=getMaterial();
+  if(mats.length){
+    const dom=mats.sort((a,b)=>b.pct-a.pct)[0].tela;
+    if(dom==='Lino'||dom==='Bambú'){sel.value='Primavera/Verano';return;}
+    if(dom==='Lana'||dom==='Gamuza'){sel.value='Otoño/Invierno';return;}
+  }
+  sel.value='Todo';
+}
 const TELAS=['Algodón','Lino','Lana','Seda','Bambú','Lyocell / Tencel','Viscosa','Gamuza','Cuero','Poliéster','Nylon','Spandex / Elastano'];
 function addMaterialRow(tela='',pct=''){
   // Sin coincidencia exacta el <select> caería en la primera opción (Algodón) y
@@ -1628,6 +1660,7 @@ function updateMaterialTotal(){
   el.textContent='Total: '+total+'%';
   el.style.color=total===100?'#4caf50':'#C9A227';
   sugerirCuidados();
+  sugerirTemporada();
 }
 function getMaterial(){
   return[...document.querySelectorAll('.mat-row')].map(r=>({tela:r.querySelector('.mat-sel').value,pct:parseInt(r.querySelector('.mat-pct').value)||0})).filter(m=>m.tela&&m.pct>0);
@@ -1770,6 +1803,7 @@ async function guardarPrenda(){
   const talla=document.getElementById('inp-talla').value.trim();
   const material=getMaterial();
   const capa=document.getElementById('inp-capa').value||null;
+  const temporada=document.getElementById('inp-temporada').value;
   const formalidad=document.getElementById('inp-formalidad').value;
   const cuidado=getCuidado();
   const fotoEl=document.getElementById('preview-foto');
@@ -1779,8 +1813,8 @@ async function guardarPrenda(){
   if(!nombre||!tipo){alert('Escribe el nombre y selecciona el tipo.');return;}
   if(material.length){const total=material.reduce((s,m)=>s+m.pct,0);if(total!==100){alert('Los porcentajes de tela deben sumar 100% (ahora suman '+total+'%).');return;}}
   cerrarModal();
-  if(editandoId){const idx=inventario.findIndex(p=>p.id===editandoId);if(idx>=0)inventario[idx]={...inventario[idx],nombre,tipo,capa,color,color2,color3,marca,talla,material,cuidado,formalidad,foto,pos:getPosicion(tipo)};}
-  else{inventario.push({id:Date.now(),nombre,tipo,capa,color,color2,color3,marca,talla,material,cuidado,formalidad,foto,pos:getPosicion(tipo)});}
+  if(editandoId){const idx=inventario.findIndex(p=>p.id===editandoId);if(idx>=0)inventario[idx]={...inventario[idx],nombre,tipo,capa,temporada,color,color2,color3,marca,talla,material,cuidado,formalidad,foto,pos:getPosicion(tipo)};}
+  else{inventario.push({id:Date.now(),nombre,tipo,capa,temporada,color,color2,color3,marca,talla,material,cuidado,formalidad,foto,pos:getPosicion(tipo)});}
   guardarLocal();renderClosetMain();renderOutfitMain();
   // Sync centralizado: sube foto pendiente (si hay) + JSON, en altas y ediciones
   await sincronizarInventario();
@@ -2125,7 +2159,8 @@ function climaPermite(p,clima){
   const t=p.temporada||'Todo';
   if(t==='Todo'||!clima)return true;
   if(clima==='frio')return t!=='Verano'&&t!=='Primavera/Verano';
-  if(clima==='calido')return t!=='Invierno'&&t!=='Otoño/Invierno';
+  // Cálido es estricto: solo lo pensado para calor (Primavera/Otoño NO viaja a destinos cálidos)
+  if(clima==='calido')return t==='Primavera/Verano'||t==='Verano';
   return t!=='Invierno'; // templado: solo queda fuera lo puramente invernal
 }
 function activarModoViaje(){

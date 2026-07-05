@@ -3,7 +3,7 @@
 App web progresiva de uso personal: inventario de ropa, generación de outfits por teoría del color y análisis de colorimetría de 12 estaciones. Instalable en iPhone sin App Store.
 
 **URL:** https://roscas84.github.io/wardrobe/ · **Repo:** https://github.com/Roscas84/wardrobe (privado)
-**Estado:** SW v103 · 52 prendas · roadmap completado 2026-07-04 · rediseño acento oro viejo 2026-07-05
+**Estado:** SW v104 · 52 prendas · roadmap completado 2026-07-04 · rediseño acento oro viejo 2026-07-05
 
 ---
 
@@ -25,9 +25,9 @@ slides/           — Fotos editoriales del usuario para el hero de Inicio
 
 - **Inicio** — pantalla fija sin scroll: collage editorial rotativo (4 plantillas grid 4×6 de 13-15 fotos, algunas celdas B/N o sepia, crossfade cada 7s), "Mi Guardarropa" fijo en oro viejo. Fotos en `slides/slideN.jpg` — la lista se sondea al arrancar (`probeSlides`, N=1..40) y se pueden subir más desde Ajustes → Galería de Inicio (GitHub API; aparecen al publicarse Pages).
 - **Closet** — Búsqueda por color (burbujas con conteo, incluye colores 2/3) · categorías · **Colores que te faltan** (colores de la paleta personal sin equivalente en clóset, con "+N looks"; sin perfil invita a Mi Color) · **Todo el clóset** agrupado por secciones.
-- **Outfit** — motor HSL de 7 armonías con **capas base/medio/exterior** (4 niveles: básico, capa media, exterior, tres capas) · Favoritos ♥ · Modo Libre · **Modo Viaje** (días → clima frío/templado/cálido → prenda fija opcional → maleta mínima greedy; clima se deriva de `temporada` vía `climaPermite`; prioridad de looks: 1º Wada+✦ juntos, 2º Wada, 3º ✦, 4º resto; cada día cambia ≥2 prendas vs el anterior, se relaja a 1 si no alcanza) · badges por card: ♥ ✦ (paleta personal) W (Sanzo Wada) · botón **compartir** (canvas 1080×1920 → hoja nativa).
+- **Outfit** — motor HSL de 7 armonías con **capas base/medio/exterior** (4 niveles: básico, capa media, exterior, tres capas) · Favoritos ♥ · Modo Libre · **Modo Viaje** (días → clima frío/templado/cálido → prenda fija opcional → maleta mínima greedy; clima se deriva de `temporada` vía `climaPermite` — frío excluye P/V y Verano; **cálido es estricto: solo P/V, Verano o Todo** (decisión 2026-07-05: hoodies y manga larga no viajan a destinos cálidos); templado solo excluye Invierno; prioridad de looks: 1º Wada+✦ juntos, 2º Wada, 3º ✦, 4º resto; cada día cambia ≥2 prendas vs el anterior, se relaja a 1 si no alcanza) · badges por card: ♥ ✦ (paleta personal) W (Sanzo Wada) · botón **compartir** (canvas 1080×1920 → hoja nativa).
 - **Mi Color** — quiz de 6 preguntas (venas, joyería, sol, ojos, tono de piel con muestras, cabello; contraste DERIVADO de piel vs cabello) → 1 de 12 estaciones (método característica dominante, umbral de dominancia ≥2, empates → estaciones puras) → paleta/neutros/evitar + **comparativa del clóset real en fotos en 4 niveles**: Te favorecen / Neutras / No recomendadas / Evítalas.
-- **Cargar** — form: tipo (generado de CATEGORIAS), **capa override** (auto/base/media/exterior — la capa es de la prenda, no del tipo), hasta **3 colores** con **gotero** (EyeDropper en Chrome, tap-en-foto en iPhone), telas con %, cuidados auto-sugeridos, remove.bg. Ajustes plegable (Datos/GitHub/Remove.bg). Todo en negro.
+- **Cargar** — form: tipo (generado de CATEGORIAS), **capa override** (auto/base/media/exterior — la capa es de la prenda, no del tipo), **temporada** (define el clima en Modo Viaje; sugerida por tipo abrigador → O/I y tela dominante lino/bambú → P/V, lana/gamuza → O/I; al editar nunca se pisa la guardada), hasta **3 colores** con **gotero** (EyeDropper en Chrome, tap-en-foto en iPhone), telas con %, cuidados auto-sugeridos, remove.bg. Ajustes plegable (Datos/GitHub/Remove.bg/Galería). Todo en negro.
 
 ## Motor de color — invariantes y umbrales
 
