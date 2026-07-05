@@ -1686,6 +1686,32 @@
       "formalidad": "casual",
       "foto": "images/user_1783294688096.webp?v=1783294692646",
       "pos": "inferior"
+    },
+    {
+      "id": 1783294839213,
+      "nombre": "Jogger negro",
+      "tipo": "Jogger",
+      "capa": "base",
+      "temporada": "Todo",
+      "color": "#303030",
+      "color2": null,
+      "color3": null,
+      "marca": "Sin marca",
+      "talla": "M",
+      "material": [
+        {
+          "tela": "Algodón",
+          "pct": 100
+        }
+      ],
+      "cuidado": {
+        "lavado": "W30",
+        "secado": "NoSecadora",
+        "plancha": "Baja"
+      },
+      "formalidad": "streetwear",
+      "foto": "images/user_1783294839213.webp?v=1783294841758",
+      "pos": "inferior"
     }
   ],
   "deleted": [
