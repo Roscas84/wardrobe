@@ -13,7 +13,8 @@
 <style>
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
 html{overscroll-behavior:none;-webkit-overflow-scrolling:auto}
-body{font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;background:#f5f0eb;color:#1a1a1a;min-height:100vh;padding-bottom:68px;overscroll-behavior:none;-webkit-overflow-scrolling:auto}
+/* Fondo negro también en el body: si iOS rebota el scroll, no asoma ninguna franja clara */
+body{font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;background:#000;color:#1a1a1a;min-height:100vh;padding-bottom:68px;overscroll-behavior:none;-webkit-overflow-scrolling:auto}
 
 /* SPLASH */
 @keyframes mg-zoom{from{transform:scale(0.3);opacity:0}15%{opacity:1}to{transform:scale(2.5);opacity:0}}
@@ -166,8 +167,11 @@ body{font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;background:#f5f0eb;
 .no-outfits{text-align:center;padding:40px 20px;color:#555;background:#000;min-height:200px}
 .no-outfits p{font-size:14px;margin-top:8px;color:#555}
 
+/* MI COLOR y CARGAR — scroll interno contenido: el body no se mueve (sin rebote iOS ni franjas) */
+#screen-micolor,#screen-cargar{height:calc(100vh - 52px);overflow-y:auto;overscroll-behavior:contain;background:#000}
+
 /* CARGAR — en negro, misma lógica visual que Closet y Outfit */
-#screen-cargar{background:#000;min-height:calc(100vh - 52px);padding-bottom:20px}
+#screen-cargar{padding-bottom:20px}
 #screen-cargar .cargar-block{background:#000;border-bottom:1px solid #151515}
 #screen-cargar .cargar-block-title{color:#fff}
 #screen-cargar .ajustes-toggle{background:#000;color:#fff}
@@ -2007,6 +2011,7 @@ let _quizIdx=0,_quizResp=[];
 function perfilColor(){try{return JSON.parse(localStorage.getItem('wrd_color_perfil'))||null;}catch(e){return null;}}
 function renderMiColor(){
   const body=document.getElementById('micolor-body');
+  document.getElementById('screen-micolor').scrollTop=0; // scroll interno, no del body
   const perfil=perfilColor();
   if(!perfil||!ESTACIONES[perfil.estacion]){
     body.innerHTML=`
@@ -2059,7 +2064,7 @@ function renderPreguntaColor(){
     <div class="mc-prog">${_quizIdx+1} / ${PREGUNTAS_COLOR.length}</div>
     <div class="mc-q">${q.q}</div>
     ${q.op.map((o,i)=>`<div class="cat-link" onclick="responderQuiz(${i})"><span class="cat-link-text">${o.dot?`<span class="mc-dot" style="background:${o.dot}"></span>`:''}${o.t}</span></div>`).join('')}`;
-  window.scrollTo(0,0);
+  document.getElementById('screen-micolor').scrollTop=0;
 }
 function quizAtras(){if(_quizIdx>0){_quizIdx--;renderPreguntaColor();}}
 function responderQuiz(i){
@@ -2350,14 +2355,21 @@ async function compartirOutfit(ev,btn){
 
 // NAVEGACIÓN
 function showScreen(id){
-  // Inicio es pantalla fija (collage sin scroll), igual que las listas de Closet/Outfit
-  document.body.style.overflow=(id==='closet'||id==='outfit'||id==='inicio')?'hidden':'';
+  // El body nunca hace scroll: Inicio es fijo, Closet/Outfit son listas fijas,
+  // y Mi Color/Cargar tienen scroll interno propio (evita el rebote iOS con franja clara)
+  document.body.style.overflow=(id==='closet'||id==='outfit'||id==='inicio'||id==='micolor'||id==='cargar')?'hidden':'';
   const cur=document.querySelector('.screen.active')?.id?.replace('screen-','');
   if(id==='cargar'&&cur&&cur!=='cargar'){
-    prevScreen=cur;
     const labels={inicio:'Inicio',closet:'Closet',outfit:'Outfit'};
-    document.getElementById('cargar-back-label').textContent=labels[cur]||cur;
-    document.getElementById('cargar-back-bar').style.display='flex';
+    if(labels[cur]){
+      prevScreen=cur;
+      document.getElementById('cargar-back-label').textContent=labels[cur];
+      document.getElementById('cargar-back-bar').style.display='flex';
+    }else{
+      // Desde Mi Color no se ofrece "regresar" — ahí no se estaba configurando nada
+      prevScreen=null;
+      document.getElementById('cargar-back-bar').style.display='none';
+    }
   }
   document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
   document.querySelectorAll('.bnav-btn').forEach(b=>b.classList.remove('active'));
@@ -2367,7 +2379,7 @@ function showScreen(id){
   if(id==='closet'){renderClosetMain();volverClosetMain();}
   else if(id==='outfit'){irPaso(1);}
   else if(id==='micolor'){renderMiColor();}
-  else if(id==='cargar'){document.getElementById('search-input').value='';document.getElementById('search-results').innerHTML='';}
+  else if(id==='cargar'){document.getElementById('search-input').value='';document.getElementById('search-results').innerHTML='';document.getElementById('screen-cargar').scrollTop=0;}
 }
 function volverDesdeCargar(){if(prevScreen)showScreen(prevScreen);}
 
