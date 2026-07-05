@@ -936,9 +936,9 @@ function analizarDesbloqueos(){
   const labDist=(a,b)=>{const x=hexToLab(a),y=hexToLab(b);return Math.sqrt((x[0]-y[0])**2+(x[1]-y[1])**2+(x[2]-y[2])**2);};
   for(const c of ESTACIONES[perfil.estacion].colores){
     if(esNeutro(c))continue; // el motor lo trataría como comodín, no desbloquea armonías
-    // Mismo criterio que Mi Color: saltar solo si el clóset tiene un color REALMENTE parecido
-    // (LAB ≤ UMBRAL_MIO) — un rosa neón NO cubre un burdeos aunque compartan ángulo de tono
-    if(inventario.some(p=>coloresDe(p).some(cc=>labDist(cc,c)<=UMBRAL_MIO)))continue;
+    // Saltar solo si el clóset tiene un color REALMENTE parecido (umbral de compra,
+    // más exigente que el de favorece) — un rosa neón NO cubre un burdeos
+    if(inventario.some(p=>coloresDe(p).some(cc=>labDist(cc,c)<=UMBRAL_TENGO)))continue;
     // Dedupe: no proponer dos colores casi iguales de la paleta
     if(res.some(r=>labDist(r.color,c)<=14))continue;
     const{h}=hexToHsl(c);
@@ -1967,6 +1967,9 @@ function _paletaLabs(estKey){
 // Umbral estricto elegido con datos reales del clóset: 19 admite camel (18.1)
 // y excluye rojo brillante (20.7), amarillo (21.4) y neones (40+)
 const UMBRAL_MIO=19;
+// "¿Ya tengo este color?" (compras) es más exigente que "¿me favorece?": para comprar
+// quieres el tono exacto — con 14, el clóset real arroja 8 colores faltantes útiles
+const UMBRAL_TENGO=14;
 // Neutro de COLORIMETRÍA: solo acromáticos puros (blanco/negro/gris). El navy, camel
 // y oliva son "neutros" para ARMAR OUTFITS (regla del motor, no se toca), pero para
 // tu piel son colores y se evalúan contra la paleta de tu estación
