@@ -1582,6 +1582,32 @@
       "formalidad": "streetwear",
       "foto": "images/user_1783294276404.webp?v=1783294282325",
       "pos": "medio"
+    },
+    {
+      "id": 1783294518448,
+      "nombre": "Camiseta grafica",
+      "tipo": "Camiseta",
+      "capa": "base",
+      "temporada": "Todo",
+      "color": "#d8d8d8",
+      "color2": null,
+      "color3": null,
+      "marca": "Sin marca",
+      "talla": "M",
+      "material": [
+        {
+          "tela": "Algodón",
+          "pct": 100
+        }
+      ],
+      "cuidado": {
+        "lavado": "W30",
+        "secado": "NoSecadora",
+        "plancha": "Baja"
+      },
+      "formalidad": "casual",
+      "foto": "images/user_1783294518448.webp?v=1783294520817",
+      "pos": "base"
     }
   ],
   "deleted": [
