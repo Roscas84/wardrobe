@@ -918,9 +918,12 @@ function volverClosetMain(){
   window.scrollTo(0,0);
 }
 
-// DESBLOQUEO DE LOOKS — qué colores faltan y cuántos looks nuevos daría comprar cada uno
+// DESBLOQUEO DE LOOKS — colores de TU PALETA (colorimetría) que tu clóset no cubre
+// y cuántos looks nuevos daría comprar cada uno: compras que suman y te favorecen
 function analizarDesbloqueos(){
-  const NOMBRES={0:'Rojo',30:'Naranja',60:'Amarillo',90:'Lima',120:'Verde',150:'Esmeralda',180:'Cian',210:'Azul',240:'Índigo',270:'Violeta',300:'Magenta',330:'Rosa'};
+  const NOMBRES={0:'Rojo',30:'Naranja',60:'Amarillo',90:'Lima',120:'Verde',150:'Esmeralda',180:'Cian',210:'Azul',240:'Índigo',270:'Violeta',300:'Magenta',330:'Rosa',360:'Rojo'};
+  const perfil=perfilColor();
+  if(!perfil||!ESTACIONES[perfil.estacion])return null;
   const claveDe=o=>o.piezas.map(p=>p.id).sort().join('-');
   const contar=()=>{
     const s=new Set();
@@ -930,20 +933,25 @@ function analizarDesbloqueos(){
   };
   const base=contar();
   const res=[];
-  for(let h=0;h<360;h+=30){
-    // Saltar tonos que el closet ya cubre
-    if(inventario.some(p=>coloresDe(p).some(c=>!esNeutro(c)&&hueDist(hexToHsl(c).h,h)<=TOLERANCIA)))continue;
-    const swatch=hslToHex(h,65,48);
+  const vistos=new Set();
+  for(const c of ESTACIONES[perfil.estacion].colores){
+    if(esNeutro(c))continue; // el motor lo trataría como comodín, no desbloquea armonías
+    const{h}=hexToHsl(c);
+    const sector=Math.round(h/30)*30;
+    if(vistos.has(sector))continue;
+    vistos.add(sector);
+    // Saltar tonos que el clóset ya cubre
+    if(inventario.some(p=>coloresDe(p).some(cc=>!esNeutro(cc)&&hueDist(hexToHsl(cc).h,h)<=TOLERANCIA)))continue;
     let mejor=0;
     // Probar la prenda virtual como base y como inferior; tomar el mejor caso
     for(const tipo of ['Camiseta','Pantalón']){
-      inventario.push({id:-1,nombre:'',tipo,color:swatch,formalidad:'casual'});
+      inventario.push({id:-1,nombre:'',tipo,color:c,formalidad:'casual'});
       const con=contar();
       inventario.pop();
       let nuevos=0;con.forEach(k=>{if(!base.has(k))nuevos++;});
       mejor=Math.max(mejor,nuevos);
     }
-    if(mejor>0)res.push({color:swatch,nombre:NOMBRES[h],looks:mejor});
+    if(mejor>0)res.push({color:c,nombre:NOMBRES[sector]||'',looks:mejor});
   }
   return res.sort((a,b)=>b.looks-a.looks).slice(0,6);
 }
@@ -955,10 +963,16 @@ function verDesbloqueos(){
   document.body.style.overflow='';
   window.scrollTo(0,0);
   const lista=document.getElementById('desbloqueo-lista');
+  if(!perfilColor()){
+    lista.innerHTML=`
+      <div class="no-outfits"><p>Primero haz tu análisis de colorimetría para saber qué colores te faltan que sean armónicos contigo.</p></div>
+      <button class="mc-btn" onclick="showScreen('micolor')">Ir a Mi Color</button>`;
+    return;
+  }
   lista.innerHTML='<div class="no-outfits"><p>Analizando tu closet…</p></div>';
   setTimeout(()=>{
     const res=analizarDesbloqueos();
-    lista.innerHTML=(res.length
+    lista.innerHTML=(res&&res.length
       ?res.map(r=>{
         const txt=hexToHsl(r.color).l>55?'#000':'#fff';
         return`<div class="desb-franja" style="background:${r.color};color:${txt}">
@@ -966,8 +980,8 @@ function verDesbloqueos(){
           <div class="desb-num">+${r.looks}</div>
         </div>`;
       }).join('')
-      :'<div class="no-outfits"><p>Tu closet ya cubre todos los ángulos de color</p></div>')
-      +'<div class="desb-nota">Looks nuevos que obtienes si agregas una prenda de ese color. Usa el tono como referencia de compra.</div>';
+      :'<div class="no-outfits"><p>Tu closet ya cubre los tonos de tu paleta que desbloquean looks</p></div>')
+      +'<div class="desb-nota">Colores de TU paleta personal que tu clóset no cubre, con los looks nuevos que obtienes al comprar una prenda de ese tono. Compra en armonía contigo.</div>';
   },30);
 }
 function cardBackHTML(p){
@@ -1878,7 +1892,7 @@ function renderMiColor(){
     <div class="mc-sec" style="color:#fff">Neutras — combinan con todo · ${neu.length} prendas</div>
     ${grid(e.neutros)}${ropa(neu)}
     <div class="mc-sec" style="color:#fff">No recomendadas · ${norec.length} prendas</div>
-    <div class="mc-desc" style="padding-bottom:4px">Fuera de tu paleta, pero sin chocar contigo — funcionan lejos de la cara y en outfits bien combinados.</div>
+    <div class="mc-desc" style="padding-bottom:4px;font-size:12.5px;color:#e5e5e5">Fuera de tu paleta, pero sin chocar contigo — funcionan lejos de la cara y en outfits bien combinados.</div>
     ${ropa(norec)}
     <div class="mc-sec" style="color:#ff1a00">Evítalas — te apagan · ${evi.length} prendas</div>
     ${grid(e.evitar)}${ropa(evi)}
