@@ -853,7 +853,8 @@
       },
       "formalidad": "casual",
       "foto": "images/user_1782716644816.webp",
-      "pos": "superior"
+      "pos": "superior",
+      "temporada": "Todo"
     },
     {
       "id": 1782961758441,
@@ -879,7 +880,8 @@
       },
       "formalidad": "casual",
       "foto": "images/user_1782961758441.webp",
-      "pos": "superior"
+      "pos": "superior",
+      "temporada": "Todo"
     },
     {
       "id": 1782961895944,
@@ -905,7 +907,8 @@
       },
       "formalidad": "casual",
       "foto": "images/user_1782961895944.webp",
-      "pos": "superior"
+      "pos": "superior",
+      "temporada": "Todo"
     }
   ],
   "deleted": [

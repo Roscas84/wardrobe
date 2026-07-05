@@ -13,7 +13,7 @@
 <style>
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
 html{overscroll-behavior:none;-webkit-overflow-scrolling:auto}
-body{font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;background:#f5f0eb;color:#1a1a1a;min-height:100vh;padding-bottom:80px;overscroll-behavior:none;-webkit-overflow-scrolling:auto}
+body{font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;background:#f5f0eb;color:#1a1a1a;min-height:100vh;padding-bottom:68px;overscroll-behavior:none;-webkit-overflow-scrolling:auto}
 
 /* SPLASH */
 @keyframes mg-zoom{from{transform:scale(0.3);opacity:0}15%{opacity:1}to{transform:scale(2.5);opacity:0}}
@@ -26,34 +26,29 @@ body{font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;background:#f5f0eb;
 
 /* NAV */
 .bottom-nav{position:fixed;bottom:0;left:0;right:0;background:#000;display:flex;z-index:200;padding-bottom:env(safe-area-inset-bottom)}
-.bnav-btn{flex:1;padding:13px 0 10px;display:flex;flex-direction:column;align-items:center;gap:4px;border:none;background:transparent;cursor:pointer;font-size:11.5px;color:rgba(255,26,0,.55);letter-spacing:1px;text-transform:uppercase;font-weight:400}
-.bnav-btn.active{color:#ff1a00}
-.bnav-icon{font-size:22px;line-height:1}
+.bnav-btn{flex:1;padding:9px 0 7px;display:flex;flex-direction:column;align-items:center;gap:3px;border:none;background:transparent;cursor:pointer;font-size:10.5px;color:#777;letter-spacing:1px;text-transform:uppercase;font-weight:400}
+.bnav-btn.active{color:#C9A227}
+.bnav-icon{font-size:19px;line-height:1}
 
 /* SCREENS */
 .screen{display:none;max-width:600px;margin:0 auto}
 .screen.active{display:block}
 
-/* INICIO — hero editorial: fotos encadenadas con zoom lento + texto fijo encima (ref. Zara) */
-.slideshow{position:relative;width:100%;aspect-ratio:3/4;overflow:hidden;background:#000}
-.slide{position:absolute;inset:0;opacity:0;transition:opacity 0.6s ease;pointer-events:none;overflow:hidden}
-.slide.active{opacity:1;pointer-events:auto}
-.slide img{width:100%;height:100%;object-fit:cover;object-position:center top;display:block}
-.slide.active img{animation:kenburns 7s ease-out forwards}
-@keyframes kenburns{from{transform:scale(1)}to{transform:scale(1.07)}}
-.slide-collage{display:flex;gap:4px;background:#f5f0eb}
-.slide-collage img{width:33.333%;min-width:0;object-position:center 20%}
-.slide-collage img:nth-child(2){height:86%;align-self:center}
-.slide-collage.active img{animation:none}
-.hero-txt{position:absolute;left:20px;top:50%;transform:translateY(-50%);z-index:5;color:#ff1a00;font-size:36px;font-weight:200;letter-spacing:3px;text-transform:uppercase;line-height:1.15;pointer-events:none}
-.editorial-strip{display:flex;flex-direction:column;gap:0}
-.editorial-strip img{width:100%;aspect-ratio:3/4;object-fit:cover;object-position:center top;display:block}
+/* INICIO — collage editorial rotativo: pantalla fija sin scroll, layouts y filtros que se alternan */
+#screen-inicio{position:relative;height:calc(100vh - 52px - env(safe-area-inset-bottom,0px));overflow:hidden;background:#000}
+.collage{position:absolute;inset:0;display:grid;gap:2px;padding:2px;background:#000;opacity:0;transition:opacity 1.4s ease}
+.collage.on{opacity:1}
+.collage-cell{overflow:hidden}
+.collage-cell img{width:100%;height:100%;object-fit:cover;object-position:center 20%;display:block}
+.f-bw{filter:grayscale(1) contrast(1.05)}
+.f-sepia{filter:sepia(.5) saturate(.85)}
+.hero-txt{position:absolute;left:20px;top:50%;transform:translateY(-50%);z-index:5;color:#C9A227;font-size:36px;font-weight:200;letter-spacing:3px;text-transform:uppercase;line-height:1.15;pointer-events:none;text-shadow:0 1px 14px rgba(0,0,0,.5)}
 
 /* PANTALLAS NEGRAS (Closet, Outfit) */
-.dark-screen{background:#000;min-height:calc(100vh - 62px)}
+.dark-screen{background:#000;min-height:calc(100vh - 52px)}
 #lista-armonias{min-height:0;height:auto}
-#closet-main{display:flex;flex-direction:column;align-items:stretch;justify-content:center;padding:20px 0 20px;height:calc(100vh - 62px);box-sizing:border-box;overflow-y:auto}
-#outfit-main{display:flex;flex-direction:column;justify-content:center;padding:20px 0 80px;height:calc(100vh - 62px);box-sizing:border-box;overflow-y:auto}
+#closet-main{display:flex;flex-direction:column;align-items:stretch;justify-content:center;padding:20px 0 20px;height:calc(100vh - 52px);box-sizing:border-box;overflow-y:auto}
+#outfit-main{display:flex;flex-direction:column;justify-content:center;padding:20px 0 80px;height:calc(100vh - 52px);box-sizing:border-box;overflow-y:auto}
 
 /* BACK BUTTON — grande y visible */
 .back-bar{display:flex;align-items:center;gap:12px;padding:10px 20px;background:#000;border-bottom:1px solid #111;cursor:pointer;position:sticky;top:0;z-index:80}
@@ -106,26 +101,26 @@ body{font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;background:#f5f0eb;
 
 /* Ancla chip en paso2 header */
 .res-hdr{padding:12px 20px;background:#000;border-bottom:1px solid #111;display:flex;align-items:center;gap:12px;position:relative;top:0;z-index:90}
-#paso2-main{background:#000;min-height:calc(100vh - 62px)}
+#paso2-main{background:#000;min-height:calc(100vh - 52px)}
 .res-back{font-size:30px;color:#fff;font-weight:100;cursor:pointer;flex-shrink:0;line-height:1}
 .res-ancla-thumb{width:46px;height:62px;object-fit:contain;background:#111;flex-shrink:0;display:block}
 .res-ancla-color{width:46px;height:62px;flex-shrink:0}
 .res-ancla-info{flex:1}
 .res-ancla-nombre{font-size:11px;letter-spacing:0.5px;color:#fff;font-weight:300}
-.res-count{font-size:16px;color:#ff1a00;padding:10px 20px 4px;background:#000;letter-spacing:1px}
+.res-count{font-size:16px;color:#C9A227;padding:10px 20px 4px;background:#000;letter-spacing:1px}
 
 /* Outfits lista — scroll horizontal */
-#paso2-outfits{position:fixed;top:0;bottom:62px;left:0;right:0;background:#000;z-index:60;flex-direction:column}
+#paso2-outfits{position:fixed;top:0;bottom:52px;left:0;right:0;background:#000;z-index:60;flex-direction:column}
 .outfits-wrap{flex:1;min-height:0;display:flex;flex-direction:row;overflow-x:auto;overflow-y:hidden;scroll-snap-type:x mandatory;scroll-behavior:smooth;scrollbar-width:none;-ms-overflow-style:none;touch-action:pan-x}
 .outfits-wrap::-webkit-scrollbar{display:none;width:0;height:0}
 .outfits-wrap .nivel-div{display:none}
 .outfit-card{background:#000;flex-shrink:0;width:100%;height:100%;position:relative;display:flex;flex-direction:column;scroll-snap-align:start}
 .wada-badge{position:absolute;top:9px;right:12px;font-size:19px;font-weight:800;font-family:Georgia,'Times New Roman',serif;z-index:10;line-height:1;background:linear-gradient(180deg,#ffe27a 0%,#f5c518 45%,#b8860b 100%);-webkit-background-clip:text;background-clip:text;color:transparent;filter:drop-shadow(0 1px 1px rgba(0,0,0,0.55))}
 .fav-btn{position:absolute;top:2px;right:62px;z-index:10;background:none;border:none;font-size:22px;color:#fff;cursor:pointer;text-shadow:0 0 6px rgba(0,0,0,0.6);padding:8px;line-height:1}
-.fav-btn.on{color:#ff1a00}
+.fav-btn.on{color:#C9A227}
 
 /* MI COLOR — colorimetría personal */
-.mc-titulo{font-size:10px;letter-spacing:3px;color:#ff1a00;text-transform:uppercase;text-align:center;padding:8px 20px 2px;font-weight:300}
+.mc-titulo{font-size:10px;letter-spacing:3px;color:#C9A227;text-transform:uppercase;text-align:center;padding:8px 20px 2px;font-weight:300}
 .mc-nombre{font-size:26px;letter-spacing:4px;color:#fff;text-transform:uppercase;text-align:center;font-weight:200;padding:6px 20px}
 .mc-desc{font-size:11px;color:#999;text-align:center;padding:0 32px 12px;letter-spacing:.5px;line-height:1.8;font-weight:300}
 .mc-sec{font-size:9px;letter-spacing:2px;color:#888;text-transform:uppercase;padding:20px 20px 8px;text-align:center}
@@ -143,7 +138,7 @@ body{font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;background:#f5f0eb;
 .mc-prog{font-size:9px;color:#888;letter-spacing:2px;text-align:center;padding-top:6px}
 .mc-dot{display:inline-block;width:12px;height:12px;border-radius:50%;margin-right:8px;vertical-align:middle;border:1px solid rgba(255,255,255,.2)}
 /* Orden en la esquina: ♥ (62px) · ✦ (38px) · W (12px) */
-.mio-badge{position:absolute;top:9px;right:38px;font-size:19px;color:#ff1a00;z-index:10;line-height:1;text-shadow:0 0 6px rgba(0,0,0,.5)}
+.mio-badge{position:absolute;top:9px;right:38px;font-size:19px;color:#C9A227;z-index:10;line-height:1;text-shadow:0 0 6px rgba(0,0,0,.5)}
 .share-btn{position:absolute;bottom:46px;right:10px;z-index:10;width:40px;height:40px;display:flex;align-items:center;justify-content:center;background:rgba(0,0,0,.45);border:none;color:#fff;cursor:pointer}
 .share-btn:active{background:#fff;color:#000}
 
@@ -172,7 +167,7 @@ body{font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;background:#f5f0eb;
 .no-outfits p{font-size:14px;margin-top:8px;color:#555}
 
 /* CARGAR — en negro, misma lógica visual que Closet y Outfit */
-#screen-cargar{background:#000;min-height:calc(100vh - 62px);padding-bottom:20px}
+#screen-cargar{background:#000;min-height:calc(100vh - 52px);padding-bottom:20px}
 #screen-cargar .cargar-block{background:#000;border-bottom:1px solid #151515}
 #screen-cargar .cargar-block-title{color:#fff}
 #screen-cargar .ajustes-toggle{background:#000;color:#fff}
@@ -207,7 +202,7 @@ body{font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;background:#f5f0eb;
 
 /* MODAL */
 .modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.7);z-index:300;align-items:flex-end;justify-content:center}
-#toast{position:fixed;bottom:80px;left:50%;transform:translateX(-50%);background:#1a1a1a;color:#fff;padding:10px 22px;font-size:11px;letter-spacing:2px;text-transform:uppercase;font-weight:300;z-index:400;opacity:0;transition:opacity .25s;pointer-events:none;white-space:nowrap}
+#toast{position:fixed;bottom:68px;left:50%;transform:translateX(-50%);background:#1a1a1a;color:#fff;padding:10px 22px;font-size:11px;letter-spacing:2px;text-transform:uppercase;font-weight:300;z-index:400;opacity:0;transition:opacity .25s;pointer-events:none;white-space:nowrap}
 .modal-overlay.open{display:flex}
 .modal{background:#fff;padding:20px 16px;width:100%;max-width:500px;max-height:92vh;overflow-y:auto;overflow-x:hidden}
 .modal-handle{width:36px;height:3px;background:#e0dbd5;margin:0 auto 16px}
@@ -243,10 +238,20 @@ body{font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;background:#f5f0eb;
 .gotero-btn{width:38px;height:44px;border:1px solid #e0dbd5;background:#fff;cursor:pointer;color:#555;flex-shrink:0;display:inline-flex;align-items:center;justify-content:center;-webkit-appearance:none;padding:0}
 .clear-x{width:38px;height:44px;border:none;background:#f0ebe5;font-size:17px;cursor:pointer;color:#888;flex-shrink:0;-webkit-appearance:none}
 .gotero-btn.on{background:#000;color:#fff;border-color:#000}
-.foto-area.gotero-modo{outline:2px solid #ff1a00;outline-offset:-2px;cursor:crosshair}
+.foto-area.gotero-modo{outline:2px solid #C9A227;outline-offset:-2px;cursor:crosshair}
 .hex-input{flex:1;min-width:0;width:100%;padding:10px 8px;border:1px solid #e0dbd5;font-size:14px;font-family:monospace;outline:none}
 .c-ana{background:#1a7a1a}.c-comp{background:#c44800}.c-split{background:#b87000}
 .c-tri{background:#1a3acc}.c-tet{background:#7700cc}.c-cua{background:#cc0077}.c-abs{background:#007755}
+.outfit-hdr{padding:22px 20px 6px;text-align:center}
+
+/* MÓVIL (<700px): listas de Closet/Outfit compactas — deben caber completas sin scroll */
+@media (max-width:699px){
+  .cat-link{padding:6px 20px}
+  .arm-link{padding:8px 20px}
+  #closet-main{padding:10px 0}
+  #outfit-main{padding:10px 0 40px}
+  .outfit-hdr{padding:10px 20px 4px}
+}
 
 /* WEB Nivel 2 (>700px): Closet y Outfit aprovechan la pantalla grande (columna 1080px,
    grid 3-4 columnas, 2-3 looks lado a lado); Inicio y Cargar se quedan en 600px.
@@ -257,9 +262,6 @@ body{font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;background:#f5f0eb;
   .screen{max-width:1080px}
   .bottom-nav{left:50%;right:auto;transform:translateX(-50%);width:100%;max-width:1080px}
   #paso2-outfits{left:50%;right:auto;transform:translateX(-50%);width:100%;max-width:1080px}
-  /* Hero de Inicio a pantalla completa (estilo Zara web) */
-  #screen-inicio .slideshow{aspect-ratio:auto;height:calc(100vh - 62px)}
-  .editorial-strip{display:grid;grid-template-columns:1fr 1fr;gap:2px}
   .items-grid{grid-template-columns:repeat(3,1fr)}
   .outfit-card{width:50%}
   /* Modal al ancho unificado: foto grande a la izquierda, campos a la derecha */
@@ -289,23 +291,9 @@ body{font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;background:#f5f0eb;
 
 <!-- ══ INICIO ══ -->
 <div id="screen-inicio" class="screen active">
-  <div class="slideshow" id="slideshow">
-    <div class="hero-txt">Mi<br>Guardarropa</div>
-    <div class="slide active"><img src="slides/slide1.jpg" loading="eager" alt=""></div>
-    <div class="slide slide-collage"><img src="slides/slide3.jpg" loading="lazy" alt=""><img src="slides/slide5.jpg" loading="lazy" alt=""><img src="slides/slide7.jpg" loading="lazy" alt=""></div>
-    <div class="slide"><img src="slides/slide9.jpg" loading="lazy" alt=""></div>
-    <div class="slide"><img src="slides/slide4.jpg" loading="lazy" alt=""></div>
-    <div class="slide slide-collage"><img src="slides/slide8.jpg" loading="lazy" alt=""><img src="slides/slide11.jpg" loading="lazy" alt=""><img src="slides/slide10.jpg" loading="lazy" alt=""></div>
-    <div class="slide"><img src="slides/slide6.jpg" loading="lazy" alt=""></div>
-  </div>
-  <div class="editorial-strip">
-    <img src="slides/slide2.jpg" loading="lazy" alt="">
-    <img src="slides/slide4.jpg" loading="lazy" alt="">
-    <img src="slides/slide6.jpg" loading="lazy" alt="">
-    <img src="slides/slide8.jpg" loading="lazy" alt="">
-    <img src="slides/slide10.jpg" loading="lazy" alt="">
-  </div>
-  <div style="height:12px;background:#f5f0eb"></div>
+  <div class="collage" id="collage-a"></div>
+  <div class="collage" id="collage-b"></div>
+  <div class="hero-txt">Mi<br>Guardarropa</div>
 </div>
 
 <!-- ══ CLOSET ══ -->
@@ -349,8 +337,8 @@ body{font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;background:#f5f0eb;
   <!-- Paso 1: elegir categoría -->
   <div id="paso1-wrap">
     <div id="outfit-main" class="dark-screen">
-      <div style="padding:22px 20px 6px;text-align:center">
-        <div style="font-size:10px;letter-spacing:3px;text-transform:uppercase;color:#ff1a00;font-weight:300">Elige tu prenda</div>
+      <div class="outfit-hdr">
+        <div style="font-size:10px;letter-spacing:3px;text-transform:uppercase;color:#C9A227;font-weight:300">Elige tu prenda</div>
       </div>
       <div id="outfit-cat-links"></div>
     </div>
@@ -443,6 +431,12 @@ body{font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;background:#f5f0eb;
         <div id="rmbg-status" style="font-size:10px;color:#888;margin-bottom:10px;letter-spacing:0.5px"></div>
         <input id="rmbg-key-inp" type="password" placeholder="API key de remove.bg" style="width:100%;padding:10px;border:1px solid #e0dbd5;font-size:11px;margin-bottom:8px;font-family:monospace">
         <button onclick="guardarRmbgKey()" style="width:100%;padding:11px;background:#fff;color:#000;border:none;font-size:10px;letter-spacing:2px;text-transform:uppercase;cursor:pointer">Guardar API Key</button>
+      </div>
+      <div class="ajustes-sec">
+        <div class="ajustes-sec-title">Galería de Inicio</div>
+        <div id="slides-status" style="font-size:10px;color:#888;margin-bottom:10px;letter-spacing:0.5px"></div>
+        <button onclick="document.getElementById('slides-file').click()" style="width:100%;padding:11px;background:#fff;color:#000;border:none;font-size:10px;letter-spacing:2px;text-transform:uppercase;cursor:pointer">Agregar Fotos al Collage</button>
+        <input type="file" id="slides-file" accept="image/*" multiple style="display:none" onchange="subirSlides(this)">
       </div>
     </div>
   </div>
@@ -1030,7 +1024,7 @@ function cardBackHTML(p){
     <div class="cb-tipo">${p.tipo}${p.subtipo?' '+p.subtipo:''}${patron?' · '+patron:''}</div>
     ${matStr?`<div class="cb-formalidad" style="color:#777">${matStr}</div>`:''}
     ${cuidadoHTML}
-    ${prendaFavorece(p)?`<div class="cb-formalidad" style="color:#ff1a00">✦ Te favorece</div>`:''}
+    ${prendaFavorece(p)?`<div class="cb-formalidad" style="color:#C9A227">✦ Te favorece</div>`:''}
     <div class="cb-formalidad">${p.formalidad}</div>
     ${p.temporada?`<div class="cb-formalidad" style="color:#444">${p.temporada}</div>`:''}
     ${p.notas?`<div class="cb-formalidad" style="color:#3a3a3a;font-style:italic">${p.notas}</div>`:''}`;
@@ -1060,7 +1054,7 @@ function renderOutfitMain(){
   if(_favs.length){
     const fv=document.createElement('div');fv.className='cat-link';
     fv.onclick=verFavoritos;
-    fv.innerHTML=`<span class="cat-link-text">Favoritos <span style="color:#ff1a00">♥</span></span> <span class="arm-link-count">${_favs.length}</span>`;
+    fv.innerHTML=`<span class="cat-link-text">Favoritos <span style="color:#C9A227">♥</span></span> <span class="arm-link-count">${_favs.length}</span>`;
     wrap.appendChild(fv);
   }
   const ml=document.createElement('div');ml.className='cat-link';
@@ -1632,7 +1626,7 @@ function updateMaterialTotal(){
   const el=document.getElementById('material-total');
   if(!vals.length){el.textContent='';return;}
   el.textContent='Total: '+total+'%';
-  el.style.color=total===100?'#4caf50':'#ff1a00';
+  el.style.color=total===100?'#4caf50':'#C9A227';
   sugerirCuidados();
 }
 function getMaterial(){
@@ -1813,15 +1807,93 @@ function importarInventario(input){
   r.readAsText(input.files[0]);
 }
 
-// SLIDESHOW
-let slideIdx=0,slideTimer=null;
-function initSlideshow(){
-  const slides=document.querySelectorAll('.slide');if(!slides.length)return;
-  function goTo(n){slides[slideIdx].classList.remove('active');slideIdx=(n+slides.length)%slides.length;slides[slideIdx].classList.add('active');}
-  slideTimer=setInterval(()=>goTo(slideIdx+1),2800);
-  let tx=0;const ss=document.getElementById('slideshow');
-  ss.addEventListener('touchstart',e=>{tx=e.touches[0].clientX;},{passive:true});
-  ss.addEventListener('touchend',e=>{const diff=tx-e.changedTouches[0].clientX;if(Math.abs(diff)>50){clearInterval(slideTimer);goTo(slideIdx+(diff>0?1:-1));slideTimer=setInterval(()=>goTo(slideIdx+1),2800);}},{passive:true});
+// COLLAGE DE INICIO — plantillas 4×6 sin huecos (grid-template-areas), fotos barajadas,
+// algunos cuadros en B/N o sepia, y crossfade automático entre layouts distintos
+const COLLAGE_TEMPLATES=[
+  ['a a b c','a a b c','d e e f','d e e f','g h i i','j k l m'],
+  ['a b c d','a e c f','g e h f','g i h j','k i l j','k m n o'],
+  ['a a b b','a a c c','d e f g','h h f i','h h j i','k l j m'],
+  ['a b c c','d b c c','d e f g','h i f g','h i j k','l m j n'],
+];
+let _slides=JSON.parse(localStorage.getItem('wrd_slides')||'[]');
+let _collageShow='a',_collageTimer=null,_tplIdx=-1;
+// La galería es dinámica (se suben fotos desde Ajustes): sondear slides/slideN.jpg
+function probeSlides(maxN=40){
+  return new Promise(res=>{
+    const found=[];let pending=maxN;
+    for(let n=1;n<=maxN;n++){
+      const im=new Image();
+      const fin=ok=>{if(ok)found.push(n);if(--pending===0){found.sort((a,b)=>a-b);res(found.map(x=>`slides/slide${x}.jpg`));}};
+      im.onload=()=>fin(true);im.onerror=()=>fin(false);
+      im.src=`slides/slide${n}.jpg`;
+    }
+  });
+}
+function buildCollage(el){
+  if(!_slides.length)return;
+  _tplIdx=(_tplIdx+1+Math.floor(Math.random()*(COLLAGE_TEMPLATES.length-1)))%COLLAGE_TEMPLATES.length;
+  const tpl=COLLAGE_TEMPLATES[_tplIdx];
+  const letters=[...new Set(tpl.join(' ').split(' '))];
+  const pool=[..._slides].sort(()=>Math.random()-0.5);
+  while(pool.length<letters.length)pool.push(_slides[Math.floor(Math.random()*_slides.length)]);
+  el.style.gridTemplateColumns='repeat(4,1fr)';
+  el.style.gridTemplateRows=`repeat(${tpl.length},1fr)`;
+  el.style.gridTemplateAreas=tpl.map(r=>`"${r}"`).join(' ');
+  el.innerHTML=letters.map((L,i)=>{
+    const r=Math.random(),f=r<0.18?' f-bw':r<0.32?' f-sepia':'';
+    return`<div class="collage-cell${f}" style="grid-area:${L}"><img src="${pool[i]}" alt=""></div>`;
+  }).join('');
+}
+function rotarCollage(){
+  const cur=document.getElementById('collage-'+_collageShow);
+  _collageShow=_collageShow==='a'?'b':'a';
+  const nxt=document.getElementById('collage-'+_collageShow);
+  buildCollage(nxt);
+  // Pequeña espera para que las imágenes pinten antes del crossfade
+  setTimeout(()=>{nxt.classList.add('on');cur.classList.remove('on');},250);
+}
+function initCollage(){
+  const a=document.getElementById('collage-a');
+  if(_slides.length){buildCollage(a);a.classList.add('on');}
+  probeSlides().then(list=>{
+    if(list.length){
+      const cambio=JSON.stringify(list)!==JSON.stringify(_slides);
+      _slides=list;localStorage.setItem('wrd_slides',JSON.stringify(list));
+      if(cambio||!a.classList.contains('on')){buildCollage(a);a.classList.add('on');}
+    }
+    mostrarEstadoSlides();
+    clearInterval(_collageTimer);
+    _collageTimer=setInterval(rotarCollage,7000);
+  });
+}
+// Subir fotos nuevas a slides/ vía GitHub API (aparecen al publicarse el deploy de Pages)
+function mostrarEstadoSlides(){
+  const el=document.getElementById('slides-status');
+  if(el)el.textContent=_slides.length?`${_slides.length} fotos en el collage de Inicio`:'Sin fotos detectadas aún';
+}
+async function encogerFoto(file,maxDim=1600){
+  const dataUrl=await new Promise(res=>{const r=new FileReader();r.onload=e=>res(e.target.result);r.readAsDataURL(file);});
+  const img=await cargarImg(dataUrl);
+  if(!img)return null;
+  const s=Math.min(1,maxDim/Math.max(img.width,img.height));
+  const c=document.createElement('canvas');c.width=Math.round(img.width*s);c.height=Math.round(img.height*s);
+  c.getContext('2d').drawImage(img,0,0,c.width,c.height);
+  return c.toDataURL('image/jpeg',0.85);
+}
+async function subirSlides(input){
+  if(!input.files.length)return;
+  if(!ghToken()){showToast('Configura tu token de GitHub primero');input.value='';return;}
+  const files=[...input.files];input.value='';
+  let next=_slides.reduce((m,s)=>Math.max(m,parseInt(s.match(/slide(\d+)/)?.[1]||'0',10)),0)+1;
+  showToast(`⏳ Subiendo ${files.length} foto${files.length>1?'s':''}…`);
+  let ok=0;
+  for(const f of files){
+    const dataUrl=await encogerFoto(f).catch(()=>null);
+    if(!dataUrl)continue;
+    const subida=await ghPut(`slides/slide${next}.jpg`,dataUrlToBase64(dataUrl),`Add gallery photo slide${next}.jpg`).catch(()=>false);
+    if(subida){ok++;next++;}
+  }
+  showToast(ok?`✓ ${ok} foto${ok>1?'s':''} subida${ok>1?'s':''} — aparecerán en el collage en unos minutos`:'⚠ No se pudo subir — revisa tu conexión');
 }
 
 // ══ MI COLOR — Colorimetría personal (sistema 12 estaciones, método característica dominante) ══
@@ -1937,9 +2009,9 @@ function renderMiColor(){
     <div class="mc-sec" style="color:#fff">No recomendadas · ${norec.length} prendas</div>
     <div class="mc-desc" style="padding-bottom:4px;font-size:12.5px;color:#e5e5e5">Fuera de tu paleta, pero sin chocar contigo — funcionan lejos de la cara y en outfits bien combinados.</div>
     ${ropa(norec)}
-    <div class="mc-sec" style="color:#ff1a00">Evítalas — te apagan · ${evi.length} prendas</div>
+    <div class="mc-sec" style="color:#C9A227">Evítalas — te apagan · ${evi.length} prendas</div>
     ${grid(e.evitar)}${ropa(evi)}
-    <div class="mc-desc" style="padding-top:14px">Los outfits dentro de tu paleta llevan la marca <span style="color:#ff1a00">✦</span> y las prendas que te favorecen lo indican en su ficha.</div>
+    <div class="mc-desc" style="padding-top:14px">Los outfits dentro de tu paleta llevan la marca <span style="color:#C9A227">✦</span> y las prendas que te favorecen lo indican en su ficha.</div>
     <button class="mc-btn-sec" onclick="empezarQuiz()">Repetir análisis</button>`;
 }
 function empezarQuiz(){
@@ -2044,63 +2116,137 @@ function esMiColorOutfit(o){
   return cols.filter(enMiPaleta).length>=Math.ceil(cols.length*0.6);
 }
 
-// ══ MODO VIAJE — cápsula mínima: N días, la maleta más chica con un look distinto por día ══
+// ══ MODO VIAJE — cápsula mínima: N días, clima, prenda fija opcional y prioridad W+✦ ══
+let _viaje={dias:0,clima:null,anclaId:null},_viajeCats=[];
+const CLIMAS=[{key:'frio',label:'Frío',icon:'❄'},{key:'templado',label:'Templado',icon:'⛅'},{key:'calido',label:'Cálido',icon:'☀'}];
+function climaLabel(k){const c=CLIMAS.find(c=>c.key===k);return c?c.label:'';}
+// El clima se deriva de la temporada de la prenda; sin temporada = sirve para todo
+function climaPermite(p,clima){
+  const t=p.temporada||'Todo';
+  if(t==='Todo'||!clima)return true;
+  if(clima==='frio')return t!=='Verano'&&t!=='Primavera/Verano';
+  if(clima==='calido')return t!=='Invierno'&&t!=='Otoño/Invierno';
+  return t!=='Invierno'; // templado: solo queda fuera lo puramente invernal
+}
 function activarModoViaje(){
   document.getElementById('paso1-wrap').style.display='none';
   document.getElementById('viaje-wrap').style.display='block';
   document.body.style.overflow='';
   window.scrollTo(0,0);
+  _viaje={dias:0,clima:null,anclaId:null};
   document.getElementById('viaje-body').innerHTML=`
     <div class="mc-titulo" style="padding-top:24px">Modo viaje</div>
     <div class="mc-desc">La maleta más pequeña posible con un look distinto para cada día, priorizando lo que te favorece.</div>
     <div class="mc-q" style="padding-bottom:8px">¿Cuántos días?</div>
-    ${[2,3,4,5,6,7,8].map(n=>`<div class="cat-link" onclick="armarViaje(${n})"><span class="cat-link-text">${n} días</span></div>`).join('')}`;
+    ${[2,3,4,5,6,7,8].map(n=>`<div class="cat-link" onclick="viajePedirClima(${n})"><span class="cat-link-text">${n} días</span></div>`).join('')}`;
 }
 function salirViaje(){irPaso(1);}
-function capsulaViaje(dias){
-  const anclas=inventario.filter(p=>['base','medio','exterior','inferior'].includes(posDe(p)));
-  const map=new Map();
-  anclas.forEach(ref=>ARMONIAS.forEach(a=>generarParaArmonia(ref,a.key).forEach(o=>{
-    const k=o.piezas.map(p=>p.id).sort().join('-');
-    if(!map.has(k))map.set(k,o);
-  })));
-  const todos=[...map.values()];
-  if(!todos.length)return null;
-  const puntaje=o=>(esMiColorOutfit(o)?2:0)+(isWadaValidated(o)?1:0);
-  // Semilla: el mejor look con menos piezas
-  todos.sort((a,b)=>puntaje(b)-puntaje(a)||a.piezas.length-b.piezas.length);
-  const sel=[todos[0]];
-  const maleta=new Set(todos[0].piezas.map(p=>p.id));
-  const usados=new Set([todos[0].piezas.map(p=>p.id).sort().join('-')]);
-  while(sel.length<dias){
-    let mejor=null,mejorCosto=1e9,mejorPts=-1;
-    for(const o of todos){
+function viajePedirClima(dias){
+  _viaje.dias=dias;
+  document.getElementById('viaje-body').innerHTML=`
+    <div class="mc-titulo" style="padding-top:24px">Modo viaje · ${dias} días</div>
+    <div class="mc-q" style="padding-bottom:8px">¿Qué clima tendrá tu destino?</div>
+    ${CLIMAS.map(c=>`<div class="cat-link" onclick="viajePedirAncla('${c.key}')"><span class="cat-link-text">${c.icon} ${c.label}</span></div>`).join('')}`;
+  window.scrollTo(0,0);
+}
+function viajePedirAncla(clima){
+  _viaje.clima=clima;_viaje.anclaId=null;
+  const disp=inventario.filter(p=>climaPermite(p,clima));
+  _viajeCats=ZARA_CATS.filter(c=>disp.some(p=>c.tipos.includes(p.tipo)));
+  document.getElementById('viaje-body').innerHTML=`
+    <div class="mc-titulo" style="padding-top:24px">Modo viaje · ${_viaje.dias} días · ${climaLabel(clima)}</div>
+    <div class="mc-q" style="padding-bottom:8px">¿Quieres llevar una prenda sí o sí?</div>
+    <div class="cat-link" onclick="armarViaje()"><span class="cat-link-text">No — arma la maleta libre</span></div>
+    ${_viajeCats.map((c,i)=>`<div class="cat-link" onclick="viajeVerCat(${i})"><span class="cat-link-text">${c.label}</span></div>`).join('')}`;
+  window.scrollTo(0,0);
+}
+function viajeVerCat(i){
+  const cat=_viajeCats[i];
+  const items=inventario.filter(p=>cat.tipos.includes(p.tipo)&&climaPermite(p,_viaje.clima));
+  document.getElementById('viaje-body').innerHTML=`
+    <div class="mc-atras" style="padding-top:20px" onclick="viajePedirAncla('${_viaje.clima}')">‹ ${cat.label}</div>
+    <div class="items-grid">${items.map(p=>`
+      <div class="c-card flip-card" onclick="flipCard(this)">
+        <div class="flip-inner">
+          <div class="flip-front">${p.foto?`<img class="c-card-img" src="${p.foto}" alt="">`:`<div class="c-card-ph" style="background:${p.color}">👕</div>`}</div>
+          <div class="flip-back">${cardBackHTML(p)}
+            <button class="cb-select" onclick="event.stopPropagation();viajeSetAncla(${p.id})">Llevar</button>
+          </div>
+        </div>
+      </div>`).join('')}</div>`;
+  window.scrollTo(0,0);
+}
+function viajeSetAncla(id){_viaje.anclaId=id;armarViaje();}
+function capsulaViaje(dias,clima,anclaId){
+  // Generar solo con las prendas del clima (generarParaArmonia lee el inventario global)
+  const invFull=inventario;
+  let todos;
+  try{
+    inventario=invFull.filter(p=>climaPermite(p,clima));
+    const anclas=inventario.filter(p=>['base','medio','exterior','inferior'].includes(posDe(p)));
+    const map=new Map();
+    anclas.forEach(ref=>ARMONIAS.forEach(a=>generarParaArmonia(ref,a.key).forEach(o=>{
       const k=o.piezas.map(p=>p.id).sort().join('-');
-      if(usados.has(k))continue;
-      const nuevos=o.piezas.filter(p=>!maleta.has(p.id)).length;
-      const pts=puntaje(o);
-      if(nuevos<mejorCosto||(nuevos===mejorCosto&&pts>mejorPts)){mejor=o;mejorCosto=nuevos;mejorPts=pts;}
+      if(!map.has(k))map.set(k,o);
+    })));
+    todos=[...map.values()];
+  }finally{inventario=invFull;}
+  if(!todos.length)return null;
+  // Prioridad: 1º Wada + ✦ paleta juntos · 2º solo Wada · 3º solo ✦ · 4º el resto
+  todos.forEach(o=>{
+    o._wada=isWadaValidated(o);
+    o._tier=o._wada&&esMiColorOutfit(o)?3:o._wada?2:esMiColorOutfit(o)?1:0;
+    o._ids=new Set(o.piezas.map(p=>p.id));
+  });
+  const conAncla=anclaId?todos.filter(o=>o._ids.has(anclaId)):null;
+  const pool0=(conAncla&&conAncla.length)?conAncla:todos;
+  const semilla=[...pool0].sort((a,b)=>b._tier-a._tier||a.piezas.length-b.piezas.length)[0];
+  const sel=[semilla];
+  const maleta=new Set(semilla._ids);
+  const usados=new Set([[...semilla._ids].sort().join('-')]);
+  while(sel.length<dias){
+    const prev=sel[sel.length-1];
+    let mejor=null,mTier=-1,mNuevos=1e9,mDif=-1;
+    // Cada día debe cambiar al menos 2 prendas respecto al anterior; si el clóset no
+    // alcanza, se relaja a 1 antes que dejar días sin look
+    for(const minDif of[2,1]){
+      for(const grupo of(conAncla&&conAncla.length?[conAncla,todos]:[todos])){
+        for(const o of grupo){
+          const k=[...o._ids].sort().join('-');
+          if(usados.has(k))continue;
+          let dif=0;o._ids.forEach(id=>{if(!prev._ids.has(id))dif++;});
+          if(dif<minDif)continue;
+          const nuevos=o.piezas.filter(p=>!maleta.has(p.id)).length;
+          if(o._tier>mTier||(o._tier===mTier&&(nuevos<mNuevos||(nuevos===mNuevos&&dif>mDif)))){
+            mejor=o;mTier=o._tier;mNuevos=nuevos;mDif=dif;
+          }
+        }
+        if(mejor)break;
+      }
+      if(mejor)break;
     }
     if(!mejor)break;
     sel.push(mejor);
-    usados.add(mejor.piezas.map(p=>p.id).sort().join('-'));
-    mejor.piezas.forEach(p=>maleta.add(p.id));
+    usados.add([...mejor._ids].sort().join('-'));
+    mejor._ids.forEach(id=>maleta.add(id));
   }
-  return{looks:sel,maleta:[...maleta].map(id=>inventario.find(p=>p.id===id)).filter(Boolean)};
+  return{looks:sel,maleta:[...maleta].map(id=>invFull.find(p=>p.id===id)).filter(Boolean)};
 }
-function armarViaje(dias){
+function armarViaje(){
   const body=document.getElementById('viaje-body');
   body.innerHTML='<div class="no-outfits"><p>Armando tu maleta…</p></div>';
   setTimeout(()=>{
-    const r=capsulaViaje(dias);
-    if(!r||!r.looks.length){body.innerHTML='<div class="no-outfits"><p>No hay suficientes prendas para armar la cápsula</p></div>';return;}
+    const r=capsulaViaje(_viaje.dias,_viaje.clima,_viaje.anclaId);
+    if(!r||!r.looks.length){body.innerHTML='<div class="no-outfits"><p>No hay suficientes prendas para este clima</p></div><button class="mc-btn-sec" onclick="activarModoViaje()">Empezar de nuevo</button>';return;}
+    const anclaP=_viaje.anclaId?inventario.find(p=>p.id===_viaje.anclaId):null;
     body.innerHTML=`
-      <div class="mc-titulo" style="padding-top:20px">Tu maleta</div>
+      <div class="mc-titulo" style="padding-top:20px">Tu maleta · ${climaLabel(_viaje.clima)}${anclaP?' · con '+anclaP.nombre:''}</div>
       <div class="mc-nombre" style="font-size:20px">${r.maleta.length} prendas · ${r.looks.length} días</div>
+      ${r.looks.length<_viaje.dias?'<div class="mc-desc">Con este clima el clóset solo alcanza para '+r.looks.length+' looks bien distintos</div>':''}
       <div class="mc-ropa">${r.maleta.map(p=>`<div class="mc-prenda" onclick="showToast('${(p.nombre||'').replace(/'/g,'')}')">${p.foto?`<img src="${p.foto}" loading="lazy" alt="">`:`<div class="mc-prenda-ph" style="background:${p.color}"></div>`}</div>`).join('')}</div>
       <div class="mc-sec" style="color:#fff">Un look por día</div>
-      ${r.looks.map((o,i)=>`<div class="nivel-div" style="padding-top:16px">Día ${i+1}</div><div class="viaje-look">${lookCardHTML(o,isWadaValidated(o))}</div>`).join('')}
-      <button class="mc-btn-sec" onclick="activarModoViaje()">Cambiar días</button>`;
+      ${r.looks.map((o,i)=>`<div class="nivel-div" style="padding-top:16px">Día ${i+1}</div><div class="viaje-look">${lookCardHTML(o,o._wada)}</div>`).join('')}
+      <button class="mc-btn-sec" onclick="activarModoViaje()">Cambiar viaje</button>`;
     window.scrollTo(0,0);
   },30);
 }
@@ -2141,7 +2287,7 @@ async function imagenDeOutfit(o){
   const segW=W/cols.length;
   cols.forEach((cc,i)=>{x.fillStyle=cc;x.fillRect(Math.floor(i*segW),1775,Math.ceil(segW)+1,70);});
   // Marca
-  x.fillStyle='#ff1a00';
+  x.fillStyle='#C9A227';
   try{x.letterSpacing='10px';}catch(e){}
   x.font='300 40px "Helvetica Neue",Helvetica,Arial,sans-serif';
   x.textAlign='center';
@@ -2169,7 +2315,8 @@ async function compartirOutfit(ev,btn){
 
 // NAVEGACIÓN
 function showScreen(id){
-  document.body.style.overflow=(id==='closet'||id==='outfit')?'hidden':'';
+  // Inicio es pantalla fija (collage sin scroll), igual que las listas de Closet/Outfit
+  document.body.style.overflow=(id==='closet'||id==='outfit'||id==='inicio')?'hidden':'';
   const cur=document.querySelector('.screen.active')?.id?.replace('screen-','');
   if(id==='cargar'&&cur&&cur!=='cargar'){
     prevScreen=cur;
@@ -2191,7 +2338,8 @@ function volverDesdeCargar(){if(prevScreen)showScreen(prevScreen);}
 
 if('serviceWorker' in navigator){navigator.serviceWorker.register('/wardrobe/sw.js').catch(()=>{});}
 window.addEventListener('load',()=>{
-  initSlideshow();
+  document.body.style.overflow='hidden'; // arranca en Inicio (pantalla fija)
+  initCollage();
   initTipoSelect();
   mostrarEstadoSync();
   mostrarEstadoRmbg();
