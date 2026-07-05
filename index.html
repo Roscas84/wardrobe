@@ -144,6 +144,8 @@ body{font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;background:#f5f0eb;
 .mc-dot{display:inline-block;width:12px;height:12px;border-radius:50%;margin-right:8px;vertical-align:middle;border:1px solid rgba(255,255,255,.2)}
 /* Orden en la esquina: ♥ (62px) · ✦ (38px) · W (12px) */
 .mio-badge{position:absolute;top:9px;right:38px;font-size:19px;color:#ff1a00;z-index:10;line-height:1;text-shadow:0 0 6px rgba(0,0,0,.5)}
+.share-btn{position:absolute;bottom:46px;right:10px;z-index:10;width:40px;height:40px;display:flex;align-items:center;justify-content:center;background:rgba(0,0,0,.45);border:none;color:#fff;cursor:pointer}
+.share-btn:active{background:#fff;color:#000}
 
 /* DESBLOQUEO DE LOOKS — franjas de color a lo ancho */
 .desb-franja{display:flex;align-items:center;justify-content:space-between;padding:0 20px;height:76px;margin-bottom:2px}
@@ -1221,7 +1223,7 @@ function lookCardHTML(o,wadaOk=false,armNombre=null){
   const favK=piezas.map(p=>p.id).sort().join('-');
   const esFav=_favs.includes(favK);
   const mio=esMiColorOutfit(o);
-  return`<div class="outfit-card${wadaOk?' wada-ok':''}">${wadaOk?'<div class="wada-badge">W</div>':''}${mio?'<div class="mio-badge">✦</div>':''}<button class="fav-btn${esFav?' on':''}" data-key="${favK}" onclick="toggleFav(event,this)">${esFav?'♥':'♡'}</button><div class="outfit-body">${leftHTML}${rightHTML}</div><div class="outfit-paleta">${colores.map(c=>`<div class="paleta-seg" style="background:${c}"></div>`).join('')}</div></div>`;
+  return`<div class="outfit-card${wadaOk?' wada-ok':''}">${wadaOk?'<div class="wada-badge">W</div>':''}${mio?'<div class="mio-badge">✦</div>':''}<button class="fav-btn${esFav?' on':''}" data-key="${favK}" onclick="toggleFav(event,this)">${esFav?'♥':'♡'}</button><button class="share-btn" data-key="${favK}" onclick="compartirOutfit(event,this)" title="Compartir"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12"/><path d="m8 7 4-4 4 4"/><path d="M4 14v5a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-5"/></svg></button><div class="outfit-body">${leftHTML}${rightHTML}</div><div class="outfit-paleta">${colores.map(c=>`<div class="paleta-seg" style="background:${c}"></div>`).join('')}</div></div>`;
 }
 function tipoIcon(tipo){const pos=getPosicion(tipo);if(pos==='base'||pos==='medio'||pos==='exterior')return'👕';if(pos==='inferior')return'👖';if(pos==='calzado')return'👟';return'🎩';}
 
@@ -1684,17 +1686,21 @@ async function subirFotoGitHub(dataUrl,filename){
 async function subirJsonGitHub(){
   const existing=await ghGet('guardarropa.json');
   // Unir tombstones remotos para no pisar eliminaciones hechas desde otro dispositivo
+  let perfilRemoto=null;
   if(existing&&existing.content){
     try{
       const remote=JSON.parse(decodeURIComponent(escape(atob(existing.content.replace(/\n/g,'')))));
       const remoteDel=Array.isArray(remote)?[]:(remote.deleted||[]);
       remoteDel.forEach(id=>{if(!_tombstones.includes(id))_tombstones.push(id);});
+      perfilRemoto=Array.isArray(remote)?null:(remote.perfil||null);
     }catch(e){}
   }
   const antes=inventario.length;
   inventario=inventario.filter(p=>!_tombstones.includes(p.id));
   if(inventario.length!==antes)guardarLocal();
-  const content=btoa(unescape(encodeURIComponent(JSON.stringify({prendas:inventario,deleted:_tombstones,favs:_favs,perfil:perfilColor()},null,2))));
+  // El perfil de colorimetría NUNCA se pisa con vacío: un dispositivo sin quiz no borra el de la nube
+  const perfilFinal=perfilColor()||perfilRemoto;
+  const content=btoa(unescape(encodeURIComponent(JSON.stringify({prendas:inventario,deleted:_tombstones,favs:_favs,perfil:perfilFinal},null,2))));
   return ghPut('guardarropa.json',content,'Update inventory',existing?.sha);
 }
 async function ghDelete(path,message){
@@ -2018,6 +2024,68 @@ function esMiColorOutfit(o){
   const cols=[];o.piezas.forEach(p=>coloresDe(p).forEach(c=>{if(!esNeutroColorim(c))cols.push(c);}));
   if(!cols.length)return false;
   return cols.filter(enMiPaleta).length>=Math.ceil(cols.length*0.6);
+}
+
+// ══ COMPARTIR OUTFIT — imagen vertical (formato historia) + hoja nativa de compartir ══
+function cargarImg(src){return new Promise(res=>{const im=new Image();im.onload=()=>res(im);im.onerror=()=>res(null);im.src=src;});}
+async function imagenDeOutfit(o){
+  const W=1080,H=1920,gap=6,top=30,bottom=1760;
+  const c=document.createElement('canvas');c.width=W;c.height=H;
+  const x=c.getContext('2d');
+  x.fillStyle='#000';x.fillRect(0,0,W,H);
+  const orden={exterior:0,medio:1,base:2,inferior:3};
+  const left=o.piezas.filter(p=>posDe(p) in orden).sort((a,b)=>orden[posDe(a)]-orden[posDe(b)]);
+  const right=o.piezas.filter(p=>!left.includes(p));
+  const lw=right.length?Math.floor((W-3*gap)*0.6):W-2*gap;
+  const rw=W-3*gap-lw;
+  async function columna(items,x0,wcol){
+    if(!items.length)return;
+    const hCell=Math.floor((bottom-top-(items.length-1)*gap)/items.length);
+    for(let i=0;i<items.length;i++){
+      const y0=top+i*(hCell+gap),p=items[i];
+      x.fillStyle='#f7f5f2';x.fillRect(x0,y0,wcol,hCell);
+      let im=null;
+      if(p.foto)im=await cargarImg(p.foto);
+      if(im){
+        const s=Math.min(wcol/im.width,hCell/im.height);
+        const dw=im.width*s,dh=im.height*s;
+        x.drawImage(im,x0+(wcol-dw)/2,y0+(hCell-dh)/2,dw,dh);
+      }else{
+        x.fillStyle=p.color||'#ccc';x.fillRect(x0,y0,wcol,hCell);
+      }
+    }
+  }
+  await columna(left,gap,lw);
+  if(right.length)await columna(right,gap*2+lw,rw);
+  // Franja de paleta
+  const cols=[...new Set(o.piezas.flatMap(p=>coloresDe(p)))];
+  const segW=W/cols.length;
+  cols.forEach((cc,i)=>{x.fillStyle=cc;x.fillRect(Math.floor(i*segW),1775,Math.ceil(segW)+1,70);});
+  // Marca
+  x.fillStyle='#ff1a00';
+  try{x.letterSpacing='10px';}catch(e){}
+  x.font='300 40px "Helvetica Neue",Helvetica,Arial,sans-serif';
+  x.textAlign='center';
+  x.fillText('MI GUARDARROPA',W/2,1893);
+  return await new Promise(res=>c.toBlob(res,'image/jpeg',0.9));
+}
+async function compartirOutfit(ev,btn){
+  ev.stopPropagation();
+  const o=favToOutfit(btn.dataset.key);
+  if(!o){showToast('No se pudo armar el look');return;}
+  showToast('⏳ Generando imagen…');
+  try{
+    const blob=await imagenDeOutfit(o);
+    if(!blob){showToast('No se pudo generar la imagen');return;}
+    const file=new File([blob],'outfit-mi-guardarropa.jpg',{type:'image/jpeg'});
+    if(navigator.canShare&&navigator.canShare({files:[file]})){
+      await navigator.share({files:[file]});
+    }else{
+      const a=document.createElement('a');
+      a.href=URL.createObjectURL(blob);a.download='outfit-mi-guardarropa.jpg';a.click();
+      showToast('Imagen descargada');
+    }
+  }catch(e){if(!e||e.name!=='AbortError')showToast('No se pudo compartir');}
 }
 
 // NAVEGACIÓN
