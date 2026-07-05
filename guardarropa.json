@@ -655,7 +655,7 @@
     }
    ],
    "cuidado": {
-    "lavado": "W30",
+    "lavado": "Mano",
     "secado": "Tender",
     "plancha": "Baja"
    }
@@ -883,7 +883,7 @@
     }
    ],
    "cuidado": {
-    "lavado": "W30",
+    "lavado": "Mano",
     "secado": "NoSecadora",
     "plancha": "NoPlancha"
    }
@@ -939,7 +939,7 @@
     }
    ],
    "cuidado": {
-    "lavado": "W30",
+    "lavado": "Mano",
     "secado": "NoSecadora",
     "plancha": "NoPlancha"
    }
@@ -1331,7 +1331,7 @@
     }
    ],
    "cuidado": {
-    "lavado": "W30",
+    "lavado": "Mano",
     "secado": "NoSecadora",
     "plancha": "Baja"
    }
@@ -1359,7 +1359,7 @@
     }
    ],
    "cuidado": {
-    "lavado": "W30",
+    "lavado": "Mano",
     "secado": "NoSecadora",
     "plancha": "Baja"
    }
@@ -1466,7 +1466,7 @@
    "cuidado": {
     "lavado": "W30",
     "secado": "Tender",
-    "plancha": "Alta"
+    "plancha": "Baja"
    },
    "formalidad": "Casual",
    "foto": "images/user_1782961895944.webp",
