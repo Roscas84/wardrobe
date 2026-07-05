@@ -1695,6 +1695,8 @@ function guardarToken(){
   document.getElementById('gh-token-inp').value='';
   mostrarEstadoSync();
   showToast('Token guardado');
+  // Subir de inmediato lo que se guardó local mientras no había token
+  if(localStorage.getItem('wrd_dirty')||_pendDel().length)sincronizarInventario(false);
 }
 function mostrarEstadoSync(){
   const el=document.getElementById('gh-sync-status');
@@ -1777,7 +1779,7 @@ async function ghDelete(path,message){
 let _syncEnCurso=false;
 function _pendDel(){return JSON.parse(localStorage.getItem('wrd_pending_del')||'[]');}
 async function sincronizarInventario(silencioso){
-  if(!ghToken()){if(!silencioso)showToast('Guardado local — configura token para sincronizar');return false;}
+  if(!ghToken()){localStorage.setItem('wrd_dirty','1');if(!silencioso)showToast('Guardado local — configura token para sincronizar');return false;}
   if(_syncEnCurso){localStorage.setItem('wrd_dirty','1');return false;}
   _syncEnCurso=true;
   if(!silencioso)showToast('⏳ Sincronizando...');
