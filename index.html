@@ -68,6 +68,7 @@ body{font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;background:#f5f0eb;
 
 /* Items grid */
 .items-grid{display:grid;grid-template-columns:1fr 1fr;gap:2px;background:#e0dbd5;padding:2px}
+.closet-sec-div{grid-column:1/-1;background:#000;color:#fff;font-size:10px;letter-spacing:2.5px;text-transform:uppercase;padding:13px 14px;font-weight:300}
 .c-card{cursor:pointer}
 /* CARD FLIP */
 .flip-card{perspective:800px}
@@ -798,7 +799,17 @@ function renderClosetMain(){
 }
 function verTodosCloset(){
   document.getElementById('closet-items-title').textContent='Todo el clóset';
-  document.getElementById('closet-items-grid').innerHTML=inventario.map(p=>closetCardHTML(p)).join('');
+  // Agrupado por secciones (mismo orden que las categorías), no en el orden del JSON
+  let html='';const usados=new Set();
+  ZARA_CATS.forEach(cat=>{
+    const items=inventario.filter(p=>cat.tipos.includes(p.tipo));
+    if(!items.length)return;
+    items.forEach(p=>usados.add(p.id));
+    html+=`<div class="closet-sec-div">${cat.label}</div>`+items.map(p=>closetCardHTML(p)).join('');
+  });
+  const otros=inventario.filter(p=>!usados.has(p.id));
+  if(otros.length)html+=`<div class="closet-sec-div">Otros</div>`+otros.map(p=>closetCardHTML(p)).join('');
+  document.getElementById('closet-items-grid').innerHTML=html;
   document.getElementById('closet-main').style.display='none';
   document.getElementById('closet-items-wrap').style.display='block';
   document.getElementById('closet-color-wrap').style.display='none';
