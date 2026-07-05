@@ -331,7 +331,7 @@ body{font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;background:#f5f0eb;
   <div id="closet-desbloqueo" style="display:none" class="dark-screen">
     <div class="back-bar" onclick="volverClosetMain()">
       <span class="back-arrow">‹</span>
-      <span class="back-title">Desbloqueo de looks</span>
+      <span class="back-title">Colores que te faltan</span>
     </div>
     <div id="desbloqueo-lista"></div>
   </div>
@@ -790,7 +790,7 @@ function renderClosetMain(){
   });
   const desbBtn=document.createElement('div');desbBtn.className='cat-link';
   desbBtn.onclick=verDesbloqueos;
-  desbBtn.innerHTML=`<span class="cat-link-text">Desbloqueo de looks</span>`;
+  desbBtn.innerHTML=`<span class="cat-link-text">Colores que te faltan</span>`;
   wrap.appendChild(desbBtn);
   const vt=document.createElement('div');vt.className='arm-link ver-todos-btn';
   vt.onclick=verTodosCloset;
@@ -933,15 +933,16 @@ function analizarDesbloqueos(){
   };
   const base=contar();
   const res=[];
-  const vistos=new Set();
+  const labDist=(a,b)=>{const x=hexToLab(a),y=hexToLab(b);return Math.sqrt((x[0]-y[0])**2+(x[1]-y[1])**2+(x[2]-y[2])**2);};
   for(const c of ESTACIONES[perfil.estacion].colores){
     if(esNeutro(c))continue; // el motor lo trataría como comodín, no desbloquea armonías
+    // Mismo criterio que Mi Color: saltar solo si el clóset tiene un color REALMENTE parecido
+    // (LAB ≤ UMBRAL_MIO) — un rosa neón NO cubre un burdeos aunque compartan ángulo de tono
+    if(inventario.some(p=>coloresDe(p).some(cc=>labDist(cc,c)<=UMBRAL_MIO)))continue;
+    // Dedupe: no proponer dos colores casi iguales de la paleta
+    if(res.some(r=>labDist(r.color,c)<=14))continue;
     const{h}=hexToHsl(c);
     const sector=Math.round(h/30)*30;
-    if(vistos.has(sector))continue;
-    vistos.add(sector);
-    // Saltar tonos que el clóset ya cubre
-    if(inventario.some(p=>coloresDe(p).some(cc=>!esNeutro(cc)&&hueDist(hexToHsl(cc).h,h)<=TOLERANCIA)))continue;
     let mejor=0;
     // Probar la prenda virtual como base y como inferior; tomar el mejor caso
     for(const tipo of ['Camiseta','Pantalón']){
