@@ -1530,6 +1530,32 @@
       "formalidad": "casual",
       "foto": "images/user_1783294149900.webp?v=1783294152376",
       "pos": "inferior"
+    },
+    {
+      "id": 1783294217293,
+      "nombre": "Jean azul",
+      "tipo": "Pantalón",
+      "capa": "base",
+      "temporada": "Todo",
+      "color": "#303048",
+      "color2": null,
+      "color3": null,
+      "marca": "Sin marca",
+      "talla": "31",
+      "material": [
+        {
+          "tela": "Algodón",
+          "pct": 100
+        }
+      ],
+      "cuidado": {
+        "lavado": "W30",
+        "secado": "NoSecadora",
+        "plancha": null
+      },
+      "formalidad": "streetwear",
+      "foto": "images/user_1783294217293.webp?v=1783294219562",
+      "pos": "inferior"
     }
   ],
   "deleted": [
