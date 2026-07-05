@@ -147,6 +147,10 @@ body{font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;background:#f5f0eb;
 .share-btn{position:absolute;bottom:46px;right:10px;z-index:10;width:40px;height:40px;display:flex;align-items:center;justify-content:center;background:rgba(0,0,0,.45);border:none;color:#fff;cursor:pointer}
 .share-btn:active{background:#fff;color:#000}
 
+/* MODO VIAJE */
+.viaje-look{height:72vh;position:relative;padding:0 2px}
+.viaje-look .outfit-card{width:100%;height:100%}
+
 /* DESBLOQUEO DE LOOKS — franjas de color a lo ancho */
 .desb-franja{display:flex;align-items:center;justify-content:space-between;padding:0 20px;height:76px;margin-bottom:2px}
 .desb-nombre{font-size:13px;letter-spacing:2.5px;text-transform:uppercase;font-weight:300}
@@ -357,6 +361,15 @@ body{font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;background:#f5f0eb;
       </div>
       <div id="outfit-items-grid" class="items-grid"></div>
     </div>
+  </div>
+
+  <!-- Modo Viaje: cápsula mínima para N días -->
+  <div id="viaje-wrap" style="display:none">
+    <div class="back-bar" onclick="salirViaje()">
+      <span class="back-arrow">‹</span>
+      <span class="back-title">Modo Viaje</span>
+    </div>
+    <div id="viaje-body" class="dark-screen"></div>
   </div>
 
   <!-- Paso 2a: lista de armonías -->
@@ -1054,6 +1067,10 @@ function renderOutfitMain(){
   ml.onclick=activarModoLibre;
   ml.innerHTML=`<span class="cat-link-text">Modo Libre</span>`;
   wrap.appendChild(ml);
+  const mv=document.createElement('div');mv.className='cat-link';
+  mv.onclick=activarModoViaje;
+  mv.innerHTML=`<span class="cat-link-text">Modo Viaje</span>`;
+  wrap.appendChild(mv);
 }
 function verCatOutfit(cat){
   const items=inventario.filter(p=>cat.tipos.includes(p.tipo));
@@ -1174,6 +1191,7 @@ function volverArmonias(){
 function irPaso(n){
   document.getElementById('paso1-wrap').style.display=n===1?'block':'none';
   document.getElementById('paso2-wrap').style.display=n===2?'block':'none';
+  document.getElementById('viaje-wrap').style.display='none';
   if(n===1){modoLibreActivo=false;ancla=null;document.body.style.overflow='';window.scrollTo(0,0);renderOutfitMain();volverOutfitMain();}
 }
 
@@ -2024,6 +2042,67 @@ function esMiColorOutfit(o){
   const cols=[];o.piezas.forEach(p=>coloresDe(p).forEach(c=>{if(!esNeutroColorim(c))cols.push(c);}));
   if(!cols.length)return false;
   return cols.filter(enMiPaleta).length>=Math.ceil(cols.length*0.6);
+}
+
+// ══ MODO VIAJE — cápsula mínima: N días, la maleta más chica con un look distinto por día ══
+function activarModoViaje(){
+  document.getElementById('paso1-wrap').style.display='none';
+  document.getElementById('viaje-wrap').style.display='block';
+  document.body.style.overflow='';
+  window.scrollTo(0,0);
+  document.getElementById('viaje-body').innerHTML=`
+    <div class="mc-titulo" style="padding-top:24px">Modo viaje</div>
+    <div class="mc-desc">La maleta más pequeña posible con un look distinto para cada día, priorizando lo que te favorece.</div>
+    <div class="mc-q" style="padding-bottom:8px">¿Cuántos días?</div>
+    ${[2,3,4,5,6,7,8].map(n=>`<div class="cat-link" onclick="armarViaje(${n})"><span class="cat-link-text">${n} días</span></div>`).join('')}`;
+}
+function salirViaje(){irPaso(1);}
+function capsulaViaje(dias){
+  const anclas=inventario.filter(p=>['base','medio','exterior','inferior'].includes(posDe(p)));
+  const map=new Map();
+  anclas.forEach(ref=>ARMONIAS.forEach(a=>generarParaArmonia(ref,a.key).forEach(o=>{
+    const k=o.piezas.map(p=>p.id).sort().join('-');
+    if(!map.has(k))map.set(k,o);
+  })));
+  const todos=[...map.values()];
+  if(!todos.length)return null;
+  const puntaje=o=>(esMiColorOutfit(o)?2:0)+(isWadaValidated(o)?1:0);
+  // Semilla: el mejor look con menos piezas
+  todos.sort((a,b)=>puntaje(b)-puntaje(a)||a.piezas.length-b.piezas.length);
+  const sel=[todos[0]];
+  const maleta=new Set(todos[0].piezas.map(p=>p.id));
+  const usados=new Set([todos[0].piezas.map(p=>p.id).sort().join('-')]);
+  while(sel.length<dias){
+    let mejor=null,mejorCosto=1e9,mejorPts=-1;
+    for(const o of todos){
+      const k=o.piezas.map(p=>p.id).sort().join('-');
+      if(usados.has(k))continue;
+      const nuevos=o.piezas.filter(p=>!maleta.has(p.id)).length;
+      const pts=puntaje(o);
+      if(nuevos<mejorCosto||(nuevos===mejorCosto&&pts>mejorPts)){mejor=o;mejorCosto=nuevos;mejorPts=pts;}
+    }
+    if(!mejor)break;
+    sel.push(mejor);
+    usados.add(mejor.piezas.map(p=>p.id).sort().join('-'));
+    mejor.piezas.forEach(p=>maleta.add(p.id));
+  }
+  return{looks:sel,maleta:[...maleta].map(id=>inventario.find(p=>p.id===id)).filter(Boolean)};
+}
+function armarViaje(dias){
+  const body=document.getElementById('viaje-body');
+  body.innerHTML='<div class="no-outfits"><p>Armando tu maleta…</p></div>';
+  setTimeout(()=>{
+    const r=capsulaViaje(dias);
+    if(!r||!r.looks.length){body.innerHTML='<div class="no-outfits"><p>No hay suficientes prendas para armar la cápsula</p></div>';return;}
+    body.innerHTML=`
+      <div class="mc-titulo" style="padding-top:20px">Tu maleta</div>
+      <div class="mc-nombre" style="font-size:20px">${r.maleta.length} prendas · ${r.looks.length} días</div>
+      <div class="mc-ropa">${r.maleta.map(p=>`<div class="mc-prenda" onclick="showToast('${(p.nombre||'').replace(/'/g,'')}')">${p.foto?`<img src="${p.foto}" loading="lazy" alt="">`:`<div class="mc-prenda-ph" style="background:${p.color}"></div>`}</div>`).join('')}</div>
+      <div class="mc-sec" style="color:#fff">Un look por día</div>
+      ${r.looks.map((o,i)=>`<div class="nivel-div" style="padding-top:16px">Día ${i+1}</div><div class="viaje-look">${lookCardHTML(o,isWadaValidated(o))}</div>`).join('')}
+      <button class="mc-btn-sec" onclick="activarModoViaje()">Cambiar días</button>`;
+    window.scrollTo(0,0);
+  },30);
 }
 
 // ══ COMPARTIR OUTFIT — imagen vertical (formato historia) + hoja nativa de compartir ══

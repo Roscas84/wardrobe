@@ -7,7 +7,7 @@ App web progresiva (PWA) de uso personal para gestionar inventario de ropa y gen
 
 ---
 
-## Estado actual — SW v101
+## Estado actual — SW v102
 
 ### Lo que funciona hoy
 
@@ -29,7 +29,7 @@ App web progresiva (PWA) de uso personal para gestionar inventario de ropa y gen
 | Carrusel horizontal con scroll-snap | Completo |
 | Material / composición de tela con porcentajes | Completo |
 | Símbolos de cuidado (lavado, secado, plancha) con auto-sugerencia | Completo |
-| Service Worker v101 — network-first para HTML/JSON, cache-first para imágenes | Completo |
+| Service Worker v102 — network-first para HTML/JSON, cache-first para imágenes | Completo |
 | Sección "Ajustes" colapsable en Cargar (Datos/GitHub/Remove.bg) | Completo |
 | Eliminaciones propagadas entre dispositivos (tombstones en guardarropa.json) | Completo |
 | API key de remove.bg en localStorage por dispositivo (nunca en el código) | Completo |
@@ -113,7 +113,7 @@ el cache-first del service worker (misma URL nunca se revalida).
 | 4 | **Colorimetría personal** | Pestaña "Mi Color" (5ª en nav): cuestionario de 6 preguntas → 1 de 12 estaciones (método característica dominante, Sci\\ART) → paleta ~18 colores + neutros + evitar + metal → badge ✦ en outfits dentro de la paleta y "Te favorece" en fichas. BD de 12 estaciones embebida; perfil sync en guardarropa.json | ✅ Hecho (SW v90) |
 | 5 | **Compartir outfit** | Botón en cada outfit card → imagen vertical 1080×1920 (collage + franja de paleta + marca MI GUARDARROPA) → navigator.share (WhatsApp/IG/Fotos/AirDrop); descarga como fallback en desktop | ✅ Hecho (SW v101) |
 | 6 | **Sistema de capas medio/base** | Posiciones base/medio/exterior; 4 niveles de outfit: base+inf, medio+base+inf, ext+base+inf, ext+medio+base+inf. Blazer y Chaqueta = capa media; Chamarra y Abrigo = exterior | ✅ Hecho (SW v91) |
-| 7 | **Modo viaje** | N días → cápsula mínima de prendas + look por día | Al final |
+| 7 | **Modo viaje** | Link en Outfit → eliges días (2-8) → greedy: cada look nuevo agrega el mínimo de prendas a la maleta, priorizando ✦ y Wada → lista de empaque en fotos + look por día | ✅ Hecho (SW v102) |
 | — | ~~Filtro por ocasión~~ | Descartado por el usuario (ya existe campo formalidad) | ✗ |
 | — | ~~Historial/calendario~~ | Pospuesto: requiere registro manual diario, dudosa adopción | ⏸ |
 | — | Estadísticas de uso / Wishlist | Fusionadas conceptualmente con Desbloqueo de looks | → #3 |
@@ -171,7 +171,7 @@ Nivel 3: [exterior + medio + base + inferior]
 
 ```
 index.html          — App completa (single-file PWA, todo inline)
-sw.js               — Service Worker v101
+sw.js               — Service Worker v102
 guardarropa.json    — {prendas, deleted} — 52 prendas (fuente de verdad, siempre se carga al iniciar)
 images/             — WebPs procesados con rembg, 1200×1600 px, fondo transparente
 manifest.json       — PWA manifest
