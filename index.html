@@ -1858,9 +1858,11 @@ function renderMiColor(){
   // Clasificar el clóset real contra la paleta (estricto, LAB ≤ UMBRAL_MIO)
   const fav=[],neu=[],nof=[];
   inventario.forEach(p=>{
-    const cs=coloresDe(p).filter(c=>!esNeutro(c));
+    const cs=coloresDe(p).filter(c=>!esNeutroColorim(c));
     if(!cs.length){neu.push(p);return;}
-    (cs.some(enMiPaleta)?fav:nof).push(p);
+    if(cs.some(enMiPaleta)){fav.push(p);return;}
+    if(cs.every(enMisNeutros)){neu.push(p);return;}
+    nof.push(p);
   });
   const ropa=arr=>arr.length
     ?`<div class="mc-ropa">${arr.map(p=>`<div class="mc-prenda" onclick="showToast('${(p.nombre||'').replace(/'/g,'')}')">${p.foto?`<img src="${p.foto}" loading="lazy" alt="">`:`<div class="mc-prenda-ph" style="background:${p.color}"></div>`}</div>`).join('')}</div>`
@@ -1932,7 +1934,7 @@ function calcularEstacion(){
     else est=(p.deep>p.light||p.bright>p.soft)?'invierno_frio':'verano_frio';
   }
   localStorage.setItem('wrd_color_perfil',JSON.stringify({estacion:est,fecha:new Date().toISOString().slice(0,10)}));
-  _palCache={key:null,labs:null};
+  _palCache={key:null,labs:null};_neutCache={key:null,labs:null};
   renderMiColor();
   showToast('✦ Perfil de color guardado');
   sincronizarInventario(true);
@@ -1946,15 +1948,26 @@ function _paletaLabs(estKey){
 // Umbral estricto elegido con datos reales del clóset: 19 admite camel (18.1)
 // y excluye rojo brillante (20.7), amarillo (21.4) y neones (40+)
 const UMBRAL_MIO=19;
+// Neutro de COLORIMETRÍA: solo acromáticos puros (blanco/negro/gris). El navy, camel
+// y oliva son "neutros" para ARMAR OUTFITS (regla del motor, no se toca), pero para
+// tu piel son colores y se evalúan contra la paleta de tu estación
+function esNeutroColorim(hex){const{s,l}=hexToHsl(hex);return s<15||l>85||l<10;}
 function enMiPaleta(hex){
   const perfil=perfilColor();if(!perfil||!ESTACIONES[perfil.estacion])return false;
   const[L,A,B]=hexToLab(hex);
   return _paletaLabs(perfil.estacion).some(l=>Math.sqrt((L-l[0])**2+(A-l[1])**2+(B-l[2])**2)<=UMBRAL_MIO);
 }
-function prendaFavorece(p){return coloresDe(p).some(c=>!esNeutro(c)&&enMiPaleta(c));}
+let _neutCache={key:null,labs:null};
+function enMisNeutros(hex){
+  const perfil=perfilColor();if(!perfil||!ESTACIONES[perfil.estacion])return false;
+  if(_neutCache.key!==perfil.estacion)_neutCache={key:perfil.estacion,labs:ESTACIONES[perfil.estacion].neutros.map(hexToLab)};
+  const[L,A,B]=hexToLab(hex);
+  return _neutCache.labs.some(l=>Math.sqrt((L-l[0])**2+(A-l[1])**2+(B-l[2])**2)<=UMBRAL_MIO);
+}
+function prendaFavorece(p){return coloresDe(p).some(c=>!esNeutroColorim(c)&&enMiPaleta(c));}
 function esMiColorOutfit(o){
   if(!perfilColor())return false;
-  const cols=[];o.piezas.forEach(p=>coloresDe(p).forEach(c=>{if(!esNeutro(c))cols.push(c);}));
+  const cols=[];o.piezas.forEach(p=>coloresDe(p).forEach(c=>{if(!esNeutroColorim(c))cols.push(c);}));
   if(!cols.length)return false;
   return cols.filter(enMiPaleta).length>=Math.ceil(cols.length*0.6);
 }
