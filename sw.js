@@ -1,4 +1,4 @@
-const CACHE = 'guardarropa-v114';
+const CACHE = 'guardarropa-v115';
 const CORE = [
   '/wardrobe/manifest.json',
   '/wardrobe/icon-192.png',
