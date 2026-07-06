@@ -1,1722 +1,1725 @@
 {
- "prendas": [
-  {
-   "id": 1,
-   "nombre": "Jean azul degradé",
-   "tipo": "Jean",
-   "color": "#5B8DB8",
-   "color2": "#F0F0F0",
-   "patron": "Degradé",
-   "marca": "Derek Lam",
-   "formalidad": "Streetwear",
-   "temporada": "Primavera/Verano",
-   "notas": null,
-   "capa": null,
-   "foto": "images/DER85906_1_enlarged.jpg.webp",
-   "pos": "inferior",
-   "subtipo": "Short",
-   "talla": "M",
-   "material": [
+  "prendas": [
     {
-     "tela": "Algodón",
-     "pct": 92
+      "id": 1,
+      "nombre": "Jean azul degradé",
+      "tipo": "Jean",
+      "color": "#5B8DB8",
+      "color2": "#F0F0F0",
+      "patron": "Degradé",
+      "marca": "Derek Lam",
+      "formalidad": "Streetwear",
+      "temporada": "Primavera/Verano",
+      "notas": null,
+      "capa": null,
+      "foto": "images/DER85906_1_enlarged.jpg.webp",
+      "pos": "inferior",
+      "subtipo": "Short",
+      "talla": "M",
+      "material": [
+        {
+          "tela": "Algodón",
+          "pct": 92
+        },
+        {
+          "tela": "Spandex / Elastano",
+          "pct": 8
+        }
+      ],
+      "cuidado": {
+        "lavado": "W40",
+        "secado": "Tender",
+        "plancha": "Media"
+      }
     },
     {
-     "tela": "Spandex / Elastano",
-     "pct": 8
-    }
-   ],
-   "cuidado": {
-    "lavado": "W40",
-    "secado": "Tender",
-    "plancha": "Media"
-   }
-  },
-  {
-   "id": 2,
-   "nombre": "Blazer burdeos",
-   "tipo": "Blazer",
-   "color": "#6E2233",
-   "color2": null,
-   "patron": "Liso",
-   "marca": "Armani",
-   "formalidad": "Semiformal",
-   "temporada": "Otoño/Invierno",
-   "notas": null,
-   "capa": "exterior",
-   "foto": "images/EMP64361_1_enlarged.jpg.webp",
-   "pos": "exterior",
-   "subtipo": "Regular",
-   "talla": "M",
-   "material": [
-    {
-     "tela": "Algodón",
-     "pct": 100
-    }
-   ],
-   "cuidado": {
-    "lavado": "W40",
-    "secado": "Tender",
-    "plancha": "Media"
-   }
-  },
-  {
-   "id": 3,
-   "nombre": "Lentes aviador rosa espejo",
-   "tipo": "Lentes",
-   "color": "#CC3377",
-   "color2": null,
-   "patron": "Liso",
-   "marca": "Aviator Nation",
-   "formalidad": "Casual",
-   "temporada": "Todo",
-   "notas": null,
-   "capa": null,
-   "foto": "images/ISA250149_3_enlarged.jpg.webp",
-   "pos": "accesorios",
-   "subtipo": "Aviador",
-   "talla": "M",
-   "material": [
-    {
-     "tela": "Plástico",
-     "pct": 100
-    }
-   ],
-   "cuidado": {
-    "lavado": "NoLavar",
-    "secado": "NoSecadora",
-    "plancha": "NoPlancha"
-   }
-  },
-  {
-   "id": 4,
-   "nombre": "Camiseta collage manga larga",
-   "tipo": "Camiseta",
-   "color": "#1C1C1C",
-   "color2": "#FF6600",
-   "patron": "Estampado",
-   "marca": "Sin marca",
-   "formalidad": "Casual",
-   "temporada": "Primavera/Otoño",
-   "notas": null,
-   "capa": null,
-   "foto": "images/PERGO20003_1_enlarged.jpg.webp",
-   "pos": "superior",
-   "subtipo": "Manga larga",
-   "talla": "M",
-   "material": [
-    {
-     "tela": "Algodón",
-     "pct": 100
-    }
-   ],
-   "cuidado": {
-    "lavado": "W30",
-    "secado": "Tender",
-    "plancha": "Media"
-   }
-  },
-  {
-   "id": 5,
-   "nombre": "Jean rojo corto flecos",
-   "tipo": "Jean",
-   "color": "#CC2222",
-   "color2": null,
-   "patron": "Liso",
-   "marca": "Mother",
-   "formalidad": "Casual",
-   "temporada": "Primavera/Verano",
-   "notas": null,
-   "capa": null,
-   "foto": "images/W12198031_1_enlarged.jpg.webp",
-   "pos": "inferior",
-   "subtipo": "Corto/Flecos",
-   "talla": "M",
-   "material": [
-    {
-     "tela": "Algodón",
-     "pct": 98
+      "id": 2,
+      "nombre": "Blazer burdeos",
+      "tipo": "Blazer",
+      "color": "#6E2233",
+      "color2": null,
+      "patron": "Liso",
+      "marca": "Armani",
+      "formalidad": "Semiformal",
+      "temporada": "Otoño/Invierno",
+      "notas": null,
+      "capa": "exterior",
+      "foto": "images/EMP64361_1_enlarged.jpg.webp",
+      "pos": "exterior",
+      "subtipo": "Regular",
+      "talla": "M",
+      "material": [
+        {
+          "tela": "Algodón",
+          "pct": 100
+        }
+      ],
+      "cuidado": {
+        "lavado": "W40",
+        "secado": "Tender",
+        "plancha": "Media"
+      }
     },
     {
-     "tela": "Spandex / Elastano",
-     "pct": 2
-    }
-   ],
-   "cuidado": {
-    "lavado": "W30",
-    "secado": "Tender",
-    "plancha": "Media"
-   }
-  },
-  {
-   "id": 6,
-   "nombre": "Gorra trucker rosa Aviator Nation",
-   "tipo": "Gorra",
-   "color": "#FF4ECD",
-   "color2": null,
-   "patron": "Liso",
-   "marca": "Aviator Nation",
-   "formalidad": "Casual",
-   "temporada": "Todo",
-   "notas": null,
-   "capa": null,
-   "foto": "images/WAVIS64206_1_enlarged.jpg.webp",
-   "pos": "accesorios",
-   "subtipo": "Trucker",
-   "talla": "M",
-   "material": [
-    {
-     "tela": "Plástico",
-     "pct": 100
-    }
-   ],
-   "cuidado": {
-    "lavado": "W30",
-    "secado": "Tender",
-    "plancha": "NoPlancha"
-   }
-  },
-  {
-   "id": 7,
-   "nombre": "Botas vaqueras café",
-   "tipo": "Botas",
-   "color": "#5C3317",
-   "color2": null,
-   "patron": "Liso/Bordado",
-   "marca": "Ariat",
-   "formalidad": "Casual",
-   "temporada": "Todo",
-   "notas": null,
-   "capa": null,
-   "foto": "images/WDANP20612_1_enlarged.jpg.webp",
-   "pos": "calzado",
-   "subtipo": "Vaqueras",
-   "talla": "M",
-   "material": [
-    {
-     "tela": "Cuero",
-     "pct": 100
-    }
-   ],
-   "cuidado": {
-    "lavado": "Mano",
-    "secado": "NoSecadora",
-    "plancha": "NoPlancha"
-   }
-  },
-  {
-   "id": 8,
-   "nombre": "Jean azul deslavado ácido recto",
-   "tipo": "Jean",
-   "color": "#B8D4E8",
-   "color2": null,
-   "patron": "Lavado",
-   "marca": "IRO",
-   "formalidad": "Streetwear",
-   "temporada": "Todo",
-   "notas": null,
-   "capa": null,
-   "foto": "images/WIR197626_1_enlarged.jpg.webp",
-   "pos": "inferior",
-   "subtipo": "Recto",
-   "talla": "M",
-   "material": [
-    {
-     "tela": "Algodón",
-     "pct": 100
-    }
-   ],
-   "cuidado": {
-    "lavado": "W30",
-    "secado": "NoSecadora",
-    "plancha": "Baja"
-   }
-  },
-  {
-   "id": 9,
-   "nombre": "Jean naranja/mostaza recto",
-   "tipo": "Jean",
-   "color": "#D4841A",
-   "color2": null,
-   "patron": "Liso",
-   "marca": "ksubi",
-   "formalidad": "Streetwear",
-   "temporada": "Todo",
-   "notas": null,
-   "capa": null,
-   "foto": "images/WKS33582_1_enlarged.jpg.webp",
-   "pos": "inferior",
-   "subtipo": "Recto",
-   "talla": "M",
-   "material": [
-    {
-     "tela": "Algodón",
-     "pct": 100
-    }
-   ],
-   "cuidado": {
-    "lavado": "W30",
-    "secado": "NoSecadora",
-    "plancha": "Baja"
-   }
-  },
-  {
-   "id": 10,
-   "nombre": "Pantalón terracota recto",
-   "tipo": "Pantalón",
-   "color": "#8E3A2F",
-   "color2": null,
-   "patron": "Liso",
-   "marca": "Sin marca",
-   "formalidad": "Casual",
-   "temporada": "Todo",
-   "notas": null,
-   "capa": null,
-   "foto": "images/WKULE31528_1_enlarged.jpg.webp",
-   "pos": "inferior",
-   "subtipo": "Recto",
-   "talla": "M",
-   "material": [
-    {
-     "tela": "Algodón",
-     "pct": 100
-    }
-   ],
-   "cuidado": {
-    "lavado": "W30",
-    "secado": "Tender",
-    "plancha": "Baja"
-   }
-  },
-  {
-   "id": 11,
-   "nombre": "Jean verde neón recto",
-   "tipo": "Jean",
-   "color": "#ADFF2F",
-   "color2": null,
-   "patron": "Liso",
-   "marca": "L'Agence",
-   "formalidad": "Streetwear",
-   "temporada": "Todo",
-   "notas": null,
-   "capa": null,
-   "foto": "images/WL3198924_1_enlarged.jpg.webp",
-   "pos": "inferior",
-   "subtipo": "Recto",
-   "talla": "M",
-   "material": [
-    {
-     "tela": "Algodón",
-     "pct": 100
-    }
-   ],
-   "cuidado": {
-    "lavado": "W30",
-    "secado": "Tender",
-    "plancha": "Baja"
-   }
-  },
-  {
-   "id": 12,
-   "nombre": "Jean rosa neón recto",
-   "tipo": "Jean",
-   "color": "#FF69B4",
-   "color2": null,
-   "patron": "Liso",
-   "marca": "L'Agence",
-   "formalidad": "Streetwear",
-   "temporada": "Todo",
-   "notas": null,
-   "capa": null,
-   "foto": "images/WL3200557_1_enlarged.jpg.webp",
-   "pos": "inferior",
-   "subtipo": "Recto",
-   "talla": "M",
-   "material": [
-    {
-     "tela": "Algodón",
-     "pct": 100
-    }
-   ],
-   "cuidado": {
-    "lavado": "W30",
-    "secado": "Tender",
-    "plancha": "Baja"
-   }
-  },
-  {
-   "id": 13,
-   "nombre": "Camiseta rayas navy Lacoste cuello V",
-   "tipo": "Camiseta",
-   "color": "#1B2A4A",
-   "color2": "#FFFFFF",
-   "patron": "Rayas",
-   "marca": "Lacoste",
-   "formalidad": "Streetwear",
-   "temporada": "Todo",
-   "notas": "Cuello V",
-   "capa": null,
-   "foto": "images/WLCST30215_1_enlarged.jpg.webp",
-   "pos": "superior",
-   "subtipo": "Manga corta",
-   "talla": "M",
-   "material": [
-    {
-     "tela": "Algodón",
-     "pct": 100
-    }
-   ],
-   "cuidado": {
-    "lavado": "W30",
-    "secado": "Tender",
-    "plancha": "Baja"
-   }
-  },
-  {
-   "id": 14,
-   "nombre": "Hoodie rojo cropped logo M",
-   "tipo": "Hoodie",
-   "color": "#CC1111",
-   "color2": null,
-   "patron": "Liso",
-   "marca": "Marcell von Berlin",
-   "formalidad": "Casual",
-   "temporada": "Otoño/Invierno",
-   "notas": null,
-   "capa": null,
-   "foto": "images/WMCVB25014_1_enlarged.jpg.webp",
-   "pos": "superior",
-   "subtipo": "Cropped",
-   "talla": "M",
-   "material": [
-    {
-     "tela": "Algodón",
-     "pct": 100
-    }
-   ],
-   "cuidado": {
-    "lavado": "W30",
-    "secado": "Tender",
-    "plancha": "Baja"
-   }
-  },
-  {
-   "id": 15,
-   "nombre": "Hoodie leopardo negro/blanco",
-   "tipo": "Hoodie",
-   "color": "#1C1C1C",
-   "color2": "#FFFFFF",
-   "patron": "Leopardo",
-   "marca": "Marcell von Berlin",
-   "formalidad": "Casual",
-   "temporada": "Otoño/Invierno",
-   "notas": null,
-   "capa": null,
-   "foto": "images/WMCVB26435_1_enlarged.jpg.webp",
-   "pos": "superior",
-   "subtipo": "Regular",
-   "talla": "M",
-   "material": [
-    {
-     "tela": "Algodón",
-     "pct": 90
+      "id": 3,
+      "nombre": "Lentes aviador rosa espejo",
+      "tipo": "Lentes",
+      "color": "#CC3377",
+      "color2": null,
+      "patron": "Liso",
+      "marca": "Aviator Nation",
+      "formalidad": "Casual",
+      "temporada": "Todo",
+      "notas": null,
+      "capa": null,
+      "foto": "images/ISA250149_3_enlarged.jpg.webp",
+      "pos": "accesorios",
+      "subtipo": "Aviador",
+      "talla": "M",
+      "material": [
+        {
+          "tela": "Plástico",
+          "pct": 100
+        }
+      ],
+      "cuidado": {
+        "lavado": "NoLavar",
+        "secado": "NoSecadora",
+        "plancha": "NoPlancha"
+      }
     },
     {
-     "tela": "Poliéster",
-     "pct": 10
-    }
-   ],
-   "cuidado": {
-    "lavado": "W30",
-    "secado": "Tender",
-    "plancha": "Baja"
-   }
-  },
-  {
-   "id": 16,
-   "nombre": "Camiseta rayas negro/crema",
-   "tipo": "Camiseta",
-   "color": "#1B2A4A",
-   "color2": "#FFFFFF",
-   "patron": "Rayas",
-   "marca": "Neighborhood",
-   "formalidad": "Casual",
-   "temporada": "Primavera/Verano",
-   "notas": null,
-   "capa": null,
-   "foto": "images/WNBHD21274_1_enlarged.jpg.webp",
-   "pos": "superior",
-   "subtipo": "Manga corta",
-   "talla": "M",
-   "material": [
-    {
-     "tela": "Algodón",
-     "pct": 100
-    }
-   ],
-   "cuidado": {
-    "lavado": "W40",
-    "secado": "Tender",
-    "plancha": "Baja"
-   }
-  },
-  {
-   "id": 17,
-   "nombre": "Hoodie paisley Noah gris/rojo",
-   "tipo": "Hoodie",
-   "color": "#808080",
-   "color2": "#CC2222",
-   "patron": "Paisley",
-   "marca": "Noah",
-   "formalidad": "Casual",
-   "temporada": "Otoño/Invierno",
-   "notas": null,
-   "capa": null,
-   "foto": "images/WNOAH23704_1_enlarged.jpg.webp",
-   "pos": "superior",
-   "subtipo": "Regular",
-   "talla": "M",
-   "material": [
-    {
-     "tela": "Algodón",
-     "pct": 100
-    }
-   ],
-   "cuidado": {
-    "lavado": "W30",
-    "secado": "Tender",
-    "plancha": "Baja"
-   }
-  },
-  {
-   "id": 18,
-   "nombre": "Hoodie tie-dye Noah rosa/naranja",
-   "tipo": "Hoodie",
-   "color": "#FF9966",
-   "color2": "#FFEE44",
-   "patron": "Tie-dye",
-   "marca": "Noah",
-   "formalidad": "Casual",
-   "temporada": "Otoño/Invierno",
-   "notas": null,
-   "capa": null,
-   "foto": "images/WNOAH23949_1_enlarged.jpg.webp",
-   "pos": "superior",
-   "subtipo": "Regular",
-   "talla": "M",
-   "material": [
-    {
-     "tela": "Algodón",
-     "pct": 100
-    }
-   ],
-   "cuidado": {
-    "lavado": "W30",
-    "secado": "Tender",
-    "plancha": "Baja"
-   }
-  },
-  {
-   "id": 19,
-   "nombre": "Hoodie verde esmeralda Pangaia",
-   "tipo": "Hoodie",
-   "color": "#22AA55",
-   "color2": null,
-   "patron": "Liso",
-   "marca": "Pangaia",
-   "formalidad": "Casual",
-   "temporada": "Otoño/Invierno",
-   "notas": null,
-   "capa": null,
-   "foto": "images/WPAAI28443_1_enlarged.jpg.webp",
-   "pos": "superior",
-   "subtipo": "Regular",
-   "talla": "M",
-   "material": [
-    {
-     "tela": "Algodón",
-     "pct": 100
-    }
-   ],
-   "cuidado": {
-    "lavado": "W30",
-    "secado": "Tender",
-    "plancha": "Baja"
-   }
-  },
-  {
-   "id": 20,
-   "nombre": "Camiseta rayas rosa Ralph Lauren",
-   "tipo": "Camiseta",
-   "color": "#FF8FAB",
-   "color2": "#FFFFFF",
-   "patron": "Rayas",
-   "marca": "Polo Ralph Lauren",
-   "formalidad": "Casual",
-   "temporada": "Todo",
-   "notas": null,
-   "capa": null,
-   "foto": "images/WPRLN128720_1_enlarged.jpg.webp",
-   "pos": "superior",
-   "subtipo": "Manga corta",
-   "talla": "M",
-   "material": [
-    {
-     "tela": "Algodón",
-     "pct": 100
-    }
-   ],
-   "cuidado": {
-    "lavado": "W30",
-    "secado": "Tender",
-    "plancha": "Baja"
-   }
-  },
-  {
-   "id": 21,
-   "nombre": "Camiseta rayas azul Ralph Lauren",
-   "tipo": "Camiseta",
-   "color": "#3355CC",
-   "color2": "#FFFFFF",
-   "patron": "Rayas",
-   "marca": "Polo Ralph Lauren",
-   "formalidad": "Casual",
-   "temporada": "Todo",
-   "notas": "Ribete verde cuello",
-   "capa": null,
-   "foto": "images/WPRLN134630_1_enlarged.jpg.webp",
-   "pos": "superior",
-   "subtipo": "Manga corta",
-   "talla": "M",
-   "material": [
-    {
-     "tela": "Algodón",
-     "pct": 100
-    }
-   ],
-   "cuidado": {
-    "lavado": "W30",
-    "secado": "Tender",
-    "plancha": "Baja"
-   }
-  },
-  {
-   "id": 22,
-   "nombre": "Camisa denim manga larga desgastada",
-   "tipo": "Camisa",
-   "color": "#5B7FA6",
-   "color2": null,
-   "patron": "Liso",
-   "marca": "Prps",
-   "formalidad": "Casual",
-   "temporada": "Todo",
-   "notas": null,
-   "capa": "medio",
-   "foto": "images/WPRPS21146_1_enlarged.jpg.webp",
-   "pos": "superior",
-   "subtipo": "Manga larga",
-   "talla": "M",
-   "material": [
-    {
-     "tela": "Algodón",
-     "pct": 100
-    }
-   ],
-   "cuidado": {
-    "lavado": "W30",
-    "secado": "Tender",
-    "plancha": "Baja"
-   }
-  },
-  {
-   "id": 23,
-   "nombre": "Blazer beige texturizado lino/lana",
-   "tipo": "Blazer",
-   "color": "#C8B89A",
-   "color2": null,
-   "patron": "Texturizado",
-   "marca": "Sin marca",
-   "formalidad": "Semiformal",
-   "temporada": "Primavera/Otoño",
-   "notas": null,
-   "capa": "exterior",
-   "foto": "images/WSEEZ20023_1_enlarged.jpg.webp",
-   "pos": "exterior",
-   "subtipo": "Regular",
-   "talla": "M",
-   "material": [
-    {
-     "tela": "Lino",
-     "pct": 50
+      "id": 4,
+      "nombre": "Camiseta collage manga larga",
+      "tipo": "Camiseta",
+      "color": "#1C1C1C",
+      "color2": "#FF6600",
+      "patron": "Estampado",
+      "marca": "Sin marca",
+      "formalidad": "Casual",
+      "temporada": "Primavera/Otoño",
+      "notas": null,
+      "capa": null,
+      "foto": "images/PERGO20003_1_enlarged.jpg.webp",
+      "pos": "superior",
+      "subtipo": "Manga larga",
+      "talla": "M",
+      "material": [
+        {
+          "tela": "Algodón",
+          "pct": 100
+        }
+      ],
+      "cuidado": {
+        "lavado": "W30",
+        "secado": "Tender",
+        "plancha": "Media"
+      }
     },
     {
-     "tela": "Lana",
-     "pct": 50
-    }
-   ],
-   "cuidado": {
-    "lavado": "Mano",
-    "secado": "Tender",
-    "plancha": "Baja"
-   }
-  },
-  {
-   "id": 24,
-   "nombre": "Hoodie fuego/lava negro/rojo",
-   "tipo": "Hoodie",
-   "color": "#1C1C1C",
-   "color2": "#CC3300",
-   "patron": "Estampado",
-   "marca": "Stampd",
-   "formalidad": "Casual",
-   "temporada": "Otoño/Invierno",
-   "notas": null,
-   "capa": null,
-   "foto": "images/WSTAM21988_1_enlarged.jpg.webp",
-   "pos": "superior",
-   "subtipo": "Regular",
-   "talla": "M",
-   "material": [
-    {
-     "tela": "Algodón",
-     "pct": 100
-    }
-   ],
-   "cuidado": {
-    "lavado": "NoLavar",
-    "secado": "NoSecadora",
-    "plancha": "NoPlancha"
-   }
-  },
-  {
-   "id": 25,
-   "nombre": "Nike Dunk High blanco/café",
-   "tipo": "Sneakers",
-   "color": "#F5F0E8",
-   "color2": "#7B4F30",
-   "patron": "Bicolor",
-   "marca": "Nike",
-   "formalidad": "Casual",
-   "temporada": "Todo",
-   "notas": "Cordones azul cielo",
-   "capa": null,
-   "foto": "images/WU2222977_1_enlarged.jpg.webp",
-   "pos": "calzado",
-   "subtipo": "High-top",
-   "talla": "M",
-   "material": [
-    {
-     "tela": "Algodón",
-     "pct": 50
+      "id": 5,
+      "nombre": "Jean rojo corto flecos",
+      "tipo": "Jean",
+      "color": "#CC2222",
+      "color2": null,
+      "patron": "Liso",
+      "marca": "Mother",
+      "formalidad": "Casual",
+      "temporada": "Primavera/Verano",
+      "notas": null,
+      "capa": null,
+      "foto": "images/W12198031_1_enlarged.jpg.webp",
+      "pos": "inferior",
+      "subtipo": "Corto/Flecos",
+      "talla": "M",
+      "material": [
+        {
+          "tela": "Algodón",
+          "pct": 98
+        },
+        {
+          "tela": "Spandex / Elastano",
+          "pct": 2
+        }
+      ],
+      "cuidado": {
+        "lavado": "W30",
+        "secado": "Tender",
+        "plancha": "Media"
+      }
     },
     {
-     "tela": "Cuero",
-     "pct": 50
-    }
-   ],
-   "cuidado": {
-    "lavado": "Mano",
-    "secado": "NoSecadora",
-    "plancha": "NoPlancha"
-   }
-  },
-  {
-   "id": 26,
-   "nombre": "Camiseta verde olivo manga corta",
-   "tipo": "Camiseta",
-   "color": "#6B7C3A",
-   "color2": null,
-   "patron": "Liso",
-   "marca": "Vero Moda",
-   "formalidad": "Casual",
-   "temporada": "Primavera/Verano",
-   "notas": null,
-   "capa": null,
-   "foto": "images/IMG_0623_2.webp",
-   "pos": "superior",
-   "subtipo": "Manga corta",
-   "talla": "M",
-   "material": [
-    {
-     "tela": "Algodón",
-     "pct": 100
-    }
-   ],
-   "cuidado": {
-    "lavado": "W40",
-    "secado": "NoSecadora",
-    "plancha": "Baja"
-   }
-  },
-  {
-   "id": 27,
-   "nombre": "Hoodie verde olivo oversized ASOS",
-   "tipo": "Hoodie",
-   "color": "#8B8B2A",
-   "color2": null,
-   "patron": "Liso",
-   "marca": "ASOS Design",
-   "formalidad": "Casual",
-   "temporada": "Otoño/Invierno",
-   "notas": null,
-   "capa": null,
-   "foto": "images/IMG_0624_2.webp",
-   "pos": "superior",
-   "subtipo": "Oversized",
-   "talla": "M",
-   "material": [
-    {
-     "tela": "Algodón",
-     "pct": 100
-    }
-   ],
-   "cuidado": {
-    "lavado": "W30",
-    "secado": "NoSecadora",
-    "plancha": "Baja"
-   }
-  },
-  {
-   "id": 28,
-   "nombre": "Sandalias rope beige",
-   "tipo": "Sandalias",
-   "color": "#D4B896",
-   "color2": null,
-   "patron": "Liso",
-   "marca": "Asos",
-   "formalidad": "Casual",
-   "temporada": "Todo",
-   "notas": null,
-   "capa": null,
-   "foto": "images/IMG_0625_2.webp",
-   "pos": "calzado",
-   "subtipo": "Planas",
-   "talla": "M",
-   "material": [
-    {
-     "tela": "Algodón",
-     "pct": 100
-    }
-   ],
-   "cuidado": {
-    "lavado": "W30",
-    "secado": "NoSecadora",
-    "plancha": "NoPlancha"
-   }
-  },
-  {
-   "id": 29,
-   "nombre": "Converse floral rojo/rosa alta",
-   "tipo": "Sneakers",
-   "color": "#CC2222",
-   "color2": "#FF99AA",
-   "patron": "Floral",
-   "marca": "Converse",
-   "formalidad": "Casual",
-   "temporada": "Todo",
-   "notas": null,
-   "capa": null,
-   "foto": "images/IMG_0626.webp",
-   "pos": "calzado",
-   "subtipo": "High-top",
-   "talla": "M",
-   "material": [
-    {
-     "tela": "Algodón",
-     "pct": 100
-    }
-   ],
-   "cuidado": {
-    "lavado": "W30",
-    "secado": "NoSecadora",
-    "plancha": "NoPlancha"
-   }
-  },
-  {
-   "id": 30,
-   "nombre": "Converse navy alta",
-   "tipo": "Sneakers",
-   "color": "#1B2A6B",
-   "color2": null,
-   "patron": "Liso",
-   "marca": "Converse",
-   "formalidad": "Casual",
-   "temporada": "Todo",
-   "notas": null,
-   "capa": null,
-   "foto": "images/IMG_0627.webp",
-   "pos": "calzado",
-   "subtipo": "High-top",
-   "talla": "M",
-   "material": [
-    {
-     "tela": "Algodón",
-     "pct": 100
-    }
-   ],
-   "cuidado": {
-    "lavado": "W30",
-    "secado": "NoSecadora",
-    "plancha": "NoPlancha"
-   }
-  },
-  {
-   "id": 31,
-   "nombre": "Converse wool plaid gris/rojo/amarillo",
-   "tipo": "Sneakers",
-   "color": "#808080",
-   "color2": "#CC2200",
-   "patron": "Plaid",
-   "marca": "Converse",
-   "formalidad": "Casual",
-   "temporada": "Todo",
-   "notas": "Lana",
-   "capa": null,
-   "foto": "images/IMG_0628.webp",
-   "pos": "calzado",
-   "subtipo": "High-top",
-   "talla": "M",
-   "material": [
-    {
-     "tela": "Lana",
-     "pct": 100
-    }
-   ],
-   "cuidado": {
-    "lavado": "Mano",
-    "secado": "NoSecadora",
-    "plancha": "NoPlancha"
-   }
-  },
-  {
-   "id": 32,
-   "nombre": "Converse rojo alta",
-   "tipo": "Sneakers",
-   "color": "#CC2222",
-   "color2": null,
-   "patron": "Liso",
-   "marca": "Converse",
-   "formalidad": "Casual",
-   "temporada": "Todo",
-   "notas": null,
-   "capa": null,
-   "foto": "images/IMG_0629.webp",
-   "pos": "calzado",
-   "subtipo": "High-top",
-   "talla": "M",
-   "material": [
-    {
-     "tela": "Algodón",
-     "pct": 100
-    }
-   ],
-   "cuidado": {
-    "lavado": "W30",
-    "secado": "NoSecadora",
-    "plancha": "NoPlancha"
-   }
-  },
-  {
-   "id": 33,
-   "nombre": "Gorra newsboy café vintage",
-   "tipo": "Gorra",
-   "color": "#7B5A36",
-   "color2": null,
-   "patron": "Liso",
-   "marca": "Syrios Gifts",
-   "formalidad": "Casual",
-   "temporada": "Otoño/Invierno",
-   "notas": null,
-   "capa": null,
-   "foto": "images/IMG_0630.webp",
-   "pos": "accesorios",
-   "subtipo": "Newsboy",
-   "talla": "M",
-   "material": [
-    {
-     "tela": "Lana",
-     "pct": 100
-    }
-   ],
-   "cuidado": {
-    "lavado": "Mano",
-    "secado": "NoSecadora",
-    "plancha": "NoPlancha"
-   }
-  },
-  {
-   "id": 34,
-   "nombre": "Blazer denim azul",
-   "tipo": "Blazer",
-   "color": "#4A6FA5",
-   "color2": null,
-   "patron": "Liso",
-   "marca": "Sin marca",
-   "formalidad": "Casual",
-   "temporada": "Todo",
-   "notas": "3 botones metálicos",
-   "capa": "exterior",
-   "foto": "images/IMG_0631.webp",
-   "pos": "exterior",
-   "subtipo": "Denim",
-   "talla": "M",
-   "material": [
-    {
-     "tela": "Algodón",
-     "pct": 100
-    }
-   ],
-   "cuidado": {
-    "lavado": "W30",
-    "secado": "NoSecadora",
-    "plancha": "NoPlancha"
-   }
-  },
-  {
-   "id": 35,
-   "nombre": "Chaqueta denim con cremallera",
-   "tipo": "Chaqueta",
-   "color": "#4A6FA5",
-   "color2": null,
-   "patron": "Liso",
-   "marca": "Sin marca",
-   "formalidad": "Casual",
-   "temporada": "Todo",
-   "notas": null,
-   "capa": "exterior",
-   "foto": "images/IMG_0632.webp",
-   "pos": "exterior",
-   "subtipo": "Denim/Cremallera",
-   "talla": "M",
-   "material": [
-    {
-     "tela": "Algodón",
-     "pct": 100
-    }
-   ],
-   "cuidado": {
-    "lavado": "W30",
-    "secado": "NoSecadora",
-    "plancha": "NoPlancha"
-   }
-  },
-  {
-   "id": 36,
-   "nombre": "Bolso piel de vaca blanco/café",
-   "tipo": "Bolso",
-   "color": "#FFFFFF",
-   "color2": "#8B6034",
-   "patron": "Animal print",
-   "marca": "Sin marca",
-   "formalidad": "Casual",
-   "temporada": "Todo",
-   "notas": "Hair-on-hide",
-   "capa": null,
-   "foto": "images/IMG_0633.webp",
-   "pos": "accesorios",
-   "subtipo": "Tote",
-   "talla": "M",
-   "material": [
-    {
-     "tela": "Cuero",
-     "pct": 100
-    }
-   ],
-   "cuidado": {
-    "lavado": "NoLavar",
-    "secado": "NoSecadora",
-    "plancha": "NoPlancha"
-   }
-  },
-  {
-   "id": 37,
-   "nombre": "Pantalón corduroy camel flare Levi's",
-   "tipo": "Pantalón",
-   "color": "#C8A84B",
-   "color2": null,
-   "patron": "Corduroy",
-   "marca": "Levi's",
-   "formalidad": "Casual",
-   "temporada": "Todo",
-   "notas": null,
-   "capa": null,
-   "foto": "images/IMG_0634.webp",
-   "pos": "inferior",
-   "subtipo": "Flare",
-   "talla": "M",
-   "material": [
-    {
-     "tela": "Algodón",
-     "pct": 100
-    }
-   ],
-   "cuidado": {
-    "lavado": "W30",
-    "secado": "NoSecadora",
-    "plancha": "Baja"
-   }
-  },
-  {
-   "id": 38,
-   "nombre": "Gorra baseball burdeos desgastada",
-   "tipo": "Gorra",
-   "color": "#7B2535",
-   "color2": null,
-   "patron": "Liso",
-   "marca": "Sin marca",
-   "formalidad": "Casual",
-   "temporada": "Todo",
-   "notas": "Distressed",
-   "capa": null,
-   "foto": "images/IMG_0635.webp",
-   "pos": "accesorios",
-   "subtipo": "Baseball",
-   "talla": "M",
-   "material": [
-    {
-     "tela": "Algodón",
-     "pct": 100
-    }
-   ],
-   "cuidado": {
-    "lavado": "W30",
-    "secado": "NoSecadora",
-    "plancha": "Baja"
-   }
-  },
-  {
-   "id": 39,
-   "nombre": "Gorra houndstooth Nike Alabama",
-   "tipo": "Gorra",
-   "color": "#1C1C1C",
-   "color2": "#FFFFFF",
-   "patron": "Houndstooth",
-   "marca": "Nike",
-   "formalidad": "Casual",
-   "temporada": "Todo",
-   "notas": "Logo A rojo Alabama",
-   "capa": null,
-   "foto": "images/IMG_0636.webp",
-   "pos": "accesorios",
-   "subtipo": "Baseball",
-   "talla": "M",
-   "material": [
-    {
-     "tela": "Algodón",
-     "pct": 100
-    }
-   ],
-   "cuidado": {
-    "lavado": "W30",
-    "secado": "NoSecadora",
-    "plancha": "Baja"
-   }
-  },
-  {
-   "id": 40,
-   "nombre": "Bolso maletín cuero camel",
-   "tipo": "Bolso",
-   "color": "#C8A87B",
-   "color2": null,
-   "patron": "Liso",
-   "marca": "Sin marca",
-   "formalidad": "Semiformal",
-   "temporada": "Todo",
-   "notas": null,
-   "capa": null,
-   "foto": "images/IMG_0637.webp",
-   "pos": "accesorios",
-   "subtipo": "Maletín",
-   "talla": "M",
-   "material": [
-    {
-     "tela": "Cuero",
-     "pct": 100
-    }
-   ],
-   "cuidado": {
-    "lavado": "NoLavar",
-    "secado": "NoSecadora",
-    "plancha": "NoPlancha"
-   }
-  },
-  {
-   "id": 41,
-   "nombre": "Chaqueta azul marino",
-   "tipo": "Chaqueta",
-   "color": "#1B2A4A",
-   "color2": null,
-   "patron": "Liso",
-   "marca": "Sin marca",
-   "formalidad": "Casual",
-   "temporada": "Otoño/Invierno",
-   "notas": null,
-   "capa": "exterior",
-   "foto": "images/IMG_0638.webp",
-   "pos": "exterior",
-   "subtipo": "Regular",
-   "talla": "M",
-   "material": [
-    {
-     "tela": "Algodón",
-     "pct": 100
-    }
-   ],
-   "cuidado": {
-    "lavado": "W30",
-    "secado": "NoSecadora",
-    "plancha": "Baja"
-   }
-  },
-  {
-   "id": 42,
-   "nombre": "Pantalón corduroy azul marino Jones NY",
-   "tipo": "Pantalón",
-   "color": "#1B2A4A",
-   "color2": null,
-   "patron": "Corduroy",
-   "marca": "Jones New York",
-   "formalidad": "Casual",
-   "temporada": "Otoño/Invierno",
-   "notas": null,
-   "capa": null,
-   "foto": "images/IMG_0639.webp",
-   "pos": "inferior",
-   "subtipo": "Recto",
-   "talla": "M",
-   "material": [
-    {
-     "tela": "Algodón",
-     "pct": 100
-    }
-   ],
-   "cuidado": {
-    "lavado": "W30",
-    "secado": "NoSecadora",
-    "plancha": "Baja"
-   }
-  },
-  {
-   "id": 43,
-   "nombre": "Gorra newsboy houndstooth negro/blanco",
-   "tipo": "Gorra",
-   "color": "#1C1C1C",
-   "color2": "#FFFFFF",
-   "patron": "Houndstooth",
-   "marca": "Sin marca",
-   "formalidad": "Casual",
-   "temporada": "Otoño/Invierno",
-   "notas": null,
-   "capa": null,
-   "foto": "images/IMG_0640.webp",
-   "pos": "accesorios",
-   "subtipo": "Newsboy",
-   "talla": "M",
-   "material": [
-    {
-     "tela": "Algodón",
-     "pct": 100
-    }
-   ],
-   "cuidado": {
-    "lavado": "W30",
-    "secado": "NoSecadora",
-    "plancha": "NoPlancha"
-   }
-  },
-  {
-   "id": 44,
-   "nombre": "Gorra baseball denim lavado",
-   "tipo": "Gorra",
-   "color": "#4A5F7A",
-   "color2": null,
-   "patron": "Liso",
-   "marca": "Sin marca",
-   "formalidad": "Casual",
-   "temporada": "Todo",
-   "notas": null,
-   "capa": null,
-   "foto": "images/IMG_0641.webp",
-   "pos": "accesorios",
-   "subtipo": "Baseball",
-   "talla": "M",
-   "material": [
-    {
-     "tela": "Algodón",
-     "pct": 100
-    }
-   ],
-   "cuidado": {
-    "lavado": "W30",
-    "secado": "NoSecadora",
-    "plancha": "NoPlancha"
-   }
-  },
-  {
-   "id": 45,
-   "nombre": "Converse amarillo neón alta",
-   "tipo": "Sneakers",
-   "color": "#FFEE00",
-   "color2": null,
-   "patron": "Liso",
-   "marca": "Converse",
-   "formalidad": "Casual",
-   "temporada": "Primavera/Verano",
-   "notas": null,
-   "capa": null,
-   "foto": "images/IMG_0642.webp",
-   "pos": "calzado",
-   "subtipo": "High-top",
-   "talla": "M",
-   "material": [
-    {
-     "tela": "Algodón",
-     "pct": 100
-    }
-   ],
-   "cuidado": {
-    "lavado": "W30",
-    "secado": "Tender",
-    "plancha": "Baja"
-   }
-  },
-  {
-   "id": 46,
-   "nombre": "Converse estampado vaca",
-   "tipo": "Sneakers",
-   "color": "#FFFFFF",
-   "color2": "#1C1C1C",
-   "patron": "Animal print",
-   "marca": "Converse",
-   "formalidad": "Casual",
-   "temporada": "Todo",
-   "notas": null,
-   "capa": null,
-   "foto": "images/IMG_0643.webp",
-   "pos": "calzado",
-   "subtipo": "High-top",
-   "talla": "M",
-   "material": [
-    {
-     "tela": "Algodón",
-     "pct": 100
-    }
-   ],
-   "cuidado": {
-    "lavado": "W30",
-    "secado": "NoSecadora",
-    "plancha": "NoPlancha"
-   }
-  },
-  {
-   "id": 47,
-   "nombre": "Gorra newsboy verde oscuro tweed",
-   "tipo": "Gorra",
-   "color": "#3D4A2E",
-   "color2": null,
-   "patron": "Tweed",
-   "marca": "Sin marca",
-   "formalidad": "Casual",
-   "temporada": "Otoño/Invierno",
-   "notas": null,
-   "capa": null,
-   "foto": "images/IMG_0644.webp",
-   "pos": "accesorios",
-   "subtipo": "Newsboy",
-   "talla": "M",
-   "material": [
-    {
-     "tela": "Lana",
-     "pct": 100
-    }
-   ],
-   "cuidado": {
-    "lavado": "Mano",
-    "secado": "NoSecadora",
-    "plancha": "Baja"
-   }
-  },
-  {
-   "id": 48,
-   "nombre": "Gorra lana azul/burdeos con orejeras",
-   "tipo": "Gorra",
-   "color": "#1B2A6B",
-   "color2": "#7B2535",
-   "patron": "Houndstooth",
-   "marca": "RedHead",
-   "formalidad": "Casual",
-   "temporada": "Invierno",
-   "notas": null,
-   "capa": null,
-   "foto": "images/IMG_0645.webp",
-   "pos": "accesorios",
-   "subtipo": "Gorro orejeras",
-   "talla": "M",
-   "material": [
-    {
-     "tela": "Lana",
-     "pct": 100
-    }
-   ],
-   "cuidado": {
-    "lavado": "Mano",
-    "secado": "NoSecadora",
-    "plancha": "Baja"
-   }
-  },
-  {
-   "id": 49,
-   "nombre": "Overalls denim azul marino",
-   "tipo": "Overalls",
-   "color": "#1B2A4A",
-   "color2": null,
-   "patron": "Liso",
-   "marca": "Sin marca",
-   "formalidad": "Casual",
-   "temporada": "Todo",
-   "notas": null,
-   "capa": null,
-   "foto": "images/IMG_0646.webp",
-   "pos": "inferior",
-   "subtipo": "Peto",
-   "talla": "M",
-   "material": [
-    {
-     "tela": "Algodón",
-     "pct": 100
-    }
-   ],
-   "cuidado": {
-    "lavado": "W30",
-    "secado": "NoSecadora",
-    "plancha": "Baja"
-   }
-  },
-  {
-   "id": 1782716656758,
-   "nombre": "Camiseta amarilla/negro",
-   "tipo": "Camiseta",
-   "color": "#f0c048",
-   "marca": "Zara",
-   "talla": "M",
-   "material": [
-    {
-     "tela": "Algodón",
-     "pct": 100
-    }
-   ],
-   "cuidado": {
-    "lavado": "W40",
-    "secado": "Tender",
-    "plancha": "Media"
-   },
-   "formalidad": "Casual",
-   "foto": "images/user_1782716644816.webp",
-   "pos": "superior",
-   "temporada": "Todo",
-   "subtipo": "Regular",
-   "patron": "Rayas"
-  },
-  {
-   "id": 1782961758441,
-   "nombre": "Camiseta rayas morado/cafe",
-   "tipo": "Camiseta",
-   "color": "#c090a8",
-   "marca": "Zara",
-   "talla": "M",
-   "material": [
-    {
-     "tela": "Algodón",
-     "pct": 48
+      "id": 6,
+      "nombre": "Gorra trucker rosa Aviator Nation",
+      "tipo": "Gorra",
+      "color": "#FF4ECD",
+      "color2": null,
+      "patron": "Liso",
+      "marca": "Aviator Nation",
+      "formalidad": "Casual",
+      "temporada": "Todo",
+      "notas": null,
+      "capa": null,
+      "foto": "images/WAVIS64206_1_enlarged.jpg.webp",
+      "pos": "accesorios",
+      "subtipo": "Trucker",
+      "talla": "M",
+      "material": [
+        {
+          "tela": "Plástico",
+          "pct": 100
+        }
+      ],
+      "cuidado": {
+        "lavado": "W30",
+        "secado": "Tender",
+        "plancha": "NoPlancha"
+      }
     },
     {
-     "tela": "Lino",
-     "pct": 52
-    }
-   ],
-   "cuidado": {
-    "lavado": "W30",
-    "secado": "NoSecadora",
-    "plancha": "Media"
-   },
-   "formalidad": "Casual",
-   "foto": "images/user_1782961758441.webp?v=1783296130072",
-   "pos": "superior",
-   "temporada": "Todo",
-   "subtipo": "Regular",
-   "patron": "Rayas"
-  },
-  {
-   "id": 1782961895944,
-   "nombre": "Camiseta blanca/rojo",
-   "tipo": "Camiseta",
-   "color": "#d8d8d8",
-   "marca": "Zara",
-   "talla": "M",
-   "material": [
-    {
-     "tela": "Algodón",
-     "pct": 98
+      "id": 7,
+      "nombre": "Botas vaqueras café",
+      "tipo": "Botas",
+      "color": "#5C3317",
+      "color2": null,
+      "patron": "Liso/Bordado",
+      "marca": "Ariat",
+      "formalidad": "Casual",
+      "temporada": "Todo",
+      "notas": null,
+      "capa": null,
+      "foto": "images/WDANP20612_1_enlarged.jpg.webp",
+      "pos": "calzado",
+      "subtipo": "Vaqueras",
+      "talla": "M",
+      "material": [
+        {
+          "tela": "Cuero",
+          "pct": 100
+        }
+      ],
+      "cuidado": {
+        "lavado": "Mano",
+        "secado": "NoSecadora",
+        "plancha": "NoPlancha"
+      }
     },
     {
-     "tela": "Spandex / Elastano",
-     "pct": 2
-    }
-   ],
-   "cuidado": {
-    "lavado": "W30",
-    "secado": "Tender",
-    "plancha": "Baja"
-   },
-   "formalidad": "Casual",
-   "foto": "images/user_1782961895944.webp?v=1783296130072",
-   "pos": "superior",
-   "temporada": "Todo",
-   "subtipo": "Regular",
-   "patron": "Liso"
-  },
-  {
-   "id": 1783289783363,
-   "nombre": "Bermuda",
-   "tipo": "Short",
-   "capa": "base",
-   "temporada": "Primavera/Verano",
-   "color": "#d8d8d8",
-   "color2": null,
-   "color3": null,
-   "marca": "Sin marca",
-   "talla": "M",
-   "material": [
-    {
-     "tela": "Algodón",
-     "pct": 100
-    }
-   ],
-   "cuidado": {
-    "lavado": "W30",
-    "secado": "NoSecadora",
-    "plancha": "Baja"
-   },
-   "formalidad": "streetwear",
-   "foto": "images/user_1783289783363.webp?v=1783290429323",
-   "pos": "inferior"
-  },
-  {
-   "id": 1783294149900,
-   "nombre": "Bermuda azul",
-   "tipo": "Short",
-   "capa": "base",
-   "temporada": "Todo",
-   "color": "#486060",
-   "color2": null,
-   "color3": null,
-   "marca": "Sin marca",
-   "talla": "31",
-   "material": [
-    {
-     "tela": "Algodón",
-     "pct": 98
+      "id": 8,
+      "nombre": "Jean azul deslavado ácido recto",
+      "tipo": "Jean",
+      "color": "#B8D4E8",
+      "color2": null,
+      "patron": "Lavado",
+      "marca": "IRO",
+      "formalidad": "Streetwear",
+      "temporada": "Todo",
+      "notas": null,
+      "capa": null,
+      "foto": "images/WIR197626_1_enlarged.jpg.webp",
+      "pos": "inferior",
+      "subtipo": "Recto",
+      "talla": "M",
+      "material": [
+        {
+          "tela": "Algodón",
+          "pct": 100
+        }
+      ],
+      "cuidado": {
+        "lavado": "W30",
+        "secado": "NoSecadora",
+        "plancha": "Baja"
+      }
     },
     {
-     "tela": "Spandex / Elastano",
-     "pct": 2
-    }
-   ],
-   "cuidado": {
-    "lavado": "W30",
-    "secado": "NoSecadora",
-    "plancha": "Media"
-   },
-   "formalidad": "casual",
-   "foto": "images/user_1783294149900.webp?v=1783296130072",
-   "pos": "inferior"
-  },
-  {
-   "id": 1783294217293,
-   "nombre": "Jean azul",
-   "tipo": "Pantalón",
-   "capa": "base",
-   "temporada": "Todo",
-   "color": "#303048",
-   "color2": null,
-   "color3": null,
-   "marca": "Sin marca",
-   "talla": "31",
-   "material": [
+      "id": 9,
+      "nombre": "Jean naranja/mostaza recto",
+      "tipo": "Jean",
+      "color": "#D4841A",
+      "color2": null,
+      "patron": "Liso",
+      "marca": "ksubi",
+      "formalidad": "Streetwear",
+      "temporada": "Todo",
+      "notas": null,
+      "capa": null,
+      "foto": "images/WKS33582_1_enlarged.jpg.webp",
+      "pos": "inferior",
+      "subtipo": "Recto",
+      "talla": "M",
+      "material": [
+        {
+          "tela": "Algodón",
+          "pct": 100
+        }
+      ],
+      "cuidado": {
+        "lavado": "W30",
+        "secado": "NoSecadora",
+        "plancha": "Baja"
+      }
+    },
     {
-     "tela": "Algodón",
-     "pct": 100
-    }
-   ],
-   "cuidado": {
-    "lavado": "W30",
-    "secado": "NoSecadora",
-    "plancha": null
-   },
-   "formalidad": "streetwear",
-   "foto": "images/user_1783294217293.webp?v=1783295022272",
-   "pos": "inferior"
-  },
-  {
-   "id": 1783294276404,
-   "nombre": "Sudadera gris",
-   "tipo": "Sudadera",
-   "capa": null,
-   "temporada": "Todo",
-   "color": "#909090",
-   "color2": null,
-   "color3": null,
-   "marca": "Nike",
-   "talla": "M",
-   "material": [
+      "id": 10,
+      "nombre": "Pantalón terracota recto",
+      "tipo": "Pantalón",
+      "color": "#8E3A2F",
+      "color2": null,
+      "patron": "Liso",
+      "marca": "Sin marca",
+      "formalidad": "Casual",
+      "temporada": "Todo",
+      "notas": null,
+      "capa": null,
+      "foto": "images/WKULE31528_1_enlarged.jpg.webp",
+      "pos": "inferior",
+      "subtipo": "Recto",
+      "talla": "M",
+      "material": [
+        {
+          "tela": "Algodón",
+          "pct": 100
+        }
+      ],
+      "cuidado": {
+        "lavado": "W30",
+        "secado": "Tender",
+        "plancha": "Baja"
+      }
+    },
     {
-     "tela": "Poliéster",
-     "pct": 100
-    }
-   ],
-   "cuidado": {
-    "lavado": "W30",
-    "secado": "NoSecadora",
-    "plancha": "Baja"
-   },
-   "formalidad": "streetwear",
-   "foto": "images/user_1783294276404.webp?v=1783296130072",
-   "pos": "medio"
-  },
-  {
-   "id": 1783294518448,
-   "nombre": "Camiseta grafica",
-   "tipo": "Camiseta",
-   "capa": "base",
-   "temporada": "Todo",
-   "color": "#d8d8d8",
-   "color2": null,
-   "color3": null,
-   "marca": "Sin marca",
-   "talla": "M",
-   "material": [
+      "id": 11,
+      "nombre": "Jean verde neón recto",
+      "tipo": "Jean",
+      "color": "#ADFF2F",
+      "color2": null,
+      "patron": "Liso",
+      "marca": "L'Agence",
+      "formalidad": "Streetwear",
+      "temporada": "Todo",
+      "notas": null,
+      "capa": null,
+      "foto": "images/WL3198924_1_enlarged.jpg.webp",
+      "pos": "inferior",
+      "subtipo": "Recto",
+      "talla": "M",
+      "material": [
+        {
+          "tela": "Algodón",
+          "pct": 100
+        }
+      ],
+      "cuidado": {
+        "lavado": "W30",
+        "secado": "Tender",
+        "plancha": "Baja"
+      }
+    },
     {
-     "tela": "Algodón",
-     "pct": 100
-    }
-   ],
-   "cuidado": {
-    "lavado": "W30",
-    "secado": "NoSecadora",
-    "plancha": "Baja"
-   },
-   "formalidad": "casual",
-   "foto": "images/user_1783294518448.webp?v=1783296130072",
-   "pos": "base"
-  },
-  {
-   "id": 1783294575156,
-   "nombre": "Hoodie amarillo",
-   "tipo": "Hoodie",
-   "capa": null,
-   "temporada": "Otoño/Invierno",
-   "color": "#d8c030",
-   "color2": null,
-   "color3": null,
-   "marca": "Asos",
-   "talla": "M",
-   "material": [
+      "id": 12,
+      "nombre": "Jean rosa neón recto",
+      "tipo": "Jean",
+      "color": "#FF69B4",
+      "color2": null,
+      "patron": "Liso",
+      "marca": "L'Agence",
+      "formalidad": "Streetwear",
+      "temporada": "Todo",
+      "notas": null,
+      "capa": null,
+      "foto": "images/WL3200557_1_enlarged.jpg.webp",
+      "pos": "inferior",
+      "subtipo": "Recto",
+      "talla": "M",
+      "material": [
+        {
+          "tela": "Algodón",
+          "pct": 100
+        }
+      ],
+      "cuidado": {
+        "lavado": "W30",
+        "secado": "Tender",
+        "plancha": "Baja"
+      }
+    },
     {
-     "tela": "Algodón",
-     "pct": 100
-    }
-   ],
-   "cuidado": {
-    "lavado": "W30",
-    "secado": "NoSecadora",
-    "plancha": "Baja"
-   },
-   "formalidad": "streetwear",
-   "foto": "images/user_1783294575156.webp?v=1783296130072",
-   "pos": "medio"
-  },
-  {
-   "id": 1783294628187,
-   "nombre": "Jogger azul",
-   "tipo": "Jogger",
-   "capa": "base",
-   "temporada": "Todo",
-   "color": "#183078",
-   "color2": null,
-   "color3": null,
-   "marca": "Asos",
-   "talla": "M",
-   "material": [
+      "id": 13,
+      "nombre": "Camiseta rayas navy Lacoste cuello V",
+      "tipo": "Camiseta",
+      "color": "#1B2A4A",
+      "color2": "#FFFFFF",
+      "patron": "Rayas",
+      "marca": "Lacoste",
+      "formalidad": "Streetwear",
+      "temporada": "Todo",
+      "notas": "Cuello V",
+      "capa": null,
+      "foto": "images/WLCST30215_1_enlarged.jpg.webp",
+      "pos": "superior",
+      "subtipo": "Manga corta",
+      "talla": "M",
+      "material": [
+        {
+          "tela": "Algodón",
+          "pct": 100
+        }
+      ],
+      "cuidado": {
+        "lavado": "W30",
+        "secado": "Tender",
+        "plancha": "Baja"
+      }
+    },
     {
-     "tela": "Algodón",
-     "pct": 100
-    }
-   ],
-   "cuidado": {
-    "lavado": "W30",
-    "secado": "NoSecadora",
-    "plancha": "Baja"
-   },
-   "formalidad": "streetwear",
-   "foto": "images/user_1783294628187.webp?v=1783296130072",
-   "pos": "inferior"
-  },
-  {
-   "id": 1783294688096,
-   "nombre": "Bermudas blancas",
-   "tipo": "Short",
-   "capa": "base",
-   "temporada": "Todo",
-   "color": "#d8d8d8",
-   "color2": null,
-   "color3": null,
-   "marca": "Amazon",
-   "talla": "M",
-   "material": [
+      "id": 14,
+      "nombre": "Hoodie rojo cropped logo M",
+      "tipo": "Hoodie",
+      "color": "#CC1111",
+      "color2": null,
+      "patron": "Liso",
+      "marca": "Marcell von Berlin",
+      "formalidad": "Casual",
+      "temporada": "Otoño/Invierno",
+      "notas": null,
+      "capa": null,
+      "foto": "images/WMCVB25014_1_enlarged.jpg.webp",
+      "pos": "superior",
+      "subtipo": "Cropped",
+      "talla": "M",
+      "material": [
+        {
+          "tela": "Algodón",
+          "pct": 100
+        }
+      ],
+      "cuidado": {
+        "lavado": "W30",
+        "secado": "Tender",
+        "plancha": "Baja"
+      }
+    },
     {
-     "tela": "Algodón",
-     "pct": 100
-    }
-   ],
-   "cuidado": {
-    "lavado": "W30",
-    "secado": "NoSecadora",
-    "plancha": "Media"
-   },
-   "formalidad": "casual",
-   "foto": "images/user_1783294688096.webp?v=1783296130072",
-   "pos": "inferior"
-  },
-  {
-   "id": 1783294839213,
-   "nombre": "Jogger negro",
-   "tipo": "Jogger",
-   "capa": "base",
-   "temporada": "Todo",
-   "color": "#303030",
-   "color2": null,
-   "color3": null,
-   "marca": "Sin marca",
-   "talla": "M",
-   "material": [
+      "id": 15,
+      "nombre": "Hoodie leopardo negro/blanco",
+      "tipo": "Hoodie",
+      "color": "#1C1C1C",
+      "color2": "#FFFFFF",
+      "patron": "Leopardo",
+      "marca": "Marcell von Berlin",
+      "formalidad": "Casual",
+      "temporada": "Otoño/Invierno",
+      "notas": null,
+      "capa": null,
+      "foto": "images/WMCVB26435_1_enlarged.jpg.webp",
+      "pos": "superior",
+      "subtipo": "Regular",
+      "talla": "M",
+      "material": [
+        {
+          "tela": "Algodón",
+          "pct": 90
+        },
+        {
+          "tela": "Poliéster",
+          "pct": 10
+        }
+      ],
+      "cuidado": {
+        "lavado": "W30",
+        "secado": "Tender",
+        "plancha": "Baja"
+      }
+    },
     {
-     "tela": "Algodón",
-     "pct": 100
+      "id": 16,
+      "nombre": "Camiseta rayas negro/crema",
+      "tipo": "Camiseta",
+      "color": "#1B2A4A",
+      "color2": "#FFFFFF",
+      "patron": "Rayas",
+      "marca": "Neighborhood",
+      "formalidad": "Casual",
+      "temporada": "Primavera/Verano",
+      "notas": null,
+      "capa": null,
+      "foto": "images/WNBHD21274_1_enlarged.jpg.webp",
+      "pos": "superior",
+      "subtipo": "Manga corta",
+      "talla": "M",
+      "material": [
+        {
+          "tela": "Algodón",
+          "pct": 100
+        }
+      ],
+      "cuidado": {
+        "lavado": "W40",
+        "secado": "Tender",
+        "plancha": "Baja"
+      }
+    },
+    {
+      "id": 17,
+      "nombre": "Hoodie paisley Noah gris/rojo",
+      "tipo": "Hoodie",
+      "color": "#808080",
+      "color2": "#CC2222",
+      "patron": "Paisley",
+      "marca": "Noah",
+      "formalidad": "Casual",
+      "temporada": "Otoño/Invierno",
+      "notas": null,
+      "capa": null,
+      "foto": "images/WNOAH23704_1_enlarged.jpg.webp",
+      "pos": "superior",
+      "subtipo": "Regular",
+      "talla": "M",
+      "material": [
+        {
+          "tela": "Algodón",
+          "pct": 100
+        }
+      ],
+      "cuidado": {
+        "lavado": "W30",
+        "secado": "Tender",
+        "plancha": "Baja"
+      }
+    },
+    {
+      "id": 18,
+      "nombre": "Hoodie tie-dye Noah rosa/naranja",
+      "tipo": "Hoodie",
+      "color": "#FF9966",
+      "color2": "#FFEE44",
+      "patron": "Tie-dye",
+      "marca": "Noah",
+      "formalidad": "Casual",
+      "temporada": "Otoño/Invierno",
+      "notas": null,
+      "capa": null,
+      "foto": "images/WNOAH23949_1_enlarged.jpg.webp",
+      "pos": "superior",
+      "subtipo": "Regular",
+      "talla": "M",
+      "material": [
+        {
+          "tela": "Algodón",
+          "pct": 100
+        }
+      ],
+      "cuidado": {
+        "lavado": "W30",
+        "secado": "Tender",
+        "plancha": "Baja"
+      }
+    },
+    {
+      "id": 19,
+      "nombre": "Hoodie verde esmeralda Pangaia",
+      "tipo": "Hoodie",
+      "color": "#22AA55",
+      "color2": null,
+      "patron": "Liso",
+      "marca": "Pangaia",
+      "formalidad": "Casual",
+      "temporada": "Otoño/Invierno",
+      "notas": null,
+      "capa": null,
+      "foto": "images/WPAAI28443_1_enlarged.jpg.webp",
+      "pos": "superior",
+      "subtipo": "Regular",
+      "talla": "M",
+      "material": [
+        {
+          "tela": "Algodón",
+          "pct": 100
+        }
+      ],
+      "cuidado": {
+        "lavado": "W30",
+        "secado": "Tender",
+        "plancha": "Baja"
+      }
+    },
+    {
+      "id": 20,
+      "nombre": "Camiseta rayas rosa Ralph Lauren",
+      "tipo": "Camiseta",
+      "color": "#FF8FAB",
+      "color2": "#FFFFFF",
+      "patron": "Rayas",
+      "marca": "Polo Ralph Lauren",
+      "formalidad": "Casual",
+      "temporada": "Todo",
+      "notas": null,
+      "capa": null,
+      "foto": "images/WPRLN128720_1_enlarged.jpg.webp",
+      "pos": "superior",
+      "subtipo": "Manga corta",
+      "talla": "M",
+      "material": [
+        {
+          "tela": "Algodón",
+          "pct": 100
+        }
+      ],
+      "cuidado": {
+        "lavado": "W30",
+        "secado": "Tender",
+        "plancha": "Baja"
+      }
+    },
+    {
+      "id": 21,
+      "nombre": "Camiseta rayas azul Ralph Lauren",
+      "tipo": "Camiseta",
+      "color": "#3355CC",
+      "color2": "#FFFFFF",
+      "patron": "Rayas",
+      "marca": "Polo Ralph Lauren",
+      "formalidad": "Casual",
+      "temporada": "Todo",
+      "notas": "Ribete verde cuello",
+      "capa": null,
+      "foto": "images/WPRLN134630_1_enlarged.jpg.webp",
+      "pos": "superior",
+      "subtipo": "Manga corta",
+      "talla": "M",
+      "material": [
+        {
+          "tela": "Algodón",
+          "pct": 100
+        }
+      ],
+      "cuidado": {
+        "lavado": "W30",
+        "secado": "Tender",
+        "plancha": "Baja"
+      }
+    },
+    {
+      "id": 22,
+      "nombre": "Camisa denim manga larga desgastada",
+      "tipo": "Camisa",
+      "color": "#5B7FA6",
+      "color2": null,
+      "patron": "Liso",
+      "marca": "Prps",
+      "formalidad": "Casual",
+      "temporada": "Todo",
+      "notas": null,
+      "capa": "medio",
+      "foto": "images/WPRPS21146_1_enlarged.jpg.webp",
+      "pos": "superior",
+      "subtipo": "Manga larga",
+      "talla": "M",
+      "material": [
+        {
+          "tela": "Algodón",
+          "pct": 100
+        }
+      ],
+      "cuidado": {
+        "lavado": "W30",
+        "secado": "Tender",
+        "plancha": "Baja"
+      }
+    },
+    {
+      "id": 23,
+      "nombre": "Blazer beige texturizado lino/lana",
+      "tipo": "Blazer",
+      "color": "#C8B89A",
+      "color2": null,
+      "patron": "Texturizado",
+      "marca": "Sin marca",
+      "formalidad": "Semiformal",
+      "temporada": "Primavera/Otoño",
+      "notas": null,
+      "capa": "exterior",
+      "foto": "images/WSEEZ20023_1_enlarged.jpg.webp",
+      "pos": "exterior",
+      "subtipo": "Regular",
+      "talla": "M",
+      "material": [
+        {
+          "tela": "Lino",
+          "pct": 50
+        },
+        {
+          "tela": "Lana",
+          "pct": 50
+        }
+      ],
+      "cuidado": {
+        "lavado": "Mano",
+        "secado": "Tender",
+        "plancha": "Baja"
+      }
+    },
+    {
+      "id": 24,
+      "nombre": "Hoodie fuego/lava negro/rojo",
+      "tipo": "Hoodie",
+      "color": "#1C1C1C",
+      "color2": "#CC3300",
+      "patron": "Estampado",
+      "marca": "Stampd",
+      "formalidad": "Casual",
+      "temporada": "Otoño/Invierno",
+      "notas": null,
+      "capa": null,
+      "foto": "images/WSTAM21988_1_enlarged.jpg.webp",
+      "pos": "superior",
+      "subtipo": "Regular",
+      "talla": "M",
+      "material": [
+        {
+          "tela": "Algodón",
+          "pct": 100
+        }
+      ],
+      "cuidado": {
+        "lavado": "NoLavar",
+        "secado": "NoSecadora",
+        "plancha": "NoPlancha"
+      }
+    },
+    {
+      "id": 25,
+      "nombre": "Nike Dunk High blanco/café",
+      "tipo": "Sneakers",
+      "color": "#F5F0E8",
+      "color2": "#7B4F30",
+      "patron": "Bicolor",
+      "marca": "Nike",
+      "formalidad": "Casual",
+      "temporada": "Todo",
+      "notas": "Cordones azul cielo",
+      "capa": null,
+      "foto": "images/WU2222977_1_enlarged.jpg.webp",
+      "pos": "calzado",
+      "subtipo": "High-top",
+      "talla": "M",
+      "material": [
+        {
+          "tela": "Algodón",
+          "pct": 50
+        },
+        {
+          "tela": "Cuero",
+          "pct": 50
+        }
+      ],
+      "cuidado": {
+        "lavado": "Mano",
+        "secado": "NoSecadora",
+        "plancha": "NoPlancha"
+      }
+    },
+    {
+      "id": 26,
+      "nombre": "Camiseta verde olivo manga corta",
+      "tipo": "Camiseta",
+      "color": "#6B7C3A",
+      "color2": null,
+      "patron": "Liso",
+      "marca": "Vero Moda",
+      "formalidad": "Casual",
+      "temporada": "Primavera/Verano",
+      "notas": null,
+      "capa": null,
+      "foto": "images/IMG_0623_2.webp",
+      "pos": "superior",
+      "subtipo": "Manga corta",
+      "talla": "M",
+      "material": [
+        {
+          "tela": "Algodón",
+          "pct": 100
+        }
+      ],
+      "cuidado": {
+        "lavado": "W40",
+        "secado": "NoSecadora",
+        "plancha": "Baja"
+      }
+    },
+    {
+      "id": 27,
+      "nombre": "Hoodie verde olivo oversized ASOS",
+      "tipo": "Hoodie",
+      "color": "#8B8B2A",
+      "color2": null,
+      "patron": "Liso",
+      "marca": "ASOS Design",
+      "formalidad": "Casual",
+      "temporada": "Otoño/Invierno",
+      "notas": null,
+      "capa": null,
+      "foto": "images/IMG_0624_2.webp",
+      "pos": "superior",
+      "subtipo": "Oversized",
+      "talla": "M",
+      "material": [
+        {
+          "tela": "Algodón",
+          "pct": 100
+        }
+      ],
+      "cuidado": {
+        "lavado": "W30",
+        "secado": "NoSecadora",
+        "plancha": "Baja"
+      }
+    },
+    {
+      "id": 28,
+      "nombre": "Sandalias rope beige",
+      "tipo": "Sandalias",
+      "color": "#D4B896",
+      "color2": null,
+      "patron": "Liso",
+      "marca": "Asos",
+      "formalidad": "Casual",
+      "temporada": "Todo",
+      "notas": null,
+      "capa": null,
+      "foto": "images/IMG_0625_2.webp",
+      "pos": "calzado",
+      "subtipo": "Planas",
+      "talla": "M",
+      "material": [
+        {
+          "tela": "Algodón",
+          "pct": 100
+        }
+      ],
+      "cuidado": {
+        "lavado": "W30",
+        "secado": "NoSecadora",
+        "plancha": "NoPlancha"
+      }
+    },
+    {
+      "id": 29,
+      "nombre": "Converse floral rojo/rosa alta",
+      "tipo": "Sneakers",
+      "color": "#CC2222",
+      "color2": "#FF99AA",
+      "patron": "Floral",
+      "marca": "Converse",
+      "formalidad": "Casual",
+      "temporada": "Todo",
+      "notas": null,
+      "capa": null,
+      "foto": "images/IMG_0626.webp",
+      "pos": "calzado",
+      "subtipo": "High-top",
+      "talla": "M",
+      "material": [
+        {
+          "tela": "Algodón",
+          "pct": 100
+        }
+      ],
+      "cuidado": {
+        "lavado": "W30",
+        "secado": "NoSecadora",
+        "plancha": "NoPlancha"
+      }
+    },
+    {
+      "id": 30,
+      "nombre": "Converse navy alta",
+      "tipo": "Sneakers",
+      "color": "#1B2A6B",
+      "color2": null,
+      "patron": "Liso",
+      "marca": "Converse",
+      "formalidad": "Casual",
+      "temporada": "Todo",
+      "notas": null,
+      "capa": null,
+      "foto": "images/IMG_0627.webp",
+      "pos": "calzado",
+      "subtipo": "High-top",
+      "talla": "M",
+      "material": [
+        {
+          "tela": "Algodón",
+          "pct": 100
+        }
+      ],
+      "cuidado": {
+        "lavado": "W30",
+        "secado": "NoSecadora",
+        "plancha": "NoPlancha"
+      }
+    },
+    {
+      "id": 31,
+      "nombre": "Converse wool plaid gris/rojo/amarillo",
+      "tipo": "Sneakers",
+      "color": "#808080",
+      "color2": "#CC2200",
+      "patron": "Plaid",
+      "marca": "Converse",
+      "formalidad": "Casual",
+      "temporada": "Todo",
+      "notas": "Lana",
+      "capa": null,
+      "foto": "images/IMG_0628.webp",
+      "pos": "calzado",
+      "subtipo": "High-top",
+      "talla": "M",
+      "material": [
+        {
+          "tela": "Lana",
+          "pct": 100
+        }
+      ],
+      "cuidado": {
+        "lavado": "Mano",
+        "secado": "NoSecadora",
+        "plancha": "NoPlancha"
+      }
+    },
+    {
+      "id": 32,
+      "nombre": "Converse rojo alta",
+      "tipo": "Sneakers",
+      "color": "#CC2222",
+      "color2": null,
+      "patron": "Liso",
+      "marca": "Converse",
+      "formalidad": "Casual",
+      "temporada": "Todo",
+      "notas": null,
+      "capa": null,
+      "foto": "images/IMG_0629.webp",
+      "pos": "calzado",
+      "subtipo": "High-top",
+      "talla": "M",
+      "material": [
+        {
+          "tela": "Algodón",
+          "pct": 100
+        }
+      ],
+      "cuidado": {
+        "lavado": "W30",
+        "secado": "NoSecadora",
+        "plancha": "NoPlancha"
+      }
+    },
+    {
+      "id": 33,
+      "nombre": "Gorra newsboy café vintage",
+      "tipo": "Gorra",
+      "color": "#7B5A36",
+      "color2": null,
+      "patron": "Liso",
+      "marca": "Syrios Gifts",
+      "formalidad": "Casual",
+      "temporada": "Otoño/Invierno",
+      "notas": null,
+      "capa": null,
+      "foto": "images/IMG_0630.webp",
+      "pos": "accesorios",
+      "subtipo": "Newsboy",
+      "talla": "M",
+      "material": [
+        {
+          "tela": "Lana",
+          "pct": 100
+        }
+      ],
+      "cuidado": {
+        "lavado": "Mano",
+        "secado": "NoSecadora",
+        "plancha": "NoPlancha"
+      }
+    },
+    {
+      "id": 34,
+      "nombre": "Blazer denim azul",
+      "tipo": "Blazer",
+      "color": "#4A6FA5",
+      "color2": null,
+      "patron": "Liso",
+      "marca": "Sin marca",
+      "formalidad": "Casual",
+      "temporada": "Todo",
+      "notas": "3 botones metálicos",
+      "capa": "exterior",
+      "foto": "images/IMG_0631.webp",
+      "pos": "exterior",
+      "subtipo": "Denim",
+      "talla": "M",
+      "material": [
+        {
+          "tela": "Algodón",
+          "pct": 100
+        }
+      ],
+      "cuidado": {
+        "lavado": "W30",
+        "secado": "NoSecadora",
+        "plancha": "NoPlancha"
+      }
+    },
+    {
+      "id": 35,
+      "nombre": "Chaqueta denim con cremallera",
+      "tipo": "Chaqueta",
+      "color": "#4A6FA5",
+      "color2": null,
+      "patron": "Liso",
+      "marca": "Sin marca",
+      "formalidad": "Casual",
+      "temporada": "Todo",
+      "notas": null,
+      "capa": "exterior",
+      "foto": "images/IMG_0632.webp",
+      "pos": "exterior",
+      "subtipo": "Denim/Cremallera",
+      "talla": "M",
+      "material": [
+        {
+          "tela": "Algodón",
+          "pct": 100
+        }
+      ],
+      "cuidado": {
+        "lavado": "W30",
+        "secado": "NoSecadora",
+        "plancha": "NoPlancha"
+      }
+    },
+    {
+      "id": 36,
+      "nombre": "Bolso piel de vaca blanco/café",
+      "tipo": "Bolso",
+      "color": "#FFFFFF",
+      "color2": "#8B6034",
+      "patron": "Animal print",
+      "marca": "Sin marca",
+      "formalidad": "Casual",
+      "temporada": "Todo",
+      "notas": "Hair-on-hide",
+      "capa": null,
+      "foto": "images/IMG_0633.webp",
+      "pos": "accesorios",
+      "subtipo": "Tote",
+      "talla": "M",
+      "material": [
+        {
+          "tela": "Cuero",
+          "pct": 100
+        }
+      ],
+      "cuidado": {
+        "lavado": "NoLavar",
+        "secado": "NoSecadora",
+        "plancha": "NoPlancha"
+      }
+    },
+    {
+      "id": 37,
+      "nombre": "Pantalón corduroy camel flare Levi's",
+      "tipo": "Pantalón",
+      "color": "#C8A84B",
+      "color2": null,
+      "patron": "Corduroy",
+      "marca": "Levi's",
+      "formalidad": "Casual",
+      "temporada": "Todo",
+      "notas": null,
+      "capa": null,
+      "foto": "images/IMG_0634.webp",
+      "pos": "inferior",
+      "subtipo": "Flare",
+      "talla": "M",
+      "material": [
+        {
+          "tela": "Algodón",
+          "pct": 100
+        }
+      ],
+      "cuidado": {
+        "lavado": "W30",
+        "secado": "NoSecadora",
+        "plancha": "Baja"
+      }
+    },
+    {
+      "id": 38,
+      "nombre": "Gorra baseball burdeos desgastada",
+      "tipo": "Gorra",
+      "color": "#7B2535",
+      "color2": null,
+      "patron": "Liso",
+      "marca": "Sin marca",
+      "formalidad": "Casual",
+      "temporada": "Todo",
+      "notas": "Distressed",
+      "capa": null,
+      "foto": "images/IMG_0635.webp",
+      "pos": "accesorios",
+      "subtipo": "Baseball",
+      "talla": "M",
+      "material": [
+        {
+          "tela": "Algodón",
+          "pct": 100
+        }
+      ],
+      "cuidado": {
+        "lavado": "W30",
+        "secado": "NoSecadora",
+        "plancha": "Baja"
+      }
+    },
+    {
+      "id": 39,
+      "nombre": "Gorra houndstooth Nike Alabama",
+      "tipo": "Gorra",
+      "color": "#1C1C1C",
+      "color2": "#FFFFFF",
+      "patron": "Houndstooth",
+      "marca": "Nike",
+      "formalidad": "Casual",
+      "temporada": "Todo",
+      "notas": "Logo A rojo Alabama",
+      "capa": null,
+      "foto": "images/IMG_0636.webp",
+      "pos": "accesorios",
+      "subtipo": "Baseball",
+      "talla": "M",
+      "material": [
+        {
+          "tela": "Algodón",
+          "pct": 100
+        }
+      ],
+      "cuidado": {
+        "lavado": "W30",
+        "secado": "NoSecadora",
+        "plancha": "Baja"
+      }
+    },
+    {
+      "id": 40,
+      "nombre": "Bolso maletín cuero camel",
+      "tipo": "Bolso",
+      "color": "#C8A87B",
+      "color2": null,
+      "patron": "Liso",
+      "marca": "Sin marca",
+      "formalidad": "Semiformal",
+      "temporada": "Todo",
+      "notas": null,
+      "capa": null,
+      "foto": "images/IMG_0637.webp",
+      "pos": "accesorios",
+      "subtipo": "Maletín",
+      "talla": "M",
+      "material": [
+        {
+          "tela": "Cuero",
+          "pct": 100
+        }
+      ],
+      "cuidado": {
+        "lavado": "NoLavar",
+        "secado": "NoSecadora",
+        "plancha": "NoPlancha"
+      }
+    },
+    {
+      "id": 41,
+      "nombre": "Chaqueta azul marino",
+      "tipo": "Chaqueta",
+      "color": "#1B2A4A",
+      "color2": null,
+      "patron": "Liso",
+      "marca": "Sin marca",
+      "formalidad": "Casual",
+      "temporada": "Otoño/Invierno",
+      "notas": null,
+      "capa": "exterior",
+      "foto": "images/IMG_0638.webp",
+      "pos": "exterior",
+      "subtipo": "Regular",
+      "talla": "M",
+      "material": [
+        {
+          "tela": "Algodón",
+          "pct": 100
+        }
+      ],
+      "cuidado": {
+        "lavado": "W30",
+        "secado": "NoSecadora",
+        "plancha": "Baja"
+      }
+    },
+    {
+      "id": 42,
+      "nombre": "Pantalón corduroy azul marino Jones NY",
+      "tipo": "Pantalón",
+      "color": "#1B2A4A",
+      "color2": null,
+      "patron": "Corduroy",
+      "marca": "Jones New York",
+      "formalidad": "Casual",
+      "temporada": "Otoño/Invierno",
+      "notas": null,
+      "capa": null,
+      "foto": "images/IMG_0639.webp",
+      "pos": "inferior",
+      "subtipo": "Recto",
+      "talla": "M",
+      "material": [
+        {
+          "tela": "Algodón",
+          "pct": 100
+        }
+      ],
+      "cuidado": {
+        "lavado": "W30",
+        "secado": "NoSecadora",
+        "plancha": "Baja"
+      }
+    },
+    {
+      "id": 43,
+      "nombre": "Gorra newsboy houndstooth negro/blanco",
+      "tipo": "Gorra",
+      "color": "#1C1C1C",
+      "color2": "#FFFFFF",
+      "patron": "Houndstooth",
+      "marca": "Sin marca",
+      "formalidad": "Casual",
+      "temporada": "Otoño/Invierno",
+      "notas": null,
+      "capa": null,
+      "foto": "images/IMG_0640.webp",
+      "pos": "accesorios",
+      "subtipo": "Newsboy",
+      "talla": "M",
+      "material": [
+        {
+          "tela": "Algodón",
+          "pct": 100
+        }
+      ],
+      "cuidado": {
+        "lavado": "W30",
+        "secado": "NoSecadora",
+        "plancha": "NoPlancha"
+      }
+    },
+    {
+      "id": 44,
+      "nombre": "Gorra baseball denim lavado",
+      "tipo": "Gorra",
+      "color": "#4A5F7A",
+      "color2": null,
+      "patron": "Liso",
+      "marca": "Sin marca",
+      "formalidad": "Casual",
+      "temporada": "Todo",
+      "notas": null,
+      "capa": null,
+      "foto": "images/IMG_0641.webp",
+      "pos": "accesorios",
+      "subtipo": "Baseball",
+      "talla": "M",
+      "material": [
+        {
+          "tela": "Algodón",
+          "pct": 100
+        }
+      ],
+      "cuidado": {
+        "lavado": "W30",
+        "secado": "NoSecadora",
+        "plancha": "NoPlancha"
+      }
+    },
+    {
+      "id": 45,
+      "nombre": "Converse amarillo neón alta",
+      "tipo": "Sneakers",
+      "color": "#FFEE00",
+      "color2": null,
+      "patron": "Liso",
+      "marca": "Converse",
+      "formalidad": "Casual",
+      "temporada": "Primavera/Verano",
+      "notas": null,
+      "capa": null,
+      "foto": "images/IMG_0642.webp",
+      "pos": "calzado",
+      "subtipo": "High-top",
+      "talla": "M",
+      "material": [
+        {
+          "tela": "Algodón",
+          "pct": 100
+        }
+      ],
+      "cuidado": {
+        "lavado": "W30",
+        "secado": "Tender",
+        "plancha": "Baja"
+      }
+    },
+    {
+      "id": 46,
+      "nombre": "Converse estampado vaca",
+      "tipo": "Sneakers",
+      "color": "#FFFFFF",
+      "color2": "#1C1C1C",
+      "patron": "Animal print",
+      "marca": "Converse",
+      "formalidad": "Casual",
+      "temporada": "Todo",
+      "notas": null,
+      "capa": null,
+      "foto": "images/IMG_0643.webp",
+      "pos": "calzado",
+      "subtipo": "High-top",
+      "talla": "M",
+      "material": [
+        {
+          "tela": "Algodón",
+          "pct": 100
+        }
+      ],
+      "cuidado": {
+        "lavado": "W30",
+        "secado": "NoSecadora",
+        "plancha": "NoPlancha"
+      }
+    },
+    {
+      "id": 47,
+      "nombre": "Gorra newsboy verde oscuro tweed",
+      "tipo": "Gorra",
+      "color": "#3D4A2E",
+      "color2": null,
+      "patron": "Tweed",
+      "marca": "Sin marca",
+      "formalidad": "Casual",
+      "temporada": "Otoño/Invierno",
+      "notas": null,
+      "capa": null,
+      "foto": "images/IMG_0644.webp",
+      "pos": "accesorios",
+      "subtipo": "Newsboy",
+      "talla": "M",
+      "material": [
+        {
+          "tela": "Lana",
+          "pct": 100
+        }
+      ],
+      "cuidado": {
+        "lavado": "Mano",
+        "secado": "NoSecadora",
+        "plancha": "Baja"
+      }
+    },
+    {
+      "id": 48,
+      "nombre": "Gorra lana azul/burdeos con orejeras",
+      "tipo": "Gorra",
+      "color": "#1B2A6B",
+      "color2": "#7B2535",
+      "patron": "Houndstooth",
+      "marca": "RedHead",
+      "formalidad": "Casual",
+      "temporada": "Invierno",
+      "notas": null,
+      "capa": null,
+      "foto": "images/IMG_0645.webp",
+      "pos": "accesorios",
+      "subtipo": "Gorro orejeras",
+      "talla": "M",
+      "material": [
+        {
+          "tela": "Lana",
+          "pct": 100
+        }
+      ],
+      "cuidado": {
+        "lavado": "Mano",
+        "secado": "NoSecadora",
+        "plancha": "Baja"
+      }
+    },
+    {
+      "id": 49,
+      "nombre": "Overalls denim azul marino",
+      "tipo": "Overalls",
+      "color": "#1B2A4A",
+      "color2": null,
+      "patron": "Liso",
+      "marca": "Sin marca",
+      "formalidad": "Casual",
+      "temporada": "Todo",
+      "notas": null,
+      "capa": null,
+      "foto": "images/IMG_0646.webp",
+      "pos": "inferior",
+      "subtipo": "Peto",
+      "talla": "M",
+      "material": [
+        {
+          "tela": "Algodón",
+          "pct": 100
+        }
+      ],
+      "cuidado": {
+        "lavado": "W30",
+        "secado": "NoSecadora",
+        "plancha": "Baja"
+      }
+    },
+    {
+      "id": 1782716656758,
+      "nombre": "Camiseta amarilla/negro",
+      "tipo": "Camiseta",
+      "color": "#f0c048",
+      "marca": "Zara",
+      "talla": "M",
+      "material": [
+        {
+          "tela": "Algodón",
+          "pct": 100
+        }
+      ],
+      "cuidado": {
+        "lavado": "W40",
+        "secado": "Tender",
+        "plancha": "Media"
+      },
+      "formalidad": "Casual",
+      "foto": "images/user_1782716644816.webp",
+      "pos": "superior",
+      "temporada": "Todo",
+      "subtipo": "Regular",
+      "patron": "Rayas"
+    },
+    {
+      "id": 1782961758441,
+      "nombre": "Camiseta rayas morado/cafe",
+      "tipo": "Camiseta",
+      "color": "#c090a8",
+      "marca": "Zara",
+      "talla": "M",
+      "material": [
+        {
+          "tela": "Algodón",
+          "pct": 48
+        },
+        {
+          "tela": "Lino",
+          "pct": 52
+        }
+      ],
+      "cuidado": {
+        "lavado": "W30",
+        "secado": "NoSecadora",
+        "plancha": "Media"
+      },
+      "formalidad": "Casual",
+      "foto": "images/user_1782961758441.webp?v=1783296130072",
+      "pos": "superior",
+      "temporada": "Todo",
+      "subtipo": "Regular",
+      "patron": "Rayas"
+    },
+    {
+      "id": 1782961895944,
+      "nombre": "Camiseta blanca/rojo",
+      "tipo": "Camiseta",
+      "color": "#d8d8d8",
+      "marca": "Zara",
+      "talla": "M",
+      "material": [
+        {
+          "tela": "Algodón",
+          "pct": 98
+        },
+        {
+          "tela": "Spandex / Elastano",
+          "pct": 2
+        }
+      ],
+      "cuidado": {
+        "lavado": "W30",
+        "secado": "Tender",
+        "plancha": "Baja"
+      },
+      "formalidad": "Casual",
+      "foto": "images/user_1782961895944.webp?v=1783296130072",
+      "pos": "superior",
+      "temporada": "Todo",
+      "subtipo": "Regular",
+      "patron": "Liso"
+    },
+    {
+      "id": 1783289783363,
+      "nombre": "Bermuda",
+      "tipo": "Short",
+      "capa": "base",
+      "temporada": "Primavera/Verano",
+      "color": "#d8d8d8",
+      "color2": null,
+      "color3": null,
+      "marca": "Sin marca",
+      "talla": "M",
+      "material": [
+        {
+          "tela": "Algodón",
+          "pct": 100
+        }
+      ],
+      "cuidado": {
+        "lavado": "W30",
+        "secado": "NoSecadora",
+        "plancha": "Baja"
+      },
+      "formalidad": "streetwear",
+      "foto": "images/user_1783289783363.webp?v=1783290429323",
+      "pos": "inferior"
+    },
+    {
+      "id": 1783294149900,
+      "nombre": "Bermuda azul",
+      "tipo": "Short",
+      "capa": "base",
+      "temporada": "Todo",
+      "color": "#486060",
+      "color2": null,
+      "color3": null,
+      "marca": "Sin marca",
+      "talla": "31",
+      "material": [
+        {
+          "tela": "Algodón",
+          "pct": 98
+        },
+        {
+          "tela": "Spandex / Elastano",
+          "pct": 2
+        }
+      ],
+      "cuidado": {
+        "lavado": "W30",
+        "secado": "NoSecadora",
+        "plancha": "Media"
+      },
+      "formalidad": "casual",
+      "foto": "images/user_1783294149900.webp?v=1783296130072",
+      "pos": "inferior"
+    },
+    {
+      "id": 1783294217293,
+      "nombre": "Jean azul",
+      "tipo": "Pantalón",
+      "capa": "base",
+      "temporada": "Todo",
+      "color": "#303048",
+      "color2": null,
+      "color3": null,
+      "marca": "Sin marca",
+      "talla": "31",
+      "material": [
+        {
+          "tela": "Algodón",
+          "pct": 100
+        }
+      ],
+      "cuidado": {
+        "lavado": "W30",
+        "secado": "NoSecadora",
+        "plancha": null
+      },
+      "formalidad": "streetwear",
+      "foto": "images/user_1783294217293.webp?v=1783295022272",
+      "pos": "inferior"
+    },
+    {
+      "id": 1783294276404,
+      "nombre": "Sudadera gris",
+      "tipo": "Sudadera",
+      "capa": null,
+      "temporada": "Todo",
+      "color": "#909090",
+      "color2": null,
+      "color3": null,
+      "marca": "Nike",
+      "talla": "M",
+      "material": [
+        {
+          "tela": "Poliéster",
+          "pct": 100
+        }
+      ],
+      "cuidado": {
+        "lavado": "W30",
+        "secado": "NoSecadora",
+        "plancha": "Baja"
+      },
+      "formalidad": "streetwear",
+      "foto": "images/user_1783294276404.webp?v=1783296130072",
+      "pos": "medio"
+    },
+    {
+      "id": 1783294518448,
+      "nombre": "Camiseta grafica",
+      "tipo": "Camiseta",
+      "capa": "base",
+      "temporada": "Todo",
+      "color": "#d8d8d8",
+      "color2": null,
+      "color3": null,
+      "marca": "Sin marca",
+      "talla": "M",
+      "material": [
+        {
+          "tela": "Algodón",
+          "pct": 100
+        }
+      ],
+      "cuidado": {
+        "lavado": "W30",
+        "secado": "NoSecadora",
+        "plancha": "Baja"
+      },
+      "formalidad": "casual",
+      "foto": "images/user_1783294518448.webp?v=1783296130072",
+      "pos": "base"
+    },
+    {
+      "id": 1783294575156,
+      "nombre": "Hoodie amarillo",
+      "tipo": "Hoodie",
+      "capa": null,
+      "temporada": "Otoño/Invierno",
+      "color": "#d8c030",
+      "color2": null,
+      "color3": null,
+      "marca": "Asos",
+      "talla": "M",
+      "material": [
+        {
+          "tela": "Algodón",
+          "pct": 100
+        }
+      ],
+      "cuidado": {
+        "lavado": "W30",
+        "secado": "NoSecadora",
+        "plancha": "Baja"
+      },
+      "formalidad": "streetwear",
+      "foto": "images/user_1783294575156.webp?v=1783296130072",
+      "pos": "medio"
+    },
+    {
+      "id": 1783294628187,
+      "nombre": "Jogger azul",
+      "tipo": "Jogger",
+      "capa": "base",
+      "temporada": "Todo",
+      "color": "#183078",
+      "color2": null,
+      "color3": null,
+      "marca": "Asos",
+      "talla": "M",
+      "material": [
+        {
+          "tela": "Algodón",
+          "pct": 100
+        }
+      ],
+      "cuidado": {
+        "lavado": "W30",
+        "secado": "NoSecadora",
+        "plancha": "Baja"
+      },
+      "formalidad": "streetwear",
+      "foto": "images/user_1783294628187.webp?v=1783296130072",
+      "pos": "inferior"
+    },
+    {
+      "id": 1783294688096,
+      "nombre": "Bermudas blancas",
+      "tipo": "Short",
+      "capa": "base",
+      "temporada": "Todo",
+      "color": "#d8d8d8",
+      "color2": null,
+      "color3": null,
+      "marca": "Amazon",
+      "talla": "M",
+      "material": [
+        {
+          "tela": "Algodón",
+          "pct": 100
+        }
+      ],
+      "cuidado": {
+        "lavado": "W30",
+        "secado": "NoSecadora",
+        "plancha": "Media"
+      },
+      "formalidad": "casual",
+      "foto": "images/user_1783294688096.webp?v=1783296130072",
+      "pos": "inferior"
+    },
+    {
+      "id": 1783294839213,
+      "nombre": "Jogger negro",
+      "tipo": "Jogger",
+      "capa": "base",
+      "temporada": "Todo",
+      "color": "#303030",
+      "color2": null,
+      "color3": null,
+      "marca": "Sin marca",
+      "talla": "M",
+      "material": [
+        {
+          "tela": "Algodón",
+          "pct": 100
+        }
+      ],
+      "cuidado": {
+        "lavado": "W30",
+        "secado": "NoSecadora",
+        "plancha": "Baja"
+      },
+      "formalidad": "streetwear",
+      "foto": "images/user_1783294839213.webp?v=1783296130072",
+      "pos": "inferior"
     }
-   ],
-   "cuidado": {
-    "lavado": "W30",
-    "secado": "NoSecadora",
-    "plancha": "Baja"
-   },
-   "formalidad": "streetwear",
-   "foto": "images/user_1783294839213.webp?v=1783296130072",
-   "pos": "inferior"
+  ],
+  "deleted": [
+    1782716383691
+  ],
+  "favs": [],
+  "perfil": {
+    "estacion": "otono_profundo",
+    "fecha": "2026-07-06"
   }
- ],
- "deleted": [
-  1782716383691
- ],
- "favs": [],
- "perfil": null
 }
