@@ -781,12 +781,12 @@
       "id": 28,
       "nombre": "Sandalias rope beige",
       "tipo": "Sandalias",
-      "color": "#D4B896",
+      "color": "#d4b896",
       "color2": null,
       "patron": "Liso",
       "marca": "Asos",
-      "formalidad": "Casual",
-      "temporada": "Todo",
+      "formalidad": "streetwear",
+      "temporada": "Primavera/Verano",
       "notas": null,
       "capa": null,
       "foto": "images/IMG_0625_2.webp",
@@ -803,7 +803,8 @@
         "lavado": "W30",
         "secado": "NoSecadora",
         "plancha": "NoPlancha"
-      }
+      },
+      "color3": null
     },
     {
       "id": 29,
@@ -1564,7 +1565,7 @@
       "nombre": "Sudadera gris",
       "tipo": "Sudadera",
       "capa": null,
-      "temporada": "Otoño/Invierno",
+      "temporada": "Todo",
       "color": "#909090",
       "color2": null,
       "color3": null,
