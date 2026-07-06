@@ -140,8 +140,8 @@ body{font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;background:#000;col
 .mc-dot{display:inline-block;width:12px;height:12px;border-radius:50%;margin-right:8px;vertical-align:middle;border:1px solid rgba(255,255,255,.2)}
 /* Orden en la esquina: ♥ (62px) · ✦ (38px) · W (12px) */
 .mio-badge{position:absolute;top:9px;right:38px;font-size:19px;color:#C9A227;z-index:10;line-height:1;text-shadow:0 0 6px rgba(0,0,0,.5)}
-.share-btn{position:absolute;bottom:46px;right:10px;z-index:10;width:40px;height:40px;display:flex;align-items:center;justify-content:center;background:rgba(0,0,0,.45);border:none;color:#fff;cursor:pointer}
-.share-btn:active{background:#fff;color:#000}
+.share-btn{position:absolute;top:5px;right:98px;z-index:10;background:none;border:none;color:#fff;cursor:pointer;padding:8px;line-height:1;filter:drop-shadow(0 1px 3px rgba(0,0,0,.6))}
+.share-btn:active{color:#C9A227}
 
 /* MODO VIAJE */
 .viaje-look{height:72vh;position:relative;padding:0 2px}
@@ -821,6 +821,15 @@ function renderClosetMain(){
   desbBtn.onclick=verDesbloqueos;
   desbBtn.innerHTML=`<span class="cat-link-text">Colores que te faltan</span>`;
   wrap.appendChild(desbBtn);
+  // Fase 2 fusión Closet/Outfit: Libre y Viaje también viven aquí
+  const ml=document.createElement('div');ml.className='cat-link';
+  ml.onclick=modoLibreCloset;
+  ml.innerHTML=`<span class="cat-link-text">Modo Libre</span>`;
+  wrap.appendChild(ml);
+  const mv=document.createElement('div');mv.className='cat-link';
+  mv.onclick=modoViajeCloset;
+  mv.innerHTML=`<span class="cat-link-text">Modo Viaje</span>`;
+  wrap.appendChild(mv);
   const vt=document.createElement('div');vt.className='arm-link ver-todos-btn';
   vt.onclick=verTodosCloset;
   vt.innerHTML=`<span class="arm-link-nombre">Todo el clóset</span><span class="arm-link-count">${inventario.length}</span>`;
@@ -1111,10 +1120,15 @@ function volverOutfitMain(){
 // OUTFIT — paso 2 (armonías como links)
 function selAncla(id){ancla=inventario.find(p=>p.id===id);modoLibreActivo=false;mostrarArmonias();}
 // Fase 1 fusión Closet/Outfit: "✦ Armar looks" desde una tarjeta del Clóset
-let _anclaDesdeCloset=false;
+let _anclaDesdeCloset=false,_viajeDesdeCloset=false;
 function armarLooksCloset(id){showScreen('outfit');selAncla(id);_anclaDesdeCloset=true;}
 function volverDePaso2(){if(_anclaDesdeCloset){_anclaDesdeCloset=false;showScreen('closet');}else{irPaso(1);}}
-function activarModoLibre(){modoLibreActivo=true;ancla=null;showScreen('outfit');mostrarArmonias();}
+// Fase 2: Modo Libre y Modo Viaje desde el menú de Closet (el "‹" regresa a Closet)
+function modoLibreCloset(){activarModoLibre();_anclaDesdeCloset=true;}
+function modoViajeCloset(){showScreen('outfit');activarModoViaje();_viajeDesdeCloset=true;}
+// OJO: showScreen('outfit') llama irPaso(1) que RESETEA modoLibreActivo/ancla —
+// por eso va primero y los flags después (antes al revés: Modo Libre generaba vacío)
+function activarModoLibre(){showScreen('outfit');modoLibreActivo=true;ancla=null;mostrarArmonias();}
 
 function mostrarArmonias(){
   document.getElementById('paso1-wrap').style.display='none';
@@ -1206,7 +1220,7 @@ function irPaso(n){
   document.getElementById('paso1-wrap').style.display=n===1?'block':'none';
   document.getElementById('paso2-wrap').style.display=n===2?'block':'none';
   document.getElementById('viaje-wrap').style.display='none';
-  if(n===1){modoLibreActivo=false;ancla=null;_anclaDesdeCloset=false;document.body.style.overflow='';window.scrollTo(0,0);renderOutfitMain();volverOutfitMain();}
+  if(n===1){modoLibreActivo=false;ancla=null;_anclaDesdeCloset=false;_viajeDesdeCloset=false;document.body.style.overflow='';window.scrollTo(0,0);renderOutfitMain();volverOutfitMain();}
 }
 
 function lookCardHTML(o,wadaOk=false,armNombre=null){
@@ -1255,7 +1269,7 @@ function lookCardHTML(o,wadaOk=false,armNombre=null){
   const favK=piezas.map(p=>p.id).sort().join('-');
   const esFav=_favs.includes(favK);
   const mio=esMiColorOutfit(o);
-  return`<div class="outfit-card${wadaOk?' wada-ok':''}">${wadaOk?'<div class="wada-badge">W</div>':''}${mio?'<div class="mio-badge">✦</div>':''}<button class="fav-btn${esFav?' on':''}" data-key="${favK}" onclick="toggleFav(event,this)">${esFav?'♥':'♡'}</button><button class="share-btn" data-key="${favK}" onclick="compartirOutfit(event,this)" title="Compartir"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12"/><path d="m8 7 4-4 4 4"/><path d="M4 14v5a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-5"/></svg></button><div class="outfit-body">${leftHTML}${rightHTML}</div><div class="outfit-paleta">${colores.map(c=>`<div class="paleta-seg" style="background:${c}"></div>`).join('')}</div></div>`;
+  return`<div class="outfit-card${wadaOk?' wada-ok':''}">${wadaOk?'<div class="wada-badge">W</div>':''}${mio?'<div class="mio-badge">✦</div>':''}<button class="fav-btn${esFav?' on':''}" data-key="${favK}" onclick="toggleFav(event,this)">${esFav?'♥':'♡'}</button><button class="share-btn" data-key="${favK}" onclick="compartirOutfit(event,this)" title="Compartir"><svg width="19" height="19" viewBox="0 0 24 24" fill="currentColor"><path d="M21 11.6 13.2 4.3v4.2C7 9.4 3.8 13.7 3 19.7c2.7-3.3 6-4.9 10.2-4.9v4.1L21 11.6z"/></svg></button><div class="outfit-body">${leftHTML}${rightHTML}</div><div class="outfit-paleta">${colores.map(c=>`<div class="paleta-seg" style="background:${c}"></div>`).join('')}</div></div>`;
 }
 function tipoIcon(tipo){const pos=getPosicion(tipo);if(pos==='base'||pos==='medio'||pos==='exterior')return'👕';if(pos==='inferior')return'👖';if(pos==='calzado')return'👟';return'🎩';}
 
@@ -2265,7 +2279,7 @@ function activarModoViaje(){
     <div class="mc-q" style="padding-bottom:8px">¿Cuántos días?</div>
     ${[2,3,4,5,6,7,8].map(n=>`<div class="cat-link" onclick="viajePedirClima(${n})"><span class="cat-link-text">${n} días</span></div>`).join('')}`;
 }
-function salirViaje(){irPaso(1);}
+function salirViaje(){if(_viajeDesdeCloset){_viajeDesdeCloset=false;showScreen('closet');}else{irPaso(1);}}
 function viajePedirClima(dias){
   _viaje.dias=dias;
   document.getElementById('viaje-body').innerHTML=`
