@@ -1367,12 +1367,12 @@
     {
       "id": 49,
       "nombre": "Overalls denim azul marino",
-      "tipo": "Overalls",
-      "color": "#1B2A4A",
+      "tipo": "Jean",
+      "color": "#1b2a4a",
       "color2": null,
       "patron": "Liso",
       "marca": "Sin marca",
-      "formalidad": "Casual",
+      "formalidad": "streetwear",
       "temporada": "Todo",
       "notas": null,
       "capa": null,
@@ -1390,7 +1390,8 @@
         "lavado": "W30",
         "secado": "NoSecadora",
         "plancha": "Baja"
-      }
+      },
+      "color3": null
     },
     {
       "id": 1782716656758,
