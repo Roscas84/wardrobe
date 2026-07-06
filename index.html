@@ -590,7 +590,7 @@ body{font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;background:#000;col
     <span class="bnav-icon">☰</span>Closet
   </button>
   <button class="bnav-btn" id="nav-outfit" onclick="showScreen('outfit')">
-    <span class="bnav-icon">✦</span>Outfit
+    <span class="bnav-icon">✦</span>Looks
   </button>
   <button class="bnav-btn" id="nav-micolor" onclick="showScreen('micolor')">
     <span class="bnav-icon">◐</span>Mi Color
@@ -1122,15 +1122,24 @@ function selAncla(id){ancla=inventario.find(p=>p.id===id);modoLibreActivo=false;
 // Fase 1 fusión Closet/Outfit: "✦ Armar looks" desde una tarjeta del Clóset
 let _anclaDesdeCloset=false,_viajeDesdeCloset=false;
 function armarLooksCloset(id){showScreen('outfit');selAncla(id);_anclaDesdeCloset=true;}
-function volverDePaso2(){if(_anclaDesdeCloset){_anclaDesdeCloset=false;showScreen('closet');}else{irPaso(1);}}
+function volverDePaso2(){_anclaDesdeCloset=false;showScreen('closet');}
 // Fase 2: Modo Libre y Modo Viaje desde el menú de Closet (el "‹" regresa a Closet)
 function modoLibreCloset(){activarModoLibre();_anclaDesdeCloset=true;}
 function modoViajeCloset(){showScreen('outfit');activarModoViaje();_viajeDesdeCloset=true;}
+// Fase 3: la pestaña Looks abre directo en favoritos — la portada (paso1-wrap)
+// queda retirada; a armonías/looks se llega desde Closet (Armar looks / Modo Libre)
+function irLooksRoot(){
+  modoLibreActivo=false;ancla=null;_anclaDesdeCloset=false;_viajeDesdeCloset=false;_viendoFavs=false;
+  document.getElementById('paso1-wrap').style.display='none';
+  document.getElementById('viaje-wrap').style.display='none';
+  verFavoritos();
+}
 // OJO: showScreen('outfit') llama irPaso(1) que RESETEA modoLibreActivo/ancla —
 // por eso va primero y los flags después (antes al revés: Modo Libre generaba vacío)
 function activarModoLibre(){showScreen('outfit');modoLibreActivo=true;ancla=null;mostrarArmonias();}
 
 function mostrarArmonias(){
+  _viendoFavs=false; // pudo quedar en true si la pestaña Looks (favoritos) fue la vista previa
   document.getElementById('paso1-wrap').style.display='none';
   document.getElementById('paso2-wrap').style.display='block';
   document.getElementById('paso2-main').style.display='block';
@@ -1209,7 +1218,7 @@ function verArmonia(armKey){
   document.body.style.overflow='hidden';
 }
 function volverArmonias(){
-  if(_viendoFavs){_viendoFavs=false;irPaso(1);return;}
+  if(_viendoFavs){_viendoFavs=false;showScreen('closet');return;}
   document.getElementById('paso2-main').style.display='block';
   document.getElementById('paso2-outfits').style.display='none';
   document.body.style.overflow='hidden';
@@ -2279,7 +2288,7 @@ function activarModoViaje(){
     <div class="mc-q" style="padding-bottom:8px">¿Cuántos días?</div>
     ${[2,3,4,5,6,7,8].map(n=>`<div class="cat-link" onclick="viajePedirClima(${n})"><span class="cat-link-text">${n} días</span></div>`).join('')}`;
 }
-function salirViaje(){if(_viajeDesdeCloset){_viajeDesdeCloset=false;showScreen('closet');}else{irPaso(1);}}
+function salirViaje(){_viajeDesdeCloset=false;showScreen('closet');}
 function viajePedirClima(dias){
   _viaje.dias=dias;
   document.getElementById('viaje-body').innerHTML=`
@@ -2476,7 +2485,7 @@ function showScreen(id){
   document.getElementById('nav-'+id).classList.add('active');
   window.scrollTo(0,0);
   if(id==='closet'){renderClosetMain();volverClosetMain();}
-  else if(id==='outfit'){irPaso(1);}
+  else if(id==='outfit'){irLooksRoot();}
   else if(id==='micolor'){renderMiColor();}
   else if(id==='cargar'){document.getElementById('search-input').value='';document.getElementById('search-results').innerHTML='';document.getElementById('screen-cargar').scrollTop=0;}
 }
