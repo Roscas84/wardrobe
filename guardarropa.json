@@ -180,12 +180,12 @@
       "id": 7,
       "nombre": "Botas vaqueras café",
       "tipo": "Botas",
-      "color": "#5C3317",
+      "color": "#5c3317",
       "color2": null,
       "patron": "Liso/Bordado",
       "marca": "Ariat",
-      "formalidad": "Casual",
-      "temporada": "Todo",
+      "formalidad": "streetwear",
+      "temporada": "Otoño/Invierno",
       "notas": null,
       "capa": null,
       "foto": "images/WDANP20612_1_enlarged.jpg.webp",
@@ -202,7 +202,8 @@
         "lavado": "Mano",
         "secado": "NoSecadora",
         "plancha": "NoPlancha"
-      }
+      },
+      "color3": null
     },
     {
       "id": 8,
@@ -1371,8 +1372,8 @@
       "color": "#1b2a4a",
       "color2": null,
       "patron": "Liso",
-      "marca": "Dickies",
-      "formalidad": "",
+      "marca": "Sin marca",
+      "formalidad": "streetwear",
       "temporada": "Todo",
       "notas": null,
       "capa": null,
