@@ -368,7 +368,7 @@ body{font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;background:#000;col
   <div id="paso2-wrap" style="display:none">
     <div id="paso2-main">
       <div class="res-hdr">
-        <span class="res-back" onclick="irPaso(1)">‹</span>
+        <span class="res-back" onclick="volverDePaso2()">‹</span>
         <div id="ancla-chip-res" style="display:flex;align-items:center;gap:10px;flex:1"></div>
       </div>
       <div class="res-count" id="res-total"></div>
@@ -1054,7 +1054,9 @@ function closetCardHTML(p){
       <div class="flip-front">
         ${p.foto?`<img class="c-card-img" src="${p.foto}" alt="">`:`<div class="c-card-ph" style="background:${p.color}">👕</div>`}
       </div>
-      <div class="flip-back">${cardBackHTML(p)}</div>
+      <div class="flip-back">${cardBackHTML(p)}
+        <button class="cb-select" onclick="event.stopPropagation();armarLooksCloset(${p.id})">✦ Armar looks</button>
+      </div>
     </div>
   </div>`;
 }
@@ -1113,6 +1115,10 @@ function volverOutfitMain(){
 
 // OUTFIT — paso 2 (armonías como links)
 function selAncla(id){ancla=inventario.find(p=>p.id===id);modoLibreActivo=false;mostrarArmonias();}
+// Fase 1 fusión Closet/Outfit: "✦ Armar looks" desde una tarjeta del Clóset
+let _anclaDesdeCloset=false;
+function armarLooksCloset(id){showScreen('outfit');selAncla(id);_anclaDesdeCloset=true;}
+function volverDePaso2(){if(_anclaDesdeCloset){_anclaDesdeCloset=false;showScreen('closet');}else{irPaso(1);}}
 function activarModoLibre(){modoLibreActivo=true;ancla=null;showScreen('outfit');mostrarArmonias();}
 
 function mostrarArmonias(){
@@ -1205,7 +1211,7 @@ function irPaso(n){
   document.getElementById('paso1-wrap').style.display=n===1?'block':'none';
   document.getElementById('paso2-wrap').style.display=n===2?'block':'none';
   document.getElementById('viaje-wrap').style.display='none';
-  if(n===1){modoLibreActivo=false;ancla=null;document.body.style.overflow='';window.scrollTo(0,0);renderOutfitMain();volverOutfitMain();}
+  if(n===1){modoLibreActivo=false;ancla=null;_anclaDesdeCloset=false;document.body.style.overflow='';window.scrollTo(0,0);renderOutfitMain();volverOutfitMain();}
 }
 
 function lookCardHTML(o,wadaOk=false,armNombre=null){
