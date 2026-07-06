@@ -151,7 +151,6 @@ body{font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;background:#000;col
 .desb-franja{display:flex;align-items:center;justify-content:space-between;padding:0 20px;height:76px;margin-bottom:2px}
 .desb-nombre{font-size:13px;letter-spacing:2.5px;text-transform:uppercase;font-weight:300}
 .desb-hex{font-size:10px;font-family:monospace;opacity:.75;margin-top:3px}
-.desb-num{font-size:28px;font-weight:200;letter-spacing:1px}
 .desb-nota{font-size:9px;color:#888;letter-spacing:1.5px;text-transform:uppercase;padding:16px 20px;line-height:1.7;background:#000}
 .outfit-body{display:flex;flex:1;min-height:0;gap:0;background:#000;padding:2px}
 .of-left{flex:3;display:flex;flex-direction:column;gap:0}
@@ -979,37 +978,22 @@ function nombreColor(hex){
   return l<35?'Ciruela':'Rosa';
 }
 function analizarDesbloqueos(){
+  // Decisión del usuario 2026-07-05: sin conteo "+N looks" (no era entendible) —
+  // solo nombre, hex y franja de cada color de SU paleta que el clóset no cubre
   const perfil=perfilColor();
   if(!perfil||!ESTACIONES[perfil.estacion])return null;
-  const claveDe=o=>o.piezas.map(p=>p.id).sort().join('-');
-  const contar=()=>{
-    const s=new Set();
-    inventario.filter(p=>['base','medio','exterior','inferior'].includes(posDe(p)))
-      .forEach(ref=>ARMONIAS.forEach(a=>generarParaArmonia(ref,a.key).forEach(o=>s.add(claveDe(o)))));
-    return s;
-  };
-  const base=contar();
   const res=[];
   const labDist=(a,b)=>{const x=hexToLab(a),y=hexToLab(b);return Math.sqrt((x[0]-y[0])**2+(x[1]-y[1])**2+(x[2]-y[2])**2);};
   for(const c of ESTACIONES[perfil.estacion].colores){
-    if(esNeutro(c))continue; // el motor lo trataría como comodín, no desbloquea armonías
+    if(esNeutro(c))continue; // comodines del motor: no cuentan como color faltante
     // Saltar solo si el clóset tiene un color REALMENTE parecido (umbral de compra,
     // más exigente que el de favorece) — un rosa neón NO cubre un burdeos
     if(inventario.some(p=>coloresDe(p).some(cc=>labDist(cc,c)<=UMBRAL_TENGO)))continue;
     // Dedupe: no proponer dos colores casi iguales de la paleta
     if(res.some(r=>labDist(r.color,c)<=14))continue;
-    let mejor=0;
-    // Probar la prenda virtual como base y como inferior; tomar el mejor caso
-    for(const tipo of ['Camiseta','Pantalón']){
-      inventario.push({id:-1,nombre:'',tipo,color:c,formalidad:'casual'});
-      const con=contar();
-      inventario.pop();
-      let nuevos=0;con.forEach(k=>{if(!base.has(k))nuevos++;});
-      mejor=Math.max(mejor,nuevos);
-    }
-    if(mejor>0)res.push({color:c,nombre:nombreColor(c),looks:mejor});
+    res.push({color:c,nombre:nombreColor(c)});
   }
-  return res.sort((a,b)=>b.looks-a.looks).slice(0,6);
+  return res;
 }
 function verDesbloqueos(){
   document.getElementById('closet-main').style.display='none';
@@ -1025,20 +1009,16 @@ function verDesbloqueos(){
       <button class="mc-btn" onclick="showScreen('micolor')">Ir a Mi Color</button>`;
     return;
   }
-  lista.innerHTML='<div class="no-outfits"><p>Analizando tu closet…</p></div>';
-  setTimeout(()=>{
-    const res=analizarDesbloqueos();
-    lista.innerHTML=(res&&res.length
-      ?res.map(r=>{
-        const txt=hexToHsl(r.color).l>55?'#000':'#fff';
-        return`<div class="desb-franja" style="background:${r.color};color:${txt}">
-          <div><div class="desb-nombre">${r.nombre}</div><div class="desb-hex">${r.color}</div></div>
-          <div class="desb-num">+${r.looks}</div>
-        </div>`;
-      }).join('')
-      :'<div class="no-outfits"><p>Tu closet ya cubre los tonos de tu paleta que desbloquean looks</p></div>')
-      +'<div class="desb-nota">Colores de TU paleta personal que tu clóset no cubre, con los looks nuevos que obtienes al comprar una prenda de ese tono. Compra en armonía contigo.</div>';
-  },30);
+  const res=analizarDesbloqueos();
+  lista.innerHTML=(res&&res.length
+    ?res.map(r=>{
+      const txt=hexToHsl(r.color).l>55?'#000':'#fff';
+      return`<div class="desb-franja" style="background:${r.color};color:${txt}">
+        <div><div class="desb-nombre">${r.nombre}</div><div class="desb-hex">${r.color}</div></div>
+      </div>`;
+    }).join('')
+    :'<div class="no-outfits"><p>Tu clóset ya cubre todos los tonos de tu paleta</p></div>')
+    +'<div class="desb-nota">Colores de TU paleta personal que tu clóset no cubre. Compra en armonía contigo.</div>';
 }
 function cardBackHTML(p){
   // Decisión del usuario 2026-07-05: solo lo que NO se ve en la foto (marca/talla,
