@@ -76,7 +76,7 @@ body{font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;background:#000;col
 .c-card-img{width:100%;height:100%;object-fit:contain;display:block}
 .c-card-ph{width:100%;height:100%;background:#f0ebe5;display:flex;align-items:center;justify-content:center;font-size:30px}
 .cb-nombre{font-size:12px;font-weight:300;letter-spacing:1px;text-transform:uppercase;color:#fff;line-height:1.4}
-.cb-marca{font-size:9px;color:#666;letter-spacing:2px;text-transform:uppercase}
+.cb-marca{font-size:11px;font-weight:300;color:#fff;letter-spacing:1.5px;text-transform:uppercase;line-height:1.4}
 .c-card-color-row{display:flex;align-items:center;justify-content:center;gap:5px}
 .c-dot{width:10px;height:10px;border-radius:50%;border:1px solid rgba(255,255,255,.15);flex-shrink:0}
 .c-hex{font-size:9px;color:#555;font-family:monospace}
@@ -230,7 +230,7 @@ body{font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;background:#000;col
 .c-chip{padding:5px 10px;border:1px solid #e0dbd5;background:#fff;font-size:10px;letter-spacing:1px;text-transform:uppercase;cursor:pointer;font-family:inherit;color:#888;-webkit-appearance:none}
 .c-chip.on{background:#000;color:#fff;border-color:#000}
 .cb-cuidado{display:flex;flex-wrap:wrap;gap:4px;justify-content:center;margin-top:3px}
-.cb-care-chip{font-size:8px;color:#555;letter-spacing:1px;text-transform:uppercase;border:1px solid #2a2a2a;padding:2px 6px}
+.cb-care-chip{font-size:9px;color:#fff;letter-spacing:1px;text-transform:uppercase;border:1px solid #555;padding:3px 7px}
 .modal-btns{display:flex;gap:2px;margin-top:8px;padding-bottom:env(safe-area-inset-bottom)}
 .btn-cancel{flex:1;padding:14px;border:1px solid #e0dbd5;background:#fff;font-size:11px;cursor:pointer;letter-spacing:1px;text-transform:uppercase}
 .btn-save{flex:2;padding:14px;border:none;background:#000;color:#fff;font-size:11px;cursor:pointer;font-weight:400;letter-spacing:1px;text-transform:uppercase}
@@ -1032,21 +1032,16 @@ function verDesbloqueos(){
   },30);
 }
 function cardBackHTML(p){
+  // Decisión del usuario 2026-07-05: solo lo que NO se ve en la foto (marca/talla,
+  // material, cuidados) — fuera nombre, colores/hex, tipo, formalidad, temporada, notas
   const marcaTalla=[p.marca,p.talla].filter(Boolean).join(' · ');
-  const patron=p.patron&&p.patron!=='Liso'?p.patron:'';
   const matStr=Array.isArray(p.material)&&p.material.length?p.material.map(m=>m.tela+' '+m.pct+'%').join(' · '):(typeof p.material==='string'?p.material:'');
   const cuidadoHTML=p.cuidado?`<div class="cb-cuidado">${[p.cuidado.lavado,p.cuidado.secado,p.cuidado.plancha].filter(Boolean).map(v=>`<span class="cb-care-chip">${CARE_DISPLAY[v]||v}</span>`).join('')}</div>`:'';
   return`
-    <div class="cb-nombre">${p.nombre}</div>
-    ${marcaTalla?`<div class="cb-marca">${marcaTalla}</div>`:''}
-    <div class="c-card-color-row">${coloresDe(p).map(c=>`<div class="c-dot" style="background:${c}"></div><div class="c-hex">${c}</div>`).join('')}</div>
-    <div class="cb-tipo">${p.tipo}${p.subtipo?' '+p.subtipo:''}${patron?' · '+patron:''}</div>
-    ${matStr?`<div class="cb-formalidad" style="color:#777">${matStr}</div>`:''}
+    ${marcaTalla?`<div class="cb-nombre">${marcaTalla}</div>`:''}
+    ${matStr?`<div class="cb-marca">${matStr}</div>`:''}
     ${cuidadoHTML}
-    ${prendaFavorece(p)?`<div class="cb-formalidad" style="color:#C9A227">✦ Te favorece</div>`:''}
-    <div class="cb-formalidad">${p.formalidad}</div>
-    ${p.temporada?`<div class="cb-formalidad" style="color:#444">${p.temporada}</div>`:''}
-    ${p.notas?`<div class="cb-formalidad" style="color:#3a3a3a;font-style:italic">${p.notas}</div>`:''}`;
+    ${prendaFavorece(p)?`<div class="cb-formalidad" style="color:#C9A227">✦ Te favorece</div>`:''}`;
 }
 function closetCardHTML(p){
   return`<div class="c-card flip-card" onclick="flipCard(this)">
