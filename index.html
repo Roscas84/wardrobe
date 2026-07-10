@@ -211,10 +211,10 @@ body{font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;background:#000;col
 .btn-del-s{padding:6px 10px;background:#000;color:#fff;border:none;font-size:9px;letter-spacing:1px;text-transform:uppercase;cursor:pointer}
 
 /* MODAL */
-.modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.7);z-index:300;align-items:flex-end;justify-content:center}
+.modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.7);z-index:300;align-items:flex-end;justify-content:center;touch-action:none}
 #toast{position:fixed;bottom:68px;left:50%;transform:translateX(-50%);background:#1a1a1a;color:#fff;padding:10px 22px;font-size:11px;letter-spacing:2px;text-transform:uppercase;font-weight:300;z-index:400;opacity:0;transition:opacity .25s;pointer-events:none;white-space:nowrap}
-.modal-overlay.open{display:flex}
-.modal{background:#fff;padding:20px 16px;width:100%;max-width:500px;max-height:92vh;overflow-y:auto;overflow-x:hidden;overscroll-behavior:contain;-webkit-overflow-scrolling:auto}
+.modal-overlay.open{display:flex;overflow:hidden}
+.modal{background:#fff;padding:20px 16px;width:100%;max-width:500px;max-height:92vh;overflow-y:auto;overflow-x:hidden;overscroll-behavior:none;-webkit-overflow-scrolling:auto;touch-action:pan-y}
 .modal-handle{width:36px;height:3px;background:#e0dbd5;margin:0 auto 16px}
 .modal h3{font-size:10px;letter-spacing:2px;text-transform:uppercase;font-weight:400;margin-bottom:16px}
 .field{margin-bottom:14px}
@@ -1246,7 +1246,9 @@ function buscarPrenda(q){
 }
 
 // MODAL
-function abrirModal(){editandoId=null;document.getElementById('modal-titulo').textContent='Agregar prenda';limpiarModal();document.getElementById('modal-prenda').classList.add('open');document.querySelector('#modal-prenda .modal').scrollTop=0;}
+function _noBodyScroll(e){if(!e.target.closest('.modal'))e.preventDefault();}
+function abrirModal(){editandoId=null;document.getElementById('modal-titulo').textContent='Agregar prenda';limpiarModal();document.getElementById('modal-prenda').classList.add('open');document.querySelector('#modal-prenda .modal').scrollTop=0;document.addEventListener('touchmove',_noBodyScroll,{passive:false});}
+
 function editarPrenda(id){
   const p=inventario.find(x=>x.id===id);if(!p)return;
   editandoId=id;
@@ -1280,6 +1282,7 @@ function editarPrenda(id){
   else{_prevImg.src='';_prevImg.style.display='none';document.getElementById('foto-status').textContent='Toca para agregar foto';}
   document.getElementById('modal-prenda').classList.add('open');
   document.querySelector('#modal-prenda .modal').scrollTop=0;
+  document.addEventListener('touchmove',_noBodyScroll,{passive:false});
 }
 function eliminarPrenda(id){
   if(!confirm('¿Eliminar esta prenda?'))return;
@@ -1299,7 +1302,7 @@ function eliminarPrenda(id){
   }
   sincronizarInventario();
 }
-function cerrarModal(){desactivarGotero();document.getElementById('modal-prenda').classList.remove('open');}
+function cerrarModal(){desactivarGotero();document.getElementById('modal-prenda').classList.remove('open');document.removeEventListener('touchmove',_noBodyScroll);}
 function limpiarModal(){
   ['inp-nombre','inp-marca','inp-talla'].forEach(id=>document.getElementById(id).value='');
   document.getElementById('inp-tipo').value='';document.getElementById('inp-capa').value='';
