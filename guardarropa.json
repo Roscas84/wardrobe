@@ -1715,6 +1715,32 @@
       "formalidad": "streetwear",
       "foto": "images/user_1783294839213.webp?v=1783296130072",
       "pos": "inferior"
+    },
+    {
+      "id": 1783712099719,
+      "nombre": "Camiseta rayas rojas y negras",
+      "tipo": "Camiseta",
+      "capa": "base",
+      "temporada": "Todo",
+      "color": "#901830",
+      "color2": null,
+      "color3": null,
+      "marca": "Zara",
+      "talla": "M",
+      "material": [
+        {
+          "tela": "Algodón",
+          "pct": 100
+        }
+      ],
+      "cuidado": {
+        "lavado": "W30",
+        "secado": "NoSecadora",
+        "plancha": "Baja"
+      },
+      "formalidad": "streetwear",
+      "foto": "images/user_1783712099719.webp?v=1783726420597",
+      "pos": "base"
     }
   ],
   "deleted": [
