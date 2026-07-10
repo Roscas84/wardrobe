@@ -3,7 +3,7 @@
 App web progresiva de uso personal: inventario de ropa, generación de outfits por teoría del color y análisis de colorimetría de 12 estaciones. Instalable en iPhone sin App Store.
 
 **URL:** https://roscas84.github.io/wardrobe/ · **Repo:** https://github.com/Roscas84/wardrobe (privado)
-**Estado:** SW v106 · 52 prendas · roadmap completado 2026-07-04 · rediseño acento oro viejo 2026-07-05
+**Estado:** SW v117 · 61 prendas · fusión Closet/Outfit completa · Looks abre en favoritos directamente
 
 ---
 
@@ -61,13 +61,20 @@ git clone https://ghp_TOKEN@github.com/Roscas84/wardrobe.git /tmp/wardrobe   # t
 # verificar deploy: curl sw.js en vivo; si se atasca >5 min → commit vacío lo destraba
 ```
 
-## Pendientes (próxima sesión — plan acordado 2026-07-05)
+## Estado actual (v117, 2026-07-09) — app considerada FINALIZADA
 
-1. **Excel → JSON**: el usuario está llenando `Claude/Proyects/Wardrobe/Inventory/Mi_Guardarropa_v4.xlsx` al 100% (telas, lavado/secado/plancha, temporadas corregidas; generado desde el JSON con 52 prendas y dropdowns). Cuando avise: hacer copia de respaldo, comparar contra guardarropa.json, analizar inconsistencias (p.ej. tela vs temporada: lino→cálido), proponer ajustes y pasar todo al JSON.
-2. **Fotos del collage**: el usuario deja fotos nuevas en `Claude/Proyects/Wardrobe/Fotos_Collage/` (quiere +3 y quizá reemplazar alguna de las 11 actuales) → optimizar a JPEG ≤1600px y subirlas como `slides/slideN.jpg` (o reemplazar la N que indique). También puede subirlas él solo desde Cargar → Ajustes → Galería de Inicio.
-3. Validar v104 (collage, viaje con clima, acento oro, móvil compacto) y **repetir el quiz de Mi Color** (el perfil ya persiste); compartir outfit sigue sin probar.
-4. Cargar la ropa que falta; retomar fotos con maniquí (11) y las 3 que rembg no limpió; foto Overalls ID 49
-5. Tallas reales (decisión: sin prioridad)
+- **Fusión Closet/Outfit completa** (3 fases validadas): Closet navega ropa + arma looks; pestaña Looks abre directo en favoritos.
+- **Look card**: header 38px arriba de la foto (compartir + ♥ a la izquierda; ✦ W a la derecha); reverso muestra marca/talla, material, cuidados.
+- **Modo Libre** y **Modo Viaje** accesibles desde Closet y desde Looks.
+- **Bugs cerrados en v117**: ghDelete duplicada (fotos no se borraban al eliminar prenda), código muerto de paso1-wrap purgado, safe-area iOS en todas las pantallas, sin bounce en Mi Color/Cargar/Modal, centrado del menú Closet corregido.
+- **Token de GitHub** embebido en `_KA+_KB` (base64 partido). El token del usuario está guardado en localStorage con prioridad.
+- **Remove.bg** (`_KR`): pendiente — usuario debe ir a Cargar → Ajustes → Remove.bg para pegar su API key. Las keys de remove.bg son alfanuméricas sin prefijo (no empiezan con `ghp_`).
+
+## Pendientes mínimos
+
+1. **Key remove.bg**: pegar en Cargar → Ajustes → Remove.bg (no es el token de GitHub).
+2. **8 prendas en JSON sin subtipo/patrón**: si el usuario los completa en el Excel, se pasan al JSON.
+3. **iPhone**: validar en dispositivo real (safe-area, menú Closet centrado, Mi Color sin bounce).
 
 ## Futuro (sin compromiso)
 
