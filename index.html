@@ -164,11 +164,12 @@ body{font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;background:#000;col
    + carril 1/3 de complementos (capas interiores, calzado, accesorios) centrado */
 .outfit-body{display:flex;flex:1;min-height:0;gap:2px;background:#000;padding:2px}
 .ob-main{flex:2;display:flex;flex-direction:column;gap:2px;min-width:0}
-.ob-rail{flex:1;display:flex;flex-direction:column;gap:2px;min-width:0;justify-content:center}
+.ob-rail{flex:1;display:flex;flex-direction:column;gap:2px;min-width:0}
 .ob-cell{flex:1;min-height:0;overflow:hidden;background:#f7f5f2;position:relative}
 .ob-cell img{width:100%;height:100%;object-fit:contain;display:block}
 .ob-hero img{padding:10px;box-sizing:border-box}
-.ob-rail .ob-cell{max-height:40%;background:#efece7}
+/* Los thumbs llenan la columna completa — sin huecos negros con pocos complementos */
+.ob-rail .ob-cell{background:#efece7}
 .ob-rail .ob-cell img{padding:9px;box-sizing:border-box}
 .of-color{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:22px;background:#f7f5f2}
 .outfit-paleta{display:flex;height:36px;flex-shrink:0}
@@ -2433,9 +2434,8 @@ async function imagenDeOutfit(o){
     for(let i=0;i<hero.length;i++)await celda(hero[i],gap,top+i*(hHero+gap),lw,hHero,'#f7f5f2',0.94);
   }
   if(rail.length){
-    const hCell=Math.min(Math.floor(areaH*0.4),Math.floor((areaH-(rail.length-1)*gap)/rail.length));
-    const y0=top+Math.floor((areaH-rail.length*hCell-(rail.length-1)*gap)/2);
-    for(let i=0;i<rail.length;i++)await celda(rail[i],gap*2+lw,y0+i*(hCell+gap),rw,hCell,'#efece7',0.9);
+    const hCell=Math.floor((areaH-(rail.length-1)*gap)/rail.length);
+    for(let i=0;i<rail.length;i++)await celda(rail[i],gap*2+lw,top+i*(hCell+gap),rw,hCell,'#efece7',0.9);
   }
   // Franja de paleta
   const cols=[...new Set(o.piezas.flatMap(p=>coloresDe(p)))];

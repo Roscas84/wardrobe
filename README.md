@@ -3,7 +3,7 @@
 App web progresiva de uso personal: inventario de ropa, generación de outfits por teoría del color y análisis de colorimetría de 12 estaciones. Instalable en iPhone sin App Store.
 
 **URL:** https://roscas84.github.io/wardrobe/ · **Repo:** https://github.com/Roscas84/wardrobe (privado)
-**Estado:** SW v120 · 62 prendas · look card editorial héroe+carril · gotero con lupa de zoom
+**Estado:** SW v121 · 62 prendas · look card editorial héroe+carril · gotero con lupa de zoom
 
 ---
 
