@@ -159,11 +159,17 @@ body{font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;background:#000;col
 .desb-nombre{font-size:13px;letter-spacing:2.5px;text-transform:uppercase;font-weight:300}
 .desb-hex{font-size:10px;font-family:monospace;opacity:.75;margin-top:3px}
 .desb-nota{font-size:9px;color:#888;letter-spacing:1.5px;text-transform:uppercase;padding:16px 20px;line-height:1.7;background:#000}
-.outfit-body{display:flex;flex:1;min-height:0;gap:0;background:#000;padding:2px}
-.of-left{flex:3;display:flex;flex-direction:column;gap:0}
-.of-right{flex:2;display:flex;flex-direction:column;gap:0}
-.of-left-item,.of-right-item{flex:1;min-height:0;overflow:hidden;background:#f7f5f2;position:relative}
-.of-left-item img,.of-right-item img{width:100%;height:100%;object-fit:contain;display:block}
+/* Look editorial (2026-07-10, patrón "shop the look" de tiendas de lujo):
+   héroe 2/3 (capa statement + inferior, SIEMPRE grandes sin importar el nº de capas)
+   + carril 1/3 de complementos (capas interiores, calzado, accesorios) centrado */
+.outfit-body{display:flex;flex:1;min-height:0;gap:2px;background:#000;padding:2px}
+.ob-main{flex:2;display:flex;flex-direction:column;gap:2px;min-width:0}
+.ob-rail{flex:1;display:flex;flex-direction:column;gap:2px;min-width:0;justify-content:center}
+.ob-cell{flex:1;min-height:0;overflow:hidden;background:#f7f5f2;position:relative}
+.ob-cell img{width:100%;height:100%;object-fit:contain;display:block}
+.ob-hero img{padding:10px;box-sizing:border-box}
+.ob-rail .ob-cell{max-height:40%;background:#efece7}
+.ob-rail .ob-cell img{padding:9px;box-sizing:border-box}
 .of-color{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:22px;background:#f7f5f2}
 .outfit-paleta{display:flex;height:36px;flex-shrink:0}
 .paleta-seg{flex:1}
@@ -248,7 +254,12 @@ body{font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;background:#000;col
 .gotero-btn{width:38px;height:44px;border:1px solid #e0dbd5;background:#fff;cursor:pointer;color:#555;flex-shrink:0;display:inline-flex;align-items:center;justify-content:center;-webkit-appearance:none;padding:0}
 .clear-x{width:38px;height:44px;border:none;background:#f0ebe5;font-size:17px;cursor:pointer;color:#888;flex-shrink:0;-webkit-appearance:none}
 .gotero-btn.on{background:#000;color:#fff;border-color:#000}
-.foto-area.gotero-modo{outline:2px solid #C9A227;outline-offset:-2px;cursor:crosshair}
+.foto-area.gotero-modo{outline:2px solid #C9A227;outline-offset:-2px;cursor:crosshair;touch-action:none}
+/* Lupa del gotero: círculo con zoom sobre el dedo; el aro toma el color muestreado */
+#gotero-lupa{position:fixed;width:118px;height:118px;border-radius:50%;border:3px solid #fff;box-shadow:0 6px 20px rgba(0,0,0,.5),0 0 0 1px rgba(0,0,0,.2);overflow:hidden;pointer-events:none;z-index:380;display:none;background:#f7f5f2}
+#gotero-lupa canvas{width:100%;height:100%;display:block}
+#gotero-lupa::after{content:'';position:absolute;left:50%;top:50%;width:10px;height:10px;margin:-6px 0 0 -6px;border:1.5px solid #000;border-radius:50%;box-shadow:0 0 0 1.5px #fff}
+#gotero-lupa-hex{position:absolute;left:50%;bottom:9px;transform:translateX(-50%);font-size:9px;letter-spacing:1px;background:rgba(0,0,0,.7);color:#fff;padding:2px 7px;border-radius:8px;font-family:monospace}
 .hex-input{flex:1;min-width:0;width:100%;padding:10px 8px;border:1px solid #e0dbd5;font-size:14px;font-family:monospace;outline:none}
 .c-ana{background:#1a7a1a}.c-comp{background:#c44800}.c-split{background:#b87000}
 .c-tri{background:#1a3acc}.c-tet{background:#7700cc}.c-cua{background:#cc0077}.c-abs{background:#007755}
@@ -451,6 +462,7 @@ body{font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;background:#000;col
       <img id="preview-foto" style="display:none;margin-top:10px">
     </div>
     <input type="file" id="input-foto" accept="image/*" style="display:none" onchange="cargarFoto(this)">
+    <div id="gotero-lupa"><canvas id="gotero-lupa-canvas"></canvas><span id="gotero-lupa-hex"></span></div>
     </div>
     <div class="modal-col-campos">
     <div class="field"><label>Nombre</label><input type="text" id="inp-nombre" placeholder="Ej: Jean azul claro"></div>
@@ -1145,6 +1157,30 @@ function volverArmonias(){
 }
 
 
+// Partición editorial del look: héroe = capa más exterior + inferior (los que definen
+// el outfit, siempre grandes); carril = capas interiores, calzado y accesorios.
+// La usan la tarjeta en pantalla Y la imagen de compartir — misma composición.
+function particionLook(piezas){
+  const tops=[
+    ...piezas.filter(p=>posDe(p)==='exterior'),
+    ...piezas.filter(p=>posDe(p)==='medio'),
+    ...piezas.filter(p=>posDe(p)==='base'),
+  ];
+  const inferiores=piezas.filter(p=>posDe(p)==='inferior');
+  const statement=tops[0]||null;
+  const inferior=inferiores[0]||null;
+  const rail=[
+    ...tops.slice(1),
+    ...inferiores.slice(1),
+    ...piezas.filter(p=>posDe(p)==='calzado'),
+    ...piezas.filter(p=>ACC_CABEZA.includes(p.tipo)),
+    ...piezas.filter(p=>ACC_CUERPO.includes(p.tipo)),
+  ];
+  // Cualquier pieza que no cayó en ningún grupo (tipo nuevo) va al carril
+  const vistos=new Set([statement,inferior,...rail]);
+  piezas.forEach(p=>{if(!vistos.has(p))rail.push(p);});
+  return{statement,inferior,rail};
+}
 function lookCardHTML(o,wadaOk=false,armNombre=null){
   const piezas=o.piezas;
   let colores;
@@ -1174,20 +1210,11 @@ function lookCardHTML(o,wadaOk=false,armNombre=null){
     colores=[...new Set(piezas.flatMap(p=>coloresDe(p)).filter(c=>!esNeutro(c)))];
     if(!colores.length)colores=[...new Set(piezas.map(p=>p.color))];
   }
-  const left=[
-    ...piezas.filter(p=>posDe(p)==='exterior'),
-    ...piezas.filter(p=>posDe(p)==='medio'),
-    ...piezas.filter(p=>posDe(p)==='base'),
-    ...piezas.filter(p=>posDe(p)==='inferior'),
-  ];
-  const right=[
-    ...piezas.filter(p=>posDe(p)==='calzado'),
-    ...piezas.filter(p=>ACC_CABEZA.includes(p.tipo)),
-    ...piezas.filter(p=>ACC_CUERPO.includes(p.tipo)),
-  ];
+  const{statement,inferior,rail}=particionLook(piezas);
   function imgOf(p,cls){return`<div class="${cls}">${p.foto?`<img src="${p.foto}" alt="">`:`<div class="of-color" style="background:${p.color}">${tipoIcon(p.tipo)}</div>`}</div>`;}
-  const leftHTML=left.length?`<div class="of-left">${left.map(p=>imgOf(p,'of-left-item')).join('')}</div>`:'';
-  const rightHTML=right.length?`<div class="of-right">${right.map(p=>imgOf(p,'of-right-item')).join('')}</div>`:'';
+  const heroItems=[statement,inferior].filter(Boolean);
+  const leftHTML=heroItems.length?`<div class="ob-main">${heroItems.map(p=>imgOf(p,'ob-cell ob-hero')).join('')}</div>`:'';
+  const rightHTML=rail.length?`<div class="ob-rail">${rail.map(p=>imgOf(p,'ob-cell')).join('')}</div>`:'';
   const favK=piezas.map(p=>p.id).sort().join('-');
   const esFav=_favs.includes(favK);
   const mio=esMiColorOutfit(o);
@@ -1358,16 +1385,18 @@ function quitarColorExtra(n){
   showToast(n===2?'Color secundario eliminado':'Tercer color eliminado');
 }
 
-// GOTERO — tomar el color exacto desde la foto de la prenda
-let _goteroActivo=0;
+// GOTERO — tomar el color exacto desde la foto, con lupa de zoom al arrastrar
+let _goteroActivo=0,_gCanvas=null,_gCtx=null,_gUltimo=null,_gIgnoreClick=false;
+const LUPA_PX=118,LUPA_ZOOM=3;
 function setColorCampo(n,hexv){
   document.getElementById(n===1?'inp-color':'inp-color'+n).value=hexv;
   document.getElementById(n===1?'inp-hex':'inp-hex'+n).value=hexv;
 }
 function desactivarGotero(){
-  _goteroActivo=0;
+  _goteroActivo=0;_gCanvas=null;_gCtx=null;_gUltimo=null;
   document.querySelectorAll('.gotero-btn.on').forEach(b=>b.classList.remove('on'));
   document.getElementById('foto-area').classList.remove('gotero-modo');
+  document.getElementById('gotero-lupa').style.display='none';
 }
 function activarGotero(n,btn){
   // Chrome de escritorio: gotero nativo del sistema (toma color de cualquier pixel)
@@ -1382,31 +1411,90 @@ function activarGotero(n,btn){
   _goteroActivo=n;
   btn.classList.add('on');
   document.getElementById('foto-area').classList.add('gotero-modo');
-  document.getElementById('foto-status').textContent='Toca la foto para tomar el color';
+  document.getElementById('foto-status').textContent='Arrastra el dedo sobre la foto y suelta para tomar el color';
+  // Canvas de muestreo a tamaño natural — una sola vez por activación
+  _gCanvas=document.createElement('canvas');_gCanvas.width=img.naturalWidth;_gCanvas.height=img.naturalHeight;
+  _gCtx=_gCanvas.getContext('2d');_gCtx.drawImage(img,0,0);
 }
-function fotoAreaClick(ev){
-  if(!_goteroActivo){document.getElementById('input-foto').click();return;}
+// object-fit:contain — mapear un punto de pantalla al pixel real de la imagen
+function goteroPunto(cx,cy){
   const img=document.getElementById('preview-foto');
   const r=img.getBoundingClientRect();
   const nw=img.naturalWidth,nh=img.naturalHeight;
-  if(!nw||ev.clientX<r.left||ev.clientX>r.right||ev.clientY<r.top||ev.clientY>r.bottom)return;
-  // object-fit:contain — mapear el punto tocado al pixel real de la imagen
+  if(!nw)return null;
   const scale=Math.min(r.width/nw,r.height/nh);
   const dw=nw*scale,dh=nh*scale;
   const ox=r.left+(r.width-dw)/2,oy=r.top+(r.height-dh)/2;
-  const x=Math.floor((ev.clientX-ox)/scale),y=Math.floor((ev.clientY-oy)/scale);
-  if(x<0||y<0||x>=nw||y>=nh){showToast('Toca sobre la prenda');return;}
-  const c=document.createElement('canvas');c.width=nw;c.height=nh;
-  const ctx=c.getContext('2d');ctx.drawImage(img,0,0);
+  const x=Math.floor((cx-ox)/scale),y=Math.floor((cy-oy)/scale);
+  if(x<0||y<0||x>=nw||y>=nh)return null;
+  return{x,y,scale};
+}
+function goteroMuestra(x,y){
   let d;
-  try{d=ctx.getImageData(x,y,1,1).data;}
-  catch(e){showToast('No se pudo leer el color de esta foto');desactivarGotero();return;}
-  if(d[3]<50){showToast('Zona transparente — toca sobre la prenda');return;}
-  const hexv='#'+[d[0],d[1],d[2]].map(v=>v.toString(16).padStart(2,'0')).join('');
-  setColorCampo(_goteroActivo,hexv);
-  showToast('Color tomado · '+hexv);
+  try{d=_gCtx.getImageData(x,y,1,1).data;}catch(e){return{err:true};}
+  if(d[3]<50)return null;
+  return{hex:'#'+[d[0],d[1],d[2]].map(v=>v.toString(16).padStart(2,'0')).join('')};
+}
+function goteroLupa(ev){
+  const lupa=document.getElementById('gotero-lupa');
+  const pt=goteroPunto(ev.clientX,ev.clientY);
+  _gUltimo=pt;
+  if(!pt){lupa.style.display='none';return;}
+  const cv=document.getElementById('gotero-lupa-canvas');
+  const dpr=window.devicePixelRatio||1;
+  if(cv.width!==LUPA_PX*dpr){cv.width=LUPA_PX*dpr;cv.height=LUPA_PX*dpr;}
+  const ctx=cv.getContext('2d');
+  ctx.imageSmoothingEnabled=false;
+  // Región natural que cabe en la lupa a LUPA_ZOOM× la escala de pantalla
+  const src=LUPA_PX/(pt.scale*LUPA_ZOOM);
+  ctx.fillStyle='#f7f5f2';ctx.fillRect(0,0,cv.width,cv.height);
+  ctx.drawImage(_gCanvas,pt.x-src/2,pt.y-src/2,src,src,0,0,cv.width,cv.height);
+  const m=goteroMuestra(pt.x,pt.y);
+  const hexv=m&&m.hex?m.hex:'—';
+  document.getElementById('gotero-lupa-hex').textContent=hexv;
+  lupa.style.borderColor=m&&m.hex?m.hex:'#fff';
+  lupa.style.left=ev.clientX+'px';lupa.style.top=ev.clientY+'px';
+  // Arriba del dedo; si no cabe (borde superior), abajo
+  lupa.style.transform=ev.clientY>LUPA_PX+80?'translate(-50%,-100%) translateY(-26px)':'translate(-50%,0) translateY(30px)';
+  lupa.style.display='block';
+}
+function goteroDown(ev){
+  if(!_goteroActivo)return;
+  ev.preventDefault();
+  try{document.getElementById('foto-area').setPointerCapture(ev.pointerId);}catch(e){}
+  goteroLupa(ev);
+}
+function goteroMove(ev){
+  if(!_goteroActivo)return;
+  ev.preventDefault();
+  goteroLupa(ev);
+}
+function goteroUp(ev){
+  if(!_goteroActivo)return;
+  ev.preventDefault();
+  _gIgnoreClick=true;
+  const pt=_gUltimo;
+  if(!pt){showToast('Toca sobre la prenda');desactivarGotero();return;}
+  const m=goteroMuestra(pt.x,pt.y);
+  if(m&&m.err){showToast('No se pudo leer el color de esta foto');desactivarGotero();return;}
+  if(!m){showToast('Zona transparente — toca sobre la prenda');desactivarGotero();return;}
+  setColorCampo(_goteroActivo,m.hex);
+  showToast('Color tomado · '+m.hex);
   document.getElementById('foto-status').textContent='';
   desactivarGotero();
+}
+(function(){
+  const fa=document.getElementById('foto-area');
+  fa.addEventListener('pointerdown',goteroDown);
+  fa.addEventListener('pointermove',goteroMove);
+  fa.addEventListener('pointerup',goteroUp);
+  fa.addEventListener('pointercancel',()=>{if(_goteroActivo){document.getElementById('gotero-lupa').style.display='none';_gUltimo=null;}});
+})();
+function fotoAreaClick(ev){
+  // El pointerup del gotero ya tomó el color — que el click fantasma no abra el picker
+  if(_gIgnoreClick){_gIgnoreClick=false;return;}
+  if(_goteroActivo)return;
+  document.getElementById('input-foto').click();
 }
 async function normalizarProporcion(dataUrl,targetW=1200,targetH=1600,fill=0.90){
   return new Promise(resolve=>{
@@ -2322,30 +2410,33 @@ async function imagenDeOutfit(o){
   const c=document.createElement('canvas');c.width=W;c.height=H;
   const x=c.getContext('2d');
   x.fillStyle='#000';x.fillRect(0,0,W,H);
-  const orden={exterior:0,medio:1,base:2,inferior:3};
-  const left=o.piezas.filter(p=>posDe(p) in orden).sort((a,b)=>orden[posDe(a)]-orden[posDe(b)]);
-  const right=o.piezas.filter(p=>!left.includes(p));
-  const lw=right.length?Math.floor((W-3*gap)*0.6):W-2*gap;
+  // Misma composición editorial que la tarjeta en pantalla: héroe 2/3 + carril centrado
+  const{statement,inferior,rail}=particionLook(o.piezas);
+  const hero=[statement,inferior].filter(Boolean);
+  const lw=rail.length?Math.floor((W-3*gap)*2/3):W-2*gap;
   const rw=W-3*gap-lw;
-  async function columna(items,x0,wcol){
-    if(!items.length)return;
-    const hCell=Math.floor((bottom-top-(items.length-1)*gap)/items.length);
-    for(let i=0;i<items.length;i++){
-      const y0=top+i*(hCell+gap),p=items[i];
-      x.fillStyle='#f7f5f2';x.fillRect(x0,y0,wcol,hCell);
-      let im=null;
-      if(p.foto)im=await cargarImg(p.foto);
-      if(im){
-        const s=Math.min(wcol/im.width,hCell/im.height);
-        const dw=im.width*s,dh=im.height*s;
-        x.drawImage(im,x0+(wcol-dw)/2,y0+(hCell-dh)/2,dw,dh);
-      }else{
-        x.fillStyle=p.color||'#ccc';x.fillRect(x0,y0,wcol,hCell);
-      }
+  async function celda(p,x0,y0,wcol,hCell,bg,fill){
+    x.fillStyle=bg;x.fillRect(x0,y0,wcol,hCell);
+    let im=null;
+    if(p.foto)im=await cargarImg(p.foto);
+    if(im){
+      const s=Math.min(wcol/im.width,hCell/im.height)*fill;
+      const dw=im.width*s,dh=im.height*s;
+      x.drawImage(im,x0+(wcol-dw)/2,y0+(hCell-dh)/2,dw,dh);
+    }else{
+      x.fillStyle=p.color||'#ccc';x.fillRect(x0,y0,wcol,hCell);
     }
   }
-  await columna(left,gap,lw);
-  if(right.length)await columna(right,gap*2+lw,rw);
+  const areaH=bottom-top;
+  if(hero.length){
+    const hHero=Math.floor((areaH-(hero.length-1)*gap)/hero.length);
+    for(let i=0;i<hero.length;i++)await celda(hero[i],gap,top+i*(hHero+gap),lw,hHero,'#f7f5f2',0.94);
+  }
+  if(rail.length){
+    const hCell=Math.min(Math.floor(areaH*0.4),Math.floor((areaH-(rail.length-1)*gap)/rail.length));
+    const y0=top+Math.floor((areaH-rail.length*hCell-(rail.length-1)*gap)/2);
+    for(let i=0;i<rail.length;i++)await celda(rail[i],gap*2+lw,y0+i*(hCell+gap),rw,hCell,'#efece7',0.9);
+  }
   // Franja de paleta
   const cols=[...new Set(o.piezas.flatMap(p=>coloresDe(p)))];
   const segW=W/cols.length;
