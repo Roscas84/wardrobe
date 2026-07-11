@@ -3,7 +3,7 @@
 App web progresiva de uso personal: inventario de ropa, generación de outfits por teoría del color y análisis de colorimetría de 12 estaciones. Instalable en iPhone sin App Store.
 
 **URL:** https://roscas84.github.io/wardrobe/ · **Repo:** https://github.com/Roscas84/wardrobe (privado)
-**Estado:** SW v121 · 62 prendas · look card editorial héroe+carril · gotero con lupa de zoom
+**Estado:** SW v122 · 62 prendas · look card editorial héroe+carril · gotero con lupa de zoom
 
 ---
 
@@ -82,4 +82,4 @@ git clone https://ghp_TOKEN@github.com/Roscas84/wardrobe.git /tmp/wardrobe   # t
 
 ## Futuro (sin compromiso)
 
-Historial/calendario (pospuesto — requiere registro manual) · estadísticas de uso · detección de patrón · monetización (requeriría backend con cuentas: Supabase/Firebase).
+Historial/calendario (pospuesto — requiere registro manual) · estadísticas de uso · detección de patrón · monetización (requeriría backend con cuentas: Supabase/Firebase) · **virtual try-on con IA** (2026-07-10, idea que le gustó al usuario: regenerar las fotos como modelo con el look puesto o flat-lay real — el salto de calidad visual por encima del look card editorial; solo si algún día se monetiza).
