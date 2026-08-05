@@ -1897,6 +1897,32 @@
       "formalidad": "smart casual",
       "foto": "images/user_1785904456845.webp?v=1785904458963",
       "pos": "accesorios"
+    },
+    {
+      "id": 1785904536503,
+      "nombre": "Playera tipo polo",
+      "tipo": "Polo",
+      "capa": "base",
+      "temporada": "Todo",
+      "color": "#ffa800",
+      "color2": null,
+      "color3": null,
+      "marca": "Polo Ralph Lauren",
+      "talla": "L",
+      "material": [
+        {
+          "tela": "Algodón",
+          "pct": 100
+        }
+      ],
+      "cuidado": {
+        "lavado": "W40",
+        "secado": "NoSecadora",
+        "plancha": "Media"
+      },
+      "formalidad": "streetwear",
+      "foto": "images/user_1785904536503.webp?v=1785904561204",
+      "pos": "base"
     }
   ],
   "deleted": [
