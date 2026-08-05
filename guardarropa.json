@@ -1819,6 +1819,32 @@
       "formalidad": "streetwear",
       "foto": "images/user_1785904204254.webp?v=1785904207955",
       "pos": "accesorios"
+    },
+    {
+      "id": 1785904316198,
+      "nombre": "Camiseta",
+      "tipo": "Camiseta",
+      "capa": "base",
+      "temporada": "Todo",
+      "color": "#184830",
+      "color2": null,
+      "color3": null,
+      "marca": "Polo Ralph Laurent",
+      "talla": "L",
+      "material": [
+        {
+          "tela": "Algodón",
+          "pct": 100
+        }
+      ],
+      "cuidado": {
+        "lavado": "W40",
+        "secado": "NoSecadora",
+        "plancha": "Media"
+      },
+      "formalidad": "streetwear",
+      "foto": "images/user_1785904316198.webp?v=1785904318265",
+      "pos": "base"
     }
   ],
   "deleted": [
