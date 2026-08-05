@@ -1741,6 +1741,32 @@
       "formalidad": "streetwear",
       "foto": "images/user_1783712099719.webp?v=1783726420597",
       "pos": "base"
+    },
+    {
+      "id": 1785903832748,
+      "nombre": "Camisa roja",
+      "tipo": "Camisa",
+      "capa": "base",
+      "temporada": "Todo",
+      "color": "#601818",
+      "color2": null,
+      "color3": null,
+      "marca": "Polo Ralph Lauren",
+      "talla": "L",
+      "material": [
+        {
+          "tela": "Algodón",
+          "pct": 100
+        }
+      ],
+      "cuidado": {
+        "lavado": "W40",
+        "secado": "NoSecadora",
+        "plancha": "Media"
+      },
+      "formalidad": "casual",
+      "foto": "images/user_1785903832748.webp?v=1785903836785",
+      "pos": "base"
     }
   ],
   "deleted": [
