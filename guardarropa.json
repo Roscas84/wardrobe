@@ -1767,6 +1767,32 @@
       "formalidad": "casual",
       "foto": "images/user_1785903832748.webp?v=1785903836785",
       "pos": "base"
+    },
+    {
+      "id": 1785904073908,
+      "nombre": "Camiseta camo",
+      "tipo": "Camiseta",
+      "capa": "base",
+      "temporada": "Todo",
+      "color": "#474f36",
+      "color2": "#47312d",
+      "color3": "#8b705a",
+      "marca": "Polo Ralph Lauren",
+      "talla": "M",
+      "material": [
+        {
+          "tela": "Algodón",
+          "pct": 100
+        }
+      ],
+      "cuidado": {
+        "lavado": "W40",
+        "secado": "NoSecadora",
+        "plancha": "Media"
+      },
+      "formalidad": "streetwear",
+      "foto": "images/user_1785904073908.webp?v=1785904079658",
+      "pos": "base"
     }
   ],
   "deleted": [
