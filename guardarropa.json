@@ -1871,6 +1871,32 @@
       "formalidad": "casual",
       "foto": "images/user_1785904379766.webp?v=1785904383393",
       "pos": "accesorios"
+    },
+    {
+      "id": 1785904456845,
+      "nombre": "Gorra",
+      "tipo": "Gorra",
+      "capa": null,
+      "temporada": "Otoño/Invierno",
+      "color": "#181818",
+      "color2": null,
+      "color3": null,
+      "marca": "Coach",
+      "talla": "M",
+      "material": [
+        {
+          "tela": "Lana",
+          "pct": 100
+        }
+      ],
+      "cuidado": {
+        "lavado": "Mano",
+        "secado": "Tender",
+        "plancha": "Baja"
+      },
+      "formalidad": "smart casual",
+      "foto": "images/user_1785904456845.webp?v=1785904458963",
+      "pos": "accesorios"
     }
   ],
   "deleted": [
