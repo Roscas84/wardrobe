@@ -1845,6 +1845,32 @@
       "formalidad": "streetwear",
       "foto": "images/user_1785904316198.webp?v=1785904318265",
       "pos": "base"
+    },
+    {
+      "id": 1785904379766,
+      "nombre": "Gorra cafe",
+      "tipo": "Gorra",
+      "capa": "base",
+      "temporada": "Todo",
+      "color": "#604830",
+      "color2": null,
+      "color3": null,
+      "marca": "Noah",
+      "talla": "M",
+      "material": [
+        {
+          "tela": "Algodón",
+          "pct": 100
+        }
+      ],
+      "cuidado": {
+        "lavado": "W40",
+        "secado": "NoSecadora",
+        "plancha": "NoPlancha"
+      },
+      "formalidad": "casual",
+      "foto": "images/user_1785904379766.webp?v=1785904383393",
+      "pos": "accesorios"
     }
   ],
   "deleted": [
