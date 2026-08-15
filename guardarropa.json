@@ -1312,13 +1312,13 @@
     },
     {
       "id": 47,
-      "nombre": "Gorra newsboy verde oscuro tweed",
+      "nombre": "Gorra newsboy verde",
       "tipo": "Gorra",
-      "color": "#3D4A2E",
+      "color": "#3d4a2e",
       "color2": null,
       "patron": "Tweed",
-      "marca": "Sin marca",
-      "formalidad": "Casual",
+      "marca": "Botvela",
+      "formalidad": "",
       "temporada": "Otoño/Invierno",
       "notas": null,
       "capa": null,
@@ -1335,8 +1335,9 @@
       "cuidado": {
         "lavado": "Mano",
         "secado": "NoSecadora",
-        "plancha": "Baja"
-      }
+        "plancha": "NoPlancha"
+      },
+      "color3": null
     },
     {
       "id": 48,
