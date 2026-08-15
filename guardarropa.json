@@ -1992,6 +1992,32 @@
       "formalidad": "streetwear",
       "foto": "images/user_1786790399596.webp?v=1786790401928",
       "pos": "accesorios"
+    },
+    {
+      "id": 1786790496466,
+      "nombre": "Playera negra jaws",
+      "tipo": "Camiseta",
+      "capa": "base",
+      "temporada": "Todo",
+      "color": "#181818",
+      "color2": null,
+      "color3": null,
+      "marca": "Jaws",
+      "talla": "M",
+      "material": [
+        {
+          "tela": "Algodón",
+          "pct": 100
+        }
+      ],
+      "cuidado": {
+        "lavado": "W30",
+        "secado": "NoSecadora",
+        "plancha": "Media"
+      },
+      "formalidad": "streetwear",
+      "foto": "images/user_1786790496466.webp?v=1786790501972",
+      "pos": "base"
     }
   ],
   "deleted": [
