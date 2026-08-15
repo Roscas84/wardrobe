@@ -1318,8 +1318,8 @@
       "color2": null,
       "patron": "Tweed",
       "marca": "Botvela",
-      "formalidad": "",
-      "temporada": "Otoño/Invierno",
+      "formalidad": "streetwear",
+      "temporada": "Todo",
       "notas": null,
       "capa": null,
       "foto": "images/IMG_0644.webp",
@@ -1335,7 +1335,7 @@
       "cuidado": {
         "lavado": "Mano",
         "secado": "NoSecadora",
-        "plancha": "NoPlancha"
+        "plancha": "Baja"
       },
       "color3": null
     },
