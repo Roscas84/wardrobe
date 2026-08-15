@@ -1966,6 +1966,32 @@
       "formalidad": "casual",
       "foto": "images/user_1785904706077.webp?v=1785904710359",
       "pos": "accesorios"
+    },
+    {
+      "id": 1786790399596,
+      "nombre": "Gorra tipo militar",
+      "tipo": "Gorra",
+      "capa": null,
+      "temporada": "Todo",
+      "color": "#d8d8c0",
+      "color2": null,
+      "color3": null,
+      "marca": "White bird",
+      "talla": "M",
+      "material": [
+        {
+          "tela": "Algodón",
+          "pct": 100
+        }
+      ],
+      "cuidado": {
+        "lavado": "W40",
+        "secado": "Secadora",
+        "plancha": "NoPlancha"
+      },
+      "formalidad": "streetwear",
+      "foto": "images/user_1786790399596.webp?v=1786790401928",
+      "pos": "accesorios"
     }
   ],
   "deleted": [
