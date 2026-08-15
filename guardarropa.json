@@ -2018,6 +2018,32 @@
       "formalidad": "streetwear",
       "foto": "images/user_1786790496466.webp?v=1786790501972",
       "pos": "base"
+    },
+    {
+      "id": 1786790652561,
+      "nombre": "Gorra tipo paperboy",
+      "tipo": "Gorra",
+      "capa": null,
+      "temporada": "Todo",
+      "color": "#484830",
+      "color2": null,
+      "color3": null,
+      "marca": "Botvela",
+      "talla": "M",
+      "material": [
+        {
+          "tela": "Lana",
+          "pct": 100
+        }
+      ],
+      "cuidado": {
+        "lavado": "W40",
+        "secado": "NoSecadora",
+        "plancha": "NoPlancha"
+      },
+      "formalidad": "streetwear",
+      "foto": "images/user_1786790652561.webp?v=1786790655489",
+      "pos": "accesorios"
     }
   ],
   "deleted": [
